@@ -36,7 +36,7 @@ jobs:
           ssh $USER@$HOST << 'EOF'
             if [ ! -d /home/ubuntu/ezen-mini-frontend ]; then
               echo "Directory not found. Cloning repository..."
-              git clone https://github.com/<username>/<repository>.git /home/ubuntu/ezen-mini-frontend
+              git clone https://github.com/deerking0923/ezen-mini-frontend.git /home/ubuntu/ezen-mini-frontend
             else
               echo "Directory exists. Resetting and pulling latest changes..."
               cd /home/ubuntu/ezen-mini-frontend
