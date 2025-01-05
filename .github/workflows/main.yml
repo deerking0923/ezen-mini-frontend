@@ -1,10 +1,11 @@
 name: Ezen-NextJS CICD V3
 
 on:
-  # push:
-  #   branches: ['main']
-  # pull_request:
-  #   branches: ['main']
+  push:
+    branches: ['main']
+  pull_request:
+    branches: ['main']
+
 
 jobs:
   build-and-deploy:
