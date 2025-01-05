@@ -5,32 +5,34 @@ body {
     font-family: 'Arial', sans-serif;
     background-color: #1a1a40; /* 네이비 색상 */
     color: #f8f8f8;
+    overflow-x: hidden;
+    scroll-behavior: smooth; /* 부드러운 스크롤 */
+  }
+  
+  /* 첫 화면 (Hero) */
+  .hero {
     display: flex;
     justify-content: center;
-    align-items: flex-start;
-    flex-direction: column;
-    min-height: 100vh;
-    overflow-x: hidden;
-  }
-  
-  /* 메인 컨테이너 */
-  .main-container {
+    align-items: center;
+    height: 80vh; /* 화면 전체 높이 */
+    background-color: #1a1a40;
     text-align: center;
-    max-width: 800px;
-    margin: 20px auto;
-    padding: 20px;
   }
   
-  /* 타이틀 스타일 */
-  .title {
-    font-size: 3rem;
+  .hero .title {
+    font-size: 3.5rem;
     font-weight: bold;
     color: #f1f1f1;
-    margin-bottom: 40px;
     letter-spacing: 2px;
+    margin: 0;
   }
   
-  /* 카드 컨테이너 */
+  /* 사진 섹션 */
+  .photo-section {
+    padding: 50px 20px;
+    background-color: #1a1a40;
+  }
+  
   .card {
     display: flex;
     align-items: center;
@@ -49,7 +51,6 @@ body {
     transform: translateY(0); /* 제자리로 이동 */
   }
   
-  /* 사진 스타일 */
   .card img {
     width: 200px;
     height: 200px;
@@ -65,7 +66,6 @@ body {
     filter: brightness(1); /* 밝게 변환 */
   }
   
-  /* 텍스트 스타일 */
   .card-text {
     font-size: 1.5rem;
     color: #f1f1f1;
@@ -83,5 +83,33 @@ body {
   /* 오른쪽 사진 */
   .card-right {
     flex-direction: row-reverse;
+  }
+  
+  /* 시작 버튼 */
+  .start-button {
+    display: flex;
+    justify-content: center;
+    margin: 50px 0;
+  }
+  
+  .start-button a {
+    display: inline-block;
+    padding: 15px 40px;
+    font-size: 1.5rem;
+    color: #1a1a40;
+    background-color: #f8f8f8;
+    text-decoration: none;
+    border-radius: 25px;
+    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.3);
+    transition: background-color 0.3s ease-in-out, transform 0.3s ease-in-out;
+  }
+  
+  .start-button a:hover {
+    background-color: #e0e0e0;
+    transform: translateY(-3px);
+  }
+  
+  .start-button a:active {
+    transform: translateY(2px);
   }
   
