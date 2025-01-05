@@ -1,5 +1,5 @@
 import Image from 'next/image';
 
 export default function Home() {
-  return <>Hello!!!, EZEN A Team !!!</>;
+  return <>망쪽이 바보!!</>;
 }
