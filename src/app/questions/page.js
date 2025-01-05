@@ -34,28 +34,48 @@ export default function QuestionsPage() {
   };
 
   return (
-    <div>
+    <div className="container">
       <h1>질문 목록</h1>
-      <ul>
-        {questions.map((question) => (
-          <li key={question.id} className="question-item">
-            <h3 className="question-title">ID: {question.id} - {question.subject}</h3>
-            <p className="question-content">{question.content}</p>
-            <p className="question-date">작성일: {question.createDate}</p>
-          </li>
-        ))}
-      </ul>
+
+      {/* 테이블 */}
+      <table className="questions-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>제목</th>
+            <th>내용</th>
+            <th>작성일</th>
+          </tr>
+        </thead>
+        <tbody>
+          {questions.map((question) => (
+            <tr key={question.id}>
+              <td>{question.id}</td>
+              <td>{question.subject}</td>
+              <td>{question.content}</td>
+              <td>{question.createDate}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
 
       {/* 페이지네이션 버튼 */}
       <div className="pagination">
         <button onClick={handlePrevPage} disabled={currentPage === 0}>
-          이전 페이지
+          &lt; 이전
         </button>
         <span>
           {currentPage + 1} / {totalPages}
         </span>
         <button onClick={handleNextPage} disabled={currentPage === totalPages - 1}>
-          다음 페이지
+          다음 &gt;
+        </button>
+      </div>
+
+      {/* 글 작성하기 버튼 */}
+      <div className="create-button-container">
+        <button className="create-button" onClick={() => alert('글 작성 페이지로 이동')}>
+          글 작성하기
         </button>
       </div>
     </div>

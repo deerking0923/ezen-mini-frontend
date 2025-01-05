@@ -1,33 +1,92 @@
-.pagination {
+/* 컨테이너 */
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f0f4ff; /* 연한 네이비 배경 */
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* 제목 스타일 */
+  h1 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+  }
+  
+  /* 테이블 스타일 */
+  .questions-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+  }
+  
+  .questions-table th,
+  .questions-table td {
+    border: 1px solid #d0d7f5;
+    padding: 10px;
+    text-align: center;
+  }
+  
+  .questions-table th {
+    background-color: #4b5d80; /* 진한 네이비 */
+    color: white;
+    font-weight: bold;
+  }
+  
+  .questions-table tr:nth-child(even) {
+    background-color: #e6ebff; /* 연한 배경 */
+  }
+  
+  /* 페이지네이션 */
+  .pagination {
     display: flex;
     justify-content: center;
     align-items: center;
     gap: 10px;
-    margin-top: 20px;
+    margin-top: 10px;
   }
   
   .pagination button {
+    padding: 8px 16px;
+    background-color: #4b5d80;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+  }
+  
+  .pagination button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+  }
+  
+  .pagination button:hover:not(:disabled) {
+    background-color: #394a63;
+  }
+  
+  /* 글 작성하기 버튼 */
+  .create-button-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+  }
+  
+  .create-button {
     padding: 10px 20px;
     background-color: #007bff;
     color: white;
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    font-size: 1rem;
+    font-size: 1.1rem;
+    font-weight: bold;
     transition: background-color 0.3s ease;
   }
   
-  .pagination button:disabled {
-    background-color: #cccccc;
-    cursor: not-allowed;
-  }
-  
-  .pagination button:hover:not(:disabled) {
+  .create-button:hover {
     background-color: #0056b3;
-  }
-  
-  .pagination span {
-    font-size: 1.2rem;
-    font-weight: bold;
   }
   
