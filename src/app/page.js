@@ -78,7 +78,7 @@ export default function Home() {
 
         {/* 시작 버튼 */}
         <div className="start-button">
-          <a href="/next-page">시작</a>
+          <a href="/questions">시작</a>
         </div>
       </section>
     </>
