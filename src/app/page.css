@@ -1,0 +1,87 @@
+/* 페이지 전체 배경 설정 */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Arial', sans-serif;
+    background-color: #1a1a40; /* 네이비 색상 */
+    color: #f8f8f8;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    flex-direction: column;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+  
+  /* 메인 컨테이너 */
+  .main-container {
+    text-align: center;
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+  }
+  
+  /* 타이틀 스타일 */
+  .title {
+    font-size: 3rem;
+    font-weight: bold;
+    color: #f1f1f1;
+    margin-bottom: 40px;
+    letter-spacing: 2px;
+  }
+  
+  /* 카드 컨테이너 */
+  .card {
+    display: flex;
+    align-items: center;
+    margin: 50px 0;
+    padding: 30px;
+    background-color: rgba(255, 255, 255, 0.05);
+    border-radius: 15px;
+    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.4);
+    opacity: 0; /* 초기 상태 */
+    transform: translateY(30px); /* 아래에서 위로 이동 */
+    transition: all 0.8s ease-in-out;
+  }
+  
+  .card.visible {
+    opacity: 1; /* 나타나기 */
+    transform: translateY(0); /* 제자리로 이동 */
+  }
+  
+  /* 사진 스타일 */
+  .card img {
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 15px;
+    margin: 0 20px;
+    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.5);
+    filter: brightness(0.5); /* 초기 어두운 상태 */
+    transition: filter 0.5s ease-in-out;
+  }
+  
+  .card.visible img {
+    filter: brightness(1); /* 밝게 변환 */
+  }
+  
+  /* 텍스트 스타일 */
+  .card-text {
+    font-size: 1.5rem;
+    color: #f1f1f1;
+    margin: 0 20px;
+    text-align: left;
+    line-height: 1.8;
+    flex: 1;
+  }
+  
+  /* 왼쪽 사진 */
+  .card-left {
+    flex-direction: row;
+  }
+  
+  /* 오른쪽 사진 */
+  .card-right {
+    flex-direction: row-reverse;
+  }
+  
