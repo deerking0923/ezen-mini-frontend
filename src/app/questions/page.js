@@ -51,7 +51,13 @@ export default function QuestionsPage() {
           {questions.map((question) => (
             <tr key={question.id}>
               <td>{question.id}</td>
-              <td>{question.subject}</td>
+              {/* 제목에 링크 추가 */}
+              <td
+                className="clickable-title"
+                onClick={() => router.push(`/questions/${question.id}`)}
+              >
+                {question.subject}
+              </td>
               <td>{question.author || '미작성'}</td>
               <td>{question.viewCount || 0}</td>
               <td>{question.createDate || '미정'}</td>
