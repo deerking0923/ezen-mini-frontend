@@ -73,7 +73,7 @@ export default function QuestionsPage() {
     <div className="container">
       <div className="left-section">
         <button className="go-to-random" onClick={() => router.push('/questions/random')}>
-          오늘의 문장 보러가기!
+          오늘의 문장!
         </button>
       </div>
 
