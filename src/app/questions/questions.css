@@ -128,3 +128,11 @@ button:disabled {
 button:disabled:hover {
   cursor: default;
 }
+/* 질문 제목 옆에 답변 갯수 표시 */
+/* 질문 제목 옆에 답변 갯수 표시 */
+.answer-count {
+  font-size: 0.9rem;
+  color: #4a90e2;  /* 밝은 파란색 */
+  margin-left: 8px;
+ /* font-weight: bold;  /* 강조된 글씨 */
+}

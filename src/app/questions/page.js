@@ -5,10 +5,10 @@ import './questions.css';
 
 export default function QuestionsPage() {
   const router = useRouter();
-  const [questions, setQuestions] = useState([]);
-  const [currentPage, setCurrentPage] = useState(0);
-  const [totalPages, setTotalPages] = useState(0);
-  const [loading, setLoading] = useState(false); // 로딩 상태 추가
+  const [questions, setQuestions] = useState([]); // 질문 목록 상태
+  const [currentPage, setCurrentPage] = useState(0); // 현재 페이지 상태
+  const [totalPages, setTotalPages] = useState(0); // 총 페이지 수 상태
+  const [loading, setLoading] = useState(false); // 로딩 상태
 
   useEffect(() => {
     async function fetchQuestions() {
@@ -62,11 +62,11 @@ export default function QuestionsPage() {
             {questions.map((question) => (
               <tr key={question.id}>
                 <td>{question.id}</td>
-                <td
-                  className="clickable-title"
-                  onClick={() => router.push(`/questions/${question.id}`)}
-                >
+                <td className="clickable-title" onClick={() => router.push(`/questions/${question.id}`)}>
                   {question.subject}
+                  <span className="answer-count">
+                    ({question.answers ? question.answers.length : 0})
+                  </span>
                 </td>
                 <td>{question.author || '미작성'}</td>
                 <td>{question.viewCount || 0}</td>
