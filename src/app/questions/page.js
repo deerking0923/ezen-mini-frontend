@@ -71,69 +71,69 @@ export default function QuestionsPage() {
 
   return (
     <div className="container">
-      <h1>글 목록</h1>
-
-      {/* 질문 목록 테이블 */}
-      <table className="questions-table">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>제목</th>
-            <th>저자</th>
-            <th>조회수</th>
-            <th>작성일</th>
-          </tr>
-        </thead>
-        <tbody>
-          {questions.map((question) => (
-            <tr key={question.id}>
-              <td>{question.id}</td>
-              <td className="clickable-title" onClick={() => router.push(`/questions/${question.id}`)}>
-                {question.subject}
-                <span className="answer-count">
-                  ({question.answers ? question.answers.length : 0})
-                </span>
-              </td>
-              <td>{question.author || '미작성'}</td>
-              <td>{question.viewCount || 0}</td>
-              <td>{question.createDate || '미정'}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-
-      {/* 페이지네이션 버튼 */}
-      <div className="pagination">
-        {/* 이전 5페이지 버튼 */}
-        <button onClick={handlePrev5Pages} disabled={currentPage === 0}>
-          &lt;&lt;
-        </button>
-
-        {/* 페이지 번호 버튼 */}
-        {pageNumbers.map((pageNumber) => (
-          <button
-            key={pageNumber}
-            className={pageNumber === currentPage ? 'active' : ''}
-            onClick={() => handlePageChange(pageNumber)}
-            disabled={pageNumber === currentPage} // 현재 페이지는 비활성화
-          >
-            {pageNumber + 1}
-          </button>
-        ))}
-
-        {/* 다음 5페이지 버튼 */}
-        <button onClick={handleNext5Pages} disabled={currentPage + 1 >= totalPages}>
-          &gt;&gt;
+      <div className="left-section">
+        <button className="go-to-random" onClick={() => router.push('/questions/random')}>
+          오늘의 문장 보러가기!
         </button>
       </div>
 
-      <div className="create-button-container">
-        <button
-          className="create-button"
-          onClick={() => router.push('/questions/create')}
-        >
-          글 작성하기
-        </button>
+      <div className="right-section">
+        <h1>글 목록</h1>
+
+        {/* 질문 목록 테이블 */}
+        <table className="questions-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>제목</th>
+              <th>저자</th>
+              <th>조회수</th>
+              <th>작성일</th>
+            </tr>
+          </thead>
+          <tbody>
+            {questions.map((question) => (
+              <tr key={question.id}>
+                <td>{question.id}</td>
+                <td className="clickable-title" onClick={() => router.push(`/questions/${question.id}`)}>
+                  {question.subject}
+                  <span className="answer-count">
+                    ({question.answers ? question.answers.length : 0})
+                  </span>
+                </td>
+                <td>{question.author || '미작성'}</td>
+                <td>{question.viewCount || 0}</td>
+                <td>{question.createDate || '미정'}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+
+        {/* 페이지네이션 버튼 */}
+        <div className="pagination">
+          <button onClick={handlePrev5Pages} disabled={currentPage === 0}>
+            &lt;&lt;
+          </button>
+          {pageNumbers.map((pageNumber) => (
+            <button
+              key={pageNumber}
+              className={pageNumber === currentPage ? 'active' : ''}
+              onClick={() => handlePageChange(pageNumber)}
+              disabled={pageNumber === currentPage}
+            >
+              {pageNumber + 1}
+            </button>
+          ))}
+          <button onClick={handleNext5Pages} disabled={currentPage + 1 >= totalPages}>
+            &gt;&gt;
+          </button>
+        </div>
+
+        <div className="create-button-container">
+          <button className="create-button" onClick={() => router.push('/questions/create')}>
+            글 작성하기
+          </button>
+        </div>
       </div>
     </div>
   );

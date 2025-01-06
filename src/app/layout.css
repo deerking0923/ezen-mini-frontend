@@ -49,8 +49,8 @@ a {
 
 
 .home-icon {
-  width: 35px; /* 아이콘 크기 조정 */
-  height: 35px;
+  width: 32px; /* 아이콘 크기 조정 */
+  height: 32px;
   object-fit: contain; /* 비율 유지 */
   cursor: pointer; /* 클릭 가능하도록 커서 변경 */
   filter: invert(1); /* 색상 반전: 검은색을 하얀색으로 변환 */

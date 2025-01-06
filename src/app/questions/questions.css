@@ -11,12 +11,48 @@ body {
 
 /* 컨테이너 스타일 */
 .container {
-  max-width: 800px; /* 너비를 줄여서 사이드 공간을 만들기 */
+  display: flex;
+  justify-content: space-between;
+  padding-left: 220px; /* 왼쪽 버튼과 겹치지 않도록 여백을 추가 */
   margin: 20px auto;
+  padding: 20px;
+  max-width: 1000px;
+}
+
+/* 왼쪽에 버튼을 배치 */
+.left-section {
+  position: fixed;
+  left: 20px; /* 화면 왼쪽 20px */
+  top: 50%; /* 화면 세로 중앙 */
+  transform: translateY(-50%);
+  z-index: 10; /* 버튼이 다른 콘텐츠 위에 위치하도록 설정 */
+}
+
+/* 오른쪽 내용은 질문 목록 */
+.right-section {
+  flex: 3;
   padding: 20px;
   background-color: #2c2f56;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* "오늘의 문장 보러가기!" 버튼 스타일 */
+.go-to-random {
+  background-color: #222;
+  color: white;
+  padding: 15px;
+  font-size: 18px;
+  border: none;
+  cursor: pointer;
+  width: 200px;
+  text-align: center;
+  border-radius: 5px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.go-to-random:hover {
+  background-color: #444;
 }
 
 /* 제목 스타일 */
