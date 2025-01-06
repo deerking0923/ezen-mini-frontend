@@ -52,7 +52,6 @@ export default function QuestionDetailPage({ params }) {
 
       if (!res.ok) throw new Error('답변 등록에 실패했습니다.');
 
-      //alert('답변이 등록되었습니다.');
       setNewAnswer(''); // 입력 필드 초기화
 
       // 페이지 강제 새로고침
@@ -65,6 +64,24 @@ export default function QuestionDetailPage({ params }) {
   // 질문 수정 페이지로 이동
   const handleEditQuestion = () => {
     router.push(`/questions/${id}/edit`);
+  };
+
+  // 질문 삭제
+  const handleDeleteQuestion = async () => {
+    if (window.confirm('정말로 이 질문을 삭제하시겠습니까?')) {
+      try {
+        const res = await fetch(`http://43.202.10.10:8080/api/v1/questions/${id}`, {
+          method: 'DELETE',
+        });
+
+        if (!res.ok) throw new Error('질문 삭제에 실패했습니다.');
+
+        // 삭제 후 목록 페이지로 리다이렉트
+        router.push('/questions');
+      } catch (error) {
+        alert(error.message);
+      }
+    }
   };
 
   // 로딩 상태 처리
@@ -83,6 +100,11 @@ export default function QuestionDetailPage({ params }) {
         질문 수정
       </button>
 
+      {/* 삭제 버튼 추가 */}
+      <button className="delete-button" onClick={handleDeleteQuestion}>
+        질문 삭제
+      </button>
+
       <hr />
 
       {/* 답변 목록 */}
@@ -93,12 +115,6 @@ export default function QuestionDetailPage({ params }) {
             <li key={answer.id} className="answer-item">
               <p>{answer.content}</p>
               <p>작성일: {answer.createDate}</p>
-              <button
-                onClick={() => router.push(`/answers/${answer.id}/edit`)}
-                className="edit-answer-button"
-              >
-                답변 수정
-              </button>
             </li>
           ))}
         </ul>

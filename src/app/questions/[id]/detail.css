@@ -59,6 +59,28 @@ h1 {
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
 }
 
+/* 수정 버튼 */
+.delete-button {
+    display: inline-block;
+    padding: 10px 15px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #ffffff;
+    background-color: #007bff; /* 파란색 */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s, box-shadow 0.3s;
+  }
+  
+  .delete-button:hover {
+    background-color: #0056b3; /* 더 진한 파란색 */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  }
+
 /* 답변 목록 */
 .answer-list {
   list-style: none;
