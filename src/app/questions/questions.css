@@ -5,16 +5,16 @@ body {
   padding: 0;
   height: 100%;
   font-family: 'Arial', sans-serif;
-  background-color: #1e1e2f; /* 라이트한 검은색 */
-  color: #ffffff; /* 글씨 흰색 */
+  background-color: #22254b;
+  color: #ffffff;
 }
 
 /* 컨테이너 스타일 */
 .container {
-  max-width: 900px;
+  max-width: 800px; /* 너비를 줄여서 사이드 공간을 만들기 */
   margin: 20px auto;
   padding: 20px;
-  background-color: #383850; /* 살짝 더 진한 검은색 */
+  background-color: #2c2f56;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
@@ -30,55 +30,69 @@ h1 {
 .questions-table {
   width: 100%;
   border-collapse: collapse;
-  margin-bottom: 20px;
+  margin-bottom: 30px;
+  background-color: #2c2f56;
 }
 
-.questions-table th,
-.questions-table td {
-  border: 1px solid #d0d7f5;
-  padding: 10px;
-  text-align: center;
-}
-
+/* 헤더 스타일 */
 .questions-table th {
-  background-color: #4b5d80; /* 진한 네이비 */
-  color: white;
+  padding: 12px;
+  text-align: left;
   font-weight: bold;
+  color: #ffffff;
+  border-bottom: 2px solid #a3a5ab;
 }
 
-
-.questions-table tr:hover {
-  background-color: #d1d8e4; /* 마우스 오버 시 색상 */
-}
-
+/* 테이블 바디 스타일 */
 .questions-table td {
-  padding: 10px;
-  background-color: #4b5d80; /* 진한 네이비 */
-  color: white;
+  padding: 12px;
+  color: #ffffff;
+  border-bottom: 1px solid #a3a5ab;
 }
 
-/* 제목 링크 스타일 */
+/* 조회수 칸 */
+.questions-table td:nth-child(4) {
+  white-space: nowrap !important;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 10%;
+}
+
+/* 작성일 칸 */
+.questions-table td:nth-child(5) {
+  width: 15%;
+}
+
+/* 질문 제목 링크 스타일 */
 .clickable-title {
-  color: #007bff; /* 링크 색상 */
-  text-decoration: none; /* 밑줄 없애기 */
+  color: #007bff;
+  text-decoration: none;
   cursor: pointer;
 }
 
 .clickable-title:hover {
-  text-decoration: underline; /* 밑줄 추가 */
-  color: inherit; /* 색상은 변경되지 않도록 설정 */
+  text-decoration: underline;
+  color: inherit;
 }
+
+/* 답변 갯수 표시 */
+.answer-count {
+  font-size: 0.9rem;
+  color: #0071f2;
+  margin-left: 8px;
+}
+
 /* 페이지네이션 스타일 */
 .pagination {
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 10px;
-  margin-top: 10px;
+  margin-top: 20px;
 }
 
 .pagination button {
-  padding: 8px 16px;
+  padding: 10px 20px;
   background-color: #4b5d80;
   color: white;
   border: none;
@@ -127,12 +141,4 @@ button:disabled {
 
 button:disabled:hover {
   cursor: default;
-}
-/* 질문 제목 옆에 답변 갯수 표시 */
-/* 질문 제목 옆에 답변 갯수 표시 */
-.answer-count {
-  font-size: 0.9rem;
-  color: #4a90e2;  /* 밝은 파란색 */
-  margin-left: 8px;
- /* font-weight: bold;  /* 강조된 글씨 */
 }
