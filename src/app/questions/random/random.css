@@ -12,61 +12,83 @@
   overflow-y: auto; /* 세로 스크롤을 허용하여 전체 이미지 확인 */
   position: relative; /* 자식 요소를 배치할 수 있도록 설정 */
 }
+
 /* 수상 소감을 담을 반투명 컨테이너 */
 .award-container {
-  background-color: rgba(0, 0, 0, 0.5); /* 반투명 배경 */
+  background-color: rgba(0, 0, 0, 0.6); /* 반투명 배경 */
   padding: 40px; /* 여백 추가 */
-  border-radius: 10px; /* 모서리 둥글게 */
-  margin-bottom: 20px; /* 아래쪽 여백 */
-  max-width: 80%; /* 최대 너비 제한 */
+  border-radius: 15px; /* 모서리 둥글게 */
+  margin-bottom: 30px; /* 아래쪽 여백 */
+  max-width: 75%; /* 최대 너비 제한 */
   margin: 0 auto; /* 중앙 정렬 */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5); /* 부드러운 그림자 추가 */
+  text-align: center;
+  backdrop-filter: blur(10px); /* 배경 흐림 효과 추가 */
 }
 
 /* 수상 소감 텍스트 스타일 */
 .award-messager {
   color: white; /* 흰 글씨 */
-  font-size: 30px; /* 글씨 크기 키움 */
-  line-height: 1.8; /* 줄 간격을 더 넓혀서 읽기 편하게 */
+  font-size: 24px; /* 글씨 크기 조정 */
+  line-height: 1.6; /* 줄 간격을 더 넓혀서 읽기 편하게 */
   text-align: center; /* 텍스트 중앙 정렬 */
   word-wrap: break-word; /* 긴 문장이 자동으로 줄 바꿈 */
-  margin-bottom: 30px; /* 문장 간 간격 */
+  margin-bottom: 25px; /* 문장 간 간격 */
+  font-family: 'Roboto', sans-serif; /* 모던한 글꼴 사용 */
 }
 
 /* 랜덤 문장 */
 .random-quote {
-  padding: 20px;
-  background-color: rgba(44, 47, 86, 0.8); /* 배경을 반투명하게 설정 */
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-  margin-bottom: 20px;
+  padding: 25px;
+  background-color: rgba(44, 47, 86, 0.85); /* 배경을 반투명하게 설정 */
+  border-radius: 15px;
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3); /* 부드러운 그림자 추가 */
+  margin-bottom: 30px;
+  max-width: 80%; /* 최대 너비 설정 */
+  margin: 0 auto;
+  font-family: 'Roboto', sans-serif;
 }
 
+/* 랜덤 문장 제목 */
 .random-quote h2 {
-  margin-bottom: 10px;
+  margin-bottom: 15px;
+  font-size: 28px;
+  font-weight: 600;
+  color: #f4f4f9; /* 더 밝은 색상 */
 }
 
+/* 랜덤 문장 내용 */
 .random-quote p {
   font-size: 18px;
-  line-height: 1.5;
+  line-height: 1.6;
+  color: #e0e0e0; /* 부드러운 색상 */
+  margin-bottom: 10px;
+  word-wrap: break-word;
 }
 
 /* 돌아가기 버튼 스타일 */
 .back-button {
   position: fixed;
-  bottom: 20px;
+  bottom: 25px;
   left: 50%;
   transform: translateX(-50%);
-  background-color: #007bff;
+  background-color: #ff6f61; /* 부드러운 오렌지색 */
   color: white;
-  padding: 12px 24px;
+  padding: 15px 30px;
   border: none;
-  border-radius: 5px;
-  font-size: 16px;
+  border-radius: 25px; /* 둥근 버튼 */
+  font-size: 18px;
+  font-weight: 500;
   cursor: pointer;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-  transition: background-color 0.3s ease;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* 버튼 그림자 추가 */
+  transition: background-color 0.3s ease, transform 0.2s ease; /* 버튼 애니메이션 추가 */
 }
 
 .back-button:hover {
-  background-color: #0056b3;
+  background-color: #ff5a47; /* 버튼 색상 변화 */
+  transform: translateX(-50%) scale(1.05); /* 크기 확대 효과 */
+}
+
+.back-button:focus {
+  outline: none;
 }

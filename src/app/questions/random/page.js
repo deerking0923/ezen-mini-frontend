@@ -59,6 +59,9 @@ const RandomQuestion = () => {
           </div>
         </div>
 
+        <br/>
+        <br/>
+
         {/* 랜덤 문장 */}
         <div className="random-quote">
           <h2>오늘의 문장</h2>
