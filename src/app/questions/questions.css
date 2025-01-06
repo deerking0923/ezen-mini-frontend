@@ -23,7 +23,7 @@ body {
 .left-section {
   position: fixed;
   left: 20px; /* 화면 왼쪽 20px */
-  top: 50%; /* 화면 세로 중앙 */
+  top: 40%; /* 화면 세로 중앙 */
   transform: translateY(-50%);
   z-index: 10; /* 버튼이 다른 콘텐츠 위에 위치하도록 설정 */
 }
@@ -37,7 +37,25 @@ body {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
 
-/* "오늘의 문장 보러가기!" 버튼 스타일 */
+/* "오늘의 문장 보러가기!" 버튼 이미지와 버튼을 감싸는 컨테이너 스타일 */
+.go-to-random-container {
+  display: flex;
+  flex-direction: column; /* 이미지 위에 버튼 배치 */
+  align-items: center; /* 수평 중앙 정렬 */
+  position: fixed;
+  left: 20px;
+  top: 40%; /* 위치 조정 */
+  transform: translateY(-50%);
+}
+
+/* 이미지 스타일 */
+.go-to-random-image {
+  width: 200px; /* 이미지 크기 조정 */
+  height: auto;
+  margin-bottom: 10px; /* 이미지와 버튼 사이 간격 */
+}
+
+/* 버튼 스타일 */
 .go-to-random {
   background-color: #384049;
   color: white;

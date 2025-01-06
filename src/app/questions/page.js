@@ -72,10 +72,14 @@ export default function QuestionsPage() {
   return (
     <div className="container">
       <div className="left-section">
-        <button className="go-to-random" onClick={() => router.push('/questions/random')}>
-          오늘의 문장!
-        </button>
+        <div className="go-to-random-container">
+          <img src="/lucky_rabbit.webp" alt="오늘의 문장 이미지" className="go-to-random-image" />
+          <button className="go-to-random" onClick={() => router.push('/questions/random')}>
+           오늘의 문장!
+          </button>
+        </div>
       </div>
+
 
       <div className="right-section">
         <h1>글 목록</h1>
