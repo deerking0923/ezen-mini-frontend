@@ -22,8 +22,8 @@ export default function Layout({ children }) {
         <header className="header">
           <div className="logo">
             <Link href="/" passHref>
-              {/* '홈' 텍스트로 변경 */}
-              <span className="home-text">홈</span>
+              {/* 홈 아이콘 이미지로 변경 */}
+              <img src="/home.png" alt="홈" className="home-icon" />
             </Link>
           </div>
           <div className="title-container">
