@@ -1,17 +1,37 @@
 'use client'; // 클라이언트 컴포넌트로 설정
 import './globals.css'; // 글로벌 스타일
 import './layout.css'; // 레이아웃 스타일
+import { useState, useEffect } from 'react'; // 로딩 상태 관리
 import { usePathname } from 'next/navigation'; // 현재 경로를 가져옵니다.
 import Link from 'next/link'; // Link 컴포넌트 추가
 
 export default function Layout({ children }) {
+  const [loading, setLoading] = useState(true); // 로딩 상태
   const pathname = usePathname(); // 현재 경로를 가져옵니다.
 
-  // 홈 페이지에서는 레이아웃을 적용하지 않음
+  useEffect(() => {
+    // 페이지 로딩이 끝나면 로딩 상태를 false로 변경
+    setLoading(false);
+  }, []);
+
+  // 홈 페이지에서는 헤더를 적용하지 않음
   if (pathname === '/') {
     return (
       <html lang="ko">
-        <body>{children}</body>
+        <body>
+          {/* 로딩 상태일 때만 스피너 표시 */}
+          {loading && (
+            <div className="loading-container">
+              <div className="spinner">
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+              </div>
+            </div>
+          )}
+          {children}
+        </body>
       </html>
     );
   }
@@ -19,6 +39,18 @@ export default function Layout({ children }) {
   return (
     <html lang="ko">
       <body>
+        {/* 로딩 상태일 때만 스피너 표시 */}
+        {loading && (
+          <div className="loading-container">
+            <div className="spinner">
+              <div></div>
+              <div></div>
+              <div></div>
+              <div></div>
+            </div>
+          </div>
+        )}
+
         <header className="header">
           <div className="logo">
             <Link href="/" passHref>
@@ -33,6 +65,8 @@ export default function Layout({ children }) {
             </Link>
           </div>
         </header>
+
+        {/* 페이지 내용 */}
         {children}
       </body>
     </html>

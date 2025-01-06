@@ -1,3 +1,66 @@
+/* 전체 배경과 기본 스타일 */
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: 'Arial', sans-serif;
+  background-color: #22254b;
+  color: #ffffff;
+}
+/* 로딩 스피너 스타일 */
+.loading-container {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.spinner {
+  display: flex;
+  gap: 10px; /* 원 사이의 간격 */
+}
+
+.spinner div {
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background-color: #007bff;
+  animation: bounce 1.5s infinite ease-in-out;
+}
+
+/* 각각의 원에 애니메이션 지연 시간 다르게 설정 */
+.spinner div:nth-child(1) {
+  animation-delay: 0s;
+}
+
+.spinner div:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.spinner div:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+.spinner div:nth-child(4) {
+  animation-delay: 0.6s;
+}
+
+/* 물결처럼 커졌다 작아지게 하는 애니메이션 */
+@keyframes bounce {
+  0%, 100% {
+    transform: scale(1); /* 원이 원래 크기로 */
+  }
+  50% {
+    transform: scale(1.5); /* 원이 커지도록 */
+  }
+}
+
+
 /* header 스타일 */
 .header {
   display: flex;
@@ -9,18 +72,13 @@
   border-bottom: 2px solid #444;
 }
 
-/* 홈 텍스트 스타일 */
-.home-text {
-  font-size: 18px;
-  font-weight: bold;
-  color: #ffffff;
+/* 홈 아이콘 스타일 */
+.home-icon {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
   cursor: pointer;
-  text-decoration: none; /* 밑줄 제거 */
-  transition: color 0.3s ease;
-}
-
-.home-text:hover {
-  color: #f1f1f1;
+  filter: invert(1);
 }
 
 /* 제목을 가운데 배치 */
@@ -35,23 +93,12 @@
   color: #ffffff;
   margin: 0;
   cursor: pointer;
-  text-decoration: none; /* 밑줄 제거 */
 }
 
 .title:hover {
   color: #f1f1f1;
 }
 
-/* 링크에 대한 기본 스타일 제거 */
 a {
   text-decoration: none; /* 모든 링크의 밑줄 제거 */
-}
-
-
-.home-icon {
-  width: 32px; /* 아이콘 크기 조정 */
-  height: 32px;
-  object-fit: contain; /* 비율 유지 */
-  cursor: pointer; /* 클릭 가능하도록 커서 변경 */
-  filter: invert(1); /* 색상 반전: 검은색을 하얀색으로 변환 */
 }
