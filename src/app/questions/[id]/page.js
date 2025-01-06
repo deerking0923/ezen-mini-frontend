@@ -52,9 +52,11 @@ export default function QuestionDetailPage({ params }) {
 
       if (!res.ok) throw new Error('답변 등록에 실패했습니다.');
 
-      alert('답변이 등록되었습니다.');
+      //alert('답변이 등록되었습니다.');
       setNewAnswer(''); // 입력 필드 초기화
-      router.refresh(); // 페이지 새로고침
+
+      // 페이지 강제 새로고침
+      window.location.reload();
     } catch (error) {
       alert(error.message);
     }
