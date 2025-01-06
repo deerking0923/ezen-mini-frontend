@@ -1,32 +1,31 @@
-'use client'; // 클라이언트 컴포넌트로 설정
+'use client'; // 클라이언트 컴포넌트 설정
+import { useRouter } from 'next/navigation'; // Next.js 라우터 가져오기
 import { useState, useEffect } from 'react';
 import './questions.css';
 
 export default function QuestionsPage() {
-  const [questions, setQuestions] = useState([]); // 질문 목록 상태
-  const [currentPage, setCurrentPage] = useState(0); // 현재 페이지 번호
-  const [totalPages, setTotalPages] = useState(0); // 총 페이지 수
+  const router = useRouter(); // 라우터 초기화
+  const [questions, setQuestions] = useState([]);
+  const [currentPage, setCurrentPage] = useState(0);
+  const [totalPages, setTotalPages] = useState(0);
 
-  // 페이지 변경 시 데이터를 다시 가져오는 함수
   useEffect(() => {
     async function fetchQuestions() {
       const res = await fetch(`http://43.202.10.10:8080/api/v1/questions?page=${currentPage}`);
       const data = await res.json();
-      setQuestions(data.data.content); // 질문 데이터 설정
-      setTotalPages(data.data.totalPages); // 총 페이지 수 설정
+      setQuestions(data.data.content);
+      setTotalPages(data.data.totalPages);
     }
 
     fetchQuestions();
-  }, [currentPage]); // currentPage가 변경될 때마다 실행
+  }, [currentPage]);
 
-  // 이전 페이지로 이동
   const handlePrevPage = () => {
     if (currentPage > 0) {
       setCurrentPage((prev) => prev - 1);
     }
   };
 
-  // 다음 페이지로 이동
   const handleNextPage = () => {
     if (currentPage < totalPages - 1) {
       setCurrentPage((prev) => prev + 1);
@@ -76,7 +75,10 @@ export default function QuestionsPage() {
 
       {/* 글 작성하기 버튼 */}
       <div className="create-button-container">
-        <button className="create-button" onClick={() => alert('글 작성 페이지로 이동')}>
+        <button
+          className="create-button"
+          onClick={() => router.push('/questions/create')} // 글 작성 페이지로 이동
+        >
           글 작성하기
         </button>
       </div>
