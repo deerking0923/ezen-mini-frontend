@@ -1,0 +1,43 @@
+/* layout.css */
+
+/* 헤더 스타일 */
+header {
+    background-color: #1e1e2f;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: white;
+  }
+  
+  .header .logo {
+    font-size: 24px;
+    cursor: pointer;
+  }
+  
+  .header .menu button {
+    background: none;
+    color: white;
+    font-size: 18px;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .header .menu button:hover {
+    text-decoration: underline;
+  }
+  
+  /* 푸터 스타일 */
+  footer {
+    background-color: #1e1e2f;
+    color: white;
+    text-align: center;
+    padding: 10px;
+    margin-top: 30px;
+  }
+  
+  /* 전체 페이지 영역 */
+  main {
+    padding: 20px;
+  }
+  

@@ -1,0 +1,48 @@
+/* header 스타일 */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  background-color: #2a2b3b;
+  color: #ffffff;
+  border-bottom: 2px solid #444;
+}
+
+/* 홈 텍스트 스타일 */
+.home-text {
+  font-size: 18px;
+  font-weight: bold;
+  color: #ffffff;
+  cursor: pointer;
+  text-decoration: none; /* 밑줄 제거 */
+  transition: color 0.3s ease;
+}
+
+.home-text:hover {
+  color: #f1f1f1;
+}
+
+/* 제목을 가운데 배치 */
+.title-container {
+  flex-grow: 1;
+  text-align: center;
+}
+
+.title {
+  font-size: 28px;
+  font-weight: bold;
+  color: #ffffff;
+  margin: 0;
+  cursor: pointer;
+  text-decoration: none; /* 밑줄 제거 */
+}
+
+.title:hover {
+  color: #f1f1f1;
+}
+
+/* 링크에 대한 기본 스타일 제거 */
+a {
+  text-decoration: none; /* 모든 링크의 밑줄 제거 */
+}
