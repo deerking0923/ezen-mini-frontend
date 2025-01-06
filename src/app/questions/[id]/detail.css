@@ -1,96 +1,110 @@
+/* 전체 배경과 기본 글꼴 */
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%; /* 전체 높이를 100%로 설정 */
+  font-family: 'Arial', sans-serif;
+  background-color: #1e1e2f; /* 라이트한 검은색 */
+  color: #ffffff; /* 글씨 흰색 */
+}
+
+/* 컨테이너 중앙 정렬 */
 .detail-container {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 20px;
-    background: #f9f9f9;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  }
-  
-  .detail-container h1 {
-    font-size: 2rem;
-    color: #333;
-  }
-  
-  .detail-container p {
-    margin: 10px 0;
-    color: #555;
-  }
-  
-  .content {
-    margin: 20px 0;
-    font-size: 1.2rem;
-    line-height: 1.6;
-    color: #444;
-  }
-  
-  .edit-button {
-    background: #007bff;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-top: 10px;
-  }
-  
-  .edit-button:hover {
-    background: #0056b3;
-  }
-  
-  .answer-list {
-    list-style: none;
-    padding: 0;
-  }
-  
-  .answer-item {
-    background: #fff;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    padding: 10px;
-    margin-bottom: 10px;
-  }
-  
-  .answer-item p {
-    margin: 5px 0;
-  }
-  
-  .edit-answer-button {
-    background: #28a745;
-    color: white;
-    border: none;
-    padding: 5px 10px;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  .edit-answer-button:hover {
-    background: #218838;
-  }
-  
-  .answer-form {
-    margin-top: 20px;
-  }
-  
-  .answer-form textarea {
-    width: 100%;
-    height: 100px;
-    margin-bottom: 10px;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-  }
-  
-  .answer-form button {
-    background: #007bff;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  .answer-form button:hover {
-    background: #0056b3;
-  }
-  
+  max-width: 800px;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #383850; /* 진한 검은색 */
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* 제목 스타일 */
+h1 {
+  font-size: 28px;
+  color: #ffffff;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+/* 질문 상세 내용 */
+.content {
+  margin-bottom: 20px;
+  line-height: 1.6;
+  background-color: #2f2f40; /* 약간 어두운 배경 */
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+/* 수정 버튼 */
+.edit-button {
+  display: inline-block;
+  padding: 10px 15px;
+  font-size: 16px;
+  font-weight: bold;
+  color: #ffffff;
+  background-color: #4c4c74; /* 버튼 배경 */
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.3s, box-shadow 0.3s;
+}
+
+.edit-button:hover {
+  background-color: #5f5f94; /* 버튼 hover 배경 */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+/* 답변 목록 */
+.answer-list {
+  list-style: none;
+  padding: 0;
+  margin: 20px 0;
+}
+
+.answer-item {
+  background-color: #2f2f40;
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 15px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.answer-item:hover {
+  background-color: #3a3a50;
+}
+
+/* 답변 작성 폼 */
+.answer-form textarea {
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  border: none;
+  resize: none;
+  background-color: #383850;
+  color: #ffffff;
+  font-size: 14px;
+  margin-bottom: 10px;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.answer-form button {
+  padding: 10px 15px;
+  font-size: 16px;
+  font-weight: bold;
+  color: #ffffff;
+  background-color: #4c4c74; /* 버튼 배경 */
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s, box-shadow 0.3s;
+}
+
+.answer-form button:hover {
+  background-color: #5f5f94; /* 버튼 hover 배경 */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}

@@ -1,112 +1,130 @@
-/* 컨테이너 */
+/* 전체 배경과 기본 스타일 */
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: 'Arial', sans-serif;
+  background-color: #1e1e2f; /* 라이트한 검은색 */
+  color: #ffffff; /* 글씨 흰색 */
+}
+
+/* 컨테이너 스타일 */
 .container {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: #f0f4ff; /* 연한 네이비 배경 */
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  }
-  
-  /* 제목 스타일 */
-  h1 {
-    text-align: center;
-    margin-bottom: 20px;
-    color: #333;
-  }
-  
-  /* 테이블 스타일 */
-  .questions-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 20px;
-  }
-  
-  .questions-table th,
-  .questions-table td {
-    border: 1px solid #d0d7f5;
-    padding: 10px;
-    text-align: center;
-  }
-  
-  .questions-table th {
-    background-color: #4b5d80; /* 진한 네이비 */
-    color: white;
-    font-weight: bold;
-  }
-  
-  .questions-table tr:nth-child(even) {
-    background-color: #e6ebff; /* 연한 배경 */
-  }
-  
-  /* 페이지네이션 */
-  .pagination {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-    margin-top: 10px;
-  }
-  
-  .pagination button {
-    padding: 8px 16px;
-    background-color: #4b5d80;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 1rem;
-  }
-  
-  .pagination button:disabled {
-    background-color: #ccc;
-    cursor: not-allowed;
-  }
-  
-  .pagination button:hover:not(:disabled) {
-    background-color: #394a63;
-  }
-  
-  /* 글 작성하기 버튼 */
-  .create-button-container {
-    display: flex;
-    justify-content: center;
-    margin-top: 20px;
-  }
-  
-  .create-button {
-    padding: 10px 20px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 1.1rem;
-    font-weight: bold;
-    transition: background-color 0.3s ease;
-  }
-  
-  .create-button:hover {
-    background-color: #0056b3;
-  }
-  
-  /* disabled 상태에서 금지 커서 제거 */
-button:disabled {
-  cursor: not-allowed; /* 기본 금지 표시 */
-  opacity: 0.6;        /* 비활성화 시 약간의 투명도 */
+  max-width: 900px;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #383850; /* 살짝 더 진한 검은색 */
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
 
-/* 금지 표시를 제거하려면 cursor 속성을 default로 설정 */
-button:disabled:hover {
-  cursor: default;     /* 금지 표시 대신 기본 커서 */
+/* 제목 스타일 */
+h1 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #ffffff;
 }
 
+/* 테이블 스타일 */
+.questions-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+.questions-table th,
+.questions-table td {
+  border: 1px solid #d0d7f5;
+  padding: 10px;
+  text-align: center;
+}
+
+.questions-table th {
+  background-color: #4b5d80; /* 진한 네이비 */
+  color: white;
+  font-weight: bold;
+}
+
+
+.questions-table tr:hover {
+  background-color: #d1d8e4; /* 마우스 오버 시 색상 */
+}
+
+.questions-table td {
+  padding: 10px;
+  background-color: #4b5d80; /* 진한 네이비 */
+  color: white;
+}
+
+/* 제목 링크 스타일 */
 .clickable-title {
-  color: #007bff;
-  text-decoration: underline;
+  color: #007bff; /* 링크 색상 */
+  text-decoration: none; /* 밑줄 없애기 */
   cursor: pointer;
 }
 
 .clickable-title:hover {
-  color: #0056b3;
+  text-decoration: underline; /* 밑줄 추가 */
+  color: inherit; /* 색상은 변경되지 않도록 설정 */
+}
+/* 페이지네이션 스타일 */
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.pagination button {
+  padding: 8px 16px;
+  background-color: #4b5d80;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.pagination button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.pagination button:hover:not(:disabled) {
+  background-color: #394a63;
+}
+
+/* 글 작성하기 버튼 스타일 */
+.create-button-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.create-button {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1.1rem;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+.create-button:hover {
+  background-color: #0056b3;
+}
+
+/* disabled 상태에서 금지 커서 제거 */
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+button:disabled:hover {
+  cursor: default;
 }

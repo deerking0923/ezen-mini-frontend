@@ -1,54 +1,104 @@
+/* 전체 배경과 기본 글꼴 */
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%; /* 전체 높이를 100%로 설정 */
+  font-family: 'Helvetica Neue', Arial, sans-serif; /* 현대적인 폰트 */
+  background-color: #f0f4f8; /* 밝고 깨끗한 배경 */
+  color: #333; /* 기본 글씨 색상 */
+}
+
+/* 컨테이너 */
 .create-container {
-    max-width: 600px;
-    margin: 0 auto;
+  max-width: 600px;
+  margin: 30px auto;
+  padding: 40px;
+  background-color: #ffffff; /* 깨끗한 흰색 배경 */
+  border-radius: 15px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* 부드러운 그림자 효과 */
+  overflow: hidden;
+}
+
+/* 제목 스타일 */
+h1 {
+  font-size: 32px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+/* 폼 그룹 */
+.form-group {
+  margin-bottom: 20px;
+}
+
+/* 라벨 스타일 */
+label {
+  font-size: 14px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: #555;
+}
+
+/* 입력 필드 스타일 */
+.form-control {
+  width: 100%;
+  padding: 15px;
+  font-size: 16px;
+  border: 1px solid #d0d7e1; /* 연한 회색 테두리 */
+  border-radius: 10px;
+  background-color: #f8f9fa; /* 연한 배경 */
+  color: #333;
+  box-sizing: border-box; /* 패딩 포함 크기 조정 */
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-control:focus {
+  border-color: #007bff; /* 포커스 시 강조된 색상 */
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.3); /* 포커스 시 부드러운 그림자 */
+  outline: none;
+}
+
+/* 텍스트 영역 스타일 */
+textarea.form-control {
+  resize: vertical; /* 세로로 크기 조정 가능 */
+  min-height: 150px;
+  max-height: 250px;
+}
+
+/* 버튼 스타일 */
+.btn {
+  width: 100%;
+  padding: 15px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #ffffff;
+  background-color: #007bff; /* 버튼 배경 */
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  text-align: center;
+}
+
+.btn:hover {
+  background-color: #0056b3; /* 버튼 hover 색상 */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* hover 시 그림자 효과 */
+}
+
+/* 작은 화면에서 폼 요소의 레이아웃 조정 */
+@media (max-width: 768px) {
+  .create-container {
     padding: 20px;
-    background-color: #f8f9fa; /* 밝은 배경 */
-    border-radius: 10px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
   }
-  
+
   h1 {
-    text-align: center;
-    margin-bottom: 20px;
-    color: #333;
+    font-size: 28px;
   }
-  
-  .form-group {
-    margin-bottom: 15px;
-  }
-  
-  label {
-    display: block;
-    font-weight: bold;
-    margin-bottom: 5px;
-    color: #555;
-  }
-  
+
   .form-control {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ced4da;
-    border-radius: 5px;
-    font-size: 1rem;
+    padding: 12px;
   }
-  
-  textarea.form-control {
-    resize: none; /* 크기 조절 비활성화 */
-  }
-  
-  .btn {
-    width: 100%;
-    padding: 10px;
-    font-size: 1rem;
-    background-color: #007bff; /* 버튼 배경 */
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-  
-  .btn:hover {
-    background-color: #0056b3; /* 버튼 호버 색상 */
-  }
-  
+}
