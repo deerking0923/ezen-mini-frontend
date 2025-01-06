@@ -90,20 +90,20 @@ export default function QuestionDetailPage({ params }) {
   return (
     <div className="detail-container">
       <h1>{question.subject}</h1>
-      <p>작성자: {question.author || '익명'}</p>
+      <p>저자: {question.author || '익명'}</p>
       <p>조회수: {question.viewCount}</p>
       <p>작성일: {question.createDate}</p>
       <div className="content">{question.content}</div>
 
       {/* 수정 버튼 */}
       <button className="edit-button" onClick={handleEditQuestion}>
-        질문 수정
+        글 수정
       </button>
 
       {/* 삭제 버튼 추가 */}
-      <button className="delete-button" onClick={handleDeleteQuestion}>
-        질문 삭제
-      </button>
+      {/*<button className="delete-button" onClick={handleDeleteQuestion}>
+        글 삭제
+      </button>*/}
 
       <hr />
 

@@ -42,7 +42,7 @@ export default function QuestionsPage() {
 
   return (
     <div className="container">
-      <h1>질문 목록</h1>
+      <h1>글 목록</h1>
 
       {/* 로딩 상태 표시 */}
       {loading ? (
@@ -53,7 +53,7 @@ export default function QuestionsPage() {
             <tr>
               <th>ID</th>
               <th>제목</th>
-              <th>작성자</th>
+              <th>저자</th>
               <th>조회수</th>
               <th>작성일</th>
             </tr>
