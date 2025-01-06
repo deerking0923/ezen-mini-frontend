@@ -90,3 +90,13 @@
     background-color: #0056b3;
   }
   
+  /* disabled 상태에서 금지 커서 제거 */
+button:disabled {
+  cursor: not-allowed; /* 기본 금지 표시 */
+  opacity: 0.6;        /* 비활성화 시 약간의 투명도 */
+}
+
+/* 금지 표시를 제거하려면 cursor 속성을 default로 설정 */
+button:disabled:hover {
+  cursor: default;     /* 금지 표시 대신 기본 커서 */
+}

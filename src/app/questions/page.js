@@ -43,7 +43,8 @@ export default function QuestionsPage() {
           <tr>
             <th>ID</th>
             <th>제목</th>
-            <th>내용</th>
+            <th>작성자</th>
+            <th>조회수</th>
             <th>작성일</th>
           </tr>
         </thead>
@@ -52,8 +53,9 @@ export default function QuestionsPage() {
             <tr key={question.id}>
               <td>{question.id}</td>
               <td>{question.subject}</td>
-              <td>{question.content}</td>
-              <td>{question.createDate}</td>
+              <td>{question.author || '미작성'}</td>
+              <td>{question.viewCount || 0}</td>
+              <td>{question.createDate || '미정'}</td>
             </tr>
           ))}
         </tbody>
