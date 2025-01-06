@@ -1,21 +1,67 @@
-/* 기본 배경색 설정 */
-body {
-    background-color: #22254b; /* 추출한 색 */
-    color: white; /* 텍스트 색은 흰색으로 설정 */
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-  }
-  
-  /* 페이지의 기본 스타일 */
-  h2 {
-    font-size: 2rem;
-    text-align: center;
-    margin-top: 20px;
-  }
-  
-  p {
-    font-size: 1.2rem;
-    text-align: center;
-  }
-  
+/* 전체 페이지 스타일 */
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%; /* 전체 페이지 높이를 100%로 설정 */
+  overflow-y: auto; /* 스크롤 허용 */
+}
+
+/* 배경 이미지 설정 (전체 화면을 커버하면서 스크롤 가능하도록 설정) */
+.page-background {
+  background-image: url('/background.webp'); /* 배경 이미지 */
+  background-size: cover; /* 이미지가 화면을 꽉 채우도록 설정 */
+  background-repeat: no-repeat; /* 배경 이미지 반복 방지 */
+  height: 2048px; /* 화면 전체 높이 설정 */
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  overflow-y: auto; /* 세로 스크롤을 허용하여 전체 이미지 확인 */
+}
+
+/* 내용 부분 스타일 */
+.quote-container {
+  padding: 20px;
+  background-color: rgba(42, 43, 59, 0.8); /* 배경을 반투명하게 설정 */
+  margin-bottom: 20px; /* 소감과 랜덤 문장 간 간격 */
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.random-quote {
+  padding: 20px;
+  background-color: rgba(44, 47, 86, 0.8); /* 배경을 반투명하게 설정 */
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  margin-bottom: 20px;
+}
+
+.random-quote h2 {
+  margin-bottom: 10px;
+}
+
+.random-quote p {
+  font-size: 18px;
+  line-height: 1.5;
+}
+
+/* 돌아가기 버튼 스타일 */
+.back-button {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #007bff;
+  color: white;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  transition: background-color 0.3s ease;
+}
+
+.back-button:hover {
+  background-color: #0056b3;
+}
