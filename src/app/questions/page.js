@@ -37,7 +37,7 @@ export default function QuestionsPage() {
     async function fetchWeather() {
       setWeatherLoading(true); // 로딩 시작
       try {
-        const API_KEY = '853da950e7e14cbd86525408250701'; // 발급받은 Weather API 키
+        const API_KEY = process.env.NEXT_PUBLIC_WEATHER_API_KEY; // 발급받은 Weather API 키
 
         // 사용자 위치 가져오기
         const getLocation = () =>

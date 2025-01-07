@@ -113,23 +113,3 @@ body {
     transform: translateY(2px);
   }
 
-  /* 썸네일과 문구를 수평 중앙 정렬 */
-.deer, .welcome-text {
-  display: inline-block; /* 텍스트와 이미지를 한 줄에 배치 */
-  vertical-align: middle; /* 텍스트와 이미지 수직 정렬 */
-}
-
-.welcome-text {
-  margin-left: 20px;
-  font-size: 1.2rem;
-  color: #f8f8f8;
-  line-height: 100px; /* 이미지 높이에 맞춰 텍스트 수직 정렬 */
-  font-weight: 400;
-}
-
-/* 부모 요소를 flexbox로 설정하여 수평 중앙 정렬 */
-.deer-text-container {
-  display: flex;
-  align-items: center; /* 수직 정렬 */
-  justify-content: center; /* 수평 정렬 */
-}
