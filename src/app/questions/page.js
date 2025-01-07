@@ -13,6 +13,10 @@ export default function QuestionsPage() {
   const [weatherLoading, setWeatherLoading] = useState(false); // 날씨 로딩 상태
   const [weatherError, setWeatherError] = useState(null); // 날씨 에러 상태
 
+  const [dictionaryQuery, setDictionaryQuery] = useState(''); // 국어사전 검색어
+  const [dictionaryResults, setDictionaryResults] = useState(null); // 국어사전 결과
+  const [dictionaryError, setDictionaryError] = useState(null); // 국어사전 에러 상태
+
   // 질문 데이터 가져오기
   useEffect(() => {
     async function fetchQuestions() {
@@ -39,7 +43,6 @@ export default function QuestionsPage() {
       try {
         const API_KEY = process.env.NEXT_PUBLIC_WEATHER_API_KEY; // 발급받은 Weather API 키
 
-        // 사용자 위치 가져오기
         const getLocation = () =>
           new Promise((resolve, reject) => {
             if (navigator.geolocation) {
@@ -60,7 +63,6 @@ export default function QuestionsPage() {
         const location = await getLocation();
         const { latitude, longitude } = location;
 
-        // Weather API 호출 (lang=ko로 한국어 설정 추가)
         const res = await fetch(
           `https://api.weatherapi.com/v1/current.json?key=${API_KEY}&q=${latitude},${longitude}&lang=ko`
         );
@@ -78,46 +80,21 @@ export default function QuestionsPage() {
     fetchWeather();
   }, []);
 
-  // 5개씩 페이지 번호 표시 기능
-  const getPageRange = () => {
-    let startPage = Math.max(currentPage - 2, 0); // 현재 페이지 기준 2개 이전 페이지
-    let endPage = Math.min(startPage + 5, totalPages); // 현재 페이지 기준 2개 이후 페이지 포함
-
-    // startPage가 0일 경우, 최소 5페이지를 표시하도록 하기 위해 endPage를 조정
-    if (startPage === 0 && totalPages >= 5) {
-      endPage = 5;
-    }
-
-    return Array.from({ length: endPage - startPage }, (_, index) => startPage + index);
-  };
-
-  // 페이지 번호 클릭 시 이동
-  const handlePageChange = (page) => {
-    setCurrentPage(page);
-  };
-
-  // 이전 5페이지 버튼
-  const handlePrev5Pages = () => {
-    if (currentPage >= 5) {
-      setCurrentPage((prev) => prev - 5);
-    } else {
-      setCurrentPage(0); // 최소 0 페이지로 제한
+  // 국어사전 검색 함수
+  const searchDictionary = async () => {
+    setDictionaryResults(null); // 이전 결과 초기화
+    setDictionaryError(null); // 이전 에러 초기화
+    try {
+      const res = await fetch(`/api/dictionary?q=${encodeURIComponent(dictionaryQuery)}`);
+      if (!res.ok) {
+        throw new Error('검색 결과를 찾을 수 없습니다.');
+      }
+      const data = await res.json();
+      setDictionaryResults(data.channel?.item || []);
+    } catch (err) {
+      setDictionaryError(err.message);
     }
   };
-
-  // 다음 5페이지 버튼
-  const handleNext5Pages = () => {
-    if (currentPage + 5 < totalPages) {
-      setCurrentPage((prev) => prev + 5);
-    } else {
-      setCurrentPage(totalPages - 1); // 마지막 페이지로 이동
-    }
-  };
-
-  // 로딩 상태 표시
-  if (loading) return <p>로딩 중...</p>;
-
-  const pageNumbers = getPageRange();
 
   return (
     <div className="container">
@@ -144,6 +121,28 @@ export default function QuestionsPage() {
             <p>날씨 정보를 가져올 수 없습니다.</p>
           )}
         </div>
+
+        <div className="dictionary-widget">
+          <h2>국어사전 검색</h2>
+          <input
+            type="text"
+            value={dictionaryQuery}
+            onChange={(e) => setDictionaryQuery(e.target.value)}
+            placeholder="검색어 입력"
+          />
+          <button onClick={searchDictionary}>검색</button>
+          {dictionaryError && <p className="error">{dictionaryError}</p>}
+          {dictionaryResults && (
+            <ul className="dictionary-results" style={{ counterReset: 'item' }}>
+              {dictionaryResults.map((item, index) => (
+                <li key={index}>
+                  {item.sense.definition}
+                </li>
+              ))}
+            </ul>
+          )}
+          <p className="source">국립국어원 표준국어대사전</p>
+        </div>
       </div>
 
       <div className="main-content">
@@ -158,8 +157,6 @@ export default function QuestionsPage() {
 
         <div className="right-section">
           <h1>글 목록</h1>
-
-          {/* 질문 목록 테이블 */}
           <table className="questions-table">
             <thead>
               <tr>
@@ -191,23 +188,12 @@ export default function QuestionsPage() {
             </tbody>
           </table>
 
-          {/* 페이지네이션 버튼 */}
           <div className="pagination">
-            <button onClick={handlePrev5Pages} disabled={currentPage === 0}>
-              &lt;&lt;
+            <button onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 0))} disabled={currentPage === 0}>
+              이전
             </button>
-            {pageNumbers.map((pageNumber) => (
-              <button
-                key={pageNumber}
-                className={pageNumber === currentPage ? 'active' : ''}
-                onClick={() => handlePageChange(pageNumber)}
-                disabled={pageNumber === currentPage}
-              >
-                {pageNumber + 1}
-              </button>
-            ))}
-            <button onClick={handleNext5Pages} disabled={currentPage + 1 >= totalPages}>
-              &gt;&gt;
+            <button onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages - 1))} disabled={currentPage + 1 >= totalPages}>
+              다음
             </button>
           </div>
 

@@ -215,3 +215,89 @@ button:disabled:hover {
   height: 70px; /* 아이콘 크기 확대 */
   margin-bottom: 15px; /* 아이콘 아래 여백 */
 }
+/* 국어사전 검색 위젯 */
+.dictionary-widget {
+  position: absolute;
+  top: 450px; /* 날씨 섹션 바로 아래로 배치 */
+  right: 20px;
+  width: 190px;
+  padding: 15px;
+  background-color: #2c2f56; /* 동일한 배경색 */
+  color: #ffffff; /* 흰색 텍스트 */
+  border-radius: 10px;
+  text-align: center;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  z-index: 100;
+}
+
+/* 국어사전 검색 제목 */
+.dictionary-widget h2 {
+  font-size: 1rem; /* 제목 크기 조정 */
+  margin-bottom: 10px;
+  color: #ffffff;
+}
+
+/* 국어사전 검색 입력창 스타일 */
+.dictionary-widget input[type="text"] {
+  width: calc(100% - 10px);
+  padding: 8px;
+  border: 1px solid #384049;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  background-color: #384049;
+  color: #ffffff;
+  font-size: 0.8rem; /* 입력 텍스트 크기 축소 */
+}
+
+/* 검색 버튼 스타일 */
+.dictionary-widget button {
+  width: 100%;
+  padding: 8px;
+  background-color: #4b5d80;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 0.8rem;
+}
+
+.dictionary-widget button:hover {
+  background-color: #394a63;
+}
+
+/* 검색 결과 목록 스타일 */
+.dictionary-widget .dictionary-results {
+  margin-top: 10px;
+  padding: 0;
+  list-style-type: none; /* 기본 리스트 스타일 제거 */
+  text-align: left; /* 왼쪽 정렬 */
+  font-size: 0.75rem; /* 검색 결과 글자 크기 축소 */
+  color: #cccccc;
+}
+
+
+.dictionary-widget .dictionary-results li {
+  counter-increment: item; /* 번호 증가 */
+  list-style: none; /* 기본 리스트 스타일 제거 */
+  margin-bottom: 10px; /* 항목 간 간격 추가 */
+  padding-left: 25px; /* 번호와 텍스트 간 여백 추가 */
+  position: relative; /* 번호 위치 조정을 위한 상대 위치 설정 */
+}
+
+.dictionary-widget .dictionary-results li::before {
+  content: counter(item) ". "; /* 번호 추가 */
+  position: absolute; /* 번호를 텍스트와 분리 */
+  left: 0; /* 번호 위치를 왼쪽으로 고정 */
+  color: #ffffff; /* 번호 색상 */
+  font-weight: bold; /* 번호 굵게 */
+  font-size: 0.75rem; /* 번호 크기 조정 */
+}
+
+
+/* "출처" 문구 스타일 */
+.dictionary-widget .source {
+  margin-top: 10px; /* 검색 결과와 간격 */
+  font-size: 0.7rem; /* 글자 크기 축소 */
+  color: #aaaaaa; /* 연한 회색 */
+  text-align: center;
+}
