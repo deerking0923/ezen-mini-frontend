@@ -1,52 +1,61 @@
-/* 배경 이미지 설정 (전체 화면을 커버하면서 스크롤 가능하도록 설정) */
+/* 배경 이미지 설정 (밤하늘 효과 추가) */
 .page-background {
+  background-color: #22254b; /* 기본 배경색 (어두운 블루) */
   background-image: url('/background.webp'); /* 배경 이미지 */
-  background-size: contain; /* 이미지가 화면을 꽉 채우도록 설정 */
-  background-position-x: center;
-  background-repeat: no-repeat; /* 배경 이미지 반복 방지 */
-  height: 1520px; /* 화면 전체 높이 설정 */
+  background-size: contain; /* 배경 이미지를 전체 보이도록 조정 */
+  background-position: center; /* 이미지 중앙 배치 */
+  background-repeat: no-repeat; /* 반복 방지 */
+  min-height: 100vh; /* 화면 높이에 맞춤 */
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
+  justify-content: space-between; /* 위아래로 요소 배치 */
   align-items: center;
-  overflow-y: auto; /* 세로 스크롤을 허용하여 전체 이미지 확인 */
-  position: relative; /* 자식 요소를 배치할 수 있도록 설정 */
+  position: relative; /* 별 추가를 위한 상대 위치 */
+  padding: 20px; /* 내부 여백 추가 */
+  overflow: hidden; /* 스크롤 제거 */
 }
 
-/* 수상 소감을 담을 반투명 컨테이너 */
-.award-container {
-  background-color: rgba(0, 0, 0, 0.6); /* 반투명 배경 */
-  padding: 40px; /* 여백 추가 */
-  border-radius: 15px; /* 모서리 둥글게 */
-  margin-bottom: 30px; /* 아래쪽 여백 */
-  max-width: 75%; /* 최대 너비 제한 */
-  margin: 0 auto; /* 중앙 정렬 */
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5); /* 부드러운 그림자 추가 */
-  text-align: center;
-  backdrop-filter: blur(10px); /* 배경 흐림 효과 추가 */
+/* 반짝이는 별 효과 */
+.page-background::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0) 70%) 50px 50px,
+              radial-gradient(circle, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0) 70%) 200px 200px,
+              radial-gradient(circle, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0) 70%) 400px 300px,
+              radial-gradient(circle, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0) 70%) 600px 100px;
+  background-size: 800px 600px;
+  animation: twinkling 5s infinite;
+  z-index: 0; /* 컨텐츠 뒤로 배치 */
 }
 
-/* 수상 소감 텍스트 스타일 */
-.award-messager {
-  color: white; /* 흰 글씨 */
-  font-size: 24px; /* 글씨 크기 조정 */
-  line-height: 1.6; /* 줄 간격을 더 넓혀서 읽기 편하게 */
-  text-align: center; /* 텍스트 중앙 정렬 */
-  word-wrap: break-word; /* 긴 문장이 자동으로 줄 바꿈 */
-  margin-bottom: 25px; /* 문장 간 간격 */
-  font-family: 'Roboto', sans-serif; /* 모던한 글꼴 사용 */
+/* 반짝이는 효과 */
+@keyframes twinkling {
+  0% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.5;
+  }
 }
 
-/* 랜덤 문장 */
+/* 랜덤 문장을 담는 컨테이너 */
 .random-quote {
   padding: 25px;
-  background-color: rgba(44, 47, 86, 0.85); /* 배경을 반투명하게 설정 */
-  border-radius: 15px;
-  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3); /* 부드러운 그림자 추가 */
-  margin-bottom: 30px;
+  background-color: rgba(0, 0, 0, 0.6); /* 반투명 배경 */
+  border-radius: 15px; /* 둥근 테두리 */
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3); /* 부드러운 그림자 */
   max-width: 80%; /* 최대 너비 설정 */
-  margin: 0 auto;
+  text-align: center;
+  color: white;
   font-family: 'Roboto', sans-serif;
+  z-index: 1; /* 별보다 앞에 위치 */
 }
 
 /* 랜덤 문장 제목 */
@@ -54,7 +63,7 @@
   margin-bottom: 15px;
   font-size: 28px;
   font-weight: 600;
-  color: #f4f4f9; /* 더 밝은 색상 */
+  color: #f4f4f9; /* 밝은 색상 */
 }
 
 /* 랜덤 문장 내용 */
@@ -66,29 +75,40 @@
   word-wrap: break-word;
 }
 
-/* 돌아가기 버튼 스타일 */
-.back-button {
-  position: fixed;
-  bottom: 25px;
-  left: 50%;
-  transform: translateX(-50%);
-  background-color: #ff6f61; /* 부드러운 오렌지색 */
-  color: white;
-  padding: 15px 30px;
-  border: none;
-  border-radius: 25px; /* 둥근 버튼 */
-  font-size: 18px;
-  font-weight: 500;
-  cursor: pointer;
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* 버튼 그림자 추가 */
-  transition: background-color 0.3s ease, transform 0.2s ease; /* 버튼 애니메이션 추가 */
+/* 수상 소감을 담는 컨테이너 */
+.award-container {
+  background-color: rgba(0, 0, 0, 0.6); /* 반투명 배경 */
+  padding: 40px;
+  border-radius: 15px; /* 둥근 테두리 */
+  max-width: 75%;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5); /* 부드러운 그림자 */
+  text-align: center;
+  margin-top: 20px; /* 위쪽 여백 추가 */
+  z-index: 1; /* 별보다 앞에 위치 */
 }
 
+/* 돌아가기 버튼 스타일 */
+.back-button {
+  background-color: #22254b; /* 어두운 블루 색상 */
+  color: white; /* 버튼 글씨 색상 */
+  padding: 15px 30px; /* 버튼 내부 여백 */
+  border: none; /* 테두리 없음 */
+  border-radius: 25px; /* 둥근 버튼 */
+  font-size: 18px; /* 글씨 크기 */
+  font-weight: 500; /* 글씨 굵기 */
+  cursor: pointer; /* 마우스 커서 포인터 */
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* 부드러운 그림자 효과 */
+  transition: background-color 0.3s ease, transform 0.2s ease; /* 버튼 애니메이션 */
+  margin-top: 20px; /* 상단과 간격 */
+  z-index: 1; /* 별보다 앞에 위치 */
+}
+
+/* 버튼 호버 스타일 */
 .back-button:hover {
-  background-color: #ff5a47; /* 버튼 색상 변화 */
-  transform: translateX(-50%) scale(1.05); /* 크기 확대 효과 */
+  background-color: #1a1c3d; /* 호버 시 더 어두운 블루 */
+  transform: scale(1.05); /* 크기 확대 */
 }
 
 .back-button:focus {
-  outline: none;
+  outline: none; /* 포커스 시 외곽선 제거 */
 }
