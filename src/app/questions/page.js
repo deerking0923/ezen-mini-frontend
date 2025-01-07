@@ -18,7 +18,7 @@ export default function QuestionsPage() {
     async function fetchQuestions() {
       setLoading(true); // 로딩 시작
       try {
-        const res = await fetch(`http://43.202.10.10:8080/api/v1/questions?page=${currentPage}`);
+        const res = await fetch(`https://realdeerworld.com/api/v1/questions?page=${currentPage}`);
         const data = await res.json();
         setQuestions(data.data.content);
         setTotalPages(data.data.totalPages);
