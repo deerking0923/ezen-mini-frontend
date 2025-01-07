@@ -66,8 +66,8 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px 20px;
-  background-color: #2a2b3b;
+  padding: 15px 20px;
+  background-color: #1a1a40;
   color: #ffffff;
   border-bottom: 2px solid #444;
 }
