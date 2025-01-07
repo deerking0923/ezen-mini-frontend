@@ -27,7 +27,7 @@ export default function QuestionDetailPage({ params }) {
     if (id) {
       async function fetchQuestion() {
         try {
-          const res = await fetch(`http://43.202.10.10:8080/api/v1/questions/${id}`);
+          const res = await fetch(`https://realdeerworld.com/api/v1/questions/${id}`);
           if (!res.ok) throw new Error('데이터를 가져오는 데 실패했습니다.');
           const data = await res.json();
           setQuestion(data.data);
@@ -43,7 +43,7 @@ export default function QuestionDetailPage({ params }) {
   // 수정 버튼 클릭 시 비밀번호 확인
   const handleEditQuestion = async () => {
     try {
-      const res = await fetch(`http://43.202.10.10:8080/api/v1/questions/${id}/check-password`, {
+      const res = await fetch(`https://realdeerworld.com/api/v1/questions/${id}/check-password`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ password }),
@@ -79,7 +79,7 @@ export default function QuestionDetailPage({ params }) {
   // 삭제 버튼 클릭 시 비밀번호 확인 후 삭제
   const handleDeleteQuestion = async () => {
     try {
-      const res = await fetch(`http://43.202.10.10:8080/api/v1/questions/${id}/check-password`, {
+      const res = await fetch(`https://realdeerworld.com/api/v1/questions/${id}/check-password`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ password }),
@@ -103,7 +103,7 @@ export default function QuestionDetailPage({ params }) {
       }
 
       // 비밀번호가 일치하면 삭제 요청
-      const deleteRes = await fetch(`http://43.202.10.10:8080/api/v1/questions/${id}`, {
+      const deleteRes = await fetch(`https://realdeerworld.com/v1/questions/${id}`, {
         method: 'DELETE',
       });
 
@@ -138,7 +138,7 @@ export default function QuestionDetailPage({ params }) {
   const handleAnswerSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await fetch(`http://43.202.10.10:8080/api/v1/answers`, {
+      const res = await fetch(`https://realdeerworld.com/api/v1/answers`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

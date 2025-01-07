@@ -13,7 +13,7 @@ export default function EditAnswerPage() {
   useEffect(() => {
     // 페이지 로드 시, 해당 ID의 질문과 답변 데이터를 가져옵니다.
     async function fetchQuestionData() {
-      const res = await fetch(`http://43.202.10.10:8080/api/v1/questions/${id}`);
+      const res = await fetch(`https://realdeerworld.com/api/v1/questions/${id}`);
       if (!res.ok) {
         console.error('API 요청 실패');
         alert('데이터를 불러오는 데 실패했습니다.');

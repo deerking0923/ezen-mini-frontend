@@ -11,7 +11,7 @@ const RandomQuestion = () => {
   // API에서 랜덤 질문을 받아오는 함수
   const fetchRandomQuestion = async () => {
     try {
-      const response = await fetch('http://43.202.10.10:8080/api/v1/questions/random');
+      const response = await fetch('https://realdeerworld.com/api/v1/questions/random');
       const data = await response.json();
 
       if (data.success) {

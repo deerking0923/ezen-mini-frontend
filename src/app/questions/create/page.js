@@ -21,7 +21,7 @@ export default function CreateQuestionPage() {
     e.preventDefault();
 
     try {
-      const response = await fetch('http://43.202.10.10:8080/api/v1/questions', {
+      const response = await fetch('https://realdeerworld.com/api/v1/questions', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

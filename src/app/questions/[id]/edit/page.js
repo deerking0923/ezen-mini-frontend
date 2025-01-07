@@ -16,7 +16,7 @@ export default function EditQuestionPage() {
   // 질문 데이터를 로드하는 useEffect
   useEffect(() => {
     async function fetchQuestion() {
-      const response = await fetch(`http://43.202.10.10:8080/api/v1/questions/${id}`);
+      const response = await fetch(`https://realdeerworld.com/api/v1/questions/${id}`);
       const data = await response.json();
       setFormData({
         subject: data.data.subject,
@@ -39,7 +39,7 @@ export default function EditQuestionPage() {
     e.preventDefault();
 
     try {
-      const response = await fetch(`http://43.202.10.10:8080/api/v1/questions/${id}`, {
+      const response = await fetch(`https://realdeerworld.com/api/v1/questions/${id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
