@@ -196,4 +196,22 @@ button:disabled {
 button:disabled:hover {
   cursor: default;
 }
+.weather-widget {
+  position: absolute; /* 위치를 절대값으로 지정 */
+  top: 100px; /* 상단에서부터 100px 아래로 이동 */
+  right: 50px; /* 오른쪽에서 50px 간격 */
+  width: 200px; /* 넓이를 넓게 조정 */
+  padding: 20px; /* 내부 여백 추가 */
+  background-color: #2c2f56; /* 어두운 보라색 배경 */
+  color: #ffffff; /* 흰색 텍스트 */
+  border-radius: 10px; /* 둥근 테두리 */
+  text-align: center; /* 중앙 정렬 */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* 그림자 강조 */
+  z-index: 100; /* 다른 요소 위에 표시 */
+}
 
+.weather-icon {
+  width: 70px; /* 아이콘 크기 확대 */
+  height: 70px; /* 아이콘 크기 확대 */
+  margin-bottom: 15px; /* 아이콘 아래 여백 */
+}
