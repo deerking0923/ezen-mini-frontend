@@ -23,27 +23,28 @@
 git clone https://github.com/deerking0923/ezen-mini-frontend.git
 ```
 
-1. 의존성 설치
+3. 의존성 설치
 
 ```bash
 npm install
 ```
 
-1. .env 파일 설정
+4. .env 파일 설정
 
 ```
 NEXT_PUBLIC_WEATHER_API_KEY=
 ```
 
-1. 실행
+5. 실행
 
 ```bash
 npm run dev
 
 ```
 
-1. 애플리케이션 접속
+6. 애플리케이션 접속
 - 로컬 서버: [http://localhost:3000](http://localhost:3000/)
+
 
 ## 프로젝트 구조
 
