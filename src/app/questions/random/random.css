@@ -13,6 +13,7 @@
   position: relative; /* 별 추가를 위한 상대 위치 */
   padding: 20px; /* 내부 여백 추가 */
   overflow: hidden; /* 스크롤 제거 */
+  z-index: 0; /* 기본 컨테이너 z-index */
 }
 
 /* 반짝이는 별 효과 */
@@ -29,7 +30,7 @@
               radial-gradient(circle, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0) 70%) 600px 100px;
   background-size: 800px 600px;
   animation: twinkling 5s infinite;
-  z-index: 0; /* 컨텐츠 뒤로 배치 */
+  z-index: -1; /* 별 효과를 가장 아래로 배치 */
 }
 
 /* 반짝이는 효과 */
@@ -55,7 +56,7 @@
   text-align: center;
   color: white;
   font-family: 'Roboto', sans-serif;
-  z-index: 1; /* 별보다 앞에 위치 */
+  z-index: 1; /* 별 효과보다 위로 배치 */
 }
 
 /* 랜덤 문장 제목 */
@@ -84,7 +85,7 @@
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5); /* 부드러운 그림자 */
   text-align: center;
   margin-top: 20px; /* 위쪽 여백 추가 */
-  z-index: 1; /* 별보다 앞에 위치 */
+  z-index: 1; /* 별 효과보다 위로 배치 */
 }
 
 /* 돌아가기 버튼 스타일 */
@@ -100,7 +101,7 @@
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* 부드러운 그림자 효과 */
   transition: background-color 0.3s ease, transform 0.2s ease; /* 버튼 애니메이션 */
   margin-top: 20px; /* 상단과 간격 */
-  z-index: 1; /* 별보다 앞에 위치 */
+  z-index: 1; /* 별 효과보다 위로 배치 */
 }
 
 /* 버튼 호버 스타일 */
