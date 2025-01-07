@@ -9,6 +9,8 @@ export default function QuestionDetailPage({ params }) {
   const [answers, setAnswers] = useState([]); // 답변 데이터 상태
   const [newAnswer, setNewAnswer] = useState(''); // 새 답변 상태
   const [id, setId] = useState(null); // id 상태 추가
+  const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false); // 모달 상태
+  const [password, setPassword] = useState(''); // 입력된 비밀번호 상태
 
   // params를 비동기적으로 처리
   useEffect(() => {
@@ -37,6 +39,45 @@ export default function QuestionDetailPage({ params }) {
     }
   }, [id]);
 
+  const handleEditQuestion = async () => {
+    try {
+      const res = await fetch(`http://43.202.10.10:8080/api/v1/questions/${id}/check-password`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password }),
+      });
+  
+      if (res.status === 404) {
+        alert('해당 질문을 찾을 수 없습니다.');
+        return;
+      }
+  
+      if (!res.ok) {
+        alert('서버에 문제가 발생했습니다.');
+        return;
+      }
+  
+      const data = await res.json();
+  
+      if (!data.success || !data.data) {
+        alert('비밀번호가 일치하지 않습니다.');
+        return;
+      }
+  
+      // 비밀번호가 일치하면 수정 페이지로 이동
+      router.push(`/questions/${id}/edit`);
+    } catch (error) {
+      alert('비밀번호 확인 중 오류가 발생했습니다.');
+    } finally {
+      setIsPasswordModalOpen(false);
+      setPassword('');
+    }
+  };
+  
+  // 모달 열기 및 닫기
+  const openPasswordModal = () => setIsPasswordModalOpen(true);
+  const closePasswordModal = () => setIsPasswordModalOpen(false);
+
   // 답변 등록
   const handleAnswerSubmit = async (e) => {
     e.preventDefault();
@@ -61,29 +102,6 @@ export default function QuestionDetailPage({ params }) {
     }
   };
 
-  // 질문 수정 페이지로 이동
-  const handleEditQuestion = () => {
-    router.push(`/questions/${id}/edit`);
-  };
-
-  // 질문 삭제
-  const handleDeleteQuestion = async () => {
-    if (window.confirm('정말로 이 질문을 삭제하시겠습니까?')) {
-      try {
-        const res = await fetch(`http://43.202.10.10:8080/api/v1/questions/${id}`, {
-          method: 'DELETE',
-        });
-
-        if (!res.ok) throw new Error('질문 삭제에 실패했습니다.');
-
-        // 삭제 후 목록 페이지로 리다이렉트
-        router.push('/questions');
-      } catch (error) {
-        alert(error.message);
-      }
-    }
-  };
-
   // 로딩 상태 처리
   if (!question) return <p>로딩 중...</p>;
 
@@ -96,14 +114,31 @@ export default function QuestionDetailPage({ params }) {
       <div className="content">{question.content}</div>
 
       {/* 수정 버튼 */}
-      <button className="edit-button" onClick={handleEditQuestion}>
+      <button className="edit-button" onClick={openPasswordModal}>
         글 수정
       </button>
 
-      {/* 삭제 버튼 추가 */}
-      {/*<button className="delete-button" onClick={handleDeleteQuestion}>
-        글 삭제
-      </button>*/}
+      {/* 비밀번호 입력 모달 */}
+{/* 비밀번호 입력 모달 */}
+{isPasswordModalOpen && (
+  <div className="password-modal">
+    <div className="modal-content">
+      <h3>비밀번호 확인</h3>
+      <input
+        type="password"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+        placeholder="비밀번호를 입력하세요"
+        required
+      />
+      <div className="modal-actions">
+        <button onClick={handleEditQuestion}>확인</button>
+        <button onClick={closePasswordModal}>취소</button>
+      </div>
+    </div>
+  </div>
+)}
+
 
       <hr />
 

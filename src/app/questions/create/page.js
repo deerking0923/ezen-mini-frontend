@@ -8,6 +8,7 @@ export default function CreateQuestionPage() {
     subject: '',
     content: '',
     author: '',
+    password: '', // 비밀번호 추가
   });
   const router = useRouter(); // 라우터 초기화
 
@@ -31,7 +32,6 @@ export default function CreateQuestionPage() {
       if (response.ok) {
         const data = await response.json(); // 서버로부터 생성된 질문 데이터 받기
         const questionId = data.data.id; // 생성된 질문의 ID 가져오기
-        //alert('글이 성공적으로 작성되었습니다!');
         router.push(`/questions/${questionId}`); // 상세 페이지로 이동
       } else {
         alert('글 작성에 실패했습니다.');
@@ -72,17 +72,32 @@ export default function CreateQuestionPage() {
           ></textarea>
         </div>
 
-        <div className="form-group">
-          <label htmlFor="author">작성자</label>
-          <input
-            type="text"
-            id="author"
-            name="author"
-            value={formData.author}
-            onChange={handleChange}
-            required
-            className="form-control"
-          />
+        <div className="form-group-inline">
+          <div className="form-group">
+            <label htmlFor="author">작성자</label>
+            <input
+              type="text"
+              id="author"
+              name="author"
+              value={formData.author}
+              onChange={handleChange}
+              required
+              className="form-control"
+            />
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="password">비밀번호</label>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              value={formData.password}
+              onChange={handleChange}
+              required
+              className="form-control"
+            />
+          </div>
         </div>
 
         <button type="submit" className="btn btn-primary">
