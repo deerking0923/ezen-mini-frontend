@@ -26,7 +26,12 @@ export default function Home() {
   return (
     <>
     
-      <img src="prImage.jpg" alt="썸네일" hidden/>
+      <div className="deer-text-container">
+        <img src="prImage.jpg" alt="썸네일" className="deer" style={{ width: '100px', height: '100px' }} />
+        <div className="welcome-text">진사슴 세상에 오신 걸 환영합니다 ^^</div>
+      </div>
+
+
       {/* 첫 화면 (Hero) */}
       <section className="hero">
         <h1 className="title">나만의 문장을 만나다</h1>
