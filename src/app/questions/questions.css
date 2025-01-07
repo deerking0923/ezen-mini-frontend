@@ -199,8 +199,8 @@ button:disabled:hover {
 .weather-widget {
   position: absolute; /* 위치를 절대값으로 지정 */
   top: 100px; /* 상단에서부터 100px 아래로 이동 */
-  right: 50px; /* 오른쪽에서 50px 간격 */
-  width: 200px; /* 넓이를 넓게 조정 */
+  right: 20px; /* 오른쪽에서 50px 간격 */
+  width: 180px; /* 넓이를 넓게 조정 */
   padding: 20px; /* 내부 여백 추가 */
   background-color: #2c2f56; /* 어두운 보라색 배경 */
   color: #ffffff; /* 흰색 텍스트 */
