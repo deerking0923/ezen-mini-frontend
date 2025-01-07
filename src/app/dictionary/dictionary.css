@@ -1,0 +1,116 @@
+/* Reset 기본값 제거 */
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: "Arial", sans-serif;
+  color: #f1f1f1;
+  background-color: #1e1e2f;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* 전체 컨테이너 */
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* 검색 입력 박스 */
+.search-bar {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.search-bar input[type="text"] {
+  flex: 1;
+  padding: 10px;
+  font-size: 16px;
+  border: 2px solid #4a4a6a;
+  border-radius: 5px;
+  background-color: #2b2b3d;
+  color: #f1f1f1;
+  margin-right: 10px;
+  width: 600px;
+}
+
+.search-bar button {
+
+  padding: 10px 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  background-color: #4a4a6a;
+  color: #f1f1f1;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.search-bar button:hover {
+  background-color: #6a6aad;
+}
+
+/* 검색 결과 스타일 */
+.results {
+  list-style: none;
+  padding: 0;
+}
+
+.results li {
+  background-color: #2b2b3d;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  padding: 15px;
+  padding-left: 50px; /* 숫자와 텍스트 간격 확보 */
+  position: relative;
+}
+
+.results li h2 {
+  margin: 0;
+  font-size: 18px;
+  color: #a3d9ff;
+}
+
+.results li p {
+  margin: 5px 0 0;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+/* 번호 스타일 */
+.results li::before {
+  content: attr(data-index) ".";
+  position: absolute;
+  top: 50%; /* 숫자를 가운데 정렬 */
+  left: 15px; /* 숫자 위치 */
+  transform: translateY(-50%); /* 가운데 정렬 보정 */
+  font-weight: bold;
+  font-size: 18px;
+  color: #f1f1f1;
+}
+
+/* Footer */
+footer {
+  margin-top: auto;
+  text-align: center;
+  padding: 10px 0;
+  background-color: #474951;
+  color: #fff;
+  font-size: 14px;
+}
+/* 검색어 강조 스타일 */
+.search-query {
+    color: #5297e1; /* 파란색 */
+    font-size: 24px; /* 글씨 크기 */
+    font-weight: bold;
+    margin-bottom: 20px;
+    text-align: center; /* 가운데 정렬 */
+  }
+  
