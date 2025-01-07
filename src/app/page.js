@@ -1,5 +1,6 @@
 "use client";
 
+import Head from "next/head";
 import { useEffect } from "react";
 import "./page.css";
 
@@ -24,6 +25,27 @@ export default function Home() {
 
   return (
     <>
+    {/* Open Graph 메타 태그 추가 */}
+    <Head>
+      <title>나만의 문장을 만나다</title>
+      <meta property="og:title" content="나만의 문장을 만나다" />
+      <meta
+        property="og:description"
+        content="내가 선택한 문장들로 특별한 이야기를 만들어보세요."
+      />
+      <meta
+        property="og:image"
+        content="https://realdeerworld.com/prImage.jpg"
+      />
+      <meta property="og:url" content="https://realdeerworld.com" />
+      <meta name="twitter:card" content="summary_large_image" />
+      <meta name="twitter:title" content="나만의 문장을 만나다" />
+      <meta
+        name="twitter:description"
+        content="내가 선택한 문장들로 특별한 이야기를 만들어보세요."
+      />
+      <meta name="twitter:image" content="https://realdeerworld.com/prImage.jpg" />
+    </Head>
       {/* 첫 화면 (Hero) */}
       <section className="hero">
         <h1 className="title">나만의 문장을 만나다</h1>
