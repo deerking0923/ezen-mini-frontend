@@ -173,3 +173,54 @@ h1 {
   font-size: 18px;
   color: #1e40af; /* 로딩 및 빈 메시지 색상 */
 }
+.container {
+    padding: 20px;
+    position: relative;
+  }
+  
+  .back-button {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    padding: 5px 10px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .username-section {
+    margin-bottom: 20px;
+  }
+  
+  .username-input,
+  .message-input {
+    width: 80%;
+    margin-right: 10px;
+    padding: 5px;
+    border: 1px solid #ccc;
+  }
+  
+  .username-button,
+  .send-button {
+    padding: 5px 10px;
+  }
+  
+  .chat-box {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-bottom: 10px;
+    height: 300px;
+    overflow-y: scroll;
+  }
+  
+  .message {
+    margin-bottom: 10px;
+  }
+  
+  .timestamp {
+    font-size: 0.8rem;
+    color: gray;
+  }
+  
