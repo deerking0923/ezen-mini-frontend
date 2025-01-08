@@ -102,3 +102,58 @@ body {
 a {
   text-decoration: none; /* 모든 링크의 밑줄 제거 */
 }
+
+/* 네비게이션 바 전체 스타일 */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  background-color: #2c2f56; /* 어두운 배경 */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+/* 로고 */
+.logo img {
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+}
+
+/* 제목 */
+.title-container {
+  flex: 1;
+  text-align: center;
+}
+
+.title {
+  margin: 0;
+  font-size: 24px;
+  font-weight: bold;
+  color: #ffffff; /* 흰색 텍스트 */
+  text-decoration: none;
+  cursor: pointer;
+}
+
+/* 네비게이션 링크 (오른쪽 버튼) */
+.nav-links {
+  display: flex;
+  align-items: center;
+}
+
+.chat-button {
+  padding: 8px 15px;
+  background-color: #49519c; /* 빨간 버튼 */
+  color: #ffffff;
+  border: none;
+  border-radius: 5px;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.chat-button:hover {
+  background-color: #2d40be; /* hover 시 밝은 빨간색 */
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}

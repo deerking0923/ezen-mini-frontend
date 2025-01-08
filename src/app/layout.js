@@ -52,16 +52,25 @@ export default function Layout({ children }) {
         )}
 
         <header className="header">
+          {/* 로고 (왼쪽) */}
           <div className="logo">
             <Link href="/" passHref>
               {/* 홈 아이콘 이미지로 변경 */}
               <img src="/home.png" alt="홈" className="home-icon" />
             </Link>
           </div>
+
+          {/* 제목 (가운데) */}
           <div className="title-container">
-            {/* '나의 문장을 말하다'에 링크 추가, 가운데 배치 */}
             <Link href="/questions" passHref>
               <h1 className="title">나의 문장을 말하다</h1>
+            </Link>
+          </div>
+
+          {/* 실시간 채팅방 버튼 (오른쪽) */}
+          <div className="nav-links">
+            <Link href="/message" passHref>
+              <button className="chat-button">오늘의 토론장</button>
             </Link>
           </div>
         </header>
