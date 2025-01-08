@@ -17,10 +17,11 @@ export default function QuestionsPage() {
   const [dictionaryResults, setDictionaryResults] = useState(null); // 국어사전 결과
   const [dictionaryError, setDictionaryError] = useState(null); // 국어사전 에러 상태
 
+
   // 질문 데이터 가져오기
   useEffect(() => {
     async function fetchQuestions() {
-      setLoading(true); // 로딩 시작
+      setLoading(true);
       try {
         const res = await fetch(`https://realdeerworld.com/api/v1/questions?page=${currentPage}`);
         const data = await res.json();
@@ -29,13 +30,37 @@ export default function QuestionsPage() {
       } catch (error) {
         console.error('질문을 가져오는 데 실패했습니다.', error);
       } finally {
-        setLoading(false); // 로딩 종료
+        setLoading(false);
       }
     }
-
     fetchQuestions();
   }, [currentPage]);
 
+  // 페이지네이션 버튼 생성
+  const generatePageButtons = () => {
+    const pageNumbers = [];
+    const startPage = Math.max(0, currentPage - 2); // 현재 페이지 기준 앞 2개
+    const endPage = Math.min(totalPages - 1, currentPage + 2); // 현재 페이지 기준 뒤 2개
+
+    for (let i = startPage; i <= endPage; i++) {
+      pageNumbers.push(i);
+    }
+
+    return pageNumbers;
+  };
+
+  // 페이지네이션 핸들러
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
+  const handleFirstPage = () => {
+    setCurrentPage(0);
+  };
+
+  const handleLastPage = () => {
+    setCurrentPage(totalPages - 1);
+  };
   // 사용자 위치 기반 날씨 데이터 가져오기
   useEffect(() => {
     async function fetchWeather() {
@@ -176,9 +201,6 @@ export default function QuestionsPage() {
                     onClick={() => router.push(`/questions/${question.id}`)}
                   >
                     {question.subject}
-                    <span className="answer-count">
-                      ({question.answers ? question.answers.length : 0})
-                    </span>
                   </td>
                   <td>{question.author || '미작성'}</td>
                   <td>{question.viewCount || 0}</td>
@@ -188,18 +210,28 @@ export default function QuestionsPage() {
             </tbody>
           </table>
 
+          {/* 페이지네이션 */}
           <div className="pagination">
-            <button onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 0))} disabled={currentPage === 0}>
-              이전
+            {/* 맨 처음 페이지 */}
+            <button onClick={handleFirstPage} disabled={currentPage === 0}>
+              &lt;&lt;
             </button>
-            <button onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages - 1))} disabled={currentPage + 1 >= totalPages}>
-              다음
-            </button>
-          </div>
 
-          <div className="create-button-container">
-            <button className="create-button" onClick={() => router.push('/questions/create')}>
-              글 작성하기
+            {/* 페이지 번호 */}
+            {generatePageButtons().map((pageNumber) => (
+              <button
+                key={pageNumber}
+                onClick={() => handlePageChange(pageNumber)}
+                className={pageNumber === currentPage ? 'active' : ''}
+                disabled={pageNumber === currentPage}
+              >
+                {pageNumber + 1}
+              </button>
+            ))}
+
+            {/* 맨 마지막 페이지 */}
+            <button onClick={handleLastPage} disabled={currentPage === totalPages - 1}>
+              &gt;&gt;
             </button>
           </div>
         </div>
