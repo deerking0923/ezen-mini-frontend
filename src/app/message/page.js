@@ -2,56 +2,21 @@
 
 import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation"; // Next.js 라우터 사용
+//import './message.css'; // CSS 파일 가져오기
+
 
 export default function MessagePage() {
-  const router = useRouter();
+  const router = useRouter(); // Next.js 라우터
   const [messages, setMessages] = useState([]); // 메시지 목록
   const [input, setInput] = useState(""); // 메시지 입력 필드 값
   const [username, setUsername] = useState(""); // 사용자 이름 입력 필드 값
   const [isUsernameSet, setIsUsernameSet] = useState(false); // 사용자 이름 설정 여부
   const [loading, setLoading] = useState(true); // 로딩 상태
   const chatBoxRef = useRef(null); // 채팅 박스 참조
-  const socketRef = useRef(null); // WebSocket 참조
 
   const MAX_MESSAGES = 300; // 최대 메시지 개수 제한
-  const WS_URL = "wss://realdeerworld.com:3001";
 
-
-  // WebSocket 연결 및 메시지 수신 처리
-  useEffect(() => {
-    socketRef.current = new WebSocket(WS_URL);
-
-    socketRef.current.onopen = () => {
-      console.log("WebSocket 연결 성공");
-    };
-
-    socketRef.current.onmessage = (event) => {
-      const newMessage = JSON.parse(event.data);
-      setMessages((prev) => {
-        const updatedMessages = [...prev, newMessage];
-        if (updatedMessages.length > MAX_MESSAGES) {
-          updatedMessages.shift(); // 오래된 메시지 제거
-        }
-        return updatedMessages;
-      });
-    };
-
-    socketRef.current.onerror = (error) => {
-      console.error("WebSocket 오류:", error);
-    };
-
-    socketRef.current.onclose = () => {
-      console.log("WebSocket 연결 종료");
-    };
-
-    return () => {
-      if (socketRef.current) {
-        socketRef.current.close();
-      }
-    };
-  }, []);
-
-  // 기존 메시지 불러오기 (초기 로드)
+  // 메시지 목록을 API로부터 불러오기
   useEffect(() => {
     const fetchMessages = async () => {
       try {
@@ -59,7 +24,7 @@ export default function MessagePage() {
         const data = await response.json();
 
         if (data.success) {
-          setMessages(data.data.slice(-MAX_MESSAGES));
+          setMessages(data.data.slice(-MAX_MESSAGES)); // 최신 10개의 메시지만 유지
         }
       } catch (error) {
         console.error("메시지 불러오기 오류:", error);
@@ -79,7 +44,7 @@ export default function MessagePage() {
   }, [messages]);
 
   // 메시지 전송
-  const sendMessage = () => {
+  const sendMessage = async () => {
     if (!input.trim() || !username.trim()) {
       alert("사용자 이름과 메시지를 입력하세요.");
       return;
@@ -88,14 +53,34 @@ export default function MessagePage() {
     const newMessage = {
       username,
       content: input,
-      timestamp: new Date().toISOString(),
     };
 
-    if (socketRef.current && socketRef.current.readyState === WebSocket.OPEN) {
-      socketRef.current.send(JSON.stringify(newMessage));
-      setInput(""); // 입력 필드 초기화
-    } else {
-      console.error("WebSocket 연결이 활성화되지 않았습니다.");
+    try {
+      // 메시지 생성 API 호출
+      const response = await fetch("https://realdeerworld.com/api/v1/messages", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(newMessage),
+      });
+
+      const data = await response.json();
+
+      if (response.ok && data.success) {
+        setMessages((prev) => {
+          const updatedMessages = [...prev, data.data];
+          if (updatedMessages.length > MAX_MESSAGES) {
+            updatedMessages.shift(); // 오래된 메시지 제거
+          }
+          return updatedMessages;
+        });
+        setInput(""); // 입력 필드 초기화
+      } else {
+        console.error("메시지 전송 실패:", data.error || "알 수 없는 오류");
+      }
+    } catch (error) {
+      console.error("메시지 전송 중 오류 발생:", error);
     }
   };
 
@@ -117,11 +102,11 @@ export default function MessagePage() {
       return <p>메시지가 없습니다.</p>;
     }
 
-    return messages.map((msg, index) => (
-      <div key={index} style={{ marginBottom: "10px" }}>
+    return messages.map((msg) => (
+      <div key={msg.id} style={{ marginBottom: "10px" }}>
         <strong>{msg.username}</strong>: {msg.content}
         <div style={{ fontSize: "0.8rem", color: "gray" }}>
-          {new Date(msg.timestamp).toLocaleString()}
+          {msg.timestamp}
         </div>
       </div>
     ));
@@ -168,7 +153,7 @@ export default function MessagePage() {
           </p>
 
           <div
-            ref={chatBoxRef}
+            ref={chatBoxRef} // chatBoxRef로 스크롤 제어
             style={{
               border: "1px solid #ccc",
               padding: "10px",
