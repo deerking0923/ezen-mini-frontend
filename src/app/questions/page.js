@@ -66,6 +66,8 @@ export default function QuestionsPage() {
     async function fetchWeather() {
       setWeatherLoading(true); // 로딩 시작
       try {
+        const API_KEY = process.env.NEXT_PUBLIC_WEATHER_API_KEY; // 발급받은 Weather API 키
+
         const getLocation = () =>
           new Promise((resolve, reject) => {
             if (navigator.geolocation) {
@@ -79,28 +81,29 @@ export default function QuestionsPage() {
                 (error) => reject(error)
               );
             } else {
-              reject(new Error("Geolocation is not supported by this browser."));
+              reject(new Error('Geolocation is not supported by this browser.'));
             }
           });
-  
+
         const location = await getLocation();
         const { latitude, longitude } = location;
-  
-        const res = await fetch(`/api/weather?lat=${latitude}&lon=${longitude}`);
-        if (!res.ok) throw new Error("날씨 데이터를 가져오는 데 실패했습니다.");
+
+        const res = await fetch(
+          `https://api.weatherapi.com/v1/current.json?key=${API_KEY}&q=${latitude},${longitude}&lang=ko`
+        );
+        if (!res.ok) throw new Error('날씨 데이터를 가져오는 데 실패했습니다.');
         const data = await res.json();
         setWeather(data);
       } catch (error) {
-        console.error("날씨 데이터를 가져오는 중 오류 발생:", error);
+        console.error('날씨 데이터를 가져오는 중 오류 발생:', error);
         setWeatherError(error.message);
       } finally {
         setWeatherLoading(false); // 로딩 종료
       }
     }
-  
+
     fetchWeather();
   }, []);
-  
 
   // 국어사전 검색 함수
   const searchDictionary = async () => {
