@@ -121,6 +121,7 @@ html, body {
 .questions-table th:nth-child(3), 
 .questions-table td:nth-child(3) {
   width: 20%;
+  text-align: center;
 }
 
 .clickable-title {
