@@ -89,6 +89,7 @@ html, body {
   width: 100%;
   border-collapse: collapse;
   margin-bottom: 30px;
+  table-layout: fixed; /* 고정 레이아웃 적용 */
 }
 
 .questions-table th {
@@ -106,11 +107,31 @@ html, body {
   vertical-align: top;
 }
 
+/* 열 너비 고정 */
+.questions-table th:nth-child(1), 
+.questions-table td:nth-child(1) {
+  width: 10%;
+}
+
+.questions-table th:nth-child(2), 
+.questions-table td:nth-child(2) {
+  width: 70%;
+}
+
+.questions-table th:nth-child(3), 
+.questions-table td:nth-child(3) {
+  width: 20%;
+}
+
 .clickable-title {
   color: #ffffff;
   text-decoration: none;
   cursor: pointer;
-  font-size: 1rem; /* 제목 글씨 크기 */
+  font-size: 1rem;
+  
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .clickable-title:hover {
@@ -120,15 +141,15 @@ html, body {
 
 .meta-info {
   margin-top: 4px;
-  font-size: 0.85rem;  /* 작은 글씨 */
-  color: #a3a5ab;      /* 회색 */
+  font-size: 0.85rem;
+  color: #a3a5ab;
 }
 
 .view-icon {
-  width: 16px;  /* 아이콘 크기 조절 */
+  width: 16px;
   height: 16px;
   margin-right: 4px;
-  vertical-align: middle; /* 텍스트와 수평 정렬 */
+  vertical-align: middle;
   filter: invert(1);
 }
 
@@ -312,30 +333,28 @@ html, body {
   (7) 반응형: 모바일/태블릿
 *********************************/
 @media screen and (max-width: 768px) {
-  /* 그리드 → 1열 */
+  /* 기존 반응형 스타일 유지 */
   .container {
-    grid-template-columns: 1fr; /* 한 열만 */
+    grid-template-columns: 1fr;
     padding: 10px;
   }
   
-  /* 왼쪽·가운데·오른쪽 섹션을 위→아래 순으로 */
   .left-section, .main-content, .right-section {
     width: 100%;
     margin-bottom: 20px;
   }
   
-  /* 하단 액션: 세로 배치 (버튼 + 페이지네이션) */
   .footer-actions {
     display: flex;
     flex-direction: column;
     align-items: center;
-    position: static; 
+    position: static;
     transform: none;
     min-height: auto;
   }
   .create-question-button {
     position: static;
-    margin-bottom: 10px; 
+    margin-bottom: 10px;
   }
   .pagination {
     display: flex;
@@ -343,8 +362,8 @@ html, body {
     gap: 10px;
   }
   
-  /* 테이블이 너무 길어지지 않도록 폰트 조금 줄이기 */
   .questions-table {
     font-size: 0.9rem;
+    /* table-layout 및 열 너비는 전역으로 이미 설정됨 */
   }
 }

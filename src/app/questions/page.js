@@ -153,14 +153,16 @@ export default function MyLayoutPage() {
     <tr>
       <th>ID</th>
       <th>제목</th>
-      <th><img src="/eye.svg" alt="조회 아이콘" className="view-icon" /> </th>
+      <th>
+        <img src="/eye.svg" alt="조회 아이콘" className="view-icon" />
+      </th>
     </tr>
   </thead>
   <tbody>
     {postList.map((post) => (
       <tr key={post.id}>
         <td>{post.id}</td>
-        <td>
+        <td className="title-cell">
           <div
             className="clickable-title"
             onClick={() => router.push(`/questions/${post.id}`)}
@@ -176,6 +178,7 @@ export default function MyLayoutPage() {
     ))}
   </tbody>
 </table>
+
 
 
         {/* 하단 영역: 글쓰기 버튼 + 페이지네이션 */}
