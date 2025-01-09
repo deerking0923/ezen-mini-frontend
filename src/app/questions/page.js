@@ -142,11 +142,12 @@ export default function MyLayoutPage() {
         </div>
       </div>
 
-      {/* 중앙(메인) 섹션: 글 목록 */}
+      
+      {/* 중앙(메인) 섹션 */}
       <div className="main-content">
         <h1>글 목록</h1>
         {loadingPosts && <p>로딩 중...</p>}
-        
+
         <table className="questions-table">
           <thead>
             <tr>
@@ -175,26 +176,37 @@ export default function MyLayoutPage() {
           </tbody>
         </table>
 
-        {/* 페이지네이션 */}
-        <div className="pagination">
-          <button onClick={goFirstPage} disabled={currentPage === 0}>
-            &lt;&lt;
+        {/* 하단 영역: 글쓰기 버튼 + 페이지네이션 */}
+        <div className="footer-actions">
+          <button
+            className="create-question-button"
+            onClick={() => router.push('/questions/create')}
+          >
+            글 쓰기
           </button>
-          {renderPageButtons().map((pageNumber) => (
-            <button
-              key={pageNumber}
-              onClick={() => goPageChange(pageNumber)}
-              className={pageNumber === currentPage ? 'active' : ''}
-              disabled={pageNumber === currentPage}
-            >
-              {pageNumber + 1}
+
+          {/* 페이지네이션 */}
+          <div className="pagination">
+            <button onClick={goFirstPage} disabled={currentPage === 0}>
+              &lt;&lt;
             </button>
-          ))}
-          <button onClick={goLastPage} disabled={currentPage === totalPages - 1}>
-            &gt;&gt;
-          </button>
+            {renderPageButtons().map((pageNumber) => (
+              <button
+                key={pageNumber}
+                onClick={() => goPageChange(pageNumber)}
+                className={pageNumber === currentPage ? 'active' : ''}
+                disabled={pageNumber === currentPage}
+              >
+                {pageNumber + 1}
+              </button>
+            ))}
+            <button onClick={goLastPage} disabled={currentPage === totalPages - 1}>
+              &gt;&gt;
+            </button>
+          </div>
         </div>
       </div>
+
 
       {/* 오른쪽 섹션: 날씨, 국어사전 */}
       <div className="right-section">
