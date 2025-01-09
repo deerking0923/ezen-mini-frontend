@@ -1,59 +1,62 @@
-'use client'; // 클라이언트 컴포넌트 설정
+'use client'; // 클라이언트 컴포넌트
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation'; // Next.js 라우터 사용
-import { useParams } from 'next/navigation'; // URL 파라미터에서 ID를 받기 위해
-import '../../create/create.css'; // 별도의 CSS 파일 추가
+import { useRouter, useParams } from 'next/navigation';
+import './edit.css'; // 새 CSS 파일
 
-export default function EditQuestionPage() {
-  const { id } = useParams(); // URL에서 ID 받아오기
+export default function QuestionEditPage() {
+  const { id } = useParams(); // URL 파라미터
+  const router = useRouter();
+
+  // 폼 데이터 (제목, 내용, 작성자)
   const [formData, setFormData] = useState({
     subject: '',
     content: '',
     author: '',
   });
-  const router = useRouter(); // 라우터 초기화
 
-  // 질문 데이터를 로드하는 useEffect
+  // 초기 데이터 로드
   useEffect(() => {
     async function fetchQuestion() {
-      const response = await fetch(`https://realdeerworld.com/api/v1/questions/${id}`);
-      const data = await response.json();
-      setFormData({
-        subject: data.data.subject,
-        content: data.data.content,
-        author: data.data.author || '',
-      });
+      try {
+        const response = await fetch(`https://realdeerworld.com/api/v1/questions/${id}`);
+        if (!response.ok) throw new Error('질문 데이터를 불러오지 못했습니다.');
+        const data = await response.json();
+        setFormData({
+          subject: data.data.subject || '',
+          content: data.data.content || '',
+          author: data.data.author || '',
+        });
+      } catch (error) {
+        console.error(error);
+        alert('질문을 불러오는 중 오류가 발생했습니다.');
+      }
     }
-
     fetchQuestion();
   }, [id]);
 
-  // 입력 필드 값 업데이트
+  // 입력값 변경 핸들러
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   // 폼 제출 핸들러
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     try {
       const response = await fetch(`https://realdeerworld.com/api/v1/questions/${id}`, {
         method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
       });
-
-      if (response.ok) {
-        const data = await response.json(); // 서버로부터 수정된 질문 데이터 받기
-        //alert('수정이 성공적으로 완료되었습니다!');
-        router.push(`/questions/${data.data.id}`); // 수정된 질문의 상세 페이지로 이동
-      } else {
+      if (!response.ok) {
         alert('수정에 실패했습니다.');
+        return;
       }
+
+      const data = await response.json();
+      // 수정된 질문 상세 페이지로 이동
+      router.push(`/questions/${data.data.id}`);
     } catch (error) {
       console.error('Error:', error);
       alert('네트워크 오류가 발생했습니다.');
@@ -61,9 +64,10 @@ export default function EditQuestionPage() {
   };
 
   return (
-    <div className="create-container">
-      <h1>질문 수정</h1>
-      <form onSubmit={handleSubmit} className="create-form">
+    <div className="edit-wrapper">
+      <h1 className="edit-title">질문 수정</h1>
+      <form onSubmit={handleSubmit} className="edit-form">
+        {/* 제목 */}
         <div className="form-group">
           <label htmlFor="subject">제목</label>
           <input
@@ -77,6 +81,7 @@ export default function EditQuestionPage() {
           />
         </div>
 
+        {/* 내용 */}
         <div className="form-group">
           <label htmlFor="content">내용</label>
           <textarea
@@ -87,9 +92,10 @@ export default function EditQuestionPage() {
             onChange={handleChange}
             required
             className="form-control"
-          ></textarea>
+          />
         </div>
 
+        {/* 작성자 */}
         <div className="form-group">
           <label htmlFor="author">작성자</label>
           <input
@@ -103,7 +109,7 @@ export default function EditQuestionPage() {
           />
         </div>
 
-        <button type="submit" className="btn btn-primary">
+        <button type="submit" className="edit-submit-button">
           수정하기
         </button>
       </form>

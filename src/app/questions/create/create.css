@@ -1,101 +1,138 @@
-/* 전체 배경과 기본 글꼴 */
-html,
-body {
+/******************************************
+  (1) 기본 & 배경
+******************************************/
+html, body {
   margin: 0;
   padding: 0;
-  height: 100%; /* 전체 높이를 100%로 설정 */
-  font-family: 'Helvetica Neue', Arial, sans-serif; /* 현대적인 폰트 */
-  background-color: #22254b; /* 어두운 보라색 계열 */
-  color: #ffffff; /* 흰색 글씨 */
+  height: 100%;
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  background-color: #22254b; /* 어두운 보라 계열 */
+  color: #ffffff; /* 흰색 텍스트 */
 }
 
-/* 컨테이너 */
-.create-container {
+/******************************************
+  (2) 페이지 래퍼
+******************************************/
+.create-wrapper {
   max-width: 600px;
-  margin: 30px auto;
+  margin: 40px auto;
   padding: 40px;
-  background-color: #2c2f56; /* 어두운 보라색 */
+  background-color: #2c2f56;
   border-radius: 15px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* 부드러운 그림자 효과 */
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
   overflow: hidden;
 }
 
-/* 제목 스타일 */
-h1 {
-  font-size: 32px;
+.create-title {
+  font-size: 28px;
   font-weight: 600;
-  color: #ffffff; /* 흰색 글씨 */
-  margin-bottom: 30px;
   text-align: center;
+  margin-bottom: 30px;
+  color: #fff;
 }
 
-/* 폼 그룹 */
+/******************************************
+  (3) 폼
+******************************************/
+.create-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px; /* 그룹 간격 */
+}
+
+/* 폼 그룹(단일열) */
 .form-group {
-  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px; /* 라벨-입력 간격 */
 }
 
-/* 라벨 스타일 */
+/* 인라인 2열 그룹 */
+.form-inline-row {
+  display: flex;
+  gap: 20px;
+}
+
+/* 모바일에서 인라인 그룹도 세로로 전환 */
+@media (max-width: 600px) {
+  .form-inline-row {
+    flex-direction: column;
+  }
+}
+
+/******************************************
+  (4) 라벨 & 입력 필드
+******************************************/
 label {
   font-size: 14px;
   font-weight: bold;
-  margin-bottom: 10px;
-  color: #ffffff; /* 연한 회색 */
+  color: #ffffff;
 }
 
-/* 입력 필드 스타일 */
+/* 공통 입력 컨트롤 */
 .form-control {
   width: 100%;
-  padding: 15px;
+  padding: 14px;
   font-size: 16px;
-  border: 1px solid #a3a5ab; /* 밝은 회색 테두리 */
+  border: 1px solid #a3a5ab;
   border-radius: 10px;
-  background-color: #4a5568; /* 어두운 회색 */
-  color: #f7fafc; /* 연한 회색 글씨 */
-  box-sizing: border-box; /* 패딩 포함 크기 조정 */
+  background-color: #4a5568;
+  color: #f7fafc;
+  box-sizing: border-box;
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .form-control:focus {
-  border-color: #007bff; /* 포커스 시 강조된 색상 */
-  box-shadow: 0 0 5px rgba(0, 123, 255, 0.3); /* 포커스 시 부드러운 그림자 */
   outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
 }
 
-/* 텍스트 영역 스타일 */
+/* 텍스트 영역 */
 textarea.form-control {
-  resize: vertical; /* 세로로 크기 조정 가능 */
-  min-height: 150px;
-  max-height: 250px;
+  resize: vertical; /* 세로 크기 조절 가능 */
+  min-height: 120px;
+  max-height: 300px;
 }
 
-/* 버튼 스타일 */
-.btn {
+/******************************************
+  (5) 버튼
+******************************************/
+.submit-button {
   width: 100%;
   padding: 15px;
   font-size: 16px;
   font-weight: 600;
   color: #ffffff;
-  background-color: #007bff; /* 파란색 버튼 */
+  background-color: #007bff;
   border: none;
   border-radius: 10px;
   cursor: pointer;
-  transition: background-color 0.3s ease, box-shadow 0.3s ease;
   text-align: center;
+
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-.btn:hover {
-  background-color: #0056b3; /* 버튼 hover 색상 */
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* hover 시 그림자 효과 */
+.submit-button:hover {
+  background-color: #0056b3;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
-/* 작은 화면에서 폼 요소의 레이아웃 조정 */
+.submit-button:active {
+  background-color: #004096;
+}
+
+/******************************************
+  (6) 반응형
+******************************************/
 @media (max-width: 768px) {
-  .create-container {
+  .create-wrapper {
+    margin: 20px;
     padding: 20px;
   }
 
-  h1 {
-    font-size: 28px;
+  .create-title {
+    font-size: 24px;
   }
 
   .form-control {
