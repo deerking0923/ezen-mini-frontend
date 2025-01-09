@@ -149,32 +149,34 @@ export default function MyLayoutPage() {
         {loadingPosts && <p>로딩 중...</p>}
 
         <table className="questions-table">
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>제목</th>
-              <th>저자</th>
-              <th>조회수</th>
-              <th>작성일</th>
-            </tr>
-          </thead>
-          <tbody>
-            {postList.map((post) => (
-              <tr key={post.id}>
-                <td>{post.id}</td>
-                <td
-                  className="clickable-title"
-                  onClick={() => router.push(`/questions/${post.id}`)}
-                >
-                  {post.subject}
-                </td>
-                <td>{post.author || '미작성'}</td>
-                <td>{post.viewCount || 0}</td>
-                <td>{post.createDate || '미정'}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>제목</th>
+      <th><img src="/eye.svg" alt="조회 아이콘" className="view-icon" /> </th>
+    </tr>
+  </thead>
+  <tbody>
+    {postList.map((post) => (
+      <tr key={post.id}>
+        <td>{post.id}</td>
+        <td>
+          <div
+            className="clickable-title"
+            onClick={() => router.push(`/questions/${post.id}`)}
+          >
+            {post.subject}
+          </div>
+          <div className="meta-info">
+            {post.author || '미작성'} | {post.createDate || '미정'}
+          </div>
+        </td>
+        <td>{post.viewCount || 0}</td>
+      </tr>
+    ))}
+  </tbody>
+</table>
+
 
         {/* 하단 영역: 글쓰기 버튼 + 페이지네이션 */}
         <div className="footer-actions">

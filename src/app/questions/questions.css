@@ -103,18 +103,41 @@ html, body {
   padding: 12px;
   color: #ffffff;
   border-bottom: 1px solid #a3a5ab;
+  vertical-align: top;
 }
 
 .clickable-title {
-  color: #007bff;
+  color: #ffffff;
   text-decoration: none;
   cursor: pointer;
+  font-size: 1rem; /* 제목 글씨 크기 */
 }
 
 .clickable-title:hover {
   text-decoration: underline;
   color: inherit;
 }
+
+.meta-info {
+  margin-top: 4px;
+  font-size: 0.85rem;  /* 작은 글씨 */
+  color: #a3a5ab;      /* 회색 */
+}
+
+.view-icon {
+  width: 16px;  /* 아이콘 크기 조절 */
+  height: 16px;
+  margin-right: 4px;
+  vertical-align: middle; /* 텍스트와 수평 정렬 */
+  filter: invert(1);
+}
+
+.title-cell {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
 
 /* 페이지네이션 */
 .pagination {
