@@ -118,7 +118,7 @@ export default function MessagePage() {
         돌아가기
       </button>
 
-      <h1>탕수육은 찍먹 VS 부먹</h1>
+      <h1>민초파 VS 반민초파</h1>
 
       {!isUsernameSet ? (
         <div className="message-username-section">
