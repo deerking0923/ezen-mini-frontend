@@ -1,94 +1,100 @@
-/* 전체 배경과 기본 스타일 */
-html,
-body {
+/*********************************
+  (1) 초기 리셋/기본 설정
+**********************************/
+* {
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  width: 100%;
   height: 100%;
   font-family: 'Arial', sans-serif;
-  background-color: #22254b;
+  background-color: #22254b; /* 전체 배경 */
   color: #ffffff;
 }
 
-/* 컨테이너 스타일 */
+/*********************************
+  (2) 전체 페이지 컨테이너 (3열)
+**********************************/
 .container {
-  display: flex;
-  justify-content: space-between;
-  padding-left: 220px; /* 왼쪽 버튼과 겹치지 않도록 여백을 추가 */
-  margin: 20px auto;
+  display: grid;
+  /* 왼쪽 200px, 가운데 2fr(확장), 오른쪽 300px */
+  grid-template-columns: 200px 2fr 300px;
+  gap: 20px;
+  max-width: 1400px; /* 필요 시 더 늘려도 됨 */
+  margin: 0 auto; 
   padding: 20px;
-  max-width: 1000px;
 }
 
-/* 왼쪽에 버튼을 배치 */
+/*********************************
+  (3) 왼쪽 섹션: "오늘의 문장"
+    - 큰 배경 박스를 없애기 위해
+      배경·테두리·높이 최소화
+**********************************/
 .left-section {
-  position: fixed;
-  left: 20px; /* 화면 왼쪽 20px */
-  top: 40%; /* 화면 세로 중앙 */
-  transform: translateY(-50%);
-  z-index: 10; /* 버튼이 다른 콘텐츠 위에 위치하도록 설정 */
+  background-color: transparent; /* 배경 제거 */
+  box-shadow: none;             /* 그림자 제거 */
+  padding: 0;                   /* 내부 여백 최소 */
 }
 
-/* 오른쪽 내용은 질문 목록 */
-.right-section {
-  flex: 3;
-  padding: 20px;
+/* "오늘의 문장" 위젯은 기존처럼 카드 모양 */
+.go-to-random-container {
   background-color: #2c2f56;
   border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  text-align: center;
+  padding: 20px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
 }
 
-/* "오늘의 문장 보러가기!" 버튼 이미지와 버튼을 감싸는 컨테이너 스타일 */
-.go-to-random-container {
-  display: flex;
-  flex-direction: column; /* 이미지 위에 버튼 배치 */
-  align-items: center; /* 수평 중앙 정렬 */
-  position: fixed;
-  left: 20px;
-  top: 40%; /* 위치 조정 */
-  transform: translateY(-50%);
-}
-
-/* 이미지 스타일 */
 .go-to-random-image {
-  width: 200px; /* 이미지 크기 조정 */
+  width: 100%;
+  max-width: 200px;
   height: auto;
-  margin-bottom: 10px; /* 이미지와 버튼 사이 간격 */
+  margin-bottom: 10px;
 }
 
-/* 버튼 스타일 */
 .go-to-random {
   background-color: #384049;
-  color: white;
+  color: #ffffff;
   padding: 15px;
-  font-size: 18px;
+  font-size: 1rem;
   border: none;
-  cursor: pointer;
-  width: 200px;
-  text-align: center;
   border-radius: 5px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+  width: 100%;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
 }
 
 .go-to-random:hover {
   background-color: #444;
 }
 
-/* 제목 스타일 */
-h1 {
-  text-align: center;
-  margin-bottom: 20px;
-  color: #ffffff;
+/*********************************
+  (4) 가운데(메인) 섹션: 글 목록
+    - 더 넓어지도록 2fr 적용
+**********************************/
+.main-content {
+  background-color: #2c2f56;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+  min-height: 500px;
 }
 
-/* 테이블 스타일 */
+.main-content h1 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+/* 게시판 테이블 */
 .questions-table {
   width: 100%;
   border-collapse: collapse;
   margin-bottom: 30px;
-  background-color: #2c2f56;
 }
 
-/* 헤더 스타일 */
 .questions-table th {
   padding: 12px;
   text-align: left;
@@ -97,27 +103,12 @@ h1 {
   border-bottom: 2px solid #a3a5ab;
 }
 
-/* 테이블 바디 스타일 */
 .questions-table td {
   padding: 12px;
   color: #ffffff;
   border-bottom: 1px solid #a3a5ab;
 }
 
-/* 조회수 칸 */
-.questions-table td:nth-child(4) {
-  white-space: nowrap !important;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  width: 10%;
-}
-
-/* 작성일 칸 */
-.questions-table td:nth-child(5) {
-  width: 15%;
-}
-
-/* 질문 제목 링크 스타일 */
 .clickable-title {
   color: #007bff;
   text-decoration: none;
@@ -129,18 +120,10 @@ h1 {
   color: inherit;
 }
 
-/* 답변 갯수 표시 */
-.answer-count {
-  font-size: 0.9rem;
-  color: #0071f2;
-  margin-left: 8px;
-}
-
-/* 페이지네이션 스타일 */
+/* 페이지네이션 */
 .pagination {
   display: flex;
   justify-content: center;
-  align-items: center;
   gap: 10px;
   margin-top: 20px;
 }
@@ -164,92 +147,60 @@ h1 {
   background-color: #394a63;
 }
 
-/* 글 작성하기 버튼 스타일 */
-.create-button-container {
+/*********************************
+  (5) 오른쪽 섹션: 날씨 + 국어사전
+**********************************/
+.right-section {
   display: flex;
-  justify-content: center;
-  margin-top: 20px;
+  flex-direction: column;
+  gap: 20px;
 }
 
-.create-button {
-  padding: 10px 20px;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 1.1rem;
-  font-weight: bold;
-  transition: background-color 0.3s ease;
-}
-
-.create-button:hover {
-  background-color: #0056b3;
-}
-
-/* disabled 상태에서 금지 커서 제거 */
-button:disabled {
-  cursor: not-allowed;
-  opacity: 0.6;
-}
-
-button:disabled:hover {
-  cursor: default;
-}
+/* 날씨 위젯 */
 .weather-widget {
-  position: absolute; /* 위치를 절대값으로 지정 */
-  top: 100px; /* 상단에서부터 100px 아래로 이동 */
-  right: 20px; /* 오른쪽에서 50px 간격 */
-  width: 180px; /* 넓이를 넓게 조정 */
-  padding: 20px; /* 내부 여백 추가 */
-  background-color: #2c2f56; /* 어두운 보라색 배경 */
-  color: #ffffff; /* 흰색 텍스트 */
-  border-radius: 10px; /* 둥근 테두리 */
-  text-align: center; /* 중앙 정렬 */
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* 그림자 강조 */
-  z-index: 100; /* 다른 요소 위에 표시 */
+  background-color: #2c2f56;
+  border-radius: 10px;
+  padding: 10px;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.weather-widget h2 {
+  font-size: 1rem;
+  margin-bottom: 10px;
 }
 
 .weather-icon {
-  width: 70px; /* 아이콘 크기 확대 */
-  height: 70px; /* 아이콘 크기 확대 */
-  margin-bottom: 15px; /* 아이콘 아래 여백 */
+  width: 70px;
+  height: 70px;
+  margin-bottom: 10px;
 }
+
 /* 국어사전 검색 위젯 */
 .dictionary-widget {
-  position: absolute;
-  top: 450px; /* 날씨 섹션 바로 아래로 배치 */
-  right: 20px;
-  width: 190px;
-  padding: 15px;
-  background-color: #2c2f56; /* 동일한 배경색 */
-  color: #ffffff; /* 흰색 텍스트 */
+  background-color: #2c2f56;
   border-radius: 10px;
+  padding: 10px;
   text-align: center;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-  z-index: 100;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
 }
 
-/* 국어사전 검색 제목 */
 .dictionary-widget h2 {
-  font-size: 1rem; /* 제목 크기 조정 */
+  font-size: 1rem;
   margin-bottom: 10px;
-  color: #ffffff;
 }
 
-/* 국어사전 검색 입력창 스타일 */
 .dictionary-widget input[type="text"] {
-  width: calc(100% - 10px);
+  width: 100%;
   padding: 8px;
+  margin-bottom: 8px;
   border: 1px solid #384049;
   border-radius: 5px;
-  margin-bottom: 10px;
   background-color: #384049;
   color: #ffffff;
-  font-size: 0.8rem; /* 입력 텍스트 크기 축소 */
+  font-size: 0.9rem;
 }
 
-/* 검색 버튼 스타일 */
 .dictionary-widget button {
   width: 100%;
   padding: 8px;
@@ -258,46 +209,56 @@ button:disabled:hover {
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  font-size: 0.8rem;
+  font-size: 0.9rem;
 }
 
 .dictionary-widget button:hover {
   background-color: #394a63;
 }
 
-/* 검색 결과 목록 스타일 */
-.dictionary-widget .dictionary-results {
+/* 국어사전 검색 결과 번호 */
+.dictionary-results {
   margin-top: 10px;
-  padding: 0;
-  list-style-type: none; /* 기본 리스트 스타일 제거 */
-  text-align: left; /* 왼쪽 정렬 */
-  font-size: 0.75rem; /* 검색 결과 글자 크기 축소 */
-  color: #cccccc;
+  list-style: none;
+  padding-left: 0;
+  text-align: left;
+  font-size: 0.85rem;
+  counter-reset: dicCounter;
 }
 
-
-.dictionary-widget .dictionary-results li {
-  counter-increment: item; /* 번호 증가 */
-  list-style: none; /* 기본 리스트 스타일 제거 */
-  margin-bottom: 10px; /* 항목 간 간격 추가 */
-  padding-left: 25px; /* 번호와 텍스트 간 여백 추가 */
-  position: relative; /* 번호 위치 조정을 위한 상대 위치 설정 */
+.dictionary-results li {
+  margin-bottom: 10px;
+  position: relative;
+  padding-left: 20px;
 }
 
-.dictionary-widget .dictionary-results li::before {
-  content: counter(item) ". "; /* 번호 추가 */
-  position: absolute; /* 번호를 텍스트와 분리 */
-  left: 0; /* 번호 위치를 왼쪽으로 고정 */
-  color: #ffffff; /* 번호 색상 */
-  font-weight: bold; /* 번호 굵게 */
-  font-size: 0.75rem; /* 번호 크기 조정 */
+.dictionary-results li::before {
+  content: counter(dicCounter) ". ";
+  counter-increment: dicCounter;
+  position: absolute;
+  left: 0;
+  color: #ffffff;
+  font-weight: bold;
 }
 
+.source {
+  margin-top: 10px;
+  font-size: 0.7rem;
+  color: #aaaaaa;
+}
 
-/* "출처" 문구 스타일 */
-.dictionary-widget .source {
-  margin-top: 10px; /* 검색 결과와 간격 */
-  font-size: 0.7rem; /* 글자 크기 축소 */
-  color: #aaaaaa; /* 연한 회색 */
-  text-align: center;
+/*********************************
+  (6) 반응형: 모바일 시 1열
+**********************************/
+@media screen and (max-width: 768px) {
+  .container {
+    grid-template-columns: 1fr; /* 한 열 */
+  }
+
+  .left-section {
+    margin-bottom: 20px; /* 위젯 간 분리 */
+  }
+  .main-content {
+    margin-bottom: 20px;
+  }
 }
