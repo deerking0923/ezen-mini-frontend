@@ -1,20 +1,25 @@
-/* 전체 배경 및 기본 설정 */
+/*********************************
+  (1) 전체 배경 및 기본 설정
+**********************************/
 html,
 body {
   margin: 0;
   padding: 0;
   height: 100%;
   font-family: 'Arial', sans-serif;
-  background-color: #22254b; /* 처음 사용했던 어두운 보라/네이비 배경 */
+  background-color: #22254b; /* 어두운 배경 */
   color: #ffffff; /* 기본 흰색 글씨 */
 }
 
-/* 메인 컨테이너 (이 페이지 전용) */
+/*********************************
+  (2) 메인 컨테이너 (이 페이지 전용)
+**********************************/
 .message-container {
-  max-width: 800px;
+  width: 100%;
+  max-width: 800px;  /* PC에서 최대 너비 */
   margin: 20px auto;
   padding: 20px;
-  background-color: #2c2f56; /* 약간 밝은 보라/네이비 (처음 CSS와 유사) */
+  background-color: #2c2f56; /* 약간 밝은 보라/네이비 */
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
   position: relative; /* 뒤로가기 버튼 위치 */
@@ -29,7 +34,9 @@ body {
   margin-bottom: 20px;
 }
 
-/* 뒤로가기 버튼 */
+/*********************************
+  (3) 뒤로가기 버튼
+**********************************/
 .message-back-button {
   position: absolute;
   top: 10px;
@@ -40,13 +47,16 @@ body {
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  transition: background-color 0.2s ease;
 }
 
 .message-back-button:hover {
-  background-color: #0056b3; /* 호버 시 파란색 진하게 */
+  background-color: #0056b3;
 }
 
-/* 사용자 이름 섹션 */
+/*********************************
+  (4) 사용자 이름 섹션
+**********************************/
 .message-username-section {
   margin-bottom: 20px;
   text-align: center;
@@ -54,6 +64,7 @@ body {
 
 .message-username-input {
   width: 70%;
+  max-width: 300px; /* 너무 길어지지 않도록 제한 */
   padding: 10px;
   border: 1px solid #384049;
   border-radius: 8px;
@@ -76,7 +87,7 @@ body {
   border-radius: 8px;
   font-size: 16px;
   cursor: pointer;
-  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  transition: background-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .message-username-button:hover {
@@ -84,14 +95,16 @@ body {
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
 }
 
-/* 채팅 박스 */
+/*********************************
+  (5) 채팅 박스 (메시지 목록)
+**********************************/
 .message-chat-box {
   border: 1px solid #a3a5ab;
   padding: 10px;
   margin-bottom: 10px;
   height: 300px;
-  overflow-y: scroll;
-  background-color: #2c2f56; /* 컨테이너와 동일 */
+  overflow-y: auto;
+  background-color: #2c2f56;
   border-radius: 10px;
   box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
 }
@@ -101,30 +114,34 @@ body {
 }
 
 .message-chat-box::-webkit-scrollbar-thumb {
-  background: #444; 
+  background: #444;
   border-radius: 8px;
 }
 
-/* 메시지 */
+/* 메시지 아이템 */
 .message-item {
   margin-bottom: 10px;
 }
 
 .message-timestamp {
   font-size: 0.8rem;
-  color: #cccccc; /* 회색 계열 시간 표시 */
+  color: #cccccc;
 }
 
-/* 메시지 입력 섹션 */
+/*********************************
+  (6) 메시지 입력 섹션
+**********************************/
 .message-input-section {
   display: flex;
   align-items: center;
   gap: 10px;
   margin-top: 10px;
+  flex-wrap: wrap; /* 모바일에서 줄바꿈 되도록 */
 }
 
 .message-input {
   flex: 1;
+  min-width: 200px; /* 모바일에서 너무 작아지지 않도록 */
   padding: 10px;
   border: 1px solid #384049;
   border-radius: 8px;
@@ -140,13 +157,13 @@ body {
 
 .message-send-button {
   padding: 10px 15px;
-  background-color: #384049; /* 버튼 컬러(약간 진한 톤) */
+  background-color: #384049; 
   border: none;
   color: white;
   border-radius: 8px;
   font-size: 16px;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: background-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .message-send-button:hover {
@@ -154,10 +171,60 @@ body {
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
 }
 
-/* 로딩 및 빈 메시지 */
+/*********************************
+  (7) 로딩 및 빈 메시지 표시
+**********************************/
 .loading,
 .empty {
   text-align: center;
   font-size: 18px;
   color: #a3a5ab;
+}
+
+/*********************************
+  (8) 반응형: 모바일 & 태블릿
+**********************************/
+@media screen and (max-width: 768px) {
+  /* 컨테이너 좌우 여백 확대 (혹은 축소) */
+  .message-container {
+    margin: 10px;
+    padding: 15px;
+  }
+
+  /* 제목 폰트 크기 조정 */
+  .message-container h1 {
+    font-size: 24px;
+    margin-bottom: 15px;
+  }
+
+  /* 버튼 크기 조금 키우거나 조정 */
+  .message-back-button {
+    padding: 6px 10px;
+    font-size: 14px;
+  }
+
+  .message-username-input {
+    width: 100%;
+    max-width: none;
+    margin: 0 0 10px 0; /* 모바일에서 줄바꿈 */
+  }
+
+  .message-username-button {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+
+  /* 채팅 박스 높이 살짝 줄여도 됨 */
+  .message-chat-box {
+    height: 250px;
+  }
+
+  /* 입력 영역 flex-wrap이 이미 설정되어 있어
+     입력창 + 전송버튼이 모바일에서 줄바꿈 가능 */
+  .message-input {
+    width: 100%;
+  }
+  .message-send-button {
+    width: 100%;
+  }
 }
