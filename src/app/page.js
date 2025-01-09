@@ -1,6 +1,5 @@
 "use client";
 
-import Head from "next/head";
 import { useEffect } from "react";
 import "./page.css";
 
@@ -25,7 +24,6 @@ export default function Home() {
 
   return (
     <>
-
       {/* 첫 화면 (Hero) */}
       <section className="hero">
         <h1 className="title">나만의 문장을 만나다</h1>
