@@ -6,7 +6,7 @@
 
 ## 기술 스택
 
-- Next.js 13
+- Next.js 15
 - CI/CD (GitHub Actions)
 - RESTful API 연동
 

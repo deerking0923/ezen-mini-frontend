@@ -142,44 +142,46 @@ export default function MyLayoutPage() {
         </div>
       </div>
 
-      
       {/* 중앙(메인) 섹션 */}
       <div className="main-content">
         <h1>글 목록</h1>
         {loadingPosts && <p>로딩 중...</p>}
 
         <table className="questions-table">
-  <thead>
-    <tr>
-      <th>ID</th>
-      <th>제목</th>
-      <th>
-        <img src="/eye.svg" alt="조회 아이콘" className="view-icon" />
-      </th>
-    </tr>
-  </thead>
-  <tbody>
-    {postList.map((post) => (
-      <tr key={post.id}>
-        <td>{post.id}</td>
-        <td className="title-cell">
-          <div
-            className="clickable-title"
-            onClick={() => router.push(`/questions/${post.id}`)}
-          >
-            {post.subject}
-          </div>
-          <div className="meta-info">
-            {post.author || '미작성'} | {post.createDate || '미정'}
-          </div>
-        </td>
-        <td>{post.viewCount || 0}</td>
-      </tr>
-    ))}
-  </tbody>
-</table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>제목</th>
+              <th>
+                <img src="/eye.svg" alt="조회 아이콘" className="view-icon" />
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {postList.map((post) => (
+              <tr key={post.id}>
+                <td>{post.id}</td>
+                <td className="title-cell">
+                  <div
+                    className="clickable-title"
+                    onClick={() => router.push(`/questions/${post.id}`)}
+                  >
+                    {post.subject}                   
+                    <div className="comment-count">
+                      ({post.answers?.length || 0})
+                    </div>
+                  </div>
 
-
+                  {/* 메타 정보 */}
+                  <div className="meta-info">
+                    {post.author || '미작성'} | {post.createDate || '미정'}
+                  </div>
+                </td>
+                <td>{post.viewCount || 0}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
 
         {/* 하단 영역: 글쓰기 버튼 + 페이지네이션 */}
         <div className="footer-actions">
@@ -211,7 +213,6 @@ export default function MyLayoutPage() {
           </div>
         </div>
       </div>
-
 
       {/* 오른쪽 섹션: 날씨, 국어사전 */}
       <div className="right-section">
@@ -253,9 +254,7 @@ export default function MyLayoutPage() {
           {dicResults && (
             <ul className="dictionary-results">
               {dicResults.map((item, index) => (
-                <li key={index}>
-                  {item.sense.definition}
-                </li>
+                <li key={index}>{item.sense.definition}</li>
               ))}
             </ul>
           )}
