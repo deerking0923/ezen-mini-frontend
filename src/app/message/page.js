@@ -100,9 +100,9 @@ export default function MessagePage() {
     }
 
     return messages.map((msg) => (
-      <div key={msg.id} className="message">
+      <div key={msg.id} className="message-item">
         <strong>{msg.username}</strong>: {msg.content}
-        <div className="timestamp">
+        <div className="message-timestamp">
           {msg.timestamp}
         </div>
       </div>
@@ -110,10 +110,10 @@ export default function MessagePage() {
   };
 
   return (
-    <div className="container">
+    <div className="message-container">
       <button
         onClick={() => router.push("/questions")}
-        className="back-button"
+        className="message-back-button"
       >
         돌아가기
       </button>
@@ -121,15 +121,15 @@ export default function MessagePage() {
       <h1>탕수육은 찍먹 VS 부먹</h1>
 
       {!isUsernameSet ? (
-        <div className="username-section">
+        <div className="message-username-section">
           <input
             type="text"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
             placeholder="사용자 이름을 입력하세요"
-            className="username-input"
+            className="message-username-input"
           />
-          <button onClick={setUsernameHandler} className="username-button">
+          <button onClick={setUsernameHandler} className="message-username-button">
             이름 설정
           </button>
         </div>
@@ -141,7 +141,7 @@ export default function MessagePage() {
 
           <div
             ref={chatBoxRef}
-            className="chat-box"
+            className="message-chat-box"
           >
             {renderMessages()}
           </div>
@@ -154,7 +154,7 @@ export default function MessagePage() {
               placeholder="메시지를 입력하세요"
               className="message-input"
             />
-            <button onClick={sendMessage} className="send-button">
+            <button onClick={sendMessage} className="message-send-button">
               전송
             </button>
           </div>

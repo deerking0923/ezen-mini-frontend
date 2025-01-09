@@ -5,22 +5,23 @@ body {
   padding: 0;
   height: 100%;
   font-family: 'Arial', sans-serif;
-  background-color: #1a2238; /* 어두운 네이비 배경 */
+  background-color: #22254b; /* 처음 사용했던 어두운 보라/네이비 배경 */
   color: #ffffff; /* 기본 흰색 글씨 */
 }
 
-/* 컨테이너 스타일 */
-.container {
+/* 메인 컨테이너 (이 페이지 전용) */
+.message-container {
   max-width: 800px;
   margin: 20px auto;
   padding: 20px;
-  background-color: #1e293b; /* 약간 밝은 네이비 */
-  border-radius: 12px;
+  background-color: #2c2f56; /* 약간 밝은 보라/네이비 (처음 CSS와 유사) */
+  border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  position: relative; /* 뒤로가기 버튼 위치 */
 }
 
 /* 제목 스타일 */
-h1 {
+.message-container h1 {
   font-size: 28px;
   font-weight: bold;
   color: #ffffff;
@@ -28,53 +29,48 @@ h1 {
   margin-bottom: 20px;
 }
 
-/* 돌아가기 버튼 */
-.return-button {
+/* 뒤로가기 버튼 */
+.message-back-button {
   position: absolute;
-  top: 20px;
-  right: 30px;
-  background-color: #1e40af; /* 네이비 버튼 */
-  color: white;
+  top: 10px;
+  right: 20px;
+  padding: 8px 12px;
+  background-color: #007bff; /* 파란 버튼 */
+  color: #fff;
   border: none;
-  padding: 10px 15px;
   border-radius: 5px;
-  font-weight: bold;
   cursor: pointer;
-  transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-.return-button:hover {
-  background-color: #1d4ed8; /* hover 시 밝은 네이비 */
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+.message-back-button:hover {
+  background-color: #0056b3; /* 호버 시 파란색 진하게 */
 }
 
-/* 사용자 이름 설정 */
-.username-input {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 10px;
+/* 사용자 이름 섹션 */
+.message-username-section {
   margin-bottom: 20px;
+  text-align: center;
 }
 
-.username-input input {
+.message-username-input {
   width: 70%;
   padding: 10px;
-  border: 1px solid #334155;
+  border: 1px solid #384049;
   border-radius: 8px;
   font-size: 16px;
-  background-color: #1a2238; /* 약간 어두운 네이비 */
+  background-color: #22254b;
   color: #ffffff;
   box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
+  margin-right: 8px;
 }
 
-.username-input input::placeholder {
-  color: #94a3b8; /* 플레이스홀더 색상 */
+.message-username-input::placeholder {
+  color: #94a3b8;
 }
 
-.username-input button {
+.message-username-button {
   padding: 10px 15px;
-  background-color: #1e40af; /* 네이비 버튼 */
+  background-color: #384049;
   border: none;
   color: white;
   border-radius: 8px;
@@ -83,76 +79,68 @@ h1 {
   transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-.username-input button:hover {
-  background-color: #1d4ed8; /* hover 시 밝은 네이비 */
+.message-username-button:hover {
+  background-color: #444;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
 }
 
-/* 메시지 박스 */
-.message-box {
-  border: 1px solid #334155; /* 경계선 색상 */
-  padding: 15px;
-  margin-bottom: 20px;
+/* 채팅 박스 */
+.message-chat-box {
+  border: 1px solid #a3a5ab;
+  padding: 10px;
+  margin-bottom: 10px;
   height: 300px;
   overflow-y: scroll;
-  background-color: #1e293b; /* 메시지 박스 배경 */
-  border-radius: 8px;
+  background-color: #2c2f56; /* 컨테이너와 동일 */
+  border-radius: 10px;
   box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
-/* 스크롤바 스타일 */
-.message-box::-webkit-scrollbar {
+.message-chat-box::-webkit-scrollbar {
   width: 8px;
 }
 
-.message-box::-webkit-scrollbar-thumb {
-  background: #1e40af; /* 스크롤바 색상 */
+.message-chat-box::-webkit-scrollbar-thumb {
+  background: #444; 
   border-radius: 8px;
 }
 
-.message-box p {
-  margin: 5px 0;
-}
-
+/* 메시지 */
 .message-item {
   margin-bottom: 10px;
 }
 
-.message-username {
-  color: #1d4ed8; /* 사용자 이름 강조 */
-  font-weight: bold;
-}
-
 .message-timestamp {
   font-size: 0.8rem;
-  color: #94a3b8; /* 회색 계열 시간 표시 */
+  color: #cccccc; /* 회색 계열 시간 표시 */
 }
 
-/* 입력 영역 */
-.input-container {
+/* 메시지 입력 섹션 */
+.message-input-section {
   display: flex;
   align-items: center;
   gap: 10px;
+  margin-top: 10px;
 }
 
-.input-container input {
+.message-input {
   flex: 1;
   padding: 10px;
-  border: 1px solid #334155;
+  border: 1px solid #384049;
   border-radius: 8px;
   font-size: 16px;
-  background-color: #1a2238;
+  background-color: #22254b;
   color: #ffffff;
   box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
-.input-container input::placeholder {
-  color: #94a3b8; /* 플레이스홀더 색상 */
+.message-input::placeholder {
+  color: #94a3b8;
 }
 
-.input-container button {
+.message-send-button {
   padding: 10px 15px;
-  background-color: #1e40af; /* 네이비 버튼 */
+  background-color: #384049; /* 버튼 컬러(약간 진한 톤) */
   border: none;
   color: white;
   border-radius: 8px;
@@ -161,66 +149,15 @@ h1 {
   transition: all 0.3s ease;
 }
 
-.input-container button:hover {
-  background-color: #1d4ed8; /* hover 시 색상 */
+.message-send-button:hover {
+  background-color: #444;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
 }
 
-/* 로딩 메시지와 빈 메시지 */
+/* 로딩 및 빈 메시지 */
 .loading,
 .empty {
   text-align: center;
   font-size: 18px;
-  color: #1e40af; /* 로딩 및 빈 메시지 색상 */
+  color: #a3a5ab;
 }
-.container {
-    padding: 20px;
-    position: relative;
-  }
-  
-  .back-button {
-    position: absolute;
-    top: 10px;
-    right: 20px;
-    padding: 5px 10px;
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  .username-section {
-    margin-bottom: 20px;
-  }
-  
-  .username-input,
-  .message-input {
-    width: 80%;
-    margin-right: 10px;
-    padding: 5px;
-    border: 1px solid #ccc;
-  }
-  
-  .username-button,
-  .send-button {
-    padding: 5px 10px;
-  }
-  
-  .chat-box {
-    border: 1px solid #ccc;
-    padding: 10px;
-    margin-bottom: 10px;
-    height: 300px;
-    overflow-y: scroll;
-  }
-  
-  .message {
-    margin-bottom: 10px;
-  }
-  
-  .timestamp {
-    font-size: 0.8rem;
-    color: gray;
-  }
-  
