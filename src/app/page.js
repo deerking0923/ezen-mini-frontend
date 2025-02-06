@@ -76,7 +76,7 @@ export default function Home() {
             <br />- 조지 오웰 &lt;1984&gt;
           </div>
         </div>
-        <div>
+        <div className="start-button">
         {/* 시작 버튼 */}
           <Link href="/questions">시작</Link>
           
