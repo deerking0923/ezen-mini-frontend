@@ -8,7 +8,7 @@ import "./slides.css";
 
 export default function Slides() {
   const sliderRef = useRef(null);
-  const totalSlides = 62;
+  const totalSlides = 63;
   const images = Array.from({ length: totalSlides }, (_, index) => {
     const num = (index + 1).toString().padStart(3, '0');
     return `/ppt/${num}.png`;
