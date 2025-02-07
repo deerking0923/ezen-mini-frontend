@@ -207,10 +207,10 @@ h1 {
 }
 
 .caption-text {
-  font-size: 0.7rem;      /* 작은 글씨 */
+  font-size: 0.55rem;      /* 작은 글씨 */
   text-align: right;      /* 오른쪽 정렬 */
   width: 100%;
-  color: #ffffff;
+  color: #bcbcbc;
   padding-right: 10px;    /* 오른쪽 여백 */
   margin-top: 0.5rem;     /* 이미지 캔버스와 다운로드 버튼 사이 간격 */
 }
