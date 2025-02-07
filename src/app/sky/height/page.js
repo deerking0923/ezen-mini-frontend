@@ -184,7 +184,7 @@ export default function Home() {
       const ratio = newDistance / initialTouchData.startDistance;
       const dampingFactor = 0.5;
     let newScale = initialTouchData.initialScale * (1 + (ratio - 1) * dampingFactor);
-      if (newScale < 0.2) newScale = 0.2; // 최소 스케일 제한
+      //if (newScale < 0.2) newScale = 0.2; // 최소 스케일 제한
       const { pinchCenter } = initialTouchData;
       const oldScale = initialTouchData.initialScale;
       let newX = initialTouchData.initialPosition.x + pinchCenter.x * (1 - newScale / oldScale);
