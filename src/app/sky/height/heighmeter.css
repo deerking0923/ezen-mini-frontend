@@ -76,8 +76,8 @@ h1 {
 .image-canvas {
   position: relative;
   width: 100%;
-  max-width: 800px;
-  aspect-ratio: 800 / 467;
+  max-width: 1648px;
+  aspect-ratio: 1648 / 961;
   background-color: #fff;
   border: 1px solid #ccc;
   border-radius: 8px;
