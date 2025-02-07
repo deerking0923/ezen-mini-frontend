@@ -87,28 +87,38 @@ export default function Home() {
     }
   };
 
-  // 터치 이동 (touchmove)
-  const handleTouchMove = (e) => {
-    e.preventDefault();
+// 터치 이동 (touchmove)
+const handleTouchMove = (e) => {
+  e.preventDefault();
 
-    if (!initialTouchData) return;
+  if (!initialTouchData) return;
 
-    if (initialTouchData.type === "drag" && e.touches.length === 1) {
-      const { pageX, pageY } = e.touches[0];
-      const deltaX = pageX - initialTouchData.startX;
-      const deltaY = pageY - initialTouchData.startY;
-      setPosition({
-        x: initialTouchData.initialX + deltaX,
-        y: initialTouchData.initialY + deltaY,
-      });
-    } else if (initialTouchData.type === "pinch" && e.touches.length === 2) {
-      const touch1 = e.touches[0];
-      const touch2 = e.touches[1];
-      const newDistance = getDistance(touch1, touch2);
-      const ratio = newDistance / initialTouchData.startDistance;
-      setScale(initialTouchData.initialScale * ratio);
-    }
-  };
+  if (initialTouchData.type === "drag" && e.touches.length === 1) {
+    const { pageX, pageY } = e.touches[0];
+    const deltaX = pageX - initialTouchData.startX;
+    const deltaY = pageY - initialTouchData.startY;
+
+    // 드래그 민감도 보정 인자 (예: 1.5를 곱하면 실제 이동량보다 1.5배 크게 움직임)
+    const dragMultiplier = 1.5;
+
+    setPosition({
+      x: initialTouchData.initialX + deltaX * dragMultiplier,
+      y: initialTouchData.initialY + deltaY * dragMultiplier,
+    });
+  } else if (initialTouchData.type === "pinch" && e.touches.length === 2) {
+    const touch1 = e.touches[0];
+    const touch2 = e.touches[1];
+    const newDistance = getDistance(touch1, touch2);
+    const ratio = newDistance / initialTouchData.startDistance;
+
+    // 줌 민감도 보정 인자 (예: 0.5를 사용하면 확대/축소 효과가 50%로 줄어듦)
+    const zoomSensitivity = 0.5;
+    // 기본적으로 ratio는 1보다 클 경우 확대, 1보다 작으면 축소합니다.
+    // (ratio - 1) 값에 zoomSensitivity를 곱한 후, 1을 더해 보정합니다.
+    setScale(initialTouchData.initialScale * (1 + (ratio - 1) * zoomSensitivity));
+  }
+};
+
 
   // 터치 종료 (touchend)
   const handleTouchEnd = (e) => {
@@ -189,7 +199,7 @@ export default function Home() {
           />
         )}
         <Image
-          src="/sky-height.png"
+          src="/height.png"
           alt="Overlay"
           fill
           style={{ objectFit: "contain" }}
