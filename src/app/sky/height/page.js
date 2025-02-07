@@ -351,7 +351,7 @@ export default function Home() {
 
       {/* 새로운 캡션 텍스트 추가 (이미지 캔버스 바로 아래, 다운로드 버튼 위) */}
       <div className="caption-text">
-        사진 출처 - &lt;네이버 Sky 카페 - 큐큘님&gt; [미세팁] 카페기준 키재기
+        출처: &lt;네이버 Sky 카페 - 큐큘님&gt; [미세팁] 카페기준 키재기
       </div>
 
       <div className="download-container">
@@ -363,7 +363,7 @@ export default function Home() {
         <div className="modal" onClick={() => setShowInstructions(false)}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
             <p className="popup-header">
-              사진 출처 - &lt;네이버 Sky 카페 - 미욘새님&gt; 키 재는 방법 [지켜야 할 사항] 정리
+              출처 - &lt;네이버 Sky 카페 - 미욘새님&gt; 키 재는 방법 [지켜야 할 사항] 정리
             </p>
             <button className="close-btn" onClick={() => setShowInstructions(false)}>
               &times;
