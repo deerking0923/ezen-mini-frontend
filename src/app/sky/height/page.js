@@ -4,6 +4,7 @@ import { useState, useRef, useEffect } from "react";
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import "./heighmeter.css";
+import Head from 'next/head';
 
 /** html2canvas는 서버 사이드에서 동작할 수 없으므로 ssr: false 옵션으로 동적 임포트 */
 const html2canvas = dynamic(() => import("html2canvas"), { ssr: false });
@@ -240,6 +241,14 @@ export default function Home() {
   };
 
   return (
+    <>
+    <Head>
+    <title>Sky 키 재는 사이트</title>
+    <meta property="og:title" content="Sky 키 재는 사이트" />
+    <meta property="og:description" content="made by 진사슴" />
+    <meta property="og:url" content="https://realdeerworld.com/sky/height" />
+    {/* 필요에 따라 추가 메타 태그 작성 */}
+  </Head>
     <main className="container">
       <h1>
         빛아 키 측정 사이트 <span className="subtitle">made by 진사슴</span>
@@ -373,5 +382,6 @@ export default function Home() {
         </div>
       )}
     </main>
+    </>
   );
 }
