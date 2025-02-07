@@ -111,7 +111,7 @@ export default function Home() {
 
     const oldScale = scale;
     const zoomIn = e.deltaY < 0;
-    const step = 0.1;
+    const step = 0.05;
     let newScale = oldScale + (zoomIn ? step : -step);
     if (newScale < 0.1) newScale = 0.1; // 최소 스케일 제한
 
@@ -269,7 +269,7 @@ export default function Home() {
         <div className="zoom-controls">
           <button
             onClick={() => {
-              const newS = scale + 0.1;
+              const newS = scale + 0.01;
               const clampedPos = clampPosition(position.x, position.y, newS);
               setScale(newS);
               setPosition(clampedPos);
@@ -279,7 +279,7 @@ export default function Home() {
           </button>
           <button
             onClick={() => {
-              const newS = Math.max(0.1, scale - 0.1);
+              const newS = Math.max(0.1, scale - 0.01);
               const clampedPos = clampPosition(position.x, position.y, newS);
               setScale(newS);
               setPosition(clampedPos);
