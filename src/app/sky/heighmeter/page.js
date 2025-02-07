@@ -1,12 +1,11 @@
 "use client";
 
-import { useState, useRef } from "react";
-import dynamic from "next/dynamic"; // Next.js 동적 임포트
+import { useState } from "react";
+import dynamic from "next/dynamic";
 import Image from "next/image";
 import "./heighmeter.css";
 
-/** html2canvas는 서버 사이드에서 동작이 불가능하므로
- *  ssr: false 옵션으로 동적으로 임포트해야 합니다. */
+/** html2canvas는 서버 사이드에서 동작할 수 없으므로 ssr: false 옵션으로 동적 임포트 */
 const html2canvas = dynamic(() => import("html2canvas"), { ssr: false });
 
 export default function Home() {
@@ -26,12 +25,12 @@ export default function Home() {
     }
   };
 
-  // 확대/축소
+  // 확대/축소 처리
   const handleZoom = (zoomIn) => {
     setScale((prev) => Math.max(0.1, prev + (zoomIn ? 0.001 : -0.001)));
   };
 
-  // 마우스 드래그로 위치 이동
+  // 마우스 드래그로 이미지 이동
   const handleDrag = (e) => {
     if (e.buttons !== 1) return;
     setPosition((prev) => ({
@@ -40,7 +39,7 @@ export default function Home() {
     }));
   };
 
-  // 마우스 휠
+  // 마우스 휠: cancelable일 경우에만 preventDefault 호출
   const handleWheel = (e) => {
     if (e.cancelable) {
       e.preventDefault();
@@ -48,31 +47,28 @@ export default function Home() {
     const zoomIn = e.deltaY < 0;
     setScale((prev) => Math.max(0.1, prev + (zoomIn ? 0.02 : -0.02)));
   };
-  
 
-  // *** html2canvas로 DOM을 캡처하여 다운로드 ***
+  // html2canvas로 DOM 캡처 후 다운로드
   const handleDownload = async () => {
     if (!uploadedImage) return;
-  
+
     try {
-      // 여기서 html2canvas를 동적 임포트하여 default export를 받아옴
+      // 동적으로 html2canvas 모듈 임포트
       const { default: html2canvas } = await import("html2canvas");
       const element = document.querySelector(".image-canvas");
       if (!element) {
         console.error("캡처할 요소를 찾을 수 없습니다.");
         return;
       }
-  
-      // html2canvas 옵션에 useCORS를 추가하여 CORS 문제 예방
+
+      // useCORS 옵션을 추가해 CORS 문제 예방
       const canvas = await html2canvas(element, { useCORS: true });
-      
-      // 디버깅: canvas가 실제 HTMLCanvasElement인지 확인
       console.log("캔버스 객체:", canvas);
       if (typeof canvas.toDataURL !== "function") {
         console.error("캔버스에 toDataURL이 없습니다:", canvas);
         return;
       }
-      
+
       const dataURL = canvas.toDataURL("image/png");
       const link = document.createElement("a");
       link.href = dataURL;
@@ -84,46 +80,27 @@ export default function Home() {
       console.error("이미지 다운로드 중 에러 발생:", err);
     }
   };
-  
 
   return (
     <main className="container">
       <h1>게임 캐릭터 키 측정</h1>
 
       <div className="controls">
-        {/* 업로드 */}
+        {/* 이미지 업로드 및 확대/축소 컨트롤 */}
         <input type="file" accept="image/*" onChange={handleImageUpload} />
-
         <div className="zoom-controls">
           <button onClick={() => handleZoom(true)}>확대</button>
           <button onClick={() => handleZoom(false)}>축소</button>
         </div>
-
-        {/* <div className="slider-container">
-          <label htmlFor="scale-slider">Zoom: </label>
-          <input
-            id="scale-slider"
-            type="range"
-            min="0.1"
-            max="3"
-            step="0.01"
-            value={scale}
-            onChange={(e) => setScale(parseFloat(e.target.value))}
-          />
-        </div> */}
-
-        <button onClick={handleDownload}>결과 다운로드</button>
       </div>
 
-      {/* 여기 .image-canvas를 캡처하면,
-          업로드 이미지 + 오버레이가 포함된 최종 결과가 그대로 스샷됩니다. */}
+      {/* 이미지 캔버스: 업로드된 이미지와 오버레이(가이드)를 표시 */}
       <div
         className="image-canvas"
         onMouseMove={handleDrag}
         onMouseDown={(e) => e.preventDefault()}
         onWheel={handleWheel}
       >
-        {/* 사용자가 업로드한 이미지 */}
         {uploadedImage && (
           <img
             src={uploadedImage}
@@ -135,15 +112,18 @@ export default function Home() {
           />
         )}
 
-        {/* 투명 PNG 레이어 (가이드) */}
         <Image
-  src="/height.png"
-  alt="Overlay"
-  fill
-  style={{ objectFit: "contain" }}
-  className="overlay"
-/>
+          src="/height.png"
+          alt="Overlay"
+          fill
+          style={{ objectFit: "contain" }}
+          className="overlay"
+        />
+      </div>
 
+      {/* 다운로드 버튼: 이미지 캔버스 아래에 배치 */}
+      <div className="download-container">
+        <button onClick={handleDownload}>결과 다운로드</button>
       </div>
     </main>
   );
