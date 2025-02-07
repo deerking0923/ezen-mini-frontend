@@ -20,6 +20,7 @@ export default function Home() {
 
   // 터치(핀치/드래그) 관련 저장
   const [initialTouchData, setInitialTouchData] = useState(null);
+  const [showInstructions, setShowInstructions] = useState(false);
 
   // 캔버스 DOM 참조
   const canvasRef = useRef(null);
@@ -259,71 +260,89 @@ export default function Home() {
       console.error("이미지 다운로드 중 오류:", err);
     }
   };
-
   return (
-    <main className="container">
-      <h1>게임 캐릭터 키 측정</h1>
+<main className="container">
+  <h1>
+    빛아 키 측정 사이트 <span className="subtitle">made by 진사슴</span>
+  </h1>
 
-      <div className="controls">
-        <input type="file" accept="image/*" onChange={handleImageUpload} />
-        <div className="zoom-controls">
-          <button
-            onClick={() => {
-              const newS = scale + 0.01;
-              const clampedPos = clampPosition(position.x, position.y, newS);
-              setScale(newS);
-              setPosition(clampedPos);
-            }}
-          >
-            확대
-          </button>
-          <button
-            onClick={() => {
-              const newS = Math.max(0.1, scale - 0.01);
-              const clampedPos = clampPosition(position.x, position.y, newS);
-              setScale(newS);
-              setPosition(clampedPos);
-            }}
-          >
-            축소
-          </button>
-        </div>
-      </div>
+  <div className="instructions-btn-container">
+    <button onClick={() => setShowInstructions(true)}>측정 방법 보기</button>
+  </div>
 
-      <div
-        className="image-canvas"
-        ref={canvasRef}
-        onWheel={handleWheel}
-        onMouseMove={handleDrag}
-        onMouseDown={(e) => e.preventDefault()}
+  <div className="controls">
+    <input type="file" accept="image/*" onChange={handleImageUpload} />
+    <div className="zoom-controls">
+      <button
+        onClick={() => {
+          const newS = scale + 0.01;
+          const clampedPos = clampPosition(position.x, position.y, newS);
+          setScale(newS);
+          setPosition(clampedPos);
+        }}
       >
-        {uploadedImage && (
-          <img
-            src={uploadedImage}
-            alt="Uploaded"
-            className="uploaded-image"
-            onLoad={(e) => {
-              // 이미지 원본 크기 저장
-              const { naturalWidth, naturalHeight } = e.currentTarget;
-              setImageSize({ width: naturalWidth, height: naturalHeight });
-            }}
-            style={{
-              transform: `translate(${position.x}px, ${position.y}px) scale(${scale})`,
-            }}
-          />
-        )}
-        <Image
-          src="/height.png"
-          alt="Overlay"
-          fill
-          style={{ objectFit: "contain" }}
-          className="overlay"
-        />
-      </div>
+        확대
+      </button>
+      <button
+        onClick={() => {
+          const newS = Math.max(0.1, scale - 0.01);
+          const clampedPos = clampPosition(position.x, position.y, newS);
+          setScale(newS);
+          setPosition(clampedPos);
+        }}
+      >
+        축소
+      </button>
+    </div>
+  </div>
 
-      <div className="download-container">
-        <button onClick={handleDownload}>결과 다운로드</button>
+  <div
+    className="image-canvas"
+    ref={canvasRef}
+    onWheel={handleWheel}
+    onMouseMove={handleDrag}
+    onMouseDown={(e) => e.preventDefault()}
+  >
+    {uploadedImage && (
+      <img
+        src={uploadedImage}
+        alt="Uploaded"
+        className="uploaded-image"
+        onLoad={(e) => {
+          const { naturalWidth, naturalHeight } = e.currentTarget;
+          setImageSize({ width: naturalWidth, height: naturalHeight });
+        }}
+        style={{
+          transform: `translate(${position.x}px, ${position.y}px) scale(${scale})`,
+        }}
+      />
+    )}
+    <Image
+      src="/height.png"
+      alt="Overlay"
+      fill
+      style={{ objectFit: "contain" }}
+      className="overlay"
+    />
+  </div>
+
+  <div className="download-container">
+    <button onClick={handleDownload}>결과 다운로드</button>
+  </div>
+
+  {/* 모달 팝업 */}
+  {showInstructions && (
+    <div className="modal" onClick={() => setShowInstructions(false)}>
+      <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+        <button className="close-btn" onClick={() => setShowInstructions(false)}>
+          &times;
+        </button>
+        <img src="/guide.png" alt="측정 방법" />
       </div>
-    </main>
+    </div>
+  )}
+</main>
+
+
   );
 }
