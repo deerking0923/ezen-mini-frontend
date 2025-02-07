@@ -1,0 +1,74 @@
+/* 전체 컨테이너 스타일 */
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    height: 100vh;
+    gap: 20px;
+    background-color: #001f3f; /* 네이비 색 */
+    color: white;
+    padding-top: 20px;
+  }
+  
+  /* 업로드 컨트롤 및 버튼 영역 */
+  .controls {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .controls input[type="file"] {
+    padding: 5px;
+  }
+  
+  .controls button {
+    padding: 5px 10px;
+    border: 1px solid #ccc;
+    background-color: #e0e0e0;
+    cursor: pointer;
+  }
+  
+  .controls button:hover {
+    background-color: #d0d0d0;
+  }
+  
+  /* 슬라이더 컨테이너 */
+  .slider-container {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  
+  /* 이미지 캔버스 영역 */
+  .image-canvas {
+    width: 740px;
+    height:432px;
+    position: relative;
+    border: 2px solid #ccc;
+    overflow: hidden;
+    background-color: #fff;
+  }
+  
+  /* 업로드된 이미지 스타일 */
+  .uploaded-image {
+    position: absolute;
+    z-index: 1;
+    cursor: grab;
+    transition: transform 0.2s ease-out; /* 부드러운 애니메이션 효과 */
+  }
+  
+  .uploaded-image:active {
+    cursor: grabbing;
+  }
+  
+  /* 오버레이 PNG 스타일 */
+  .overlay {
+    pointer-events: none; /* 드래그 및 클릭 방지 */
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 2;
+  }
+  

@@ -13,7 +13,7 @@ export default function Layout({ children }) {
   }, []);
 
   // (1) 홈 페이지('/')에서는 헤더 없이 보여줌
-  if (pathname === '/') {
+  if (pathname === '/' || pathname === '/sky/heighmeter') {
     return (
       <html lang="ko">
         <body>
