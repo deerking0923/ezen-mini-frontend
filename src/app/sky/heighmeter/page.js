@@ -189,7 +189,7 @@ export default function Home() {
           />
         )}
         <Image
-          src="/height.png"
+          src="/sky-height.png"
           alt="Overlay"
           fill
           style={{ objectFit: "contain" }}

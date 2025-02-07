@@ -41,8 +41,8 @@
 */
 .image-canvas {
   width: 100%;
-  max-width: 800px;
-  aspect-ratio: 800 / 467;
+  max-width: 1648px;
+  aspect-ratio: 1648 / 961;
   position: relative;
   border: 2px solid #ccc;
   overflow: hidden;
