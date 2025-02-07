@@ -25,11 +25,23 @@ export default function Home() {
   // 캔버스 DOM 참조
   const canvasRef = useRef(null);
 
+  // 방향키 이동 간격 (초기값 5)
+  const [arrowStep, setArrowStep] = useState(5);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      if (window.innerWidth < 768) {
+        setArrowStep(2); // 모바일에서는 더 정밀하게 (예: 2픽셀)
+      } else {
+        setArrowStep(5);
+      }
+    }
+  }, []);
+
   // PC / 모바일에 따라 확대/축소 버튼의 스텝을 다르게 설정
   const [zoomStep, setZoomStep] = useState(0.01);
 
   useEffect(() => {
-    // 창 너비 768px 미만이면 모바일로 간주 (필요에 따라 임계값 조절)
     if (typeof window !== "undefined") {
       if (window.innerWidth < 768) {
         setZoomStep(0.001); // 모바일에서는 좀 더 정밀하게
@@ -258,6 +270,46 @@ export default function Home() {
             }}
           >
             축소
+          </button>
+        </div>
+
+        {/* 방향키 컨트롤 추가 (일렬로 표시) */}
+        <div className="arrow-controls">
+          <button
+            className="arrow-btn"
+            onClick={() => {
+              const newPos = clampPosition(position.x, position.y - arrowStep, scale);
+              setPosition(newPos);
+            }}
+          >
+            ↑
+          </button>
+          <button
+            className="arrow-btn"
+            onClick={() => {
+              const newPos = clampPosition(position.x, position.y + arrowStep, scale);
+              setPosition(newPos);
+            }}
+          >
+            ↓
+          </button>
+          <button
+            className="arrow-btn"
+            onClick={() => {
+              const newPos = clampPosition(position.x - arrowStep, position.y, scale);
+              setPosition(newPos);
+            }}
+          >
+            ←
+          </button>
+          <button
+            className="arrow-btn"
+            onClick={() => {
+              const newPos = clampPosition(position.x + arrowStep, position.y, scale);
+              setPosition(newPos);
+            }}
+          >
+            →
           </button>
         </div>
       </div>
