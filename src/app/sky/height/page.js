@@ -44,7 +44,7 @@ export default function Home() {
   useEffect(() => {
     if (typeof window !== "undefined") {
       if (window.innerWidth < 768) {
-        setZoomStep(0.005); // 모바일에서는 좀 더 정밀하게
+        setZoomStep(0.0005); // 모바일에서는 좀 더 정밀하게
       } else {
         setZoomStep(0.01);
       }
