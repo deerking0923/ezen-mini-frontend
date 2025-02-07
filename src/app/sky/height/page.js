@@ -324,8 +324,15 @@ export default function Home() {
       style={{ objectFit: "contain" }}
       className="overlay"
     />
+    {/* 이미지 캔버스 우측 하단 텍스트 */}
+    <div className="credit-text">
+      &lt;realdeerworld.com/sky/height&gt;
+    </div>
   </div>
-
+{/* 새로운 캡션 텍스트 추가 */}
+<div className="caption-text">
+  사진 출처 - &lt;네이버 Sky 카페 - 큐큘님&gt; [미세팁] 카페기준 키재기
+</div>
   <div className="download-container">
     <button onClick={handleDownload}>결과 다운로드</button>
   </div>
@@ -334,6 +341,10 @@ export default function Home() {
   {showInstructions && (
     <div className="modal" onClick={() => setShowInstructions(false)}>
       <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+        {/* 모달 상단에 출처 텍스트 */}
+        <p className="popup-header">
+          사진 출처 - &lt;네이버 Sky 카페 - 미욘새님&gt; 키 재는 방법 [지켜야 할 사항] 정리
+        </p>
         <button className="close-btn" onClick={() => setShowInstructions(false)}>
           &times;
         </button>
@@ -342,6 +353,7 @@ export default function Home() {
     </div>
   )}
 </main>
+
 
 
   );

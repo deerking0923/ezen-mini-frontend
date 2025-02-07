@@ -54,7 +54,8 @@ h1 {
   gap: 0.5rem; /* 버튼 사이에 미세한 간격 추가 */
 }
 
-.controls button , .instructions-btn-container button{
+.controls button,
+.instructions-btn-container button {
   padding: 0.5rem 1.25rem;
   border: none;
   border-radius: 4px;
@@ -66,7 +67,8 @@ h1 {
   transition: background 0.3s ease;
 }
 
-.controls button:hover , .instructions-btn-container button:hover{
+.controls button:hover,
+.instructions-btn-container button:hover {
   background: #005bb5;
 }
 
@@ -109,12 +111,24 @@ h1 {
   pointer-events: none;
 }
 
+/* 이미지 캔버스 우측 하단 텍스트 */
+.credit-text {
+  position: absolute;
+  bottom: 5px;
+  right: 5px;
+  font-size: 0.7rem;
+  color: #333;
+  background-color: rgba(255, 255, 255, 0.7);
+  padding: 2px 5px;
+  border-radius: 3px;
+}
+
 /* 다운로드 버튼 영역 */
 .download-container {
   margin-top: 1rem;
 }
 
-.download-container button{
+.download-container button {
   padding: 0.75rem 1.5rem;
   border: none;
   border-radius: 4px;
@@ -126,9 +140,10 @@ h1 {
   transition: background 0.3s ease;
 }
 
-.download-container button:hover{
+.download-container button:hover {
   background: linear-gradient(135deg, #218838, #1e7e34);
 }
+
 /* 모달 전체 오버레이 (화면 전체 덮기) */
 .modal {
   position: fixed;
@@ -156,12 +171,21 @@ h1 {
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }
 
+/* 모달 상단 헤더 텍스트 */
+.popup-header {
+  font-size: 0.9rem;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 1rem;
+  color: #333;
+}
+
 /* 팝업창 닫기 버튼 (X 버튼) */
 .close-btn {
   position: absolute;
   top: 0.5rem;
   right: 0.5rem;
-  background-color: #ddd;   /* 버튼 배경색 변경 */
+  background-color: #ddd; /* 버튼 배경색 변경 */
   border: none;
   border-radius: 50%;
   font-size: 1.2rem;
@@ -181,6 +205,16 @@ h1 {
   margin: 2rem auto 0;
   height: auto;
 }
+
+.caption-text {
+  font-size: 0.7rem;      /* 작은 글씨 */
+  text-align: right;      /* 오른쪽 정렬 */
+  width: 100%;
+  color: #ffffff;
+  padding-right: 10px;    /* 오른쪽 여백 */
+  margin-top: 0.5rem;     /* 이미지 캔버스와 다운로드 버튼 사이 간격 */
+}
+
 
 /* 반응형 미디어 쿼리 */
 @media (max-width: 600px) {
