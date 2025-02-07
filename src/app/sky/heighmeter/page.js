@@ -10,62 +10,134 @@ const html2canvas = dynamic(() => import("html2canvas"), { ssr: false });
 
 export default function Home() {
   const [uploadedImage, setUploadedImage] = useState(null);
+
+  // 스케일 / 위치
   const [scale, setScale] = useState(1);
   const [position, setPosition] = useState({ x: 0, y: 0 });
+
+  // 이미지 원본 크기 (naturalWidth, naturalHeight)
+  const [imageSize, setImageSize] = useState({ width: 0, height: 0 });
+
+  // 터치(핀치/드래그) 관련 저장
   const [initialTouchData, setInitialTouchData] = useState(null);
 
-  // 이미지 캔버스 DOM 참조 (터치 이벤트 직접 등록 용)
+  // 캔버스 DOM 참조
   const canvasRef = useRef(null);
 
-  // 이미지 업로드 처리
+  // 이미지 업로드
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
     if (file) {
       const reader = new FileReader();
-      reader.onload = (event) => {
-        setUploadedImage(event.target.result);
-      };
+      reader.onload = (event) => setUploadedImage(event.target.result);
       reader.readAsDataURL(file);
     }
   };
 
-  // 확대/축소 처리 (버튼 클릭)
-  const handleZoom = (zoomIn) => {
-    setScale((prev) => Math.max(0.1, prev + (zoomIn ? 0.001 : -0.001)));
-  };
+  /**
+   * 위치를 제한(clamp)하는 함수
+   *  - "이미지 크기의 세 배" 범위 내에서만 이동 가능하도록 설정
+   */
+  function clampPosition(posX, posY, newScale) {
+    // 캔버스 요소가 없으면 그대로 반환
+    const canvas = canvasRef.current;
+    if (!canvas) return { x: posX, y: posY };
 
-  // PC: 마우스 드래그로 이미지 이동
+    // 이미지 원본 크기
+    const { width: imgW, height: imgH } = imageSize;
+    // 아직 이미지 로드 전이면 그대로
+    if (imgW === 0 || imgH === 0) {
+      return { x: posX, y: posY };
+    }
+
+    // 캔버스 크기
+    const rect = canvas.getBoundingClientRect();
+    const containerWidth = rect.width;
+    const containerHeight = rect.height;
+
+    // 스케일 적용 후의 실제 이미지 크기
+    const scaledWidth = imgW * newScale;
+    const scaledHeight = imgH * newScale;
+
+    // -------------------------------------------
+    // "이미지 크기의 세 배(3배)" 범위로 이동 허용
+    // -------------------------------------------
+    // 예: 가로 방향
+    //   - 최소 X: (컨테이너 폭 - 이미지폭 * 3)
+    //     => 왼쪽으로 최대 2*이미지폭만큼 추가로 빠져나갈 수 있음
+    //   - 최대 X: 이미지폭 * 2
+    //     => 오른쪽으로 최대 2*이미지폭만큼 빠져나갈 수 있음
+    // 세로 방향도 마찬가지 로직
+
+    const multiple = 1.5; // 여기서 3을 다른 값으로 바꾸면 범위 조절 가능!
+    const minX = containerWidth - scaledWidth * multiple;
+    const maxX = scaledWidth * (multiple - 1);
+
+    const minY = containerHeight - scaledHeight * multiple;
+    const maxY = scaledHeight * (multiple - 1);
+
+    // 실제 이동값을 위 범위로 제한
+    const clampedX = Math.min(Math.max(posX, minX), maxX);
+    const clampedY = Math.min(Math.max(posY, minY), maxY);
+
+    return { x: clampedX, y: clampedY };
+  }
+
+  // --- 드래그 (마우스) ---
   const handleDrag = (e) => {
     if (e.buttons !== 1) return;
-    setPosition((prev) => ({
-      x: prev.x + e.movementX,
-      y: prev.y + e.movementY,
-    }));
+
+    // 새 위치
+    const newX = position.x + e.movementX;
+    const newY = position.y + e.movementY;
+
+    // clamp
+    const clamped = clampPosition(newX, newY, scale);
+    setPosition(clamped);
   };
 
-  // PC: 마우스 휠 이벤트
+  // --- 휠 줌 (마우스) ---
   const handleWheel = (e) => {
     if (e.cancelable) {
       e.preventDefault();
     }
+
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const rect = canvas.getBoundingClientRect();
+
+    const offsetX = e.clientX - rect.left;
+    const offsetY = e.clientY - rect.top;
+
+    const oldScale = scale;
     const zoomIn = e.deltaY < 0;
-    setScale((prev) => Math.max(0.1, prev + (zoomIn ? 0.02 : -0.02)));
+    const step = 0.1;
+    let newScale = oldScale + (zoomIn ? step : -step);
+    if (newScale < 0.1) newScale = 0.1; // 최소 스케일 제한
+
+    // 마우스 기준 확대/축소
+    let newX = position.x + offsetX * (1 - newScale / oldScale);
+    let newY = position.y + offsetY * (1 - newScale / oldScale);
+
+    // clamp
+    const clamped = clampPosition(newX, newY, newScale);
+
+    setScale(newScale);
+    setPosition(clamped);
   };
 
-  // 터치 간 거리 계산 함수 (pinch 제스처 용)
+  // --- 터치 계산용 ---
   const getDistance = (touch1, touch2) => {
     const dx = touch2.pageX - touch1.pageX;
     const dy = touch2.pageY - touch1.pageY;
     return Math.sqrt(dx * dx + dy * dy);
   };
 
-  // 터치 시작 (touchstart)
+  // --- 터치 시작 ---
   const handleTouchStart = (e) => {
-    // 여기서 preventDefault()를 호출하려면 non-passive 리스너여야 합니다.
     e.preventDefault();
-
     if (e.touches.length === 1) {
-      // 한 손가락: 드래그 시작
+      // 한 손가락 드래그
       const { pageX, pageY } = e.touches[0];
       setInitialTouchData({
         type: "drag",
@@ -75,64 +147,84 @@ export default function Home() {
         initialY: position.y,
       });
     } else if (e.touches.length === 2) {
-      // 두 손가락: pinch-to-zoom 시작
-      const touch1 = e.touches[0];
-      const touch2 = e.touches[1];
-      const distance = getDistance(touch1, touch2);
+      // 두 손가락 핀치 줌
+      const [t1, t2] = e.touches;
+      const distance = getDistance(t1, t2);
+
+      // 핀치 중심(두 손가락 중간 지점)
+      const pinchCenter = {
+        x: (t1.pageX + t2.pageX) / 2,
+        y: (t1.pageY + t2.pageY) / 2,
+      };
       setInitialTouchData({
         type: "pinch",
         startDistance: distance,
         initialScale: scale,
+        initialPosition: { ...position },
+        pinchCenter,
       });
     }
   };
 
-// 터치 이동 (touchmove)
-const handleTouchMove = (e) => {
-  e.preventDefault();
+  // --- 터치 이동 ---
+  const handleTouchMove = (e) => {
+    e.preventDefault();
+    if (!initialTouchData) return;
 
-  if (!initialTouchData) return;
+    const dragMultiplier = 1.0;   // 드래그 민감도
+    const zoomSensitivity = 1.0;  // 줌 민감도 (1 = 원래 비율)
 
-  if (initialTouchData.type === "drag" && e.touches.length === 1) {
-    const { pageX, pageY } = e.touches[0];
-    const deltaX = pageX - initialTouchData.startX;
-    const deltaY = pageY - initialTouchData.startY;
+    if (initialTouchData.type === "drag" && e.touches.length === 1) {
+      const { pageX, pageY } = e.touches[0];
+      const deltaX = pageX - initialTouchData.startX;
+      const deltaY = pageY - initialTouchData.startY;
+      const newX = initialTouchData.initialX + deltaX * dragMultiplier;
+      const newY = initialTouchData.initialY + deltaY * dragMultiplier;
 
-    // 드래그 민감도 보정 인자 (예: 1.5를 곱하면 실제 이동량보다 1.5배 크게 움직임)
-    const dragMultiplier = 1.5;
+      // clamp
+      const clamped = clampPosition(newX, newY, scale);
+      setPosition(clamped);
+    } else if (initialTouchData.type === "pinch" && e.touches.length === 2) {
+      const [t1, t2] = e.touches;
+      const newDistance = getDistance(t1, t2);
+      const ratio = newDistance / initialTouchData.startDistance;
 
-    setPosition({
-      x: initialTouchData.initialX + deltaX * dragMultiplier,
-      y: initialTouchData.initialY + deltaY * dragMultiplier,
-    });
-  } else if (initialTouchData.type === "pinch" && e.touches.length === 2) {
-    const touch1 = e.touches[0];
-    const touch2 = e.touches[1];
-    const newDistance = getDistance(touch1, touch2);
-    const ratio = newDistance / initialTouchData.startDistance;
+      // 새 스케일
+      const newScale =
+        initialTouchData.initialScale *
+        (1 + (ratio - 1) * zoomSensitivity);
 
-    // 줌 민감도 보정 인자 (예: 0.5를 사용하면 확대/축소 효과가 50%로 줄어듦)
-    const zoomSensitivity = 0.5;
-    // 기본적으로 ratio는 1보다 클 경우 확대, 1보다 작으면 축소합니다.
-    // (ratio - 1) 값에 zoomSensitivity를 곱한 후, 1을 더해 보정합니다.
-    setScale(initialTouchData.initialScale * (1 + (ratio - 1) * zoomSensitivity));
-  }
-};
+      // 핀치 중심 기준 보정
+      const { pinchCenter } = initialTouchData;
+      const oldScale = initialTouchData.initialScale;
+      let newX =
+        initialTouchData.initialPosition.x +
+        pinchCenter.x * (1 - newScale / oldScale);
+      let newY =
+        initialTouchData.initialPosition.y +
+        pinchCenter.y * (1 - newScale / oldScale);
 
+      // clamp
+      const clamped = clampPosition(newX, newY, newScale);
 
-  // 터치 종료 (touchend)
-  const handleTouchEnd = (e) => {
+      setScale(newScale);
+      setPosition(clamped);
+    }
+  };
+
+  // --- 터치 종료 ---
+  const handleTouchEnd = () => {
     setInitialTouchData(null);
   };
 
-  // useEffect를 사용하여 터치 이벤트를 { passive: false } 옵션으로 등록
+  // --- 리스너 등록 (passive: false) ---
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
     const touchStartHandler = (e) => handleTouchStart(e);
     const touchMoveHandler = (e) => handleTouchMove(e);
-    const touchEndHandler = (e) => handleTouchEnd(e);
+    const touchEndHandler = () => handleTouchEnd();
 
     canvas.addEventListener("touchstart", touchStartHandler, { passive: false });
     canvas.addEventListener("touchmove", touchMoveHandler, { passive: false });
@@ -145,14 +237,14 @@ const handleTouchMove = (e) => {
     };
   }, [canvasRef, position, scale, initialTouchData]);
 
-  // html2canvas로 DOM 캡처 후 다운로드
+  // --- html2canvas 캡처 ---
   const handleDownload = async () => {
     if (!uploadedImage) return;
     try {
       const { default: html2canvas } = await import("html2canvas");
       const element = document.querySelector(".image-canvas");
       if (!element) {
-        console.error("캡처할 요소를 찾을 수 없습니다.");
+        console.error("캔버스 요소를 찾을 수 없습니다.");
         return;
       }
       const canvas = await html2canvas(element, { useCORS: true });
@@ -164,7 +256,7 @@ const handleTouchMove = (e) => {
       link.click();
       document.body.removeChild(link);
     } catch (err) {
-      console.error("이미지 다운로드 중 에러 발생:", err);
+      console.error("이미지 다운로드 중 오류:", err);
     }
   };
 
@@ -175,26 +267,48 @@ const handleTouchMove = (e) => {
       <div className="controls">
         <input type="file" accept="image/*" onChange={handleImageUpload} />
         <div className="zoom-controls">
-          <button onClick={() => handleZoom(true)}>확대</button>
-          <button onClick={() => handleZoom(false)}>축소</button>
+          <button
+            onClick={() => {
+              const newS = scale + 0.1;
+              const clampedPos = clampPosition(position.x, position.y, newS);
+              setScale(newS);
+              setPosition(clampedPos);
+            }}
+          >
+            확대
+          </button>
+          <button
+            onClick={() => {
+              const newS = Math.max(0.1, scale - 0.1);
+              const clampedPos = clampPosition(position.x, position.y, newS);
+              setScale(newS);
+              setPosition(clampedPos);
+            }}
+          >
+            축소
+          </button>
         </div>
       </div>
 
-      {/* onTouch* 핸들러는 useEffect에서 직접 등록하므로 JSX에는 포함하지 않습니다 */}
       <div
         className="image-canvas"
         ref={canvasRef}
+        onWheel={handleWheel}
         onMouseMove={handleDrag}
         onMouseDown={(e) => e.preventDefault()}
-        onWheel={handleWheel}
       >
         {uploadedImage && (
           <img
             src={uploadedImage}
             alt="Uploaded"
             className="uploaded-image"
+            onLoad={(e) => {
+              // 이미지 원본 크기 저장
+              const { naturalWidth, naturalHeight } = e.currentTarget;
+              setImageSize({ width: naturalWidth, height: naturalHeight });
+            }}
             style={{
-              transform: `scale(${scale}) translate(${position.x}px, ${position.y}px)`,
+              transform: `translate(${position.x}px, ${position.y}px) scale(${scale})`,
             }}
           />
         )}

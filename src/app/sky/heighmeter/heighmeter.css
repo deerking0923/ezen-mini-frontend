@@ -1,4 +1,3 @@
-/* 전체 컨테이너 스타일 */
 .container {
   display: flex;
   flex-direction: column;
@@ -6,13 +5,12 @@
   justify-content: flex-start;
   min-height: 100vh;
   gap: 20px;
-  background-color: #001f3f; /* 네이비 색 */
+  background-color: #001f3f; /* 네이비 */
   color: white;
   padding: 20px;
   box-sizing: border-box;
 }
 
-/* 업로드 컨트롤 및 버튼 영역 */
 .controls {
   display: flex;
   flex-wrap: wrap;
@@ -30,15 +28,11 @@
   background-color: #e0e0e0;
   cursor: pointer;
 }
-
 .controls button:hover {
   background-color: #d0d0d0;
 }
 
-/* 이미지 캔버스 영역
-   - max-width: 800px으로 설정, 너비는 100%로 늘어나도록 처리
-   - aspect-ratio를 설정해 원본 비율을 유지 (800:467)
-*/
+/* 캔버스 영역 */
 .image-canvas {
   width: 100%;
   max-width: 800px;
@@ -47,59 +41,56 @@
   border: 2px solid #ccc;
   overflow: hidden;
   background-color: #fff;
-
-  /* Prevent browser's default scrolling & pinch-zoom on mobile */
+  /* 모바일에서 기본 제스처 방지 */
   touch-action: none;
 }
 
-/* 업로드된 이미지 스타일 */
+/* 업로드된 이미지 */
 .uploaded-image {
   position: absolute;
   z-index: 1;
   cursor: grab;
-  transition: transform 0.2s ease-out; /* 부드러운 애니메이션 효과 */
+  transition: transform 0.2s ease-out;
+
+  /* 변환 기준을 좌측 상단으로 설정하면 계산이 쉬움 */
+  transform-origin: 0 0;
 }
+
 .uploaded-image:active {
   cursor: grabbing;
 }
 
-/* 오버레이 PNG 스타일 */
 .overlay {
-  pointer-events: none; /* 드래그 및 클릭 방지 */
+  pointer-events: none;
   position: absolute;
   top: 0;
   left: 0;
   z-index: 2;
 }
 
-/* 다운로드 버튼 컨테이너 */
 .download-container {
   margin-top: 10px;
 }
 
-/* 반응형 미디어 쿼리 */
+/* 반응형 예시 */
 @media (max-width: 600px) {
   .container {
     gap: 10px;
     padding: 10px;
   }
-
   .controls {
     flex-direction: column;
     width: 100%;
     gap: 8px;
   }
-
   .controls input[type="file"] {
     width: 100%;
     max-width: 300px;
   }
-
   h1 {
     font-size: 1.5rem;
     text-align: center;
   }
-
   .image-canvas {
     margin: 0;
   }
