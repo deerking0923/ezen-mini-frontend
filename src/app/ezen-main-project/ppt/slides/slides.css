@@ -78,3 +78,23 @@
     background: black;
   }
   
+
+/* 커서 스타일링 */
+/* 기존 body 커서 설정은 제거하거나 auto로 설정 */
+body {
+  cursor: auto;
+}
+
+/* 커스텀 커서 요소 스타일 */
+/* 슬라이드 영역 내에서 사용할 커스텀 레이저 커서 */
+.laser-cursor {
+  position: absolute;      /* 부모(slider-container) 기준 위치 */
+  pointer-events: none;    /* 이벤트 방해하지 않도록 */
+  width: 16px;             /* 크기 조절 (원하는 크기로 변경 가능) */
+  height: 16px;
+  background-color: red;   /* 빨간색 */
+  border-radius: 50%;      /* 원형으로 */
+  box-shadow: 0 0 8px 4px rgba(255, 0, 0, 0.7); /* 레이저 느낌의 글로우 효과 */
+  transform: translate(-50%, -50%);
+  z-index: 9999;
+}
