@@ -43,8 +43,8 @@
   
   /* 이미지 캔버스 영역 */
   .image-canvas {
-    width: 740px;
-    height:432px;
+    width: 800px;
+    height: 467px;
     position: relative;
     border: 2px solid #ccc;
     overflow: hidden;
