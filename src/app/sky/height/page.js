@@ -31,7 +31,7 @@ export default function Home() {
   useEffect(() => {
     if (typeof window !== "undefined") {
       if (window.innerWidth < 768) {
-        setArrowStep(2); // 모바일에서는 더 정밀하게 (예: 2픽셀)
+        setArrowStep(1); // 모바일에서는 더 정밀하게 (예: 2픽셀)
       } else {
         setArrowStep(5);
       }
@@ -44,7 +44,7 @@ export default function Home() {
   useEffect(() => {
     if (typeof window !== "undefined") {
       if (window.innerWidth < 768) {
-        setZoomStep(0.001); // 모바일에서는 좀 더 정밀하게
+        setZoomStep(0.005); // 모바일에서는 좀 더 정밀하게
       } else {
         setZoomStep(0.01);
       }
