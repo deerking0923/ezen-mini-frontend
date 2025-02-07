@@ -168,8 +168,8 @@ export default function Home() {
     if (!initialTouchData) return;
 
     const dragMultiplier = 1.0;
-    const zoomSensitivity = 1.0;
-
+    // zoomSensitivity는 상태 변수로 사용 (모바일/PC에 따라 다름)
+    
     if (initialTouchData.type === "drag" && e.touches.length === 1) {
       const { pageX, pageY } = e.touches[0];
       const deltaX = pageX - initialTouchData.startX;
@@ -182,7 +182,9 @@ export default function Home() {
       const [t1, t2] = e.touches;
       const newDistance = getDistance(t1, t2);
       const ratio = newDistance / initialTouchData.startDistance;
-      const newScale = initialTouchData.initialScale * (1 + (ratio - 1) * zoomSensitivity);
+      const dampingFactor = 0.5;
+    let newScale = initialTouchData.initialScale * (1 + (ratio - 1) * dampingFactor);
+      if (newScale < 0.2) newScale = 0.2; // 최소 스케일 제한
       const { pinchCenter } = initialTouchData;
       const oldScale = initialTouchData.initialScale;
       let newX = initialTouchData.initialPosition.x + pinchCenter.x * (1 - newScale / oldScale);
@@ -192,7 +194,6 @@ export default function Home() {
       setPosition(clamped);
     }
   };
-
   // --- 터치 종료 ---
   const handleTouchEnd = () => {
     setInitialTouchData(null);
