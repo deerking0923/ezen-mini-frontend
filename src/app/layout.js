@@ -3,6 +3,9 @@ import './globals.css'; // 위에서 만든 전역 CSS
 import { useState, useEffect } from 'react';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
+import { Inter } from 'next/font/google';
+const inter = Inter({ subsets: ['latin'] });
+
 
 export default function Layout({ children }) {
   const [loading, setLoading] = useState(true);
@@ -16,6 +19,22 @@ export default function Layout({ children }) {
   if (pathname === '/' || pathname === '/sky/height' || pathname === '/main') {
     return (
       <html lang="ko">
+        <head>
+        {/* Google Analytics 추적 코드 */}
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-FTLELSQ2LC"></script>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', 'G-FTLELSQ2LC', {
+                page_path: window.location.pathname,
+              });
+            `,
+          }}
+        />
+      </head>
         <body>
           {loading && (
             <div className="loading-container">
@@ -36,6 +55,7 @@ export default function Layout({ children }) {
   // (2) 그 외 페이지에는 헤더가 나타남
   return (
     <html lang="ko">
+      
       <body>
         {loading && (
           <div className="loading-container">
