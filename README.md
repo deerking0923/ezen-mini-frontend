@@ -12,6 +12,7 @@
 - JS/CSS/HTML
 - JAVA 17
 - Maven
+- 구글 애널리틱스
 
 ## 버전 정보
 
