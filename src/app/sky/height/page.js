@@ -47,7 +47,7 @@ export default function Home() {
       if (window.innerWidth < 768) {
         setZoomStep(0.0005); // 모바일에서는 좀 더 정밀하게
       } else {
-        setZoomStep(0.01);
+        setZoomStep(0.003);
       }
     }
   }, []);
@@ -249,9 +249,45 @@ export default function Home() {
       <div className="instructions-btn-container">
         <button onClick={() => setShowInstructions(true)}>측정 방법 보기</button>
       </div>
-
       <div className="controls">
         <input type="file" accept="image/*" onChange={handleImageUpload} />
+      </div>
+
+      <div
+        className="image-canvas"
+        ref={canvasRef}
+        onWheel={handleWheel}
+        onMouseMove={handleDrag}
+        onMouseDown={(e) => e.preventDefault()}
+      >
+        {uploadedImage && (
+          <img
+            src={uploadedImage}
+            alt="Uploaded"
+            className="uploaded-image"
+            onLoad={(e) => {
+              const { naturalWidth, naturalHeight } = e.currentTarget;
+              setImageSize({ width: naturalWidth, height: naturalHeight });
+            }}
+            style={{
+              transform: `translate(${position.x}px, ${position.y}px) scale(${scale})`,
+            }}
+          />
+        )}
+       {/* 업로드 여부와 상관없이 항상 가이드라인 이미지(오버레이) 표시 */}
+        <img
+          src="/sky-height.png"
+          alt="Overlay"
+          className="overlay-fixed"
+        />
+
+        {/* 이미지 캔버스 우측 하단 텍스트 */}
+        <div className="credit-text">s
+          &lt;realdeerworld.com/sky/height&gt;
+        </div>
+      </div>
+
+      <div className="controls">
         <div className="zoom-controls">
           <button
             onClick={() => {
@@ -313,40 +349,6 @@ export default function Home() {
           >
             →
           </button>
-        </div>
-      </div>
-
-      <div
-        className="image-canvas"
-        ref={canvasRef}
-        onWheel={handleWheel}
-        onMouseMove={handleDrag}
-        onMouseDown={(e) => e.preventDefault()}
-      >
-        {uploadedImage && (
-          <img
-            src={uploadedImage}
-            alt="Uploaded"
-            className="uploaded-image"
-            onLoad={(e) => {
-              const { naturalWidth, naturalHeight } = e.currentTarget;
-              setImageSize({ width: naturalWidth, height: naturalHeight });
-            }}
-            style={{
-              transform: `translate(${position.x}px, ${position.y}px) scale(${scale})`,
-            }}
-          />
-        )}
- {/* 업로드 여부와 상관없이 항상 가이드라인 이미지(오버레이) 표시 */}
-<img
-  src="/sky-height.png"
-  alt="Overlay"
-  className="overlay-fixed"
-/>
-
-        {/* 이미지 캔버스 우측 하단 텍스트 */}
-        <div className="credit-text">
-          &lt;realdeerworld.com/sky/height&gt;
         </div>
       </div>
 
