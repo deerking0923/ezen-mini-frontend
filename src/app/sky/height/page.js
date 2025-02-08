@@ -47,7 +47,7 @@ export default function Home() {
       if (window.innerWidth < 768) {
         setZoomStep(0.0005); // 모바일에서는 좀 더 정밀하게
       } else {
-        setZoomStep(0.001);
+        setZoomStep(0.01);
       }
     }
   }, []);
@@ -323,20 +323,27 @@ export default function Home() {
         onMouseMove={handleDrag}
         onMouseDown={(e) => e.preventDefault()}
       >
-{uploadedImage && (
+        {uploadedImage && (
+          <img
+            src={uploadedImage}
+            alt="Uploaded"
+            className="uploaded-image"
+            onLoad={(e) => {
+              const { naturalWidth, naturalHeight } = e.currentTarget;
+              setImageSize({ width: naturalWidth, height: naturalHeight });
+            }}
+            style={{
+              transform: `translate(${position.x}px, ${position.y}px) scale(${scale})`,
+            }}
+          />
+        )}
+        {uploadedImage && (
   <img
     src="/sky-height.png"
     alt="Overlay"
     className="overlay-fixed"  // CSS에서 width/height 고정 스타일 적용
   />
 )}
-        <Image
-          src="/sky-height.png"
-          alt="Overlay"
-          fill
-          style={{ objectFit: "contain" }}
-          className="overlay"
-        />
         {/* 이미지 캔버스 우측 하단 텍스트 */}
         <div className="credit-text">
           &lt;realdeerworld.com/sky/height&gt;

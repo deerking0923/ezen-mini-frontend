@@ -239,6 +239,16 @@ h1 {
   background-color: #005bb5;
 }
 
+/* 기존 .overlay 대신 오버레이 이미지에 고정된 크기를 적용 */
+.overlay-fixed {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  /* object-fit을 제거하거나 필요한 경우 다른 값으로 조정 */
+  /* 예: object-fit: cover; 또는 기본값 */
+}
 
 
 /* 반응형 미디어 쿼리 */
