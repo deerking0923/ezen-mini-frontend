@@ -337,13 +337,13 @@ export default function Home() {
             }}
           />
         )}
-        {uploadedImage && (
-  <img
-    src="/sky-height.png"
-    alt="Overlay"
-    className="overlay-fixed"  // CSS에서 width/height 고정 스타일 적용
-  />
-)}
+ {/* 업로드 여부와 상관없이 항상 가이드라인 이미지(오버레이) 표시 */}
+<img
+  src="/sky-height.png"
+  alt="Overlay"
+  className="overlay-fixed"
+/>
+
         {/* 이미지 캔버스 우측 하단 텍스트 */}
         <div className="credit-text">
           &lt;realdeerworld.com/sky/height&gt;
