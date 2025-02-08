@@ -47,7 +47,7 @@ export default function Home() {
       if (window.innerWidth < 768) {
         setZoomStep(0.0005); // 모바일에서는 좀 더 정밀하게
       } else {
-        setZoomStep(0.001);
+        setZoomStep(0.01);
       }
     }
   }, []);
@@ -337,16 +337,16 @@ export default function Home() {
             }}
           />
         )}
-        <Image
+ {/* 업로드 여부와 상관없이 항상 가이드라인 이미지(오버레이) 표시 */}
+        <img
           src="/sky-height.png"
           alt="Overlay"
-          fill
-          style={{ objectFit: "contain" }}
-          className="overlay"
+          className="overlay-fixed"
         />
+
         {/* 이미지 캔버스 우측 하단 텍스트 */}
         <div className="credit-text">
-          &lt;realdeerworld.com&gt;
+          &lt;realdeerworld.com/sky/height&gt;
         </div>
       </div>
 
