@@ -1,0 +1,188 @@
+/* 페이지 전체 배경 설정 */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Arial', sans-serif;
+    background-color: #1a1a40; /* 네이비 색상 */
+    color: #f8f8f8;
+    overflow-x: hidden;
+    scroll-behavior: smooth; /* 부드러운 스크롤 */
+  }
+  
+  /* =====================
+     (1) 첫 화면 (Hero)
+     ===================== */
+  .hero {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 80vh; /* 화면 높이의 80% */
+    background-color: #1a1a40;
+    text-align: center;
+    padding: 0 20px; /* 모바일에서 좌우 여백 */
+  }
+  
+  .hero .title {
+    font-size: 3.5rem;
+    font-weight: bold;
+    color: #f1f1f1;
+    letter-spacing: 2px;
+    margin: 0;
+  }
+  
+  /* =====================
+     (2) 사진 섹션
+     ===================== */
+  .photo-section {
+    padding: 50px 20px;
+    background-color: #1a1a40;
+  }
+  
+  /* 카드 공통 스타일 */
+  .card {
+    display: flex;
+    align-items: center;
+    margin: 50px 0;
+    padding: 30px;
+    background-color: rgba(255, 255, 255, 0.05);
+    border-radius: 15px;
+    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.4);
+  
+    opacity: 0;               /* 초기 상태: 투명 */
+    transform: translateY(30px); /* 아래에서 올라오는 애니메이션 */
+    transition: all 0.8s ease-in-out;
+  }
+  
+  /* 화면에 나타날 때 (인터섹션 옵저버) */
+  .card.visible {
+    opacity: 1;       
+    transform: translateY(0);
+  }
+  
+  /* 카드 내 이미지 */
+  .card img {
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 15px;
+    margin: 0 20px;
+    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.5);
+    filter: brightness(0.5); 
+    transition: filter 0.5s ease-in-out;
+  }
+  
+  /* 카드가 화면에 보일 때 이미지 밝게 */
+  .card.visible img {
+    filter: brightness(1);
+  }
+  
+  /* 카드 텍스트 */
+  .card-text {
+    font-size: 1.5rem;
+    color: #f1f1f1;
+    margin: 0 20px;
+    text-align: left;
+    line-height: 1.8;
+    flex: 1;
+  }
+  
+  /* 왼쪽 사진 */
+  .card-left {
+    flex-direction: row;
+  }
+  
+  /* 오른쪽 사진 */
+  .card-right {
+    flex-direction: row-reverse;
+  }
+  
+  /* =====================
+     (3) 시작 버튼
+     ===================== */
+  .start-button {
+    display: flex;
+    justify-content: center;
+    margin: 50px 0;
+  }
+  
+  .start-button a {
+    display: inline-block;
+    padding: 15px 40px;
+    font-size: 1.5rem;
+    color: #1a1a40;
+    background-color: #f8f8f8;
+    text-decoration: none;
+    border-radius: 25px;
+    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.3);
+    transition: background-color 0.3s ease-in-out, transform 0.3s ease-in-out;
+  }
+  
+  .start-button a:hover {
+    background-color: #e0e0e0;
+    transform: translateY(-3px);
+  }
+  
+  .start-button a:active {
+    transform: translateY(2px);
+  }
+  
+  /* =====================
+     (4) 반응형 처리
+     ===================== */
+  @media screen and (max-width: 1000px) {
+    /* 중간 화면에서 hero 높이 조금 줄이기 */
+    .hero {
+      height: 70vh;
+    }
+    .hero .title {
+      font-size: 3rem;
+    }
+    .card-text {
+      font-size: 1.3rem;
+    }
+  }
+  
+  @media screen and (max-width: 768px) {
+    /* Hero */
+    .hero {
+      height: 60vh;
+      padding: 0 15px;
+    }
+    .hero .title {
+      font-size: 2.5rem;
+      line-height: 1.2;
+    }
+  
+    /* 카드: 모바일에서 세로(column) 배치 */
+    .card {
+      flex-direction: column;
+      text-align: center;    /* 가운데 정렬 */
+      margin: 30px 0;
+    }
+    .card-left, .card-right {
+      flex-direction: column; /* row, row-reverse 적용 X */
+    }
+  
+    .card img {
+      width: 80%;   /* 모바일에서 이미지 폭 줄이기 */
+      max-width: 300px;
+      height: auto; /* 높이는 자동으로 */
+      margin: 0 auto 20px; /* 가운데 정렬 */
+    }
+  
+    .card-text {
+      margin: 0;
+      font-size: 1.1rem;
+      text-align: center;
+    }
+  
+    
+   .start-button {
+      margin: 30px 0;
+    }
+    .start-button a {
+      font-size: 1.2rem;
+      padding: 12px 30px;
+    }
+  }
+  
