@@ -282,11 +282,16 @@ export default function Home() {
         />
 
         {/* 이미지 캔버스 우측 하단 텍스트 */}
-        <div className="credit-text">s
-          &lt;realdeerworld.com/sky/height&gt;
+        <div className="credit-text">
+          &lt;realdeerworld.com&gt;
         </div>
       </div>
 
+      {/* 새로운 캡션 텍스트 추가 (이미지 캔버스 바로 아래, 다운로드 버튼 위) */}
+      <div className="caption-text">
+        &lt;네이버 Sky 카페 - 큐큘님&gt; [미세팁] 카페기준 키재기
+      </div>
+      
       <div className="controls">
         <div className="zoom-controls">
           <button
@@ -350,11 +355,6 @@ export default function Home() {
             →
           </button>
         </div>
-      </div>
-
-      {/* 새로운 캡션 텍스트 추가 (이미지 캔버스 바로 아래, 다운로드 버튼 위) */}
-      <div className="caption-text">
-        &lt;네이버 Sky 카페 - 큐큘님&gt; [미세팁] 카페기준 키재기
       </div>
 
       <div className="download-container">
