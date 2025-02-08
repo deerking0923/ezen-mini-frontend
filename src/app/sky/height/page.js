@@ -34,7 +34,7 @@ export default function Home() {
       if (window.innerWidth < 768) {
         setArrowStep(1); // 모바일에서는 더 정밀하게 (예: 2픽셀)
       } else {
-        setArrowStep(5);
+        setArrowStep(1);
       }
     }
   }, []);
@@ -47,7 +47,7 @@ export default function Home() {
       if (window.innerWidth < 768) {
         setZoomStep(0.0005); // 모바일에서는 좀 더 정밀하게
       } else {
-        setZoomStep(0.01);
+        setZoomStep(0.001);
       }
     }
   }, []);
