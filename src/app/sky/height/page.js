@@ -323,20 +323,13 @@ export default function Home() {
         onMouseMove={handleDrag}
         onMouseDown={(e) => e.preventDefault()}
       >
-        {uploadedImage && (
-          <img
-            src={uploadedImage}
-            alt="Uploaded"
-            className="uploaded-image"
-            onLoad={(e) => {
-              const { naturalWidth, naturalHeight } = e.currentTarget;
-              setImageSize({ width: naturalWidth, height: naturalHeight });
-            }}
-            style={{
-              transform: `translate(${position.x}px, ${position.y}px) scale(${scale})`,
-            }}
-          />
-        )}
+{uploadedImage && (
+  <img
+    src="/sky-height.png"
+    alt="Overlay"
+    className="overlay-fixed"  // CSS에서 width/height 고정 스타일 적용
+  />
+)}
         <Image
           src="/sky-height.png"
           alt="Overlay"
