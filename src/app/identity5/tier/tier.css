@@ -1,0 +1,137 @@
+/* 페이지 기본 스타일 */
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #f2f2f2;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  }
+  
+  /* 메인 컨테이너 */
+  .container {
+    padding: 20px;
+  }
+  
+  /* 버튼 그룹 */
+  .button-group {
+    margin-bottom: 10px;
+  }
+  .button-group button {
+    margin-right: 5px;
+    background: #576cbc;
+    color: #fff;
+    border: none;
+    padding: 8px 12px;
+    font-size: 14px;
+    cursor: pointer;
+    border-radius: 3px;
+    transition: background 0.3s ease;
+  }
+  .button-group button:hover {
+    background: #445a90;
+  }
+  
+/* 테이블 스타일 */
+.styled-table {
+    /* 전체 테이블 고정 폭 (여기서는 1000px) 및 가운데 정렬 */
+    width: 1000px;
+    margin: 0 auto;
+    table-layout: fixed; /* 고정 테이블 레이아웃 */
+    margin-bottom: 20px;
+    border-collapse: collapse;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
+  
+  /* 테이블 셀 스타일 */
+  .styled-table th,
+  .styled-table td {
+    padding: 10px;
+    border: 1px solid #ddd;
+    vertical-align: top;
+  }
+  
+  .styled-table th {
+    background-color: #007362;
+    text-align: left;
+  }
+  
+  .styled-table td input[type="text"] {
+    width: 90%;
+    padding: 6px 8px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+  }
+  
+  
+  /* 캐릭터 목록 영역 */
+  .available-container {
+    margin-top: 20px;
+  }
+  .available-container h3 {
+    margin: 0 0 10px 0;
+  }
+  .available-list {
+    display: flex;
+    flex-wrap: wrap;
+    border: 1px solid #ccc;
+    padding: 10px;
+    background-color: #fff;
+  }
+  
+  /* 드래그 가능한 아이템(available) */
+  .drag-available {
+    display: inline-block;
+    margin-right: 10px;
+    margin-bottom: 10px; /* 아래쪽도 간격 */
+    cursor: grab;
+    transition: opacity 0.2s ease;
+    user-select: none; /* 텍스트 드래그 방지 */
+  }
+  .drag-available img {
+    width: 80px;
+    height: 80px;
+    border-radius: 4px;
+  }
+  
+  /* 드롭 존 */
+  .drop-zone {
+    min-height: 80px; /* 여유 높이: 드롭 잘 인식되도록 */
+    border: 2px dashed #ccc;
+    display: flex;
+    align-items: center;
+    padding: 8px;
+    box-sizing: border-box;
+    transition: background-color 0.2s ease;
+    flex-wrap: wrap; /* 이미지 여러개 시 줄바꿈 */
+  }
+  .drop-zone:hover {
+    background-color: #f9f9f9;
+  }
+  
+  /* 행 내부 아이템 */
+  .drag-item {
+    margin-right: 8px;
+    margin-bottom: 8px;
+    cursor: grab;
+    transition: opacity 0.2s ease;
+    user-select: none;
+  }
+  .drag-item img {
+    width: 80px;
+    height: 80px;
+    border-radius: 4px;
+  }
+  
+  /* 드래그 중 Overlay */
+  .overlay-item {
+    cursor: grabbing;
+    z-index: 9999; /* 맨 위로 */
+    filter: drop-shadow(0 3px 5px rgba(0,0,0,0.2));
+  }
+  .overlay-item img {
+    width: 80px;
+    height: 80px;
+    border-radius: 4px;
+  }
+  

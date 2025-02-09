@@ -1,0 +1,189 @@
+/* 기본 스타일 */
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #f2f2f2;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  }
+  
+  /* 페이지 전체 레이아웃 */
+  .page-container {
+    width: 1000px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  /* 테이블 영역 */
+  .table-panel {
+    width: 100%;
+    margin-bottom: 20px;
+  }
+  .styled-table {
+    width: 100%;
+    table-layout: fixed;
+    border-collapse: collapse;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
+  .styled-table td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    vertical-align: top;
+  }
+  .cat-name {
+    width: 150px;
+    background-color: #007362;
+    color: #fff;
+    text-align: center;
+    font-weight: bold;
+  }
+  .cat-drop {
+    width: 350px;
+  }
+  
+  /* 드롭 존 (테이블 내) */
+  .drop-zone {
+    min-height: 80px;
+    border: 2px dashed #ccc;
+    padding: 8px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    box-sizing: border-box;
+    transition: background-color 0.2s ease;
+  }
+  .drop-zone:hover {
+    background-color: #f9f9f9;
+  }
+  
+  /* 테이블 내 드롭 존에 추가된 파츠 */
+  .sortable-part {
+    position: relative;
+    cursor: grab;
+  }
+  .sortable-part img {
+    width: 50px;
+    height: 50px;
+    border-radius: 4px;
+  }
+  .delete-button {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background: rgba(255, 0, 0, 0.7);
+    border: none;
+    color: #fff;
+    padding: 2px 4px;
+    font-size: 10px;
+    cursor: pointer;
+  }
+  
+  /* 하단 파츠 선택 영역 */
+  .parts-selection-container {
+    width: 100%;
+    margin-top: 20px;
+    display: flex;
+    gap: 20px;
+  }
+  .parts-preview-column {
+    width: 250px;
+    height: 300px;
+    border: 1px solid #ddd;
+    background-color: #fff;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  .preview-image {
+    max-width: 100%;
+    max-height: 100%;
+    margin-bottom: 10px;
+  }
+  .preview-placeholder {
+    padding: 20px;
+    color: #888;
+  }
+  .parts-selection-column {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  /* 카테고리 선택 영역 - 4칸으로 구분 */
+  .category-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+  }
+  .category-item {
+    padding: 10px;
+    border: 1px solid #ccc;
+    background-color: #eee;
+    text-align: center;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+  .category-item.active {
+    background-color: #576cbc;
+    color: #fff;
+    font-weight: bold;
+  }
+  
+  /* "모두 추가" 버튼 */
+  .add-all-button {
+    margin-bottom: 10px;
+    text-align: center;
+  }
+  
+  /* 파츠 목록 영역 (선택된 카테고리의 파츠 표시) */
+  .parts-list-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    background-color: #fff;
+  }
+  
+  /* Draggable 파츠 */
+  .draggable-part {
+    cursor: pointer;
+  }
+  .draggable-part img {
+    width: 50px;
+    height: 50px;
+    border-radius: 4px;
+  }
+  
+  /* 버튼 스타일 */
+  button {
+    padding: 6px 10px;
+    font-size: 16px;
+    cursor: pointer;
+    border: none;
+    background-color: #576cbc;
+    color: #fff;
+    border-radius: 3px;
+    transition: background 0.3s ease;
+  }
+  button:hover {
+    background-color: #445a90;
+  }
+  
+  /* 드래그 중 Overlay */
+  .overlay-item {
+    cursor: grabbing;
+    z-index: 9999;
+    filter: drop-shadow(0 3px 5px rgba(0,0,0,0.2));
+  }
+  .overlay-item img {
+    width: 80px;
+    height: 80px;
+    border-radius: 4px;
+  }
+  
