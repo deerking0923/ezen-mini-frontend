@@ -276,7 +276,7 @@ export default function Home() {
         )}
        {/* 업로드 여부와 상관없이 항상 가이드라인 이미지(오버레이) 표시 */}
         <img
-          src="/sky-height.png"
+          src="/sky-text.png"
           alt="Overlay"
           className="overlay-fixed"
         />
