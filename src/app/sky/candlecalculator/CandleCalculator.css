@@ -15,14 +15,15 @@
   margin-bottom: 16px;
 }
 
-/* 메인 콘텐츠 영역: 3열 레이아웃 */
+/* 메인 콘텐츠 영역: 3열 레이아웃, 열 간격 증가 */
 .main-content {
   display: flex;
-  gap: 40px;
+  gap: 80px; /* 기존 40px -> 80px로 증가 */
 }
 
 /* 왼쪽: 영혼 선택 영역 */
 .soul-sidebar {
+  margin-top: 30px;
   display: flex;
   flex-direction: column;
   gap: 30px;
@@ -90,17 +91,18 @@
 
 /* 오른쪽: 시즌 가이드 영역 (세로 길이 축소 버전) */
 .guide-sidebar {
+  margin-top: 30px;
   width: 350px;
-  align-self: flex-start; /* 부모 flex 컨테이너에서 높이 늘어남 방지 */
-  height: auto; /* 내용에 맞게 높이 자동 조절 */
+  align-self: flex-start;
+  height: auto;
   display: flex;
   flex-direction: column;
   align-items: center;
   border: 2px solid #ccc;
   border-radius: 8px;
-  padding: 8px; /* 패딩 축소 */
+  padding: 8px;
   background: #f9f9f9;
-  color: #333; /* 어두운 텍스트 */
+  color: #333;
 }
 
 .guide-box {
@@ -110,16 +112,16 @@
 
 .guide-photo {
   width: 100%;
-  max-width: 320px; /* 대표 이미지 크기 */
-  max-height: 320px;  /* 최대 높이 설정 */
-  object-fit: cover;  /* 이미지 비율 유지 */
+  max-width: 320px;
+  max-height: 320px;
+  object-fit: cover;
   border-radius: 8px;
-  margin-bottom: 8px; /* 마진 축소 */
+  margin-bottom: 8px;
 }
 
 .guide-items {
   display: flex;
-  flex-direction: row;  /* 아이템들을 가로로 배열 */
+  flex-direction: row;
   gap: 20px;
   justify-content: center;
   width: 100%;
@@ -142,7 +144,7 @@
 .guide-item-cost {
   display: flex;
   align-items: center;
-  gap: 10px; /* 하트 아이콘과 텍스트 사이 간격 확대 */
+  gap: 10px;
   font-weight: bold;
 }
 
