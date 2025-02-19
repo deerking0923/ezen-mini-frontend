@@ -1,50 +1,93 @@
-/* CandleCalculator.css */
-
 .calc-container {
-    padding: 20px;
-    font-family: sans-serif;
-  }
-  
-  .calc-title {
-    font-size: 1.5rem;
-    margin-bottom: 8px;
-  }
-  .calc-desc {
-    color: #555;
-    margin-bottom: 16px;
-  }
-  
-  /* 영혼 3개를 가로 배치 */
-  .souls-wrapper {
-    display: flex;
-    gap: 40px;
-    align-items: flex-start;
-    margin-top: 24px;
-  }
-  
-  .soul-col {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start; 
-  }
-  .soul-name {
-    font-size: 1.2rem;
-    margin-bottom: 8px;
-    font-weight: bold;
-  }
-  
-  .btn-row {
-    margin-top: 24px;
-  }
-  .calc-btn {
-    background: #3b82f6;
-    color: white;
-    border: none;
-    padding: 10px 16px;
-    border-radius: 6px;
-    cursor: pointer;
-  }
-  .calc-btn:hover {
-    background: #2563eb;
-  }
-  
+  padding: 20px;
+  font-family: sans-serif;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.calc-title {
+  font-size: 1.5rem;
+  margin-bottom: 16px;
+}
+
+.calc-desc {
+  color: #555;
+  margin-bottom: 16px;
+}
+
+/* 메인 콘텐츠 영역: 좌우 2열 레이아웃 */
+.main-content {
+  display: flex;
+  gap: 40px;
+}
+
+/* 왼쪽: 영혼 선택 영역 (노드 영역 왼쪽에 배치) */
+.soul-sidebar {
+  margin-top: 50px;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  align-items: center;
+  width: 200px; /* 필요에 따라 조정 */
+}
+
+.soul-item {
+  text-align: center;
+}
+
+.soul-photo {
+  width: 150px; /* 이전보다 키워진 크기 */
+  border-radius: 8px;
+}
+
+.soul-label {
+  margin-top: 8px;
+  font-weight: bold;
+}
+
+/* 오른쪽: 노드 영역과 Calculate 버튼 */
+.nodes-container {
+  flex: 1;
+}
+
+/* 기존의 영혼 wrapper: NodeView 영역 */
+.souls-wrapper {
+  display: flex;
+  justify-content: center;
+  gap: 60px;
+  align-items: flex-start;
+  margin-top: 24px;
+}
+
+.soul-col {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.soul-name {
+  font-size: 1.2rem;
+  margin-bottom: 8px;
+  font-weight: bold;
+}
+
+.btn-row {
+  margin-top: 24px;
+  display: flex;
+  justify-content: center;
+}
+
+.calc-btn {
+  background: #3b82f6;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.calc-btn:hover {
+  background: #2563eb;
+}
+
+/* NodeView.css의 기존 스타일은 그대로 유지 */

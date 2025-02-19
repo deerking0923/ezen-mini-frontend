@@ -10,13 +10,13 @@ function sumWantedCost(node, nodeStates) {
   let sum = 0;
   const mainSt = nodeStates[node.id] || "none";
   if (mainSt === "want") {
-    sum += (node.cost || 0);
+    sum += node.cost || 0;
   }
   if (node.seasonChild) {
     const scId = node.seasonChild.id;
     const scSt = nodeStates[scId] || "none";
     if (scSt === "want") {
-      sum += (node.seasonChild.cost || 0);
+      sum += node.seasonChild.cost || 0;
     }
   }
   if (node.children) {
@@ -30,12 +30,12 @@ function sumWantedCost(node, nodeStates) {
 export default function CandleCalculatorPage() {
   // 영혼별 nodeStates를 분리해서 관리
   const [soulNodeStates, setSoulNodeStates] = useState({
-    1: {},  // Soul1의 nodeStates
-    2: {},  // Soul2의 nodeStates
-    3: {},  // Soul3의 nodeStates
+    1: {}, // 팔짝 뛰는 무용수
+    2: {}, // 도발하는 곡예사
+    3: {}, // 인사하는 주술사사
   });
 
-  // 현재 열려 있는 메뉴: { soulIndex, nodeId } or null
+  // 현재 열려 있는 메뉴: { soulIndex, nodeId } 또는 null
   const [openMenu, setOpenMenu] = useState(null);
 
   // nodeStates를 세팅하는 함수 (특정 영혼의 상태만 업데이트)
@@ -56,9 +56,9 @@ export default function CandleCalculatorPage() {
     const c2 = sumWantedCost(soul2Tree, soulNodeStates[2]);
     const c3 = sumWantedCost(soul3Tree, soulNodeStates[3]);
     alert(`
-      Soul1: ${c1} candles
-      Soul2: ${c2} candles
-      Soul3: ${c3} candles
+      팔짝 뛰는 무용수: ${c1} candles
+      도발하는 곡예사: ${c2} candles
+      인사하는 주술사사: ${c3} candles
       total = ${c1 + c2 + c3}
     `);
   };
@@ -69,62 +69,85 @@ export default function CandleCalculatorPage() {
   };
 
   return (
-    // onClick으로 바깥 영역을 클릭하면 openMenu를 null로 닫는다
     <div className="calc-container" onClick={handlePageClick}>
       <h1 className="calc-title">양초 계산기</h1>
-      <p className="calc-desc">
-        노드를 클릭하면 상태를 바꿀 수 있습니다. Have / Want 설정으로
-        필요한 양초 수를 확인하세요.<br/>
-        빈 화면을 클릭하면 열려 있는 선택창이 닫힙니다.
-      </p>
-
-      <div className="souls-wrapper">
-        {/* Soul 1 */}
-        <div className="soul-col" onClick={(e) => e.stopPropagation()}>
-          <h2 className="soul-name">Soul 1</h2>
-          <NodeView
-            node={soul1Tree}
-            // 이 영혼의 nodeStates만 넘김
-            nodeStates={soulNodeStates[1]}
-            // setNodeStates는 특정 soulIndex만 업데이트
-            setNodeStates={(updater) => handleSetNodeStates(1, updater)}
-            soulIndex={1}
-            openMenu={openMenu}
-            setOpenMenu={setOpenMenu}
-          />
+      {/* 메인 콘텐츠 영역: 왼쪽에 영혼 사진, 오른쪽에 노드 영역 */}
+      <div className="main-content">
+        {/* 왼쪽: 영혼 선택 영역 */}
+        <div className="soul-sidebar" onClick={(e) => e.stopPropagation()}>
+          <div className="soul-item">
+            <img
+              src="/sky/calculator/spirit1.webp"
+              alt="팔짝 뛰는 무용수"
+              className="soul-photo"
+            />
+            <div className="soul-label">팔짝 뛰는 무용수</div>
+          </div>
+          <div className="soul-item">
+            <img
+              src="/sky/calculator/spirit2.webp"
+              alt="도발하는 곡예사"
+              className="soul-photo"
+            />
+            <div className="soul-label">도발하는 곡예사</div>
+          </div>
+          <div className="soul-item">
+            <img
+              src="/sky/calculator/spirit3.webp"
+              alt="인사하는 주술사사"
+              className="soul-photo"
+            />
+            <div className="soul-label">인사하는 주술사</div>
+          </div>
         </div>
 
-        {/* Soul 2 */}
-        <div className="soul-col" onClick={(e) => e.stopPropagation()}>
-          <h2 className="soul-name">Soul 2</h2>
-          <NodeView
-            node={soul2Tree}
-            nodeStates={soulNodeStates[2]}
-            setNodeStates={(updater) => handleSetNodeStates(2, updater)}
-            soulIndex={2}
-            openMenu={openMenu}
-            setOpenMenu={setOpenMenu}
-          />
-        </div>
+        {/* 오른쪽: 노드 영역과 Calculate 버튼 */}
+        <div className="nodes-container">
+          <div className="souls-wrapper">
+            {/* Soul 1 */}
+            <div className="soul-col" onClick={(e) => e.stopPropagation()}>
+              <h2 className="soul-name">팔짝 뛰는 무용수</h2>
+              <NodeView
+                node={soul1Tree}
+                nodeStates={soulNodeStates[1]}
+                setNodeStates={(updater) => handleSetNodeStates(1, updater)}
+                soulIndex={1}
+                openMenu={openMenu}
+                setOpenMenu={setOpenMenu}
+              />
+            </div>
+            {/* Soul 2 */}
+            <div className="soul-col" onClick={(e) => e.stopPropagation()}>
+              <h2 className="soul-name">도발하는 곡예사</h2>
+              <NodeView
+                node={soul2Tree}
+                nodeStates={soulNodeStates[2]}
+                setNodeStates={(updater) => handleSetNodeStates(2, updater)}
+                soulIndex={2}
+                openMenu={openMenu}
+                setOpenMenu={setOpenMenu}
+              />
+            </div>
+            {/* Soul 3 */}
+            <div className="soul-col" onClick={(e) => e.stopPropagation()}>
+              <h2 className="soul-name">인사하는 주술사</h2>
+              <NodeView
+                node={soul3Tree}
+                nodeStates={soulNodeStates[3]}
+                setNodeStates={(updater) => handleSetNodeStates(3, updater)}
+                soulIndex={3}
+                openMenu={openMenu}
+                setOpenMenu={setOpenMenu}
+              />
+            </div>
+          </div>
 
-        {/* Soul 3 */}
-        <div className="soul-col" onClick={(e) => e.stopPropagation()}>
-          <h2 className="soul-name">Soul 3</h2>
-          <NodeView
-            node={soul3Tree}
-            nodeStates={soulNodeStates[3]}
-            setNodeStates={(updater) => handleSetNodeStates(3, updater)}
-            soulIndex={3}
-            openMenu={openMenu}
-            setOpenMenu={setOpenMenu}
-          />
+          <div className="btn-row">
+            <button className="calc-btn" onClick={handleCalculate}>
+              Calculate
+            </button>
+          </div>
         </div>
-      </div>
-
-      <div className="btn-row">
-        <button className="calc-btn" onClick={handleCalculate}>
-          Calculate
-        </button>
       </div>
     </div>
   );
