@@ -1,4 +1,3 @@
-// components/NodeView.js
 "use client";
 import React from "react";
 import "./NodeView.css";
@@ -81,7 +80,36 @@ export default function NodeView({
 
       {/* 이 노드 (화면에서 '아래쪽') */}
       <div className="node-row">
-        {/* 시즌패스 노드가 있다면 왼쪽(or 오른쪽)에 별도 박스 */}
+        {/* 본 노드를 왼쪽에 배치 */}
+        <div className="main-node-box">
+          <div className="node-info">
+            <span className="node-name">{node.name}</span>
+            <span className="node-cost">(cost: {node.cost})</span>
+            <span className="node-current">{mainState.toUpperCase()}</span>
+          </div>
+          <div className="node-buttons">
+            <button
+              className="btn btn-have"
+              onClick={() => handleSetState(node.id, "have")}
+            >
+              Have
+            </button>
+            <button
+              className="btn btn-want"
+              onClick={() => handleSetState(node.id, "want")}
+            >
+              Want
+            </button>
+            <button
+              className="btn btn-none"
+              onClick={() => handleSetState(node.id, "none")}
+            >
+              None
+            </button>
+          </div>
+        </div>
+
+        {/* 시즌패스 노드는 오른쪽에 배치 */}
         {seasonId && (
           <div className="season-node-box">
             <div className="node-info">
@@ -111,35 +139,6 @@ export default function NodeView({
             </div>
           </div>
         )}
-
-        {/* 본 노드 */}
-        <div className="main-node-box">
-          <div className="node-info">
-            <span className="node-name">{node.name}</span>
-            <span className="node-cost">(cost: {node.cost})</span>
-            <span className="node-current">{mainState.toUpperCase()}</span>
-          </div>
-          <div className="node-buttons">
-            <button
-              className="btn btn-have"
-              onClick={() => handleSetState(node.id, "have")}
-            >
-              Have
-            </button>
-            <button
-              className="btn btn-want"
-              onClick={() => handleSetState(node.id, "want")}
-            >
-              Want
-            </button>
-            <button
-              className="btn btn-none"
-              onClick={() => handleSetState(node.id, "none")}
-            >
-              None
-            </button>
-          </div>
-        </div>
       </div>
     </div>
   );

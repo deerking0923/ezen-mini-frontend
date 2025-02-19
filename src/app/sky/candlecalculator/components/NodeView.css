@@ -1,5 +1,3 @@
-/* NodeView.css */
-
 /* 전체 컨테이너에서, 
    기본 마진/패딩 제거 → 계단식/대각선이 생기지 않도록 */
    .nodeview-container {
@@ -14,7 +12,7 @@
     padding: 0;
   }
   
-  /* 한 줄에 "시즌패스 노드(왼쪽)" + "본 노드(오른쪽)" 
+  /* 한 줄에 "본 노드(왼쪽)" + "시즌패스 노드(오른쪽)" 
      - 세로 배치 시, 각 노드는 한 줄씩 */
   .node-row {
     display: flex;
@@ -23,23 +21,24 @@
     margin-bottom: 12px; /* 노드들 간 세로 간격 */
   }
   
-  /* 시즌패스 노드(왼쪽) */
-  .season-node-box {
-    margin-right: 20px;      /* 왼쪽->오른쪽 간격 */
-    background: #f3f6fa;
-    border: 1px dashed #777;
-    padding: 8px;
-    border-radius: 4px;
-    min-width: 120px;
-  }
-  
-  /* 본 노드(오른쪽) */
+  /* 본 노드(왼쪽) */
   .main-node-box {
-    background: #fafafa;
+    background: #80e1ff;
     border: 1px solid #ccc;
     padding: 8px;
     border-radius: 4px;
     min-width: 140px;
+    margin-right: 20px; /* 왼쪽 -> 오른쪽 간격 */
+  }
+  
+  /* 시즌패스 노드(오른쪽) */
+  .season-node-box {
+    background: #5aff75;
+    border: 1px dashed #777;
+    padding: 8px;
+    border-radius: 4px;
+    min-width: 120px;
+    /* margin 제거 또는 필요 시 margin-left 조정 */
   }
   
   /* 노드 정보 */
