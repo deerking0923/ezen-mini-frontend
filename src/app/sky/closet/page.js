@@ -4,8 +4,6 @@ import React, { useState, useEffect } from 'react';
 import {
   DndContext,
   DragOverlay,
-  useDraggable,
-  useDroppable,
   rectIntersection,
 } from '@dnd-kit/core';
 import {
@@ -13,26 +11,31 @@ import {
   useSortable,
 } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
-
+import html2canvas from 'html2canvas';
 import "./closet.css"; // CSS 파일
 
-// 고유 id 생성을 위한 간단한 counter 함수
-let uniqueIdCounter = 0;
-const generateUniqueId = () => {
-  uniqueIdCounter++;
-  return `copy-${uniqueIdCounter}`;
-};
-
-// 4개 카테고리 정의 (이름은 임의로 지정)
+/* ===============================
+   12개 카테고리 정의 (단일 배열)
+=============================== */
 const categories = [
-  { id: 'cat1', name: '감사시즌' },
-  { id: 'cat2', name: '빛추시즌' },
-  { id: 'cat3', name: '마법시즌' },
-  { id: 'cat4', name: '리듬시즌' },
+  { id: 'cat1',  name: '카테고리1' },
+  { id: 'cat2',  name: '카테고리2' },
+  { id: 'cat3',  name: '카테고리3' },
+  { id: 'cat4',  name: '카테고리4' },
+  { id: 'cat5',  name: '카테고리5' },
+  { id: 'cat6',  name: '카테고리6' },
+  { id: 'cat7',  name: '카테고리7' },
+  { id: 'cat8',  name: '카테고리8' },
+  { id: 'cat9',  name: '카테고리9' },
+  { id: 'cat10', name: '카테고리10' },
+  { id: 'cat11', name: '카테고리11' },
+  { id: 'cat12', name: '카테고리12' },
 ];
 
-// 각 카테고리별로 사용 가능한 파츠 데이터 (이미지 경로는 예시)
-// 이 src는 아이콘 이미지로 사용됩니다.
+/* 
+  각 카테고리에 대한 파츠 데이터 (예시)
+  실제 데이터에 맞게 수정하시면 됩니다.
+*/
 const partData = {
   cat1: [
     { id: 'p1', src: '/identity5/survivor/01.jpg' },
@@ -50,16 +53,28 @@ const partData = {
     { id: 'p7', src: '/identity5/survivor/04.jpg' },
     { id: 'p8', src: '/identity5/survivor/04.jpg' },
   ],
+  cat5:  [],
+  cat6:  [],
+  cat7:  [],
+  cat8:  [],
+  cat9:  [],
+  cat10: [],
+  cat11: [],
+  cat12: [],
 };
 
-/* ======================================================
-   dnd-kit 관련 작은 컴포넌트들
-====================================================== */
+/* 고유 id 생성 함수 */
+let uniqueIdCounter = 0;
+function generateUniqueId() {
+  uniqueIdCounter++;
+  return `copy-${uniqueIdCounter}`;
+}
 
-/**
- * DraggablePart  
- * - 하단 파츠 선택 영역에 보여지는 파츠 아이템 (클릭하면 미리보기 업데이트)
- */
+/* ================================
+   dnd-kit 관련 작은 컴포넌트들
+================================ */
+
+/* DraggablePart: 파츠 선택 영역에서 보이는 아이템 (클릭 시 미리보기) */
 function DraggablePart({ part, onClick }) {
   return (
     <div className="draggable-part" onClick={() => onClick(part)}>
@@ -68,74 +83,55 @@ function DraggablePart({ part, onClick }) {
   );
 }
 
-/**
- * SortablePart  
- * - 테이블 내 드롭 존에 추가된 파츠 아이템  
- *   삭제 버튼(onDelete)을 통해 개별 파츠를 삭제할 수 있음.
- */
-function SortablePart({ id, src, onDelete }) {
-  const { attributes, listeners, setNodeRef, transform, transition, isDragging } =
+/* SortablePart: 테이블(드롭존)에 추가된 파츠 아이템 */
+function SortablePart({ id, src, onClick }) {
+  const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({ id });
+
   const style = {
     transform: CSS.Transform.toString(transform),
     transition,
-    opacity: isDragging ? 0 : 1,
-    position: 'relative',
+    opacity: 1,
+    cursor: 'grab',
   };
+
   return (
-    <div ref={setNodeRef} style={style} className="sortable-part" {...attributes} {...listeners}>
-      <img src={src} alt={id} />
-      <button className="delete-button" onClick={(e) => { e.stopPropagation(); onDelete(id); }}>X</button>
+    <div
+      ref={setNodeRef}
+      style={style}
+      className="sortable-part"
+      {...attributes}
+      {...listeners}
+    >
+      <img src={src} alt={id} onClick={onClick} />
     </div>
   );
 }
 
-/**
- * DropZoneCategory  
- * - 각 카테고리별 테이블 구역(드롭 존) 컴포넌트  
- *   같은 구역 내에서만 재배치가 가능하며, 드롭 영역 밖으로 내보내면 해당 아이템은 제거됩니다.
- *   삭제 버튼 클릭 시 onDelete 콜백을 호출합니다.
- */
-function DropZoneCategory({ categoryId, items, onItemsChange, onRemovePart }) {
+/* DropZoneCategory: 테이블 내 드롭존 (각 카테고리별 칸) */
+function DropZoneCategory({ categoryId, items, onItemsChange, onTablePartClick }) {
   const handleDragEnd = (event) => {
     const { active, over } = event;
-    if (!over) {
-      const removedPart = items.find((item) => item.id === active.id);
-      onItemsChange(items.filter((item) => item.id !== active.id));
-      if (removedPart && removedPart.originalId) {
-        const originalPart = partData[categoryId].find((p) => p.id === removedPart.originalId);
-        if (originalPart) {
-          onRemovePart(originalPart, categoryId);
-        }
-      }
-      return;
-    }
-    const oldIndex = items.findIndex((item) => item.id === active.id);
-    const newIndex = items.findIndex((item) => item.id === over.id);
+    if (!over) return;
+    const oldIndex = items.findIndex(item => item.id === active.id);
+    const newIndex = items.findIndex(item => item.id === over.id);
     if (oldIndex === -1 || newIndex === -1) return;
     const updated = Array.from(items);
     updated.splice(newIndex, 0, updated.splice(oldIndex, 1)[0]);
     onItemsChange(updated);
   };
 
-  // 삭제 버튼 핸들러: 파츠를 테이블에서 제거하고 복원 콜백 호출
-  const handleDelete = (partId) => {
-    const removedPart = items.find(item => item.id === partId);
-    onItemsChange(items.filter(item => item.id !== partId));
-    if (removedPart && removedPart.originalId) {
-      const originalPart = partData[categoryId].find(p => p.id === removedPart.originalId);
-      if (originalPart) {
-        onRemovePart(originalPart, categoryId);
-      }
-    }
-  };
-
   return (
     <DndContext collisionDetection={rectIntersection} onDragEnd={handleDragEnd}>
-      <SortableContext items={items.map((item) => item.id)}>
+      <SortableContext items={items.map(item => item.id)}>
         <div className="drop-zone">
-          {items.map((item) => (
-            <SortablePart key={item.id} id={item.id} src={item.src} onDelete={() => handleDelete(item.id)} />
+          {items.map(item => (
+            <SortablePart
+              key={item.id}
+              id={item.id}
+              src={item.src}
+              onClick={() => onTablePartClick(categoryId, item)}
+            />
           ))}
         </div>
       </SortableContext>
@@ -143,145 +139,201 @@ function DropZoneCategory({ categoryId, items, onItemsChange, onRemovePart }) {
   );
 }
 
-/* ======================================================
+/* ================================
    메인 Page 컴포넌트
-====================================================== */
-
+================================ */
 export default function Page() {
   const [mounted, setMounted] = useState(false);
-  const [tableParts, setTableParts] = useState({
-    cat1: [],
-    cat2: [],
-    cat3: [],
-    cat4: [],
+  useEffect(() => { setMounted(true); }, []);
+
+  // 테이블(드롭존)에 추가된 파츠 상태 (카테고리별)
+  const [tableParts, setTableParts] = useState(() => {
+    const init = {};
+    categories.forEach(cat => { init[cat.id] = []; });
+    return init;
   });
-  // availableParts 상태: 파츠 선택 영역에서 보여질 파츠 (초기값은 partData의 복사본)
-  const [availableParts, setAvailableParts] = useState({
-    cat1: [...partData.cat1],
-    cat2: [...partData.cat2],
-    cat3: [...partData.cat3],
-    cat4: [...partData.cat4],
+
+  // 파츠 선택 영역에서 보이는 파츠 목록 (초기값: partData)
+  const [availableParts, setAvailableParts] = useState(() => {
+    const init = {};
+    categories.forEach(cat => {
+      init[cat.id] = partData[cat.id] ? [...partData[cat.id]] : [];
+    });
+    return init;
   });
+
+  // 미리보기 패널에서 현재 선택된 파츠 + 카테고리
   const [selectedPart, setSelectedPart] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState(null);
-  const [activeId, setActiveId] = useState(null);
-  const [overlaySrc, setOverlaySrc] = useState(null);
-  // 하단 파츠 선택 영역에서 현재 선택된 카테고리 (기본은 첫 번째)
+
+  // 사용자가 선택한 카테고리 (왼쪽 패널에서 클릭 시)
   const [selectedPartsCategory, setSelectedPartsCategory] = useState(categories[0].id);
 
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+  /* === 테이블 렌더링 (2열×6행) === */
+  function renderTable() {
+    // 2개씩 chunk
+    const rows = [];
+    for (let i = 0; i < categories.length; i += 2) {
+      rows.push(categories.slice(i, i + 2));
+    }
+    return (
+      <table className="styled-table" id="capture-table">
+        <tbody>
+          {rows.map((row, rowIndex) => (
+            <tr key={rowIndex}>
+              {row.map(cat => (
+                <td key={cat.id} className="cat-cell">
+                  <div className="cat-name">{cat.name}</div>
+                  <DropZoneCategory
+                    categoryId={cat.id}
+                    items={tableParts[cat.id]}
+                    onItemsChange={newItems =>
+                      setTableParts(prev => ({ ...prev, [cat.id]: newItems }))
+                    }
+                    onTablePartClick={handleTablePartClick}
+                  />
+                </td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    );
+  }
 
-  const content = mounted ? (
+  /* === 이벤트 핸들러들 === */
+
+  // 테이블 내 파츠 클릭 -> 미리보기 (fromTable = true)
+  function handleTablePartClick(categoryId, part) {
+    const detailSrc = `/sky/closet/detail/${part.originalId || part.id}.jpg`;
+    setSelectedPart({ ...part, fromTable: true, detail: detailSrc });
+    setSelectedCategory(categoryId);
+  }
+
+  // 왼쪽 카테고리 목록에서 파츠 클릭 -> 미리보기 (fromTable = false)
+  function handlePartClick(categoryId, part) {
+    const detailSrc = `/sky/closet/detail/${part.id}.jpg`;
+    setSelectedPart({ ...part, fromTable: false, detail: detailSrc });
+    setSelectedCategory(categoryId);
+  }
+
+  // "+" 버튼 -> 파츠 테이블에 추가
+  function handleAddPart() {
+    if (!selectedPart || !selectedCategory) return;
+    const newPart = {
+      ...selectedPart,
+      id: generateUniqueId(),
+      originalId: selectedPart.id, // 원본 아이디
+      src: selectedPart.src,
+    };
+    // 테이블 상태 업데이트
+    setTableParts(prev => ({
+      ...prev,
+      [selectedCategory]: [...prev[selectedCategory], newPart],
+    }));
+    // 선택 영역에서 제거
+    setAvailableParts(prev => ({
+      ...prev,
+      [selectedCategory]: prev[selectedCategory].filter(p => p.id !== selectedPart.id),
+    }));
+    setSelectedPart(null);
+    setSelectedCategory(null);
+  }
+
+  // "-" 버튼 -> 파츠 테이블에서 제거 + 선택 영역 복원
+  function handleRemovePart() {
+    if (!selectedPart || !selectedCategory || !selectedPart.fromTable) return;
+    setTableParts(prev => ({
+      ...prev,
+      [selectedCategory]: prev[selectedCategory].filter(item => item.id !== selectedPart.id),
+    }));
+    const originalId = selectedPart.originalId || selectedPart.id;
+    // partData에서 찾아볼 수도 있지만 여기서는 바로 복원
+    const originalPart = { id: originalId, src: selectedPart.src };
+    setAvailableParts(prev => ({
+      ...prev,
+      [selectedCategory]: [...prev[selectedCategory], originalPart],
+    }));
+    setSelectedPart(null);
+    setSelectedCategory(null);
+  }
+
+  // "모두 추가" 버튼 (현재 선택된 카테고리 모든 파츠를 테이블로 이동)
+  function handleAddAllParts() {
+    if (!selectedPartsCategory) return;
+    const partsToAdd = availableParts[selectedPartsCategory].map(part => ({
+      ...part,
+      id: generateUniqueId(),
+      originalId: part.id,
+    }));
+    setTableParts(prev => ({
+      ...prev,
+      [selectedPartsCategory]: [...prev[selectedPartsCategory], ...partsToAdd],
+    }));
+    setAvailableParts(prev => ({
+      ...prev,
+      [selectedPartsCategory]: [],
+    }));
+  }
+
+  // 다운로드 버튼 -> html2canvas로 테이블 캡쳐
+  function handleDownload() {
+    const tableElement = document.querySelector('.table-panel'); // or '#capture-table'
+    if (!tableElement) return;
+    html2canvas(tableElement, {
+      scale: 3,
+    }).then(canvas => {
+      const link = document.createElement('a');
+      link.download = 'table.png';
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+    }).catch(err => console.error('html2canvas error:', err));
+  }
+
+  if (!mounted) return null;
+
+  return (
     <div className="page-container">
-      {/* 테이블 영역 (상단) */}
-      <div className="table-panel">
-        <table className="styled-table">
-          <tbody>
-            <tr>
-              <td className="cat-name">{categories[0].name}</td>
-              <td className="cat-drop">
-                <DropZoneCategory
-                  categoryId={categories[0].id}
-                  items={tableParts.cat1}
-                  onItemsChange={(newItems) =>
-                    setTableParts((prev) => ({ ...prev, cat1: newItems }))
-                  }
-                  onRemovePart={(removedPart, catId) => {
-                    setAvailableParts((prev) => ({
-                      ...prev,
-                      [catId]: [...prev[catId], removedPart],
-                    }));
-                  }}
-                />
-              </td>
-              <td className="cat-name">{categories[1].name}</td>
-              <td className="cat-drop">
-                <DropZoneCategory
-                  categoryId={categories[1].id}
-                  items={tableParts.cat2}
-                  onItemsChange={(newItems) =>
-                    setTableParts((prev) => ({ ...prev, cat2: newItems }))
-                  }
-                  onRemovePart={(removedPart, catId) => {
-                    setAvailableParts((prev) => ({
-                      ...prev,
-                      [catId]: [...prev[catId], removedPart],
-                    }));
-                  }}
-                />
-              </td>
-            </tr>
-            <tr>
-              <td className="cat-name">{categories[2].name}</td>
-              <td className="cat-drop">
-                <DropZoneCategory
-                  categoryId={categories[2].id}
-                  items={tableParts.cat3}
-                  onItemsChange={(newItems) =>
-                    setTableParts((prev) => ({ ...prev, cat3: newItems }))
-                  }
-                  onRemovePart={(removedPart, catId) => {
-                    setAvailableParts((prev) => ({
-                      ...prev,
-                      [catId]: [...prev[catId], removedPart],
-                    }));
-                  }}
-                />
-              </td>
-              <td className="cat-name">{categories[3].name}</td>
-              <td className="cat-drop">
-                <DropZoneCategory
-                  categoryId={categories[3].id}
-                  items={tableParts.cat4}
-                  onItemsChange={(newItems) =>
-                    setTableParts((prev) => ({ ...prev, cat4: newItems }))
-                  }
-                  onRemovePart={(removedPart, catId) => {
-                    setAvailableParts((prev) => ({
-                      ...prev,
-                      [catId]: [...prev[catId], removedPart],
-                    }));
-                  }}
-                />
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+      {/* 왼쪽: 카테고리 + 미리보기 + 파츠 목록 */}
+      <div className="left-panel">
+        {/* 카테고리 선택 영역 */}
+        <div className="category-grid">
+          {categories.map(cat => (
+            <div
+              key={cat.id}
+              className={`category-item ${
+                selectedPartsCategory === cat.id ? 'active' : ''
+              }`}
+              onClick={() => setSelectedPartsCategory(cat.id)}
+            >
+              {cat.name}
+            </div>
+          ))}
+        </div>
 
-      {/* 하단 파츠 선택 영역 */}
-      <div className="parts-selection-container">
-        {/* 좌측: 미리보기 영역 */}
-        <div className="parts-preview-column">
+        {/* 미리보기 영역 */}
+        <div className="preview-area">
           {selectedPart ? (
             <div className="preview-panel">
               <img className="preview-image" src={selectedPart.detail} alt={selectedPart.id} />
-              <button onClick={handleAddPart}>+</button>
+              {selectedPart.fromTable ? (
+                <button onClick={handleRemovePart}>-</button>
+              ) : (
+                <button onClick={handleAddPart}>+</button>
+              )}
             </div>
           ) : (
             <div className="preview-placeholder">파츠를 선택하세요</div>
           )}
         </div>
-        {/* 우측: 카테고리 선택 및 파츠 목록 영역 */}
-        <div className="parts-selection-column">
-          <div className="category-grid">
-            {categories.map((cat) => (
-              <div
-                key={cat.id}
-                className={`category-item ${selectedPartsCategory === cat.id ? 'active' : ''}`}
-                onClick={() => setSelectedPartsCategory(cat.id)}
-              >
-                {cat.name}
-              </div>
-            ))}
-          </div>
+
+        {/* 파츠 목록 */}
+        <div className="parts-list-area">
           <div className="add-all-button">
             <button onClick={handleAddAllParts}>모두 추가</button>
           </div>
           <div className="parts-list-container">
-            {availableParts[selectedPartsCategory].map((part) => (
+            {availableParts[selectedPartsCategory].map(part => (
               <DraggablePart
                 key={part.id}
                 part={part}
@@ -292,63 +344,17 @@ export default function Page() {
         </div>
       </div>
 
+      {/* 오른쪽: 테이블(2열×6행) + 다운로드 버튼 */}
+      <div className="right-panel">
+        <div className="table-panel">{renderTable()}</div>
+        <div className="download-button">
+          <button onClick={handleDownload}>Download Table</button>
+        </div>
+      </div>
+
       <DragOverlay>
-        {activeId && overlaySrc ? (
-          <div className="overlay-item">
-            <img src={overlaySrc} alt="drag-overlay" />
-          </div>
-        ) : null}
+        {/* 드래그 중에 표시할 Overlay 필요시 구현 */}
       </DragOverlay>
     </div>
-  ) : null;
-
-  // 이벤트 핸들러들
-
-  // 파츠 클릭 시, 미리보기 상세 이미지는 /sky/closet/detail 폴더의 이미지를 사용하고,
-  // 동시에 아이콘 이미지(원본 partData의 src)와 상세 이미지(detail)를 모두 저장합니다.
-  function handlePartClick(categoryId, part) {
-    const detailSrc = `/sky/closet/detail/${part.id}.jpg`;
-    setSelectedPart({ ...part, icon: part.src, detail: detailSrc });
-    setSelectedCategory(categoryId);
-  }
-
-  // 미리보기 패널의 "+" 버튼 클릭 시, 선택된 파츠를 테이블에 추가하고, availableParts에서 제거합니다.
-  function handleAddPart() {
-    if (selectedPart && selectedCategory) {
-      const newPart = { ...selectedPart, id: generateUniqueId(), originalId: selectedPart.id, src: selectedPart.icon };
-      setTableParts((prev) => ({
-        ...prev,
-        [selectedCategory]: [...prev[selectedCategory], newPart],
-      }));
-      // 해당 카테고리에서 선택된 파츠 제거
-      setAvailableParts((prev) => ({
-        ...prev,
-        [selectedCategory]: prev[selectedCategory].filter((p) => p.id !== selectedPart.id),
-      }));
-      setSelectedPart(null);
-      setSelectedCategory(null);
-    }
-  }
-
-  // "모두 추가" 버튼 클릭 시, 선택된 카테고리의 모든 파츠를 테이블에 추가하고, availableParts에서 모두 제거합니다.
-  function handleAddAllParts() {
-    if (selectedPartsCategory) {
-      const partsToAdd = availableParts[selectedPartsCategory].map((part) => ({
-        ...part,
-        id: generateUniqueId(),
-        originalId: part.id,
-        src: part.src,
-      }));
-      setTableParts((prev) => ({
-        ...prev,
-        [selectedPartsCategory]: [...prev[selectedPartsCategory], ...partsToAdd],
-      }));
-      setAvailableParts((prev) => ({
-        ...prev,
-        [selectedPartsCategory]: [],
-      }));
-    }
-  }
-
-  return content;
+  );
 }
