@@ -5,12 +5,12 @@ import "./NodeView.css";
 /**
  * props:
  * - node: { id, name, cost, seasonChild, children[] }
- * - nodeStates: Record<string, "none"|"have"|"want">
- * - setNodeStates: function(newState => newState)
+ * - nodeStates: Record<string, "none"|"have"|"want"> (해당 Soul의 상태)
+ * - setNodeStates: function(updater => newState) (해당 Soul만 업데이트)
  * - ancestors: 조상 노드 ID 배열
  * - soulIndex: 1 | 2 | 3 (이미지 경로 구분)
- * - openMenuId: 현재 열려있는 선택창 대상의 ID (null이면 없음)
- * - setOpenMenuId: (id or null) => void
+ * - openMenu: { soulIndex, nodeId } | null
+ * - setOpenMenu: (obj or null) => void
  */
 export default function NodeView({
   node,
@@ -18,25 +18,22 @@ export default function NodeView({
   setNodeStates,
   ancestors = [],
   soulIndex = 1,
-  openMenuId,
-  setOpenMenuId,
+  openMenu,
+  setOpenMenu,
 }) {
   // 메인 노드 상태
   const mainState = nodeStates[node.id] || "none";
 
-  // 시즌패스 노드가 있는지?
-  const seasonId = node.seasonChild?.id;
+  // 시즌패스 노드 상태
+  const seasonId = node.seasonChild?.id || null;
   const seasonState = seasonId ? (nodeStates[seasonId] || "none") : "none";
 
   // 자식들
   const children = node.children || [];
 
-  // 이미지 경로: node.id = "node1" → 1 추출
+  // 이미지 경로
   const nodeNum = parseInt(node.id.replace("node", ""), 10);
-  // /sky/calculator/spirit1_item1.webp
   const mainImageSrc = `/sky/calculator/spirit${soulIndex}_item${nodeNum}.webp`;
-
-  // 시즌패스 이미지
   let childImageSrc = "";
   if (seasonId) {
     childImageSrc = `/sky/calculator/spirit${soulIndex}_item${nodeNum}_child.webp`;
@@ -46,16 +43,15 @@ export default function NodeView({
   const handleSetState = (nodeId, newState) => {
     setNodeStates((prev) => {
       const oldState = prev[nodeId] || "none";
-      const isSame = (oldState === newState);
-      // 같으면 'none'으로 토글
-      const realNewState = isSame ? "none" : newState;
+      // 같은 상태면 'none'으로 토글
+      const realNewState = (oldState === newState) ? "none" : newState;
 
       const updated = { ...prev, [nodeId]: realNewState };
-
-      // 만약 have/want라면 조상 중 "none"을 덮어씀
+      // 만약 have/want라면, 조상 중 none을 덮어씀
       if (realNewState === "have" || realNewState === "want") {
         ancestors.forEach((ancId) => {
-          if ((updated[ancId] || "none") === "none") {
+          const ancSt = updated[ancId] || "none";
+          if (ancSt === "none") {
             updated[ancId] = realNewState;
           }
         });
@@ -64,23 +60,28 @@ export default function NodeView({
     });
   };
 
-  // 이미지를 클릭하면 openMenuId를 설정해서 메뉴를 열거나 닫는다
-  const handleMainImageClick = () => {
-    if (openMenuId === node.id) {
+  // 메인 이미지 클릭 -> openMenu 설정
+  const handleMainImageClick = (e) => {
+    e.stopPropagation(); // 부모 onClick에 잡히지 않게
+    const isOpen = (openMenu && openMenu.soulIndex === soulIndex && openMenu.nodeId === node.id);
+    if (isOpen) {
       // 이미 열려있으면 닫기
-      setOpenMenuId(null);
+      setOpenMenu(null);
     } else {
-      // 다른 메뉴가 열려있어도 닫고 새로 열기
-      setOpenMenuId(node.id);
+      // 새로 열기(다른 메뉴가 열려있으면 닫히고, 이거 열림)
+      setOpenMenu({ soulIndex, nodeId: node.id });
     }
   };
 
-  const handleChildImageClick = () => {
+  // 시즌패스 이미지 클릭
+  const handleChildImageClick = (e) => {
+    e.stopPropagation();
     if (!seasonId) return;
-    if (openMenuId === seasonId) {
-      setOpenMenuId(null);
+    const isOpen = (openMenu && openMenu.soulIndex === soulIndex && openMenu.nodeId === seasonId);
+    if (isOpen) {
+      setOpenMenu(null);
     } else {
-      setOpenMenuId(seasonId);
+      setOpenMenu({ soulIndex, nodeId: seasonId });
     }
   };
 
@@ -88,14 +89,13 @@ export default function NodeView({
   const handleSetSeasonState = (seasonId, newState) => {
     setNodeStates((prev) => {
       const oldState = prev[seasonId] || "none";
-      const isSame = (oldState === newState);
-      const realNewState = isSame ? "none" : newState;
+      const realNewState = (oldState === newState) ? "none" : newState;
 
       const updated = { ...prev, [seasonId]: realNewState };
-
       if (realNewState === "have" || realNewState === "want") {
         ancestors.forEach((ancId) => {
-          if ((updated[ancId] || "none") === "none") {
+          const ancSt = updated[ancId] || "none";
+          if (ancSt === "none") {
             updated[ancId] = realNewState;
           }
         });
@@ -111,13 +111,23 @@ export default function NodeView({
     return "2px solid transparent";
   };
 
-  // 현재 노드 / 자식 노드 각각의 메뉴가 열려있는지
-  const isMainMenuOpen = (openMenuId === node.id);
-  const isChildMenuOpen = (seasonId && openMenuId === seasonId);
+  // 현재 노드의 메뉴가 열려있는지
+  const isMainMenuOpen = (
+    openMenu &&
+    openMenu.soulIndex === soulIndex &&
+    openMenu.nodeId === node.id
+  );
+  // 시즌패스
+  const isChildMenuOpen = (
+    openMenu &&
+    openMenu.soulIndex === soulIndex &&
+    seasonId &&
+    openMenu.nodeId === seasonId
+  );
 
   return (
     <div className="nodeview-container">
-      {/* 자식(위쪽) */}
+      {/* 자식(위) */}
       {children.length > 0 && (
         <div className="children-wrapper">
           {children.map((child) => (
@@ -128,14 +138,14 @@ export default function NodeView({
               setNodeStates={setNodeStates}
               ancestors={[node.id, ...ancestors]}
               soulIndex={soulIndex}
-              openMenuId={openMenuId}
-              setOpenMenuId={setOpenMenuId}
+              openMenu={openMenu}
+              setOpenMenu={setOpenMenu}
             />
           ))}
         </div>
       )}
 
-      {/* 현재 노드 (아래) */}
+      {/* 현재 노드(아래) */}
       <div className="node-row">
         {/* 메인 노드 이미지 */}
         <div className="node-image-box">
@@ -149,7 +159,7 @@ export default function NodeView({
           {/* 비용 표시 */}
           <div className="cost-badge">{node.cost}</div>
 
-          {/* "Have / Want" 메뉴 (메인) */}
+          {/* "Have / Want" 메뉴(메인 노드) */}
           {isMainMenuOpen && (
             <div className="menu-overlay">
               <button onClick={() => handleSetState(node.id, "have")}>Have</button>
@@ -168,7 +178,7 @@ export default function NodeView({
               style={{ border: getBorderColor(seasonState) }}
               onClick={handleChildImageClick}
             />
-            {/* 비용 대신 시즌 아이콘 표시 */}
+            {/* 비용 대신 시즌 아이콘 */}
             <div className="season-badge">
               <img
                 src="/sky/calculator/season_icon.webp"
@@ -177,7 +187,7 @@ export default function NodeView({
               />
             </div>
 
-            {/* "Have / Want" 메뉴 (시즌패스) */}
+            {/* "Have / Want" 메뉴(시즌패스) */}
             {isChildMenuOpen && (
               <div className="menu-overlay">
                 <button onClick={() => handleSetSeasonState(seasonId, "have")}>Have</button>
