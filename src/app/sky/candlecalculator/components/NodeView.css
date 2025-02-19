@@ -1,90 +1,72 @@
-/* 전체 컨테이너에서, 
-   기본 마진/패딩 제거 → 계단식/대각선이 생기지 않도록 */
-   .nodeview-container {
-    margin: 0;
-    padding: 0;
-    position: static; /* 좌표계 reset */
-  }
-  
-  /* 자식 래퍼도 기본 마진/패딩 제거 */
-  .children-wrapper {
-    margin: 0;
-    padding: 0;
-  }
-  
-  /* 한 줄에 "본 노드(왼쪽)" + "시즌패스 노드(오른쪽)" 
-     - 세로 배치 시, 각 노드는 한 줄씩 */
-  .node-row {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    margin-bottom: 12px; /* 노드들 간 세로 간격 */
-  }
-  
-  /* 본 노드(왼쪽) */
-  .main-node-box {
-    background: #80e1ff;
-    border: 1px solid #ccc;
-    padding: 8px;
-    border-radius: 4px;
-    min-width: 140px;
-    margin-right: 20px; /* 왼쪽 -> 오른쪽 간격 */
-  }
-  
-  /* 시즌패스 노드(오른쪽) */
-  .season-node-box {
-    background: #5aff75;
-    border: 1px dashed #777;
-    padding: 8px;
-    border-radius: 4px;
-    min-width: 120px;
-    /* margin 제거 또는 필요 시 margin-left 조정 */
-  }
-  
-  /* 노드 정보 */
-  .node-info {
-    margin-bottom: 6px;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-  }
-  .node-name {
-    font-weight: bold;
-  }
-  .node-cost {
-    color: #555;
-    font-size: 0.9em;
-  }
-  .node-current {
-    color: #2563eb;
-    font-size: 0.9em;
-    font-weight: 600;
-  }
-  
-  /* 노드 버튼 묶음 */
-  .node-buttons {
-    display: flex;
-    gap: 4px;
-  }
-  
-  /* 공통 버튼 스타일 */
-  .btn {
-    cursor: pointer;
-    border: none;
-    border-radius: 4px;
-    padding: 4px 8px;
-    font-size: 0.85em;
-  }
-  .btn-have {
-    background-color: #34d399;
-    color: #fff;
-  }
-  .btn-want {
-    background-color: #f59e0b;
-    color: #fff;
-  }
-  .btn-none {
-    background-color: #9ca3af;
-    color: #fff;
-  }
-  
+.nodeview-container {
+  margin: 0;
+  padding: 0;
+  position: static;
+}
+
+/* 자식 노드 목록 */
+.children-wrapper {
+  margin: 0;
+  padding: 0;
+}
+
+/* 메인 노드 + 시즌패스 노드 나란히 */
+.node-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 24px; /* 간격은 적당히 조절 */
+}
+
+/* 이미지를 담는 박스 */
+.node-image-box {
+  position: relative; /* cost배지/메뉴 위치 잡기 위해 */
+  display: inline-block;
+  margin-right: 20px;
+}
+
+/* 실제 노드 이미지 */
+.node-image {
+  width: 100px;  /* 원하는 크기에 맞게 조정 */
+  height: auto;
+  cursor: pointer;
+  border: 2px solid transparent; /* 상태 없을 때 투명 */
+  border-radius: 6px;
+}
+
+/* 오른쪽 하단 cost 표시용 */
+.cost-badge {
+  position: absolute;
+  bottom: 4px;
+  right: 4px;
+  background-color: rgba(0,0,0,0.6);
+  color: white;
+  font-size: 0.8rem;
+  padding: 2px 4px;
+  border-radius: 4px;
+}
+
+/* 클릭 시 뜨는 "Have / Want" 버튼 오버레이 */
+.menu-overlay {
+  position: absolute;
+  top: 106%; /* 이미지 바로 아래 */
+  left: 0;
+  background: #f3f3f3;
+  border: 1px solid #ccc;
+  padding: 4px;
+  border-radius: 4px;
+  display: flex;
+  gap: 4px;
+}
+.menu-overlay button {
+  cursor: pointer;
+  border: none;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  background-color: #bbb;
+  color: #fff;
+}
+.menu-overlay button:hover {
+  background-color: #888;
+}

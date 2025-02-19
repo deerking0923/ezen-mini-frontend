@@ -1,42 +1,61 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import "./NodeView.css";
 
-/** 
- * nodeStates: { nodeId: "none"|"have"|"want"|... }
- * setNodeStates: 상태 업데이트
- * 
- * ancestors: 이 노드의 '조상 노드 id' 목록 (아래->위 순서)
- *   -> 상위 컴포넌트에서 넘길 수도 있고, 재귀적으로 쌓아갈 수도 있음
-*/
+/**
+ * props:
+ * - node: { id, name, cost, seasonChild, children[] }
+ * - nodeStates: Record<string, "none"|"have"|"want">
+ * - setNodeStates: function
+ * - ancestors: 조상 노드 ID 배열 (상위->하위 호출 시 주입)
+ * - soulIndex: 몇 번째 영혼인지 (1,2,3)에 따라 이미지 경로 자동 결정
+ */
 export default function NodeView({
   node,
   nodeStates,
   setNodeStates,
-  ancestors = [], // 기본값
+  ancestors = [],
+  soulIndex = 1, // default
 }) {
   // 현재 노드 상태
   const mainState = nodeStates[node.id] || "none";
-  // 시즌패스 상태 (있다면)
+  // 시즌패스 노드 상태
   const seasonId = node.seasonChild?.id;
-  const seasonState = seasonId ? (nodeStates[seasonId] || "none") : null;
+  const seasonState = seasonId ? (nodeStates[seasonId] || "none") : "none";
 
-  // 자식들(위쪽 노드들) 렌더
+  // 자식들(위쪽 노드들)
   const children = node.children || [];
 
-  // 특정 노드의 상태를 설정하면서 조상들도 동기화
+  // 이미지 경로: node.id = "node1" → 1 추출
+  const nodeNum = parseInt(node.id.replace("node", ""), 10);
+  // 예) /sky/calculator/spirit1_item1.webp
+  const mainImageSrc = `/sky/calculator/spirit${soulIndex}_item${nodeNum}.webp`;
+  // 자식 이미지 (있다면)
+  let childImageSrc = "";
+  if (seasonId) {
+    childImageSrc = `/sky/calculator/spirit${soulIndex}_item${nodeNum}_child.webp`;
+  }
+
+  // 이미지 클릭 시 나오는 버튼 표시 여부
+  const [showMainMenu, setShowMainMenu] = useState(false);
+  const [showChildMenu, setShowChildMenu] = useState(false);
+
+  // 노드 상태 변경 (이전 코드 재활용하되 "같은 상태면 none으로" 토글 추가)
   const handleSetState = (nodeId, newState) => {
     setNodeStates((prev) => {
-      const updated = { ...prev, [nodeId]: newState };
+      const oldState = prev[nodeId] || "none";
+      const isSame = oldState === newState;
 
-      // 만약 newState가 "want"나 "have"면, 모든 조상 중 "none"인 것들을 같은 상태로 바꾼다 (예시)
-      if (newState === "want" || newState === "have") {
+      // 같으면 'none'으로 돌리기
+      const realNewState = isSame ? "none" : newState;
+
+      const updated = { ...prev, [nodeId]: realNewState };
+
+      // 만약 have/want라면, 조상 중 "none"을 전부 동일 상태로
+      if (realNewState === "want" || realNewState === "have") {
         ancestors.forEach((ancId) => {
-          const prevSt = updated[ancId] || "none";
-          // 여기서는 단순히 none이면 덮어쓴다
-          // (이미 have인 걸 want로 덮어쓸지 여부는 필요에 따라 변경)
-          if (prevSt === "none") {
-            updated[ancId] = newState;
+          if ((updated[ancId] || "none") === "none") {
+            updated[ancId] = realNewState;
           }
         });
       }
@@ -44,25 +63,49 @@ export default function NodeView({
     });
   };
 
-  // 시즌패스 노드를 선택시에도 같은 로직
+  // 자식 노드 시즌패스도 동일한 로직
   const handleSetSeasonState = (seasonId, newState) => {
     setNodeStates((prev) => {
-      const updated = { ...prev, [seasonId]: newState };
-      // 조상 처리도 동일하게 (seasonChild와 본체는 같은 조상공유)
-      if (newState === "want" || newState === "have") {
+      const oldState = prev[seasonId] || "none";
+      const isSame = oldState === newState;
+      const realNewState = isSame ? "none" : newState;
+
+      const updated = { ...prev, [seasonId]: realNewState };
+
+      if (realNewState === "want" || realNewState === "have") {
         ancestors.forEach((ancId) => {
           if ((updated[ancId] || "none") === "none") {
-            updated[ancId] = newState;
+            updated[ancId] = realNewState;
           }
         });
       }
       return updated;
     });
+  };
+
+  // 메인 노드 이미지 클릭 → 메뉴 토글
+  const handleMainImageClick = () => {
+    setShowMainMenu((prev) => !prev);
+    // 자식 메뉴는 닫기
+    setShowChildMenu(false);
+  };
+  // 자식 노드 이미지 클릭 → 메뉴 토글
+  const handleChildImageClick = () => {
+    setShowChildMenu((prev) => !prev);
+    // 메인 메뉴는 닫기
+    setShowMainMenu(false);
+  };
+
+  // 상태에 따라 테두리색 결정
+  const getBorderColor = (st) => {
+    if (st === "have") return "2px solid green";
+    if (st === "want") return "2px solid gold";
+    return "2px solid transparent";
   };
 
   return (
     <div className="nodeview-container">
-      {/* 자식 먼저 -> 화면상 위쪽 */}
+      {/* 자식(위쪽) */}
       {children.length > 0 && (
         <div className="children-wrapper">
           {children.map((child) => (
@@ -71,72 +114,64 @@ export default function NodeView({
               node={child}
               nodeStates={nodeStates}
               setNodeStates={setNodeStates}
-              // 조상 목록: 자신 + 기존조상
               ancestors={[node.id, ...ancestors]}
+              soulIndex={soulIndex}
             />
           ))}
         </div>
       )}
 
-      {/* 이 노드 (화면에서 '아래쪽') */}
+      {/* 이 노드 (아래쪽) */}
       <div className="node-row">
-        {/* 본 노드를 왼쪽에 배치 */}
-        <div className="main-node-box">
-          <div className="node-info">
-            <span className="node-name">{node.name}</span>
-            <span className="node-cost">(cost: {node.cost})</span>
-            <span className="node-current">{mainState.toUpperCase()}</span>
-          </div>
-          <div className="node-buttons">
-            <button
-              className="btn btn-have"
-              onClick={() => handleSetState(node.id, "have")}
-            >
-              Have
-            </button>
-            <button
-              className="btn btn-want"
-              onClick={() => handleSetState(node.id, "want")}
-            >
-              Want
-            </button>
-            <button
-              className="btn btn-none"
-              onClick={() => handleSetState(node.id, "none")}
-            >
-              None
-            </button>
-          </div>
-        </div>
+        {/* 메인 노드 */}
+        <div className="node-image-box">
+          <img
+            src={mainImageSrc}
+            alt={node.name}
+            className="node-image"
+            style={{ border: getBorderColor(mainState) }}
+            onClick={handleMainImageClick}
+          />
+          {/* 오른쪽 하단 cost 표시 */}
+          <div className="cost-badge">{node.cost}</div>
 
-        {/* 시즌패스 노드는 오른쪽에 배치 */}
-        {seasonId && (
-          <div className="season-node-box">
-            <div className="node-info">
-              <span className="node-name">{node.seasonChild.name}</span>
-              <span className="node-cost">(cost: {node.seasonChild.cost})</span>
-              <span className="node-current">{seasonState.toUpperCase()}</span>
-            </div>
-            <div className="node-buttons">
-              <button
-                className="btn btn-have"
-                onClick={() => handleSetSeasonState(seasonId, "have")}
-              >
+          {/* 클릭하면 뜨는 메뉴 */}
+          {showMainMenu && (
+            <div className="menu-overlay">
+              <button onClick={() => handleSetState(node.id, "have")}>
                 Have
               </button>
-              <button
-                className="btn btn-want"
-                onClick={() => handleSetSeasonState(seasonId, "want")}
-              >
+              <button onClick={() => handleSetState(node.id, "want")}>
                 Want
               </button>
-              <button
-                className="btn btn-none"
-                onClick={() => handleSetSeasonState(seasonId, "none")}
-              >
-                None
-              </button>
             </div>
+          )}
+        </div>
+
+        {/* 시즌패스 노드 */}
+        {seasonId && (
+          <div className="node-image-box">
+            <img
+              src={childImageSrc}
+              alt={node.seasonChild.name}
+              className="node-image"
+              style={{ border: getBorderColor(seasonState) }}
+              onClick={handleChildImageClick}
+            />
+            {/* 오른쪽 하단 cost 표시 */}
+            <div className="cost-badge">{node.seasonChild.cost}</div>
+
+            {/* 클릭하면 뜨는 메뉴 */}
+            {showChildMenu && (
+              <div className="menu-overlay">
+                <button onClick={() => handleSetSeasonState(seasonId, "have")}>
+                  Have
+                </button>
+                <button onClick={() => handleSetSeasonState(seasonId, "want")}>
+                  Want
+                </button>
+              </div>
+            )}
           </div>
         )}
       </div>

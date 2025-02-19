@@ -1,6 +1,4 @@
-// page.js
 "use client";
-
 import React, { useState } from "react";
 import "./CandleCalculator.css";
 import { soul1Tree, soul2Tree, soul3Tree } from "./data/trees";
@@ -10,12 +8,12 @@ import NodeView from "./components/NodeView";
 function sumWantedCost(node, nodeStates) {
   let sum = 0;
   if ((nodeStates[node.id] || "none") === "want") {
-    sum += (node.cost || 0);
+    sum += node.cost || 0;
   }
   if (node.seasonChild) {
     const scId = node.seasonChild.id;
     if ((nodeStates[scId] || "none") === "want") {
-      sum += (node.seasonChild.cost || 0);
+      sum += node.seasonChild.cost || 0;
     }
   }
   if (node.children) {
@@ -45,35 +43,39 @@ export default function CandleCalculatorPage() {
     <div className="calc-container">
       <h1 className="calc-title">양초 계산기</h1>
       <p className="calc-desc">
-        1번 노드가 맨 아래, 8번 노드가 맨 위로 쌓인 일직선 트리입니다.<br/>
-        노드를 HAVE/WANT로 바꾸면 아래(조상) 노드도 자동으로 상태가 연동됩니다.<br/>
-        <b>Calculate</b>로 “WANT” 노드들의 총 비용을 확인하세요.
+        노드를 클릭하면 상태를 바꿀 수 있습니다. Have / Want 설정으로
+        필요한 양초 수를 확인하세요.
       </p>
 
       <div className="souls-wrapper">
-        {/* 세 영혼 나란히 */}
+        {/* Soul 1 */}
         <div className="soul-col">
           <h2 className="soul-name">Soul 1</h2>
           <NodeView
             node={soul1Tree}
             nodeStates={nodeStates}
             setNodeStates={setNodeStates}
+            soulIndex={1}
           />
         </div>
+        {/* Soul 2 */}
         <div className="soul-col">
           <h2 className="soul-name">Soul 2</h2>
           <NodeView
             node={soul2Tree}
             nodeStates={nodeStates}
             setNodeStates={setNodeStates}
+            soulIndex={2}
           />
         </div>
+        {/* Soul 3 */}
         <div className="soul-col">
           <h2 className="soul-name">Soul 3</h2>
           <NodeView
             node={soul3Tree}
             nodeStates={nodeStates}
             setNodeStates={setNodeStates}
+            soulIndex={3}
           />
         </div>
       </div>
