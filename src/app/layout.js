@@ -17,7 +17,7 @@ export default function Layout({ children }) {
 
   // (1) 홈 페이지('/')에서는 헤더 없이 보여줌
   if (pathname === '/' || pathname === '/sky/height' || pathname === '/main' || pathname === '/ezen-main-project/ppt/slides'
-      ||pathname === '/identity5/tier' ||pathname === '/identity5/test' ||pathname === '/sky/closet'
+      ||pathname === '/identity5/tier' ||pathname === '/identity5/test' ||pathname === '/sky/closet' ||pathname === '/sky/candlecalculator'
   ) {
     return (
       <html lang="ko">

@@ -1,0 +1,50 @@
+/* CandleCalculator.css */
+
+.calc-container {
+    padding: 20px;
+    font-family: sans-serif;
+  }
+  
+  .calc-title {
+    font-size: 1.5rem;
+    margin-bottom: 8px;
+  }
+  .calc-desc {
+    color: #555;
+    margin-bottom: 16px;
+  }
+  
+  /* 영혼 3개를 가로 배치 */
+  .souls-wrapper {
+    display: flex;
+    gap: 40px;
+    align-items: flex-start;
+    margin-top: 24px;
+  }
+  
+  .soul-col {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; 
+  }
+  .soul-name {
+    font-size: 1.2rem;
+    margin-bottom: 8px;
+    font-weight: bold;
+  }
+  
+  .btn-row {
+    margin-top: 24px;
+  }
+  .calc-btn {
+    background: #3b82f6;
+    color: white;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+  .calc-btn:hover {
+    background: #2563eb;
+  }
+  
