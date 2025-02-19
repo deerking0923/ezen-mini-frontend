@@ -1,4 +1,5 @@
 "use client";
+
 import React, { useState } from "react";
 import "./CandleCalculator.css";
 import { soul1Tree, soul2Tree, soul3Tree } from "./data/trees";
@@ -8,12 +9,12 @@ import NodeView from "./components/NodeView";
 function sumWantedCost(node, nodeStates) {
   let sum = 0;
   if ((nodeStates[node.id] || "none") === "want") {
-    sum += node.cost || 0;
+    sum += (node.cost || 0);
   }
   if (node.seasonChild) {
     const scId = node.seasonChild.id;
     if ((nodeStates[scId] || "none") === "want") {
-      sum += node.seasonChild.cost || 0;
+      sum += (node.seasonChild.cost || 0);
     }
   }
   if (node.children) {
@@ -26,6 +27,8 @@ function sumWantedCost(node, nodeStates) {
 
 export default function CandleCalculatorPage() {
   const [nodeStates, setNodeStates] = useState({});
+  // 현재 열려있는 (Have/Want) 선택창 대상 ID. null이면 선택창 없음.
+  const [openMenuId, setOpenMenuId] = useState(null);
 
   const handleCalculate = () => {
     const c1 = sumWantedCost(soul1Tree, nodeStates);
@@ -56,6 +59,8 @@ export default function CandleCalculatorPage() {
             nodeStates={nodeStates}
             setNodeStates={setNodeStates}
             soulIndex={1}
+            openMenuId={openMenuId}
+            setOpenMenuId={setOpenMenuId}
           />
         </div>
         {/* Soul 2 */}
@@ -66,6 +71,8 @@ export default function CandleCalculatorPage() {
             nodeStates={nodeStates}
             setNodeStates={setNodeStates}
             soulIndex={2}
+            openMenuId={openMenuId}
+            setOpenMenuId={setOpenMenuId}
           />
         </div>
         {/* Soul 3 */}
@@ -76,6 +83,8 @@ export default function CandleCalculatorPage() {
             nodeStates={nodeStates}
             setNodeStates={setNodeStates}
             soulIndex={3}
+            openMenuId={openMenuId}
+            setOpenMenuId={setOpenMenuId}
           />
         </div>
       </div>

@@ -4,7 +4,7 @@
   position: static;
 }
 
-/* 자식 노드 목록 */
+/* 자식 노드 */
 .children-wrapper {
   margin: 0;
   padding: 0;
@@ -15,26 +15,25 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  margin-bottom: 24px; /* 간격은 적당히 조절 */
+  margin-bottom: 24px;
 }
 
-/* 이미지를 담는 박스 */
+/* 이미지 박스 */
 .node-image-box {
-  position: relative; /* cost배지/메뉴 위치 잡기 위해 */
-  display: inline-block;
+  position: relative;
   margin-right: 20px;
 }
 
-/* 실제 노드 이미지 */
+/* 이미지 */
 .node-image {
-  width: 100px;  /* 원하는 크기에 맞게 조정 */
+  width: 100px;
   height: auto;
   cursor: pointer;
-  border: 2px solid transparent; /* 상태 없을 때 투명 */
+  border: 2px solid transparent;
   border-radius: 6px;
 }
 
-/* 오른쪽 하단 cost 표시용 */
+/* 메인노드 비용뱃지 */
 .cost-badge {
   position: absolute;
   bottom: 4px;
@@ -46,10 +45,24 @@
   border-radius: 4px;
 }
 
-/* 클릭 시 뜨는 "Have / Want" 버튼 오버레이 */
+/* 시즌 아이콘 뱃지 (시즌패스 노드) */
+.season-badge {
+  position: absolute;
+  bottom: 4px;
+  right: 4px;
+  /* 뱃지 배경이 필요 없다면 transparent */
+  background-color: transparent; 
+}
+
+.season-icon {
+  width: 24px;
+  height: 24px;
+}
+
+/* 메뉴 오버레이(버튼) */
 .menu-overlay {
   position: absolute;
-  top: 106%; /* 이미지 바로 아래 */
+  top: 106%;
   left: 0;
   background: #f3f3f3;
   border: 1px solid #ccc;
@@ -57,7 +70,9 @@
   border-radius: 4px;
   display: flex;
   gap: 4px;
+  z-index: 9999; /* 맨 앞으로 */
 }
+
 .menu-overlay button {
   cursor: pointer;
   border: none;
