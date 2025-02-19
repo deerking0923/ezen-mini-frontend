@@ -4,28 +4,9 @@ import React, { useState } from "react";
 import "./CandleCalculator.css";
 import { soul1Tree, soul2Tree, soul3Tree } from "./data/trees";
 import NodeView from "./components/NodeView";
-
-/** nodeStates에서 "want"인 노드 cost 합산 */
-function sumWantedCost(node, nodeStates) {
-  let sum = 0;
-  const mainSt = nodeStates[node.id] || "none";
-  if (mainSt === "want") {
-    sum += node.cost || 0;
-  }
-  if (node.seasonChild) {
-    const scId = node.seasonChild.id;
-    const scSt = nodeStates[scId] || "none";
-    if (scSt === "want") {
-      sum += node.seasonChild.cost || 0;
-    }
-  }
-  if (node.children) {
-    for (let c of node.children) {
-      sum += sumWantedCost(c, nodeStates);
-    }
-  }
-  return sum;
-}
+import SoulSidebar from "./components/SoulSidebar";
+import GuideSidebar from "./components/GuideSidebar";
+import { sumWantedCost } from "./utils/candleUtils";
 
 export default function CandleCalculatorPage() {
   // 영혼별 nodeStates를 분리해서 관리
@@ -38,7 +19,10 @@ export default function CandleCalculatorPage() {
   // 현재 열려 있는 메뉴: { soulIndex, nodeId } 또는 null
   const [openMenu, setOpenMenu] = useState(null);
 
-  // nodeStates를 세팅하는 함수 (특정 영혼의 상태만 업데이트)
+  // 현재 보유 양초 수 (최소 1)
+  const [currentCandles, setCurrentCandles] = useState(0);
+
+  // 특정 영혼의 nodeStates 업데이트
   const handleSetNodeStates = (soulIndex, updater) => {
     setSoulNodeStates((prev) => {
       const old = prev[soulIndex] || {};
@@ -50,17 +34,30 @@ export default function CandleCalculatorPage() {
     });
   };
 
-  // “Calculate” 버튼 → 각 영혼별 want 합산
+  // 계산: 총 필요 양초 수와 보유 양초 수 차이를 구함
   const handleCalculate = () => {
     const c1 = sumWantedCost(soul1Tree, soulNodeStates[1]);
     const c2 = sumWantedCost(soul2Tree, soulNodeStates[2]);
     const c3 = sumWantedCost(soul3Tree, soulNodeStates[3]);
-    alert(`
-      팔짝 뛰는 무용수: ${c1} candles
-      도발하는 곡예사: ${c2} candles
-      인사하는 주술사: ${c3} candles
-      total = ${c1 + c2 + c3}
-    `);
+    const totalRequired = c1 + c2 + c3;
+    const difference = totalRequired - Number(currentCandles);
+    if (difference < 0) {
+      alert(`
+팔짝 뛰는 무용수: ${c1} candles
+도발하는 곡예사: ${c2} candles
+인사하는 주술사: ${c3} candles
+총 필요: ${totalRequired} candles
+시즌 양초가 ${-difference}개 남습니다!
+      `);
+    } else {
+      alert(`
+팔짝 뛰는 무용수: ${c1} candles
+도발하는 곡예사: ${c2} candles
+인사하는 주술사: ${c3} candles
+총 필요: ${totalRequired} candles
+추가 필요: ${difference} candles
+      `);
+    }
   };
 
   // 빈 화면 클릭 시 메뉴 닫기
@@ -70,41 +67,25 @@ export default function CandleCalculatorPage() {
 
   return (
     <div className="calc-container" onClick={handlePageClick}>
-      <h1 className="calc-title">양초 계산기</h1>
+      <h1 className="header-title">
+        스카이 양초 계산기 <span className="byline">made by 진사슴</span>
+      </h1>
+      <div className="candle-input">
+        <label htmlFor="currentCandles">현재 보유 양초 수: </label>
+        <input
+          id="currentCandles"
+          type="number"
+          min="0"
+          value={currentCandles}
+          onChange={(e) => setCurrentCandles(e.target.value)}
+        />
+      </div>
       <div className="main-content">
-        {/* 왼쪽: 영혼 선택 영역 */}
-        <div className="soul-sidebar" onClick={(e) => e.stopPropagation()}>
-          <div className="soul-item">
-            <img
-              src="/sky/calculator/spirit1.webp"
-              alt="팔짝 뛰는 무용수"
-              className="soul-photo"
-            />
-            <div className="soul-label">팔짝 뛰는 무용수</div>
-          </div>
-          <div className="soul-item">
-            <img
-              src="/sky/calculator/spirit2.webp"
-              alt="도발하는 곡예사"
-              className="soul-photo"
-            />
-            <div className="soul-label">도발하는 곡예사</div>
-          </div>
-          <div className="soul-item">
-            <img
-              src="/sky/calculator/spirit3.webp"
-              alt="인사하는 주술사"
-              className="soul-photo"
-            />
-            <div className="soul-label">인사하는 주술사</div>
-          </div>
-        </div>
-
-        {/* 중앙: 노드 영역 */}
-        <div className="nodes-container">
+        <SoulSidebar />
+        <div className="nodes-container" onClick={(e) => e.stopPropagation()}>
           <div className="souls-wrapper">
             {/* Soul 1 */}
-            <div className="soul-col" onClick={(e) => e.stopPropagation()}>
+            <div className="soul-col">
               <h2 className="soul-name">팔짝 뛰는 무용수</h2>
               <NodeView
                 node={soul1Tree}
@@ -116,7 +97,7 @@ export default function CandleCalculatorPage() {
               />
             </div>
             {/* Soul 2 */}
-            <div className="soul-col" onClick={(e) => e.stopPropagation()}>
+            <div className="soul-col">
               <h2 className="soul-name">도발하는 곡예사</h2>
               <NodeView
                 node={soul2Tree}
@@ -128,7 +109,7 @@ export default function CandleCalculatorPage() {
               />
             </div>
             {/* Soul 3 */}
-            <div className="soul-col" onClick={(e) => e.stopPropagation()}>
+            <div className="soul-col">
               <h2 className="soul-name">인사하는 주술사</h2>
               <NodeView
                 node={soul3Tree}
@@ -140,56 +121,13 @@ export default function CandleCalculatorPage() {
               />
             </div>
           </div>
-
           <div className="btn-row">
             <button className="calc-btn" onClick={handleCalculate}>
               Calculate
             </button>
           </div>
         </div>
-
-        {/* 오른쪽: 시즌 가이드 영역 */}
-        <div className="guide-sidebar" onClick={(e) => e.stopPropagation()}>
-          <div className="guide-box">
-            <img
-              src="/sky/calculator/guide.webp"
-              alt="시즌 가이드"
-              className="guide-photo"
-            />
-            <div className="guide-items">
-              <div className="guide-item">
-                <img
-                  src="/sky/calculator/guide_item1.webp"
-                  alt="아이템 1"
-                  className="guide-item-photo"
-                />
-                <div className="guide-item-cost">
-                  <img
-                    src="/sky/calculator/heart.webp"
-                    alt="heart"
-                    className="heart-icon"
-                  />
-                  <span>1</span>
-                </div>
-              </div>
-              <div className="guide-item">
-                <img
-                  src="/sky/calculator/guide_item2.webp"
-                  alt="아이템 2"
-                  className="guide-item-photo"
-                />
-                <div className="guide-item-cost">
-                  <img
-                    src="/sky/calculator/heart.webp"
-                    alt="heart"
-                    className="heart-icon"
-                  />
-                  <span>2</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+        <GuideSidebar />
       </div>
     </div>
   );

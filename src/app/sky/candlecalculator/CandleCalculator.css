@@ -1,3 +1,4 @@
+/* 기본 컨테이너 */
 .calc-container {
   padding: 20px;
   font-family: sans-serif;
@@ -5,20 +6,40 @@
   margin: 0 auto;
 }
 
-.calc-title {
-  font-size: 1.5rem;
-  margin-bottom: 16px;
+/* 헤더 영역 */
+.header {
+  text-align: center;
+  margin-bottom: 20px;
 }
 
-.calc-desc {
-  color: #555;
-  margin-bottom: 16px;
+.header-title {
+  font-size: 2rem;
+  margin: 0;
 }
 
-/* 메인 콘텐츠 영역: 3열 레이아웃, 열 간격 증가 */
+.byline {
+  font-size: 0.8rem;
+  color: #777;
+  margin-left: 8px;
+}
+
+/* 양초 입력 영역 */
+.candle-input {
+  margin-top: 20px;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.candle-input input {
+  width: 80px;
+  padding: 4px;
+  font-size: 1rem;
+}
+
+/* 메인 콘텐츠 영역: 3열 레이아웃 */
 .main-content {
   display: flex;
-  gap: 80px; /* 기존 40px -> 80px로 증가 */
+  gap: 80px;
 }
 
 /* 왼쪽: 영혼 선택 영역 */
@@ -89,7 +110,7 @@
   background: #2563eb;
 }
 
-/* 오른쪽: 시즌 가이드 영역 (세로 길이 축소 버전) */
+/* 오른쪽: 시즌 가이드 영역 */
 .guide-sidebar {
   margin-top: 30px;
   width: 350px;
@@ -151,4 +172,20 @@
 .heart-icon {
   width: 24px;
   height: 24px;
+}
+/* 기본 컨테이너 */
+.calc-container {
+  padding: 20px;
+  font-family: sans-serif;
+  max-width: 1000px; /* 기존 1200px에서 1000px로 줄임 */
+  margin: 0 auto;
+  text-align: center;
+}
+
+/* 메인 콘텐츠 영역: 3열 레이아웃 */
+.main-content {
+  display: flex;
+  justify-content: center;
+  gap: 40px; /* 기존 80px에서 40px로 줄임 */
+  margin-bottom: 30px;
 }
