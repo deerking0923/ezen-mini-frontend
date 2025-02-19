@@ -32,7 +32,7 @@ export default function CandleCalculatorPage() {
   const [soulNodeStates, setSoulNodeStates] = useState({
     1: {}, // 팔짝 뛰는 무용수
     2: {}, // 도발하는 곡예사
-    3: {}, // 인사하는 주술사사
+    3: {}, // 인사하는 주술사
   });
 
   // 현재 열려 있는 메뉴: { soulIndex, nodeId } 또는 null
@@ -58,7 +58,7 @@ export default function CandleCalculatorPage() {
     alert(`
       팔짝 뛰는 무용수: ${c1} candles
       도발하는 곡예사: ${c2} candles
-      인사하는 주술사사: ${c3} candles
+      인사하는 주술사: ${c3} candles
       total = ${c1 + c2 + c3}
     `);
   };
@@ -71,7 +71,6 @@ export default function CandleCalculatorPage() {
   return (
     <div className="calc-container" onClick={handlePageClick}>
       <h1 className="calc-title">양초 계산기</h1>
-      {/* 메인 콘텐츠 영역: 왼쪽에 영혼 사진, 오른쪽에 노드 영역 */}
       <div className="main-content">
         {/* 왼쪽: 영혼 선택 영역 */}
         <div className="soul-sidebar" onClick={(e) => e.stopPropagation()}>
@@ -94,14 +93,14 @@ export default function CandleCalculatorPage() {
           <div className="soul-item">
             <img
               src="/sky/calculator/spirit3.webp"
-              alt="인사하는 주술사사"
+              alt="인사하는 주술사"
               className="soul-photo"
             />
             <div className="soul-label">인사하는 주술사</div>
           </div>
         </div>
 
-        {/* 오른쪽: 노드 영역과 Calculate 버튼 */}
+        {/* 중앙: 노드 영역 */}
         <div className="nodes-container">
           <div className="souls-wrapper">
             {/* Soul 1 */}
@@ -146,6 +145,49 @@ export default function CandleCalculatorPage() {
             <button className="calc-btn" onClick={handleCalculate}>
               Calculate
             </button>
+          </div>
+        </div>
+
+        {/* 오른쪽: 시즌 가이드 영역 */}
+        <div className="guide-sidebar" onClick={(e) => e.stopPropagation()}>
+          <div className="guide-box">
+            <img
+              src="/sky/calculator/guide.webp"
+              alt="시즌 가이드"
+              className="guide-photo"
+            />
+            <div className="guide-items">
+              <div className="guide-item">
+                <img
+                  src="/sky/calculator/guide_item1.webp"
+                  alt="아이템 1"
+                  className="guide-item-photo"
+                />
+                <div className="guide-item-cost">
+                  <img
+                    src="/sky/calculator/heart.webp"
+                    alt="heart"
+                    className="heart-icon"
+                  />
+                  <span>1</span>
+                </div>
+              </div>
+              <div className="guide-item">
+                <img
+                  src="/sky/calculator/guide_item2.webp"
+                  alt="아이템 2"
+                  className="guide-item-photo"
+                />
+                <div className="guide-item-cost">
+                  <img
+                    src="/sky/calculator/heart.webp"
+                    alt="heart"
+                    className="heart-icon"
+                  />
+                  <span>2</span>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>

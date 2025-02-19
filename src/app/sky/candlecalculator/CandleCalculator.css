@@ -15,20 +15,19 @@
   margin-bottom: 16px;
 }
 
-/* 메인 콘텐츠 영역: 좌우 2열 레이아웃 */
+/* 메인 콘텐츠 영역: 3열 레이아웃 */
 .main-content {
   display: flex;
   gap: 40px;
 }
 
-/* 왼쪽: 영혼 선택 영역 (노드 영역 왼쪽에 배치) */
+/* 왼쪽: 영혼 선택 영역 */
 .soul-sidebar {
-  margin-top: 50px;
   display: flex;
   flex-direction: column;
   gap: 30px;
   align-items: center;
-  width: 200px; /* 필요에 따라 조정 */
+  width: 200px;
 }
 
 .soul-item {
@@ -36,7 +35,7 @@
 }
 
 .soul-photo {
-  width: 150px; /* 이전보다 키워진 크기 */
+  width: 150px;
   border-radius: 8px;
 }
 
@@ -45,12 +44,11 @@
   font-weight: bold;
 }
 
-/* 오른쪽: 노드 영역과 Calculate 버튼 */
+/* 중앙: 노드 영역 */
 .nodes-container {
   flex: 1;
 }
 
-/* 기존의 영혼 wrapper: NodeView 영역 */
 .souls-wrapper {
   display: flex;
   justify-content: center;
@@ -90,4 +88,65 @@
   background: #2563eb;
 }
 
-/* NodeView.css의 기존 스타일은 그대로 유지 */
+/* 오른쪽: 시즌 가이드 영역 (세로 길이 축소 버전) */
+.guide-sidebar {
+  width: 350px;
+  align-self: flex-start; /* 부모 flex 컨테이너에서 높이 늘어남 방지 */
+  height: auto; /* 내용에 맞게 높이 자동 조절 */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 2px solid #ccc;
+  border-radius: 8px;
+  padding: 8px; /* 패딩 축소 */
+  background: #f9f9f9;
+  color: #333; /* 어두운 텍스트 */
+}
+
+.guide-box {
+  width: 120%;
+  text-align: center;
+}
+
+.guide-photo {
+  width: 100%;
+  max-width: 320px; /* 대표 이미지 크기 */
+  max-height: 320px;  /* 최대 높이 설정 */
+  object-fit: cover;  /* 이미지 비율 유지 */
+  border-radius: 8px;
+  margin-bottom: 8px; /* 마진 축소 */
+}
+
+.guide-items {
+  display: flex;
+  flex-direction: row;  /* 아이템들을 가로로 배열 */
+  gap: 20px;
+  justify-content: center;
+  width: 100%;
+}
+
+.guide-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+}
+
+.guide-item-photo {
+  width: 80px;
+  border-radius: 4px;
+  margin-bottom: 4px;
+}
+
+.guide-item-cost {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* 하트 아이콘과 텍스트 사이 간격 확대 */
+  font-weight: bold;
+}
+
+.heart-icon {
+  width: 24px;
+  height: 24px;
+}
