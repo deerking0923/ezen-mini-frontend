@@ -7,6 +7,7 @@ import SoulInfoSidebar from "./components/SoulInfoSidebar";
 import GuideSidebar from "./components/GuideSidebar";
 import CandleSettingsPanel from "./components/CandleSettingsPanel";
 import { sumWantedCost } from "./utils/candleUtils";
+import html2canvas from "html2canvas";
 
 export default function CandleCalculatorPage() {
   // 영혼별 노드 상태 분리
@@ -47,6 +48,24 @@ export default function CandleCalculatorPage() {
     setSelectedSoulIndex(soulIndex);
     setShowSoulModal(true);
   };
+  const handleDownload = async () => {
+    const element = document.querySelector(".calc-container");
+    if (!element) return;
+    try {
+      const canvas = await html2canvas(element, {
+        backgroundColor: null, // CSS 배경 유지
+        scale: window.devicePixelRatio, // 고해상도 캡쳐
+        ignoreElements: (el) => el.classList.contains("no-capture"), // no-capture 클래스 요소 무시
+      });
+      const dataURL = canvas.toDataURL("image/png");
+      const link = document.createElement("a");
+      link.href = dataURL;
+      link.download = "calc-container.png";
+      link.click();
+    } catch (error) {
+      console.error("캡쳐 실패:", error);
+    }
+  };
 
   return (
     <div className="calc-container" onClick={handlePageClick}>
@@ -54,7 +73,7 @@ export default function CandleCalculatorPage() {
         스카이 양초 계산기 <span className="byline">made by 진사슴</span>
       </h1>
 
-      <div className="total-info-container">
+      <div className="total-info-container no-capture">
         <button
           className="total-info-btn"
           onClick={() => setShowTotalInfoModal(true)}
@@ -72,110 +91,116 @@ export default function CandleCalculatorPage() {
 
       <div className="main-content">
         <div className="nodes-container" onClick={(e) => e.stopPropagation()}>
-<div className="souls-wrapper">
-  {/* Soul 1 */}
-  <div className="soul-col">
-    <div
-      className="soul-selector"
-      onClick={() => handleSoulNameClick(1)}
-    >
-      <img
-        src="/sky/calculator/spirit1.webp"
-        alt="팔짝 뛰는 무용수"
-        className="soul-selector-img"
-      />
-      <span className="soul-selector-text">팔짝 뛰는 무용수</span>
-    </div>
-    <NodeView
-      node={soul1Tree}
-      nodeStates={soulNodeStates[1]}
-      setNodeStates={(updater) => handleSetNodeStates(1, updater)}
-      soulIndex={1}
-      openMenu={openMenu}
-      setOpenMenu={setOpenMenu}
-    />
-    <div className="candle-count">
-      <img
-        src="/sky/calculator/candle.webp"
-        alt="Candle"
-        className="candle-icon"
-      />
-      총 135 양초
-    </div>
-    <div className="candle-selected">
-      선택한 양초: {sumWantedCost(soul1Tree, soulNodeStates[1])}개
-    </div>
-  </div>
-  {/* Soul 2 */}
-  <div className="soul-col">
-    <div
-      className="soul-selector"
-      onClick={() => handleSoulNameClick(2)}
-    >
-      <img
-        src="/sky/calculator/spirit2.webp"
-        alt="도발하는 곡예사"
-        className="soul-selector-img"
-      />
-      <span className="soul-selector-text">도발하는 곡예사</span>
-    </div>
-    <NodeView
-      node={soul2Tree}
-      nodeStates={soulNodeStates[2]}
-      setNodeStates={(updater) => handleSetNodeStates(2, updater)}
-      soulIndex={2}
-      openMenu={openMenu}
-      setOpenMenu={setOpenMenu}
-    />
-    <div className="candle-count">
-      <img
-        src="/sky/calculator/candle.webp"
-        alt="Candle"
-        className="candle-icon"
-      />
-      총 139 양초
-    </div>
-    <div className="candle-selected">
-      선택한 양초: {sumWantedCost(soul2Tree, soulNodeStates[2])}개
-    </div>
-  </div>
-  {/* Soul 3 */}
-  <div className="soul-col">
-    <div
-      className="soul-selector"
-      onClick={() => handleSoulNameClick(3)}
-    >
-      <img
-        src="/sky/calculator/spirit3.webp"
-        alt="인사하는 주술사"
-        className="soul-selector-img"
-      />
-      <span className="soul-selector-text">인사하는 주술사</span>
-    </div>
-    <NodeView
-      node={soul3Tree}
-      nodeStates={soulNodeStates[3]}
-      setNodeStates={(updater) => handleSetNodeStates(3, updater)}
-      soulIndex={3}
-      openMenu={openMenu}
-      setOpenMenu={setOpenMenu}
-    />
-    <div className="candle-count">
-      <img
-        src="/sky/calculator/candle.webp"
-        alt="Candle"
-        className="candle-icon"
-      />
-      총 123 양초
-    </div>
-    <div className="candle-selected">
-      선택한 양초: {sumWantedCost(soul3Tree, soulNodeStates[3])}개
-    </div>
-  </div>
-</div>
-
+          <div className="souls-wrapper">
+            {/* Soul 1 */}
+            <div className="soul-col">
+              <div
+                className="soul-selector"
+                onClick={() => handleSoulNameClick(1)}
+              >
+                <img
+                  src="/sky/calculator/spirit1.webp"
+                  alt="팔짝 뛰는 무용수"
+                  className="soul-selector-img"
+                />
+                <span className="soul-selector-text">팔짝 뛰는 무용수</span>
+              </div>
+              <NodeView
+                node={soul1Tree}
+                nodeStates={soulNodeStates[1]}
+                setNodeStates={(updater) => handleSetNodeStates(1, updater)}
+                soulIndex={1}
+                openMenu={openMenu}
+                setOpenMenu={setOpenMenu}
+              />
+              <div className="candle-count">
+                <img
+                  src="/sky/calculator/candle.webp"
+                  alt="Candle"
+                  className="candle-icon"
+                />
+                135 양초
+              </div>
+              <div className="candle-selected">
+                선택한 양초: {sumWantedCost(soul1Tree, soulNodeStates[1])}개
+              </div>
+            </div>
+            {/* Soul 2 */}
+            <div className="soul-col">
+              <div
+                className="soul-selector"
+                onClick={() => handleSoulNameClick(2)}
+              >
+                <img
+                  src="/sky/calculator/spirit2.webp"
+                  alt="도발하는 곡예사"
+                  className="soul-selector-img"
+                />
+                <span className="soul-selector-text">도발하는 곡예사</span>
+              </div>
+              <NodeView
+                node={soul2Tree}
+                nodeStates={soulNodeStates[2]}
+                setNodeStates={(updater) => handleSetNodeStates(2, updater)}
+                soulIndex={2}
+                openMenu={openMenu}
+                setOpenMenu={setOpenMenu}
+              />
+              <div className="candle-count">
+                <img
+                  src="/sky/calculator/candle.webp"
+                  alt="Candle"
+                  className="candle-icon"
+                />
+                139 양초
+              </div>
+              <div className="candle-selected">
+                선택한 양초: {sumWantedCost(soul2Tree, soulNodeStates[2])}개
+              </div>
+            </div>
+            {/* Soul 3 */}
+            <div className="soul-col">
+              <div
+                className="soul-selector"
+                onClick={() => handleSoulNameClick(3)}
+              >
+                <img
+                  src="/sky/calculator/spirit3.webp"
+                  alt="인사하는 주술사"
+                  className="soul-selector-img"
+                />
+                <span className="soul-selector-text">인사하는 주술사</span>
+              </div>
+              <NodeView
+                node={soul3Tree}
+                nodeStates={soulNodeStates[3]}
+                setNodeStates={(updater) => handleSetNodeStates(3, updater)}
+                soulIndex={3}
+                openMenu={openMenu}
+                setOpenMenu={setOpenMenu}
+              />
+              <div className="candle-count">
+                <img
+                  src="/sky/calculator/candle.webp"
+                  alt="Candle"
+                  className="candle-icon"
+                />
+                123 양초
+              </div>
+              <div className="candle-selected">
+                선택한 양초: {sumWantedCost(soul3Tree, soulNodeStates[3])}개
+              </div>
+            </div>
+          </div>
         </div>
         <GuideSidebar onClick={() => setShowGuideModal(true)} />
+      </div>
+
+      {/* 결과 다운로드 버튼 */}
+      <div className="download-btn-container no-capture">
+        <button className="download-btn" onClick={handleDownload}>
+          결과 다운로드
+        </button>
       </div>
 
       {showSoulModal && (

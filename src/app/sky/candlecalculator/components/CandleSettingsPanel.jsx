@@ -71,14 +71,21 @@ export default function CandleSettingsPanel({
     const totalSeasonCandles = current + seasonCandlesFromDays + extraCandles;
     const difference = totalSeasonCandles - Number(requiredCandles);
 
-    const result = `
+    const formula =
+    ownsSeasonPass === "no" && buySeasonPass
+      ? `${current} + ${seasonCandlesFromDays} + 시패 추가 30개 = ${totalSeasonCandles}`
+      : `${current} + ${seasonCandlesFromDays} = ${totalSeasonCandles}`;
+
+  const result = `
+  필요한 양초: ${requiredCandles}개
+
 현재 보유 양초: ${current}개
-남은 시즌 일수: ${remainingDays}일
-일일 획득 양초: ${dailyCandleCount}개 (총 ${seasonCandlesFromDays}개)
-총 예상 양초: ${totalSeasonCandles}개
-필요한 양초: ${requiredCandles}개
+일일 획득 양초: ${dailyCandleCount}개 * ${remainingDays}일 (총 ${seasonCandlesFromDays}개)
+획득 예상 양초: ${formula}개
+
 ${difference < 0 ? `부족한 양초: ${-difference}개` : `남는 양초: ${difference}개`}
-    `;
+  `;
+    
     setCalcResult(result);
   };
 
