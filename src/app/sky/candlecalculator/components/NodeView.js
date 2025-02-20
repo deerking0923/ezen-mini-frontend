@@ -29,40 +29,63 @@ export default function NodeView({
     childImageSrc = `/sky/calculator/spirit${soulIndex}_item${nodeNum}_child.webp`;
   }
 
-  const handleSetState = (nodeId, newState) => {
-    setNodeStates((prev) => {
-      const oldState = prev[nodeId] || "none";
-      // 같은 상태면 토글 -> 'none'으로 전환
-      const realNewState = oldState === newState ? "none" : newState;
-      let updated = { ...prev, [nodeId]: realNewState };
-  
-      // 자식 노드 선택 시, 조상(부모) 노드들도 무조건 realNewState로 업데이트
-      if (realNewState !== "none") {
-        ancestors.forEach((ancId) => {
-          updated[ancId] = realNewState;
-        });
-      }
-      return updated;
+// 재귀적으로 하위 노드들을 업데이트하는 helper 함수
+const updateDescendants = (currentNode, newState, updated) => {
+  // 시즌패스 노드 업데이트
+  if (currentNode.seasonChild) {
+    updated[currentNode.seasonChild.id] = newState;
+  }
+  // 자식 노드 업데이트
+  if (currentNode.children && currentNode.children.length > 0) {
+    currentNode.children.forEach((child) => {
+      updated[child.id] = newState;
+      updateDescendants(child, newState, updated);
     });
-  };
-  
-  const handleSetSeasonState = (seasonId, newState) => {
-    setNodeStates((prev) => {
-      const oldState = prev[seasonId] || "none";
-      const realNewState = oldState === newState ? "none" : newState;
-      let updated = { ...prev, [seasonId]: realNewState };
-  
-      if (realNewState !== "none") {
-        // 현재 노드(부모)를 명시적으로 업데이트
-        updated[node.id] = realNewState;
-        // ancestors 배열에 있는 조상 노드들도 업데이트
-        ancestors.forEach((ancId) => {
-          updated[ancId] = realNewState;
-        });
-      }
-      return updated;
-    });
-  };
+  }
+};
+
+const handleSetState = (nodeId, newState) => {
+  setNodeStates((prev) => {
+    const oldState = prev[nodeId] || "none";
+    // 토글: 같은 상태면 "none", 아니면 newState
+    const realNewState = oldState === newState ? "none" : newState;
+    let updated = { ...prev, [nodeId]: realNewState };
+
+    if (realNewState !== "none") {
+      // 선택 시: 조상(부모) 노드들도 함께 업데이트
+      ancestors.forEach((ancId) => {
+        updated[ancId] = realNewState;
+      });
+    } else {
+      // 해제 시: 자식 노드와 그 하위 노드들만 재귀적으로 "none"으로 업데이트 (부모는 그대로 유지)
+      updateDescendants(node, "none", updated);
+    }
+    return updated;
+  });
+};
+
+const handleSetSeasonState = (seasonId, newState) => {
+  setNodeStates((prev) => {
+    const oldState = prev[seasonId] || "none";
+    const realNewState = oldState === newState ? "none" : newState;
+    let updated = { ...prev, [seasonId]: realNewState };
+
+    if (realNewState !== "none") {
+      // 선택 시: 현재 노드(부모)와 ancestors 업데이트
+      updated[node.id] = realNewState;
+      ancestors.forEach((ancId) => {
+        updated[ancId] = realNewState;
+      });
+    } else {
+      // 해제 시: 현재 노드와 자손들만 "none"으로 업데이트, ancestors(부모)는 그대로 유지
+      updated[node.id] = "none";
+      updateDescendants(node, "none", updated);
+    }
+    return updated;
+  });
+};
+
+
   
   
   // 메인 이미지 클릭 -> openMenu 설정
