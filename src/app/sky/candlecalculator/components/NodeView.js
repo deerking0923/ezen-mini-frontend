@@ -2,16 +2,6 @@
 import React from "react";
 import "./NodeView.css";
 
-/**
- * props:
- * - node: { id, name, cost, seasonChild, children[] }
- * - nodeStates: Record<string, "none"|"have"|"want"> (해당 Soul의 상태)
- * - setNodeStates: function(updater => newState) (해당 Soul만 업데이트)
- * - ancestors: 조상 노드 ID 배열
- * - soulIndex: 1 | 2 | 3 (이미지 경로 구분)
- * - openMenu: { soulIndex, nodeId } | null
- * - setOpenMenu: (obj or null) => void
- */
 export default function NodeView({
   node,
   nodeStates,
