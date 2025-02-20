@@ -51,33 +51,39 @@ export default function ArrayNodeView({
     }
   };
 
-  // 자손 have 해제 (index+1..끝)
-  const removeDescendants = (index, prevStates, updated) => {
+// 기존 removeDescendants 함수를 아래와 같이 수정하세요.
+const removeDescendants = (index, prevStates, updated) => {
     for (let i = index + 1; i < mainArray.length; i++) {
       const m = mainArray[i];
-      if (prevStates[m.id] === "have") {
-        updated[m.id] = "none";
-      }
+      updated[m.id] = "none"; // 조건 없이 모두 해제
       const s = seasonArray[i];
-      if (s && prevStates[s.id] === "have") {
+      if (s) {
         updated[s.id] = "none";
       }
     }
   };
+  
 
-  // 메인 노드 state 토글
   const handleSetMainState = (index, newState) => {
     const nodeId = mainArray[index].id;
     setNodeStates((prev) => {
       const oldState = prev[nodeId] || "none";
       const realNewState = oldState === newState ? "none" : newState;
-
+  
       let updated = { ...prev, [nodeId]: realNewState };
+      // 현재 메인 노드에 딸린 시즌 노드도 같이 업데이트 (없으면 무시)
+      const currentSeason = seasonArray[index];
+      if (currentSeason) {
+        updated[currentSeason.id] = realNewState;
+      }
+  
       if (realNewState !== "none") {
+        // have 상태라면 조상들(원본 인덱스 기준 index-1 ... 0)도 업데이트
         if (realNewState === "have") {
           applyAncestors(index, updated);
         }
       } else {
+        // 해제("none") 시, 이전 상태가 have였다면 자손들(원본 인덱스 기준 index+1 ... 끝) 해제
         if (oldState === "have") {
           removeDescendants(index, prev, updated);
         }
@@ -85,7 +91,7 @@ export default function ArrayNodeView({
       return updated;
     });
   };
-
+  
   // 시즌 노드 state 토글
   const handleSetSeasonState = (index, newState) => {
     const sn = seasonArray[index];
