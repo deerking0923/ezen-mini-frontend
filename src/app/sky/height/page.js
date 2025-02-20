@@ -243,7 +243,7 @@ export default function Home() {
   return (
     <main className="container">
       <h1>
-        빛아 키 측정 사이트 <span className="subtitle">made by 진사슴</span>
+      빛아 키 재기 <span className="subtitle">made by 진사슴</span>
       </h1>
 
       <div className="instructions-btn-container">

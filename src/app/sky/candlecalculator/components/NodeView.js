@@ -29,27 +29,42 @@ export default function NodeView({
     childImageSrc = `/sky/calculator/spirit${soulIndex}_item${nodeNum}_child.webp`;
   }
 
-  // 노드 상태 변경
   const handleSetState = (nodeId, newState) => {
     setNodeStates((prev) => {
       const oldState = prev[nodeId] || "none";
-      // 같은 상태면 'none'으로 토글
+      // 같은 상태면 토글 -> 'none'으로 전환
       const realNewState = oldState === newState ? "none" : newState;
-
-      const updated = { ...prev, [nodeId]: realNewState };
-      // 만약 have/want라면, 조상 중 none을 덮어씀
-      if (realNewState === "have" || realNewState === "want") {
+      let updated = { ...prev, [nodeId]: realNewState };
+  
+      // 자식 노드 선택 시, 조상(부모) 노드들도 무조건 realNewState로 업데이트
+      if (realNewState !== "none") {
         ancestors.forEach((ancId) => {
-          const ancSt = updated[ancId] || "none";
-          if (ancSt === "none") {
-            updated[ancId] = realNewState;
-          }
+          updated[ancId] = realNewState;
         });
       }
       return updated;
     });
   };
-
+  
+  const handleSetSeasonState = (seasonId, newState) => {
+    setNodeStates((prev) => {
+      const oldState = prev[seasonId] || "none";
+      const realNewState = oldState === newState ? "none" : newState;
+      let updated = { ...prev, [seasonId]: realNewState };
+  
+      if (realNewState !== "none") {
+        // 현재 노드(부모)를 명시적으로 업데이트
+        updated[node.id] = realNewState;
+        // ancestors 배열에 있는 조상 노드들도 업데이트
+        ancestors.forEach((ancId) => {
+          updated[ancId] = realNewState;
+        });
+      }
+      return updated;
+    });
+  };
+  
+  
   // 메인 이미지 클릭 -> openMenu 설정
   const handleMainImageClick = (e) => {
     e.stopPropagation(); // 부모 onClick에 잡히지 않게
@@ -79,25 +94,6 @@ export default function NodeView({
     } else {
       setOpenMenu({ soulIndex, nodeId: seasonId });
     }
-  };
-
-  // 시즌패스 상태 변경
-  const handleSetSeasonState = (seasonId, newState) => {
-    setNodeStates((prev) => {
-      const oldState = prev[seasonId] || "none";
-      const realNewState = oldState === newState ? "none" : newState;
-
-      const updated = { ...prev, [seasonId]: realNewState };
-      if (realNewState === "have" || realNewState === "want") {
-        ancestors.forEach((ancId) => {
-          const ancSt = updated[ancId] || "none";
-          if (ancSt === "none") {
-            updated[ancId] = realNewState;
-          }
-        });
-      }
-      return updated;
-    });
   };
 
   const getBorderColor = (st) => {
