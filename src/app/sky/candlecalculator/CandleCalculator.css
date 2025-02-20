@@ -1,8 +1,8 @@
 /* 기본 컨테이너 */
 .calc-container {
-  padding: 20px;
+  padding: 13px; /* 원래 20px → 13px */
   font-family: sans-serif;
-  max-width: 1200px;
+  max-width: 800px; /* 원래 1200px → 800px (약 2/3) */
   margin: 0 auto;
   text-align: center;
 }
@@ -10,50 +10,50 @@
 /* 헤더 영역 */
 .header {
   text-align: center;
-  margin-bottom: 20px;
+  margin-bottom: 13px; /* 원래 20px → 13px */
 }
 
 .header-title {
   text-align: center;
-  font-size: 2rem;
-  margin-bottom: 20px;
+  font-size: 1.33rem; /* 원래 2rem → 약 1.33rem */
+  margin-bottom: 13px; /* 원래 20px → 13px */
 }
 
 .byline {
-  font-size: 0.8rem;
+  font-size: 0.53rem; /* 원래 0.8rem → 약 0.53rem */
   color: #777;
-  margin-left: 8px;
+  margin-left: 5px; /* 원래 8px → 5px */
   vertical-align: bottom;
 }
 
 /* 양초 입력 영역 */
 .candle-input {
   text-align: center;
-  margin-bottom: 20px;
+  margin-bottom: 13px; /* 원래 20px → 13px */
 }
 
 .candle-input input {
-  width: 80px;
-  padding: 4px;
-  font-size: 1rem;
+  width: 53px; /* 원래 80px → 53px */
+  padding: 3px;  /* 원래 4px → 3px */
+  font-size: 0.67rem; /* 원래 1rem → 0.67rem */
 }
 
 /* 메인 콘텐츠 영역: 3열 레이아웃 */
 .main-content {
   display: flex;
   justify-content: center;
-  gap: 80px;
-  margin-bottom: 30px;
+  gap: 53px; /* 원래 80px → 53px */
+  margin-bottom: 20px; /* 원래 30px → 20px */
 }
 
 /* 왼쪽: 영혼 선택 영역 */
 .soul-sidebar {
-  margin-top: 30px;
+  margin-top: 20px; /* 원래 30px → 20px */
   display: flex;
   flex-direction: column;
-  gap: 30px;
+  gap: 20px; /* 원래 30px → 20px */
   align-items: center;
-  width: 200px;
+  width: 133px; /* 원래 200px → 133px */
 }
 
 .soul-item {
@@ -61,12 +61,12 @@
 }
 
 .soul-photo {
-  width: 150px;
-  border-radius: 8px;
+  width: 100px; /* 원래 150px → 100px */
+  border-radius: 8px; /* 유지 */
 }
 
 .soul-label {
-  margin-top: 8px;
+  margin-top: 5px; /* 원래 8px → 5px */
   font-weight: bold;
 }
 
@@ -78,9 +78,9 @@
 .souls-wrapper {
   display: flex;
   justify-content: center;
-  gap: 60px;
+  gap: 40px; /* 원래 60px → 40px */
   align-items: flex-start;
-  margin-top: 24px;
+  margin-top: 16px; /* 원래 24px → 16px */
 }
 
 .soul-col {
@@ -90,13 +90,13 @@
 }
 
 .soul-name {
-  font-size: 1.2rem;
-  margin-bottom: 8px;
+  font-size: 0.8rem; /* 원래 1.2rem → 0.8rem */
+  margin-bottom: 5px; /* 원래 8px → 5px */
   font-weight: bold;
 }
 
 .btn-row {
-  margin-top: 24px;
+  margin-top: 16px; /* 원래 24px → 16px */
   display: flex;
   justify-content: center;
 }
@@ -105,8 +105,8 @@
   background: #3b82f6;
   color: white;
   border: none;
-  padding: 10px 16px;
-  border-radius: 6px;
+  padding: 7px 11px; /* 원래 10px 16px → 7px 11px */
+  border-radius: 4px; /* 원래 6px → 4px */
   cursor: pointer;
 }
 
@@ -116,16 +116,16 @@
 
 /* 오른쪽: 시즌 가이드 영역 */
 .guide-sidebar {
-  margin-top: 30px;
-  width: 350px;
+  margin-top: 20px; /* 원래 30px → 20px */
+  width: 233px; /* 원래 350px → 233px */
   align-self: flex-start;
   height: auto;
   display: flex;
   flex-direction: column;
   align-items: center;
-  border: 2px solid #ccc;
-  border-radius: 8px;
-  padding: 8px;
+  border: 1.5px solid #ccc; /* 원래 2px → 약 1.5px */
+  border-radius: 5px; /* 원래 8px → 5px */
+  padding: 5px; /* 원래 8px → 5px */
   background: #f9f9f9;
   color: #333;
 }
@@ -137,17 +137,17 @@
 
 .guide-photo {
   width: 100%;
-  max-width: 320px;
-  max-height: 320px;
+  max-width: 213px; /* 원래 320px → 213px */
+  max-height: 213px; /* 원래 320px → 213px */
   object-fit: cover;
   border-radius: 8px;
-  margin-bottom: 8px;
+  margin-bottom: 5px; /* 원래 8px → 5px */
 }
 
 .guide-items {
   display: flex;
   flex-direction: row;
-  gap: 20px;
+  gap: 13px; /* 원래 20px → 13px */
   justify-content: center;
   width: 100%;
 }
@@ -161,34 +161,34 @@
 }
 
 .guide-item-photo {
-  width: 80px;
+  width: 53px; /* 원래 80px → 53px */
   border-radius: 4px;
-  margin-bottom: 4px;
+  margin-bottom: 3px; /* 원래 4px → 3px */
 }
 
 .guide-item-cost {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 7px; /* 원래 10px → 7px */
   font-weight: bold;
 }
 
 .heart-icon {
-  width: 24px;
-  height: 24px;
+  width: 16px; /* 원래 24px → 16px */
+  height: 16px;
 }
 
 /* 새로운 양초 카운트 스타일 */
 .candle-count {
-  margin-top: 8px;
-  font-size: 1.5rem;
+  margin-top: 5px; /* 원래 8px → 5px */
+  font-size: 1rem; /* 원래 1.5rem → 1rem */
   font-weight: bold;
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 3px; /* 원래 4px → 3px */
 }
 
 .candle-icon {
-  width: 50px;
-  height: 50px;
+  width: 33px; /* 원래 50px → 33px */
+  height: 33px; /* 원래 50px → 33px */
 }
