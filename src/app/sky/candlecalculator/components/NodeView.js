@@ -53,39 +53,41 @@ const handleSetState = (nodeId, newState) => {
     let updated = { ...prev, [nodeId]: realNewState };
 
     if (realNewState !== "none") {
-      // 메인 노드 선택 시: ancestors에 담긴 메인 노드들만 업데이트 (시즌패스 노드는 업데이트하지 않음)
-      ancestors.forEach((ancId) => {
-        updated[ancId] = realNewState;
-      });
+      // 새 상태가 "have"인 경우에만 조상(ancestors) 업데이트
+      if (newState === "have") {
+        ancestors.forEach((ancId) => {
+          updated[ancId] = realNewState;
+        });
+      }
     } else {
-      // 해제 시: 현재 노드(부모)부터 그 하위(자식 및 자손) 노드들을 재귀적으로 "none"으로 업데이트
+      // 해제 시: 현재 노드(부모)부터 하위(자식 및 자손) 노드들을 재귀적으로 "none"으로 업데이트
       updateDescendants(node, "none", updated);
     }
     return updated;
   });
 };
 
+
 const handleSetSeasonState = (seasonId, newState) => {
   setNodeStates((prev) => {
     const oldState = prev[seasonId] || "none";
-    // 토글: 같은 상태면 "none", 아니면 newState 적용
     const realNewState = oldState === newState ? "none" : newState;
     let updated = { ...prev, [seasonId]: realNewState };
 
     if (realNewState !== "none") {
-      // 시즌패스 선택 시: 현재 노드(부모)를 업데이트
-      updated[node.id] = realNewState;
-      // 그리고 현재 노드에 대응하는 시즌패스는 업데이트
-      const parentSeasonId = node.id.replace("node", "child");
-      updated[parentSeasonId] = realNewState;
-      // ancestors에 담긴 메인 노드와 그에 대응하는 시즌패스 노드들도 모두 업데이트
-      ancestors.forEach((ancId) => {
-        updated[ancId] = realNewState;
-        const ancSeasonId = ancId.replace("node", "child");
-        updated[ancSeasonId] = realNewState;
-      });
+      if (newState === "have") {
+        // 시즌패스 선택 시: 현재 노드(부모)와 대응하는 시즌패스, 그리고 조상 업데이트
+        updated[node.id] = realNewState;
+        const parentSeasonId = node.id.replace("node", "child");
+        updated[parentSeasonId] = realNewState;
+        ancestors.forEach((ancId) => {
+          updated[ancId] = realNewState;
+          const ancSeasonId = ancId.replace("node", "child");
+          updated[ancSeasonId] = realNewState;
+        });
+      }
+      // "want"인 경우에는 해당 시즌노드만 업데이트 (추가 전파 없음)
     } else {
-      // 해제 시: 현재 노드(부모)부터 그 하위 노드들만 재귀적으로 "none"으로 업데이트
       updateDescendants(node, "none", updated);
     }
     return updated;
