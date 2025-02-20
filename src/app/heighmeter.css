@@ -273,7 +273,7 @@ h1 {
 .image-canvas {
   position: relative;
   width: 100%;
-  max-width: 481px;  /* 원래 962px의 절반 */
+  max-width: 600px;  /* 원래 962px의 절반 */
   aspect-ratio: 962 / 881;
   background-color: #fff;
   border: 1px solid #ccc;
