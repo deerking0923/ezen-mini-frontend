@@ -42,7 +42,7 @@
   margin-bottom: 20px;
 }
 
-/* 왼쪽 영혼 선택 영역 (참고용, 필요 시) */
+/* (참고용) 왼쪽 영혼 선택 영역 */
 .soul-sidebar {
   margin-top: 20px;
   display: flex;
@@ -78,9 +78,8 @@
 .soul-col {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
 }
-/* 영혼 이름 (노드 컬럼 헤더) - 중앙 정렬 및 클릭 가능 */
 .soul-name {
   font-size: 0.8rem;
   margin-bottom: 5px;
@@ -102,15 +101,16 @@
   justify-content: center;
 }
 .calc-btn {
-  background: #3b82f6;
-  color: white;
+  background: #f39c12;
+  color: #fff;
   border: none;
   padding: 7px 11px;
   border-radius: 4px;
   cursor: pointer;
+  transition: background 0.3s ease;
 }
 .calc-btn:hover {
-  background: #2563eb;
+  background: #d35400;
 }
 
 /* 오른쪽 시즌 가이드 영역 */
@@ -296,7 +296,7 @@
 }
 .total-info-btn {
   padding: 0.75rem 1.5rem;
-  background: #3ad871;
+  background: #f39c12;
   color: #fff;
   border: none;
   border-radius: 4px;
@@ -306,11 +306,48 @@
   transition: background 0.3s ease;
 }
 .total-info-btn:hover {
-  background: #009523;
+  background: #d35400;
+}
+
+.soul-selector {
+  width: 133px;              
+  height: 120px;             
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  background-color: #f8f8f8; 
+  border: 1px solid #ddd;    
+  border-radius: 4px;
+  transition: background 0.2s ease;
+  margin-bottom: 5px;
+  overflow: hidden; /* 내용이 넘치지 않도록 설정 */
+}
+.soul-selector:hover {
+  background-color: #e0e0e0;
+}
+.soul-selector-img {
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
+  border-radius: 8px;
+  display: block;
+}
+
+.soul-selector-text {
+  margin-top: 5px;
+  font-size: 0.9rem;   
+  font-weight: bold;
+  color: #333;         
+  text-align: center;
+  overflow: hidden;  /* 텍스트가 넘치지 않도록 */
+  white-space: nowrap; /* 한 줄로 표시 */
+  text-overflow: ellipsis; /* 넘치는 부분은 ... 처리 */
 }
 
 /* 반응형 미디어 쿼리 */
-@media (max-width: 600px) {
+/* @media (max-width: 600px) {
   .container {
     padding: 1rem;
     gap: 1rem;
@@ -329,4 +366,4 @@
     font-size: 1.75rem;
     text-align: center;
   }
-}
+} */

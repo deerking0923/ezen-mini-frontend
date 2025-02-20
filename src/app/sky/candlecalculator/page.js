@@ -75,6 +75,17 @@ export default function CandleCalculatorPage() {
       <h1 className="header-title">
         스카이 양초 계산기 <span className="byline">made by 진사슴</span>
       </h1>
+
+      {/* 전체 노드표 보기 버튼 */}
+      <div className="total-info-container">
+        <button
+          className="total-info-btn"
+          onClick={() => setShowTotalInfoModal(true)}
+        >
+          전체 노드표 보기
+        </button>
+      </div>
+
       <div className="candle-input">
         <label htmlFor="currentCandles">현재 보유 양초 수: </label>
         <input
@@ -85,24 +96,23 @@ export default function CandleCalculatorPage() {
           onChange={(e) => setCurrentCandles(e.target.value)}
         />
       </div>
-      {/* 전체 노드표 보기 버튼 */}
-      <div className="total-info-container">
-        <button
-          className="total-info-btn"
-          onClick={() => setShowTotalInfoModal(true)}
-        >
-          전체 노드표 보기
-        </button>
-      </div>
       <div className="main-content">
         {/* 중앙: 노드 영역 */}
         <div className="nodes-container" onClick={(e) => e.stopPropagation()}>
           <div className="souls-wrapper">
             {/* Soul 1 */}
             <div className="soul-col">
-              <h2 className="soul-name" onClick={() => handleSoulNameClick(1)}>
-                팔짝 뛰는 무용수
-              </h2>
+              <div
+                className="soul-selector"
+                onClick={() => handleSoulNameClick(1)}
+              >
+                <img
+                  src="/sky/calculator/spirit1.webp"
+                  alt="팔짝 뛰는 무용수"
+                  className="soul-selector-img"
+                />
+                <span className="soul-selector-text">팔짝 뛰는 무용수</span>
+              </div>
               <NodeView
                 node={soul1Tree}
                 nodeStates={soulNodeStates[1]}
@@ -122,9 +132,17 @@ export default function CandleCalculatorPage() {
             </div>
             {/* Soul 2 */}
             <div className="soul-col">
-              <h2 className="soul-name" onClick={() => handleSoulNameClick(2)}>
-                도발하는 곡예사
-              </h2>
+              <div
+                className="soul-selector"
+                onClick={() => handleSoulNameClick(2)}
+              >
+                <img
+                  src="/sky/calculator/spirit2.webp"
+                  alt="도발하는 곡예사"
+                  className="soul-selector-img"
+                />
+                <span className="soul-selector-text">도발하는 곡예사</span>
+              </div>
               <NodeView
                 node={soul2Tree}
                 nodeStates={soulNodeStates[2]}
@@ -144,9 +162,17 @@ export default function CandleCalculatorPage() {
             </div>
             {/* Soul 3 */}
             <div className="soul-col">
-              <h2 className="soul-name" onClick={() => handleSoulNameClick(3)}>
-                인사하는 주술사
-              </h2>
+              <div
+                className="soul-selector"
+                onClick={() => handleSoulNameClick(3)}
+              >
+                <img
+                  src="/sky/calculator/spirit3.webp"
+                  alt="인사하는 주술사"
+                  className="soul-selector-img"
+                />
+                <span className="soul-selector-text">인사하는 주술사</span>
+              </div>
               <NodeView
                 node={soul3Tree}
                 nodeStates={soulNodeStates[3]}
