@@ -6,8 +6,8 @@ import { soul1Tree, soul2Tree, soul3Tree } from "./data/trees";
 import NodeView from "./components/NodeView";
 import SoulInfoSidebar from "./components/SoulInfoSidebar";
 import GuideSidebar from "./components/GuideSidebar";
+import CandleSettingsPanel from "./components/CandleSettingsPanel";
 import { sumWantedCost } from "./utils/candleUtils";
-
 
 export default function CandleCalculatorPage() {
   // 영혼별 노드 상태 분리
@@ -89,16 +89,13 @@ export default function CandleCalculatorPage() {
         </button>
       </div>
 
-      <div className="candle-input">
-        <label htmlFor="currentCandles">현재 보유 양초 수: </label>
-        <input
-          id="currentCandles"
-          type="number"
-          min="0"
-          value={currentCandles}
-          onChange={(e) => setCurrentCandles(e.target.value)}
-        />
-      </div>
+      {/* 조건 설정창 */}
+      <CandleSettingsPanel
+        currentCandles={currentCandles}
+        setCurrentCandles={setCurrentCandles}
+        onCalculate={handleCalculate}
+      />
+
       <div className="main-content">
         <div className="nodes-container" onClick={(e) => e.stopPropagation()}>
           <div className="souls-wrapper">
@@ -193,12 +190,6 @@ export default function CandleCalculatorPage() {
               </div>
             </div>
           </div>
-
-          <div className="btn-row">
-            <button className="calc-btn" onClick={handleCalculate}>
-              계산하기
-            </button>
-          </div>
         </div>
         <GuideSidebar onClick={() => setShowGuideModal(true)} />
       </div>
@@ -274,9 +265,8 @@ export default function CandleCalculatorPage() {
             >
               &times;
             </button>
-            
             <div className="modal-header">
-            <h3 className="modal-title">
+              <h3 className="modal-title">
                 &lt;sky 네이버 카페&gt; 광채의 시즌 가이드 - 햇비님
               </h3>
               <h3 className="modal-title">시즌 안내자</h3>
