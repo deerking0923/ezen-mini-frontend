@@ -30,17 +30,20 @@ export default function NodeView({
   }
 
   
- // 재귀적으로 하위 노드들을 업데이트하는 helper 함수
-const updateDescendants = (currentNode, newState, updated) => {
-  // 시즌패스 노드 업데이트
-  if (currentNode.seasonChild) {
+// 재귀적으로 하위 노드들을 업데이트하는 helper 함수
+// prevStates: 해제하기 전의 상태(prev)를 전달하여, "have"인 경우에만 업데이트
+const updateDescendants = (currentNode, newState, updated, prevStates) => {
+  // 시즌패스 노드 업데이트: 이전 상태가 "have"인 경우에만 업데이트
+  if (currentNode.seasonChild && prevStates[currentNode.seasonChild.id] === "have") {
     updated[currentNode.seasonChild.id] = newState;
   }
   // 자식 노드 업데이트
   if (currentNode.children && currentNode.children.length > 0) {
     currentNode.children.forEach((child) => {
-      updated[child.id] = newState;
-      updateDescendants(child, newState, updated);
+      if (prevStates[child.id] === "have") {
+        updated[child.id] = newState;
+      }
+      updateDescendants(child, newState, updated, prevStates);
     });
   }
 };
@@ -53,20 +56,21 @@ const handleSetState = (nodeId, newState) => {
     let updated = { ...prev, [nodeId]: realNewState };
 
     if (realNewState !== "none") {
-      // 새 상태가 "have"인 경우에만 조상(ancestors) 업데이트
+      // "have"일 때만 조상(ancestors) 업데이트
       if (newState === "have") {
         ancestors.forEach((ancId) => {
           updated[ancId] = realNewState;
         });
       }
     } else {
-      // 해제 시: 현재 노드(부모)부터 하위(자식 및 자손) 노드들을 재귀적으로 "none"으로 업데이트
-      updateDescendants(node, "none", updated);
+      // 해제("none") 시, 이전 상태가 "have"였던 경우에만 하위 노드들 중 "have" 상태인 것만 해제
+      if (oldState === "have") {
+        updateDescendants(node, "none", updated, prev);
+      }
     }
     return updated;
   });
 };
-
 
 const handleSetSeasonState = (seasonId, newState) => {
   setNodeStates((prev) => {
@@ -86,9 +90,12 @@ const handleSetSeasonState = (seasonId, newState) => {
           updated[ancSeasonId] = realNewState;
         });
       }
-      // "want"인 경우에는 해당 시즌노드만 업데이트 (추가 전파 없음)
+      // "want"는 추가 전파 없음
     } else {
-      updateDescendants(node, "none", updated);
+      // 해제("none") 시, 이전 상태가 "have"였던 경우에만 하위 노드들 중 "have" 상태인 것만 해제
+      if (oldState === "have") {
+        updateDescendants(node, "none", updated, prev);
+      }
     }
     return updated;
   });
