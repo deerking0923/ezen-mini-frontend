@@ -4,20 +4,23 @@ import React, { useState } from "react";
 import "./CandleCalculator.css";
 import { soul1Tree, soul2Tree, soul3Tree } from "./data/trees";
 import NodeView from "./components/NodeView";
-import SoulSidebar from "./components/SoulSidebar";
+import SoulInfoSidebar from "./components/SoulInfoSidebar";
 import GuideSidebar from "./components/GuideSidebar";
 import { sumWantedCost } from "./utils/candleUtils";
 
 export default function CandleCalculatorPage() {
   // 영혼별 노드 상태 분리
   const [soulNodeStates, setSoulNodeStates] = useState({
-    1: {}, // 팔짝 뛰는 무용수
-    2: {}, // 도발하는 곡예사
-    3: {}, // 인사하는 주술사
+    1: {},
+    2: {},
+    3: {},
   });
-
   const [openMenu, setOpenMenu] = useState(null);
   const [currentCandles, setCurrentCandles] = useState(0);
+  // 선택된 영혼 번호 (모달에 표시할 정보)
+  const [selectedSoulIndex, setSelectedSoulIndex] = useState(1);
+  // 모달 창 표시 여부
+  const [showSoulModal, setShowSoulModal] = useState(false);
 
   const handleSetNodeStates = (soulIndex, updater) => {
     setSoulNodeStates((prev) => {
@@ -59,6 +62,12 @@ export default function CandleCalculatorPage() {
     setOpenMenu(null);
   };
 
+  // 각 영혼 칼럼의 제목 클릭 시 모달에 해당 영혼 정보를 띄움
+  const handleSoulNameClick = (soulIndex) => {
+    setSelectedSoulIndex(soulIndex);
+    setShowSoulModal(true);
+  };
+
   return (
     <div className="calc-container" onClick={handlePageClick}>
       <h1 className="header-title">
@@ -75,12 +84,14 @@ export default function CandleCalculatorPage() {
         />
       </div>
       <div className="main-content">
-        <SoulSidebar />
+        {/* 중앙: 노드 영역 */}
         <div className="nodes-container" onClick={(e) => e.stopPropagation()}>
           <div className="souls-wrapper">
             {/* Soul 1 */}
             <div className="soul-col">
-              <h2 className="soul-name">팔짝 뛰는 무용수</h2>
+              <h2 className="soul-name" onClick={() => handleSoulNameClick(1)}>
+                팔짝 뛰는 무용수
+              </h2>
               <NodeView
                 node={soul1Tree}
                 nodeStates={soulNodeStates[1]}
@@ -95,12 +106,14 @@ export default function CandleCalculatorPage() {
                   alt="Candle"
                   className="candle-icon"
                 />
-                135candles
+                135 양초
               </div>
             </div>
             {/* Soul 2 */}
             <div className="soul-col">
-              <h2 className="soul-name">도발하는 곡예사</h2>
+              <h2 className="soul-name" onClick={() => handleSoulNameClick(2)}>
+                도발하는 곡예사
+              </h2>
               <NodeView
                 node={soul2Tree}
                 nodeStates={soulNodeStates[2]}
@@ -115,12 +128,14 @@ export default function CandleCalculatorPage() {
                   alt="Candle"
                   className="candle-icon"
                 />
-                139 candles
+                139 양초
               </div>
             </div>
             {/* Soul 3 */}
             <div className="soul-col">
-              <h2 className="soul-name">인사하는 주술사</h2>
+              <h2 className="soul-name" onClick={() => handleSoulNameClick(3)}>
+                인사하는 주술사
+              </h2>
               <NodeView
                 node={soul3Tree}
                 nodeStates={soulNodeStates[3]}
@@ -135,18 +150,51 @@ export default function CandleCalculatorPage() {
                   alt="Candle"
                   className="candle-icon"
                 />
-                123 candles
+                123 양초
               </div>
             </div>
           </div>
           <div className="btn-row">
             <button className="calc-btn" onClick={handleCalculate}>
-              Calculate
+              계산하기
             </button>
           </div>
         </div>
         <GuideSidebar />
       </div>
+
+      {/* 모달 창: 선택된 영혼의 정보 사진 표시 */}
+      {showSoulModal && (
+        <div className="modal-overlay" onClick={() => setShowSoulModal(false)}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            {/* 상단 닫기 버튼 */}
+            <button
+              className="modal-close"
+              onClick={() => setShowSoulModal(false)}
+            >
+              &times;
+            </button>
+
+            {/* 모달 제목 */}
+            <div className="modal-header">
+              <h3 className="modal-title">
+                &lt;sky 네이버 카페&gt; 광채의 시즌 가이드 - 햇비님
+              </h3>
+            </div>
+
+            {/* 영혼 정보 영역 */}
+            <SoulInfoSidebar selectedSoulIndex={selectedSoulIndex} />
+
+            {/* 하단 닫기 버튼 */}
+            <button
+              className="modal-close-bottom"
+              onClick={() => setShowSoulModal(false)}
+            >
+              닫기
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

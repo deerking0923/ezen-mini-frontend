@@ -1,157 +1,140 @@
 /* 기본 컨테이너 */
 .calc-container {
-  padding: 13px; /* 원래 20px → 13px */
+  padding: 13px;
   font-family: sans-serif;
-  max-width: 800px; /* 원래 1200px → 800px (약 2/3) */
+  max-width: 800px;
   margin: 0 auto;
   text-align: center;
 }
 
 /* 헤더 영역 */
-.header {
-  text-align: center;
-  margin-bottom: 13px; /* 원래 20px → 13px */
-}
-
+.header,
 .header-title {
   text-align: center;
-  font-size: 1.33rem; /* 원래 2rem → 약 1.33rem */
-  margin-bottom: 13px; /* 원래 20px → 13px */
+  margin-bottom: 13px;
 }
-
+.header-title {
+  font-size: 1.33rem;
+}
 .byline {
-  font-size: 0.53rem; /* 원래 0.8rem → 약 0.53rem */
+  font-size: 0.53rem;
   color: #777;
-  margin-left: 5px; /* 원래 8px → 5px */
+  margin-left: 5px;
   vertical-align: bottom;
 }
 
 /* 양초 입력 영역 */
 .candle-input {
   text-align: center;
-  margin-bottom: 13px; /* 원래 20px → 13px */
+  margin-bottom: 13px;
 }
-
 .candle-input input {
-  width: 53px; /* 원래 80px → 53px */
-  padding: 3px;  /* 원래 4px → 3px */
-  font-size: 0.67rem; /* 원래 1rem → 0.67rem */
+  width: 53px;
+  padding: 3px;
+  font-size: 0.67rem;
 }
 
-/* 메인 콘텐츠 영역: 3열 레이아웃 */
+/* 메인 콘텐츠 영역 */
 .main-content {
   display: flex;
   justify-content: center;
-  gap: 53px; /* 원래 80px → 53px */
-  margin-bottom: 20px; /* 원래 30px → 20px */
+  gap: 53px;
+  margin-bottom: 20px;
 }
 
-/* 왼쪽: 영혼 선택 영역 */
+/* 왼쪽 영혼 선택 영역 (필요 시) */
 .soul-sidebar {
-  margin-top: 20px; /* 원래 30px → 20px */
+  margin-top: 20px;
   display: flex;
   flex-direction: column;
-  gap: 20px; /* 원래 30px → 20px */
+  gap: 20px;
   align-items: center;
-  width: 133px; /* 원래 200px → 133px */
+  width: 133px;
 }
-
 .soul-item {
   text-align: center;
 }
-
 .soul-photo {
-  width: 100px; /* 원래 150px → 100px */
-  border-radius: 8px; /* 유지 */
+  width: 100px;
+  border-radius: 8px;
 }
-
 .soul-label {
-  margin-top: 5px; /* 원래 8px → 5px */
+  margin-top: 5px;
   font-weight: bold;
+  font-size: 0.6rem;
 }
 
-/* 중앙: 노드 영역 */
+/* 중앙 노드 영역 */
 .nodes-container {
   flex: 1;
 }
-
 .souls-wrapper {
   display: flex;
   justify-content: center;
-  gap: 40px; /* 원래 60px → 40px */
+  gap: 40px;
   align-items: flex-start;
-  margin-top: 16px; /* 원래 24px → 16px */
+  margin-top: 16px;
 }
-
 .soul-col {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
 }
-
 .soul-name {
-  font-size: 0.8rem; /* 원래 1.2rem → 0.8rem */
-  margin-bottom: 5px; /* 원래 8px → 5px */
+  font-size: 0.8rem;
+  margin-bottom: 5px;
   font-weight: bold;
 }
-
 .btn-row {
-  margin-top: 16px; /* 원래 24px → 16px */
+  margin-top: 16px;
   display: flex;
   justify-content: center;
 }
-
 .calc-btn {
   background: #3b82f6;
   color: white;
   border: none;
-  padding: 7px 11px; /* 원래 10px 16px → 7px 11px */
-  border-radius: 4px; /* 원래 6px → 4px */
+  padding: 7px 11px;
+  border-radius: 4px;
   cursor: pointer;
 }
-
 .calc-btn:hover {
   background: #2563eb;
 }
 
-/* 오른쪽: 시즌 가이드 영역 */
+/* 오른쪽 시즌 가이드 영역 */
 .guide-sidebar {
-  margin-top: 20px; /* 원래 30px → 20px */
-  width: 233px; /* 원래 350px → 233px */
+  margin-top: 20px;
+  width: 233px;
   align-self: flex-start;
-  height: auto;
   display: flex;
   flex-direction: column;
   align-items: center;
-  border: 1.5px solid #ccc; /* 원래 2px → 약 1.5px */
-  border-radius: 5px; /* 원래 8px → 5px */
-  padding: 5px; /* 원래 8px → 5px */
+  border: 1.5px solid #ccc;
+  border-radius: 5px;
+  padding: 5px;
   background: #f9f9f9;
   color: #333;
 }
-
 .guide-box {
   width: 120%;
   text-align: center;
 }
-
 .guide-photo {
   width: 100%;
-  max-width: 213px; /* 원래 320px → 213px */
-  max-height: 213px; /* 원래 320px → 213px */
+  max-width: 213px;
+  max-height: 213px;
   object-fit: cover;
   border-radius: 8px;
-  margin-bottom: 5px; /* 원래 8px → 5px */
+  margin-bottom: 5px;
 }
-
 .guide-items {
   display: flex;
   flex-direction: row;
-  gap: 13px; /* 원래 20px → 13px */
+  gap: 13px;
   justify-content: center;
   width: 100%;
 }
-
 .guide-item {
   display: flex;
   flex-direction: column;
@@ -159,36 +142,121 @@
   margin: 0;
   padding: 0;
 }
-
 .guide-item-photo {
-  width: 53px; /* 원래 80px → 53px */
+  width: 53px;
   border-radius: 4px;
-  margin-bottom: 3px; /* 원래 4px → 3px */
+  margin-bottom: 3px;
 }
-
 .guide-item-cost {
   display: flex;
   align-items: center;
-  gap: 7px; /* 원래 10px → 7px */
+  gap: 7px;
   font-weight: bold;
 }
-
 .heart-icon {
-  width: 16px; /* 원래 24px → 16px */
+  width: 16px;
   height: 16px;
 }
 
-/* 새로운 양초 카운트 스타일 */
+/* 양초 카운트 */
 .candle-count {
-  margin-top: 5px; /* 원래 8px → 5px */
-  font-size: 1rem; /* 원래 1.5rem → 1rem */
+  margin-top: 5px;
+  font-size: 1rem;
   font-weight: bold;
   display: flex;
   align-items: center;
-  gap: 3px; /* 원래 4px → 3px */
+  gap: 3px;
+}
+.candle-icon {
+  width: 33px;
+  height: 33px;
 }
 
-.candle-icon {
-  width: 33px; /* 원래 50px → 33px */
-  height: 33px; /* 원래 50px → 33px */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+}
+
+.modal-content {
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  max-width: 80%;
+  max-height: 80%;
+  overflow-y: auto;
+  position: relative;
+  margin-top: 20px;
+}
+
+/* 기존 상단 닫기 버튼 */
+.modal-close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  border: none;
+  background: #aaa;
+  color: #fff;
+  font-size: 1.5rem;
+  width: 35px;
+  height: 35px;
+  line-height: 35px;
+  text-align: center;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+/* 모달 제목 영역 */
+.modal-header {
+  margin-bottom: 10px;
+}
+.modal-title {
+  color: #666; /* 회색 */
+  font-size: 1rem;
+  text-align: center;
+  margin: 0;
+  padding: 5px;
+}
+
+/* 모달 하단 닫기 버튼 */
+.modal-close-bottom {
+  display: block;
+  margin: 20px auto 0;
+  padding: 5px 10px;
+  background: #aaa;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+
+/* Soul Info Sidebar (모달 내부) */
+.soul-info-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+}
+.soul-info-header {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: #333;
+}
+.soul-info-img {
+  width: 100%;
+  max-width: 600px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-left: 40px;
+  margin-right: 40px;
 }

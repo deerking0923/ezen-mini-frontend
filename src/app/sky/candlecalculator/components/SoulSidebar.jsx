@@ -1,10 +1,10 @@
 "use client";
-import React from "react";// 해당 영역 전용 스타일 파일
+import React from "react";
 
-export default function SoulSidebar() {
+export default function SoulSidebar({ onSelectSoul }) {
   return (
     <div className="soul-sidebar">
-      <div className="soul-item">
+      <div className="soul-item" onClick={() => onSelectSoul(1)}>
         <img
           src="/sky/calculator/spirit1.webp"
           alt="팔짝 뛰는 무용수"
@@ -12,7 +12,7 @@ export default function SoulSidebar() {
         />
         <div className="soul-label">팔짝 뛰는 무용수</div>
       </div>
-      <div className="soul-item">
+      <div className="soul-item" onClick={() => onSelectSoul(2)}>
         <img
           src="/sky/calculator/spirit2.webp"
           alt="도발하는 곡예사"
@@ -20,7 +20,7 @@ export default function SoulSidebar() {
         />
         <div className="soul-label">도발하는 곡예사</div>
       </div>
-      <div className="soul-item">
+      <div className="soul-item" onClick={() => onSelectSoul(3)}>
         <img
           src="/sky/calculator/spirit3.webp"
           alt="인사하는 주술사"
