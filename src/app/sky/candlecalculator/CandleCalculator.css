@@ -14,12 +14,12 @@
   margin-bottom: 13px;
 }
 .header-title {
-  font-size: 1.33rem;
+  font-size: 1.5rem;
 }
 .byline {
-  font-size: 0.53rem;
-  color: #777;
-  margin-left: 5px;
+  font-size: 0.8rem;
+  color: #bbb;
+  margin-left: 0.2rem;
   vertical-align: bottom;
 }
 

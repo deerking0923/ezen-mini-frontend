@@ -14,13 +14,13 @@ body {
   margin: 0;
   padding: 0;
   height: 100%;
-  background-color: #40436e; /* 전체 배경색 */
+  background-color: #6866c0; /* 밝은 스카이 블루 */
   color: #fff;
   font-family: 'Arial', sans-serif;
 }
-/* 헤더 스타일 */
+
 .header {
-  background-color: #2c2f56;
+  background-color: #3d4e94; /* 깊고 차분한 블루 */
   padding: 10px 20px;
   display: flex;
   justify-content: space-between;
@@ -28,17 +28,7 @@ body {
   color: #ffffff;
 }
 
-/* 로고 영역 (왼쪽) */
-.logo {
-  font-size: 24px;
-  cursor: pointer;
-}
 
-.logo img {
-  width: 40px;
-  height: 40px;
-  object-fit: contain;
-}
 
 /* 가운데 타이틀 */
 .title-container {
@@ -54,36 +44,29 @@ body {
   cursor: pointer;
 }
 
-/* 오른쪽 메뉴/버튼 */
 .nav-links {
+  flex: 0 0 auto;
   display: flex;
   align-items: center;
+  gap: 10px;
 }
 
-.chat-button {
-  padding: 8px 15px;
-  background-color: #49519c;
-  color: #ffffff;
+.nav-button {
+  background-color: #f39c12;
   border: none;
-  border-radius: 5px;
-  font-size: 14px;
-  font-weight: bold;
+  padding: 8px 12px;
+  border-radius: 4px;
+  color: #ffffff;
   cursor: pointer;
-  transition: background-color 0.3s ease, box-shadow 0.3s ease;
-}
-.chat-button:hover {
-  background-color: #2d40be;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  transition: background 0.2s ease;
 }
 
-/* 푸터 스타일 (필요 시) */
-footer {
-  background-color: #1e1e2f;
-  color: white;
-  text-align: center;
-  padding: 10px;
-  margin-top: 30px;
+.nav-button:hover {
+  background-color: #d35400;
 }
+
+
+
 
 /* 메인 (페이지 내용) 스타일 */
 main {
@@ -144,11 +127,3 @@ a {
   color: inherit;
 }
 
-/* 홈 아이콘 */
-.home-icon {
-  width: 32px;
-  height: 32px;
-  object-fit: contain;
-  cursor: pointer;
-  filter: invert(1); /* 흰색 아이콘이라면 필요 없을 수도 있음 */
-}

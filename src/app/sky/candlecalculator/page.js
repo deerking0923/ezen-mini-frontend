@@ -8,6 +8,7 @@ import SoulInfoSidebar from "./components/SoulInfoSidebar";
 import GuideSidebar from "./components/GuideSidebar";
 import { sumWantedCost } from "./utils/candleUtils";
 
+
 export default function CandleCalculatorPage() {
   // 영혼별 노드 상태 분리
   const [soulNodeStates, setSoulNodeStates] = useState({
