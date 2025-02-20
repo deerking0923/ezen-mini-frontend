@@ -1,0 +1,51 @@
+.simple-candle-calculator {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #f7f7f7;
+    margin-top: 20px;
+    width: 220px;
+  }
+  
+  .candle-image {
+    width: 60px;
+    height: auto;
+  }
+  
+  .candle-info {
+    display: flex;
+    flex-direction: column;
+    font-size: 1rem;
+    color: #333;
+  }
+  
+  .candle-count,
+  .candle-price {
+    margin: 2px 0;
+  }
+  
+  .calc-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  
+  .calc-buttons button {
+    width: 32px;
+    height: 32px;
+    border: none;
+    background-color: #007bff;
+    color: #fff;
+    font-size: 1.2rem;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.2s;
+  }
+  
+  .calc-buttons button:hover {
+    background-color: #005bb5;
+  }
+  

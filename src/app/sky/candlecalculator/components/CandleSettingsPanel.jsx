@@ -19,27 +19,13 @@ export default function CandleSettingsPanel({
   // 시즌 종료일 (예: 4월 7일 16:00, 한국 시간 기준)
   const seasonEnd = new Date("2025-04-07T16:00:00+09:00");
 
-  // 오후 4시(16:00)를 기준으로 남은 시즌 일수를 계산합니다.
   const computeRemainingDays = () => {
     const now = new Date();
-    const resetHour = 16;
-    // 오늘의 리셋 시간 (오후 4시)
-    const todayReset = new Date(
-      now.getFullYear(),
-      now.getMonth(),
-      now.getDate(),
-      resetHour,
-      0,
-      0
-    );
-    // 리셋 이전이면 오늘 리셋 시간, 이후면 현재 시간 사용
-    const effectiveNow = now < todayReset ? todayReset : now;
-    const diffMs = seasonEnd.getTime() - effectiveNow.getTime();
-    let daysLeft = Math.ceil(diffMs / (1000 * 60 * 60 * 24));
-    if (daysLeft < 0) daysLeft = 0;
-    // 시즌 종료일 전날까지 계산하도록 -1
-    return daysLeft - 1;
+    const diffMs = seasonEnd.getTime() - now.getTime();
+    let daysLeft = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+    return daysLeft < 0 ? 0 : daysLeft;
   };
+  
 
   useEffect(() => {
     // 최초 남은 시즌 일수 계산

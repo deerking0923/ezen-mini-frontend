@@ -8,6 +8,7 @@ import GuideSidebar from "./components/GuideSidebar";
 import CandleSettingsPanel from "./components/CandleSettingsPanel";
 import { sumWantedCost } from "./utils/candleUtils";
 import html2canvas from "html2canvas";
+import SimpleCandleCalculator from "./components/SimpleCandleCalculator";
 
 export default function CandleCalculatorPage() {
   // 영혼별 노드 상태 분리
@@ -202,6 +203,8 @@ export default function CandleCalculatorPage() {
           결과 다운로드
         </button>
       </div>
+
+      <SimpleCandleCalculator />
 
       {showSoulModal && (
         <div className="modal-overlay" onClick={() => setShowSoulModal(false)}>
