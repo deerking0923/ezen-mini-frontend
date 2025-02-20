@@ -248,6 +248,40 @@ h1 {
   /* 필요에 따라 object-fit 등 추가 스타일 */
 }
 
+/* 이미지 캔버스 우측 하단 텍스트 (크기 키움) */
+.credit-text {
+  position: absolute;
+  bottom: 5px;
+  right: 5px;
+  font-size: 1rem;  /* 이전 0.55rem → 1rem */
+  color: #333;
+  background-color: rgba(255, 255, 255, 0.7);
+  padding: 2px 3px;
+  border-radius: 3px;
+}
+
+/* 캡션 텍스트 (크기 키움) */
+.caption-text {
+  font-size: 0.7rem;  /* 이전 0.55rem → 1rem */
+  text-align: right;
+  width: 100%;
+  color: #bcbcbc;
+  margin-top: 0.5rem;
+}
+
+/* 이미지 캔버스 영역 - 크기를 반으로 줄임 */
+.image-canvas {
+  position: relative;
+  width: 100%;
+  max-width: 481px;  /* 원래 962px의 절반 */
+  aspect-ratio: 962 / 881;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  touch-action: none;
+}
 
 /* 반응형 미디어 쿼리 */
 @media (max-width: 600px) {
