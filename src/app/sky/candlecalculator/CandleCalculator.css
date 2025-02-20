@@ -395,3 +395,8 @@
   text-align: center;
   overflow-x: auto; /* 수평 스크롤을 허용 */
 }
+.candle-selected {
+  font-size: 0.9rem;
+  color: #fff;
+  margin-top: 4px;
+}

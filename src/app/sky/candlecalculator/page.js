@@ -72,98 +72,108 @@ export default function CandleCalculatorPage() {
 
       <div className="main-content">
         <div className="nodes-container" onClick={(e) => e.stopPropagation()}>
-          <div className="souls-wrapper">
-            {/* Soul 1 */}
-            <div className="soul-col">
-              <div
-                className="soul-selector"
-                onClick={() => handleSoulNameClick(1)}
-              >
-                <img
-                  src="/sky/calculator/spirit1.webp"
-                  alt="팔짝 뛰는 무용수"
-                  className="soul-selector-img"
-                />
-                <span className="soul-selector-text">팔짝 뛰는 무용수</span>
-              </div>
-              <NodeView
-                node={soul1Tree}
-                nodeStates={soulNodeStates[1]}
-                setNodeStates={(updater) => handleSetNodeStates(1, updater)}
-                soulIndex={1}
-                openMenu={openMenu}
-                setOpenMenu={setOpenMenu}
-              />
-              <div className="candle-count">
-                <img
-                  src="/sky/calculator/candle.webp"
-                  alt="Candle"
-                  className="candle-icon"
-                />
-                135 양초
-              </div>
-            </div>
-            {/* Soul 2 */}
-            <div className="soul-col">
-              <div
-                className="soul-selector"
-                onClick={() => handleSoulNameClick(2)}
-              >
-                <img
-                  src="/sky/calculator/spirit2.webp"
-                  alt="도발하는 곡예사"
-                  className="soul-selector-img"
-                />
-                <span className="soul-selector-text">도발하는 곡예사</span>
-              </div>
-              <NodeView
-                node={soul2Tree}
-                nodeStates={soulNodeStates[2]}
-                setNodeStates={(updater) => handleSetNodeStates(2, updater)}
-                soulIndex={2}
-                openMenu={openMenu}
-                setOpenMenu={setOpenMenu}
-              />
-              <div className="candle-count">
-                <img
-                  src="/sky/calculator/candle.webp"
-                  alt="Candle"
-                  className="candle-icon"
-                />
-                139 양초
-              </div>
-            </div>
-            {/* Soul 3 */}
-            <div className="soul-col">
-              <div
-                className="soul-selector"
-                onClick={() => handleSoulNameClick(3)}
-              >
-                <img
-                  src="/sky/calculator/spirit3.webp"
-                  alt="인사하는 주술사"
-                  className="soul-selector-img"
-                />
-                <span className="soul-selector-text">인사하는 주술사</span>
-              </div>
-              <NodeView
-                node={soul3Tree}
-                nodeStates={soulNodeStates[3]}
-                setNodeStates={(updater) => handleSetNodeStates(3, updater)}
-                soulIndex={3}
-                openMenu={openMenu}
-                setOpenMenu={setOpenMenu}
-              />
-              <div className="candle-count">
-                <img
-                  src="/sky/calculator/candle.webp"
-                  alt="Candle"
-                  className="candle-icon"
-                />
-                123 양초
-              </div>
-            </div>
-          </div>
+<div className="souls-wrapper">
+  {/* Soul 1 */}
+  <div className="soul-col">
+    <div
+      className="soul-selector"
+      onClick={() => handleSoulNameClick(1)}
+    >
+      <img
+        src="/sky/calculator/spirit1.webp"
+        alt="팔짝 뛰는 무용수"
+        className="soul-selector-img"
+      />
+      <span className="soul-selector-text">팔짝 뛰는 무용수</span>
+    </div>
+    <NodeView
+      node={soul1Tree}
+      nodeStates={soulNodeStates[1]}
+      setNodeStates={(updater) => handleSetNodeStates(1, updater)}
+      soulIndex={1}
+      openMenu={openMenu}
+      setOpenMenu={setOpenMenu}
+    />
+    <div className="candle-count">
+      <img
+        src="/sky/calculator/candle.webp"
+        alt="Candle"
+        className="candle-icon"
+      />
+      총 135 양초
+    </div>
+    <div className="candle-selected">
+      선택한 양초: {sumWantedCost(soul1Tree, soulNodeStates[1])}개
+    </div>
+  </div>
+  {/* Soul 2 */}
+  <div className="soul-col">
+    <div
+      className="soul-selector"
+      onClick={() => handleSoulNameClick(2)}
+    >
+      <img
+        src="/sky/calculator/spirit2.webp"
+        alt="도발하는 곡예사"
+        className="soul-selector-img"
+      />
+      <span className="soul-selector-text">도발하는 곡예사</span>
+    </div>
+    <NodeView
+      node={soul2Tree}
+      nodeStates={soulNodeStates[2]}
+      setNodeStates={(updater) => handleSetNodeStates(2, updater)}
+      soulIndex={2}
+      openMenu={openMenu}
+      setOpenMenu={setOpenMenu}
+    />
+    <div className="candle-count">
+      <img
+        src="/sky/calculator/candle.webp"
+        alt="Candle"
+        className="candle-icon"
+      />
+      총 139 양초
+    </div>
+    <div className="candle-selected">
+      선택한 양초: {sumWantedCost(soul2Tree, soulNodeStates[2])}개
+    </div>
+  </div>
+  {/* Soul 3 */}
+  <div className="soul-col">
+    <div
+      className="soul-selector"
+      onClick={() => handleSoulNameClick(3)}
+    >
+      <img
+        src="/sky/calculator/spirit3.webp"
+        alt="인사하는 주술사"
+        className="soul-selector-img"
+      />
+      <span className="soul-selector-text">인사하는 주술사</span>
+    </div>
+    <NodeView
+      node={soul3Tree}
+      nodeStates={soulNodeStates[3]}
+      setNodeStates={(updater) => handleSetNodeStates(3, updater)}
+      soulIndex={3}
+      openMenu={openMenu}
+      setOpenMenu={setOpenMenu}
+    />
+    <div className="candle-count">
+      <img
+        src="/sky/calculator/candle.webp"
+        alt="Candle"
+        className="candle-icon"
+      />
+      총 123 양초
+    </div>
+    <div className="candle-selected">
+      선택한 양초: {sumWantedCost(soul3Tree, soulNodeStates[3])}개
+    </div>
+  </div>
+</div>
+
         </div>
         <GuideSidebar onClick={() => setShowGuideModal(true)} />
       </div>
