@@ -175,6 +175,15 @@ const handleSetSeasonState = (seasonId, newState) => {
           />
           {/* 비용 표시 */}
           <div className="cost-badge">{node.cost}</div>
+  {node.id === "node8" && (
+    <div className="season-icon-badge">
+      <img
+        src="/sky/calculator/season_icon.webp"
+        alt="Season"
+        className="season-icon"
+      />
+    </div>
+  )}
 
           {/* "Have / Want" 메뉴(메인 노드) */}
           {isMainMenuOpen && (

@@ -1,5 +1,4 @@
 "use client";
-
 import React, { useState } from "react";
 import "./CandleCalculator.css";
 import { soul1Tree, soul2Tree, soul3Tree } from "./data/trees";
@@ -38,29 +37,33 @@ export default function CandleCalculatorPage() {
     });
   };
 
-  const handleCalculate = () => {
+  // 계산 결과 문자열 반환 (alert 대신 결과 문자열을 반환)
+  const onCalculate = () => {
     const c1 = sumWantedCost(soul1Tree, soulNodeStates[1]);
     const c2 = sumWantedCost(soul2Tree, soulNodeStates[2]);
     const c3 = sumWantedCost(soul3Tree, soulNodeStates[3]);
     const totalRequired = c1 + c2 + c3;
     const difference = totalRequired - Number(currentCandles);
+
+    let result;
     if (difference < 0) {
-      alert(`
+      result = `
 팔짝 뛰는 무용수: ${c1} candles
 도발하는 곡예사: ${c2} candles
 인사하는 주술사: ${c3} candles
 총 필요: ${totalRequired} candles
 시즌 양초가 ${-difference}개 남습니다!
-      `);
+      `;
     } else {
-      alert(`
+      result = `
 팔짝 뛰는 무용수: ${c1} candles
 도발하는 곡예사: ${c2} candles
 인사하는 주술사: ${c3} candles
 총 필요: ${totalRequired} candles
 추가 필요: ${difference} candles
-      `);
+      `;
     }
+    return result;
   };
 
   const handlePageClick = () => {
@@ -93,7 +96,7 @@ export default function CandleCalculatorPage() {
       <CandleSettingsPanel
         currentCandles={currentCandles}
         setCurrentCandles={setCurrentCandles}
-        onCalculate={handleCalculate}
+        onCalculate={onCalculate}
       />
 
       <div className="main-content">
@@ -198,22 +201,18 @@ export default function CandleCalculatorPage() {
       {showSoulModal && (
         <div className="modal-overlay" onClick={() => setShowSoulModal(false)}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-            {/* 상단 닫기 버튼 */}
             <button
               className="modal-close"
               onClick={() => setShowSoulModal(false)}
             >
               &times;
             </button>
-            {/* 모달 제목 */}
             <div className="modal-header">
               <h3 className="modal-title">
                 &lt;sky 네이버 카페&gt; 광채의 시즌 가이드 - 햇비님
               </h3>
             </div>
-            {/* 영혼 정보 영역 */}
             <SoulInfoSidebar selectedSoulIndex={selectedSoulIndex} />
-            {/* 하단 닫기 버튼 */}
             <button
               className="modal-close-bottom"
               onClick={() => setShowSoulModal(false)}

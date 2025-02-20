@@ -97,3 +97,11 @@
   background-color: #e1b355;
 }
 
+
+
+.season-icon-badge {
+  position: absolute;
+  bottom: 0px;  /* 비용 뱃지와 동일한 수직 위치 */
+  left: 3px;    /* 왼쪽 하단에 위치 */
+  background-color: transparent;
+}

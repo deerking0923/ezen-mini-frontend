@@ -1,30 +1,84 @@
 // Components/CandleSettingsPanel.jsx
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./CandleSettingsPanel.css";
 
 export default function CandleSettingsPanel({
   currentCandles,
   setCurrentCandles,
-  onCalculate,
+  onCalculate, // 계산 결과를 반환하는 함수 (문자열)
 }) {
   // 시즌 패스 소유 여부 선택 (yes: 소유, no: 미소유)
   const [ownsSeasonPass, setOwnsSeasonPass] = useState("yes");
-  // ownsSeasonPass가 "no"일 때, 구매할 항목을 선택하는 상태
-  const [buyOptions, setBuyOptions] = useState({
-    seasonPass: false,
-    candles: false,
-  });
+  // ownsSeasonPass가 "no"일 때, 구입할 항목으로 시즌 패스만 선택
+  const [buySeasonPass, setBuySeasonPass] = useState(false);
+  // 남은 시즌 일수 (동적으로 계산)
+  const [remainingDays, setRemainingDays] = useState(0);
+  // 계산 결과 (문자열)
+  const [calcResult, setCalcResult] = useState("");
 
-  const handleOptionChange = (option) => {
-    setBuyOptions((prev) => ({
-      ...prev,
-      [option]: !prev[option],
-    }));
+  // 시즌 종료일 (예: 4월 7일 16:00, 한국 시간 기준)
+  const seasonEnd = new Date("2025-04-07T16:00:00+09:00");
+
+  // 오후 4시(16:00)를 기준으로 시즌 일수가 갱신됩니다.
+  const computeRemainingDays = () => {
+    const now = new Date();
+    const resetHour = 16;
+    // 오늘의 리셋 시간 (오후 4시)
+    const todayReset = new Date(
+      now.getFullYear(),
+      now.getMonth(),
+      now.getDate(),
+      resetHour,
+      0,
+      0
+    );
+    let effectiveNow;
+    // 현재 시간이 리셋 이전이면 오늘 리셋 시간까지 기다린다고 가정,
+    // 리셋 이후라면 현재 시간을 그대로 사용합니다.
+    if (now < todayReset) {
+      effectiveNow = todayReset;
+    } else {
+      effectiveNow = now;
+    }
+    // 시즌 종료까지 남은 시간(ms)
+    let diffMs = seasonEnd.getTime() - effectiveNow.getTime();
+    let daysLeft = Math.ceil(diffMs / (1000 * 60 * 60 * 24));
+    if (daysLeft < 0) daysLeft = 0;
+    return daysLeft-1;
+  };
+
+  useEffect(() => {
+    // 최초 계산
+    setRemainingDays(computeRemainingDays());
+    // 매 분마다 남은 시즌 일수를 갱신합니다.
+    const interval = setInterval(() => {
+      setRemainingDays(computeRemainingDays());
+    }, 60000);
+    return () => clearInterval(interval);
+  }, []);
+
+  const handleToggleBuySeasonPass = () => {
+    setBuySeasonPass((prev) => !prev);
+  };
+
+  // 버튼 클릭 시 onCalculate 함수를 호출하여 결과를 로컬 상태에 저장
+  const handleCalculate = () => {
+    const result = onCalculate();
+    setCalcResult(result);
   };
 
   return (
     <div className="candle-settings-panel">
+      {/* 상단: 남은 시즌 일수 및 부가 설명 */}
+      <div className="season-days">
+        남은 시즌 일수 {remainingDays}일
+        <span className="season-days-note">
+          (4시 리셋 이후 양초를 얻었다는 가정 하에 계산됩니다. 아직 리셋 전 오늘
+          일퀘를 안하셨다면 일퀘 양초를 포함해서 계산해주세요.)
+        </span>
+      </div>
+
       <div className="setting-group">
         <label htmlFor="candleCount">현재 보유 양초 수:</label>
         <input
@@ -49,31 +103,26 @@ export default function CandleSettingsPanel({
 
       {ownsSeasonPass === "no" && (
         <div className="setting-group buy-options">
-          <p>구매할 항목 선택:</p>
+          <p>구입 예정:</p>
           <label>
             <input
               type="checkbox"
-              checked={buyOptions.seasonPass}
-              onChange={() => handleOptionChange("seasonPass")}
+              checked={buySeasonPass}
+              onChange={handleToggleBuySeasonPass}
             />
             시즌 패스
-          </label>
-          <label>
-            <input
-              type="checkbox"
-              checked={buyOptions.candles}
-              onChange={() => handleOptionChange("candles")}
-            />
-            양초
           </label>
         </div>
       )}
 
       <div className="calculate-btn-container">
-        <button className="calc-btn" onClick={onCalculate}>
+        <button className="calc-btn" onClick={handleCalculate}>
           계산하기
         </button>
       </div>
+
+      {/* 계산 결과 표시 영역 */}
+      {calcResult && <div className="calc-result">{calcResult}</div>}
     </div>
   );
 }
