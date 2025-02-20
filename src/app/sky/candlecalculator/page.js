@@ -1,12 +1,19 @@
 "use client";
 import React, { useState } from "react";
 import "./CandleCalculator.css";
-import { soul1Tree, soul2Tree, soul3Tree } from "./data/trees";
-import NodeView from "./components/NodeView";
+import {
+  soul1Array,
+  soul1SeasonArray,
+  soul2Array,
+  soul2SeasonArray,
+  soul3Array,
+  soul3SeasonArray,
+} from "./data/arrays"; // <-- 배열 데이터 불러오기
+import ArrayNodeView from "./components/ArrayNodeView"; // <-- 새 컴포넌트
 import SoulInfoSidebar from "./components/SoulInfoSidebar";
 import GuideSidebar from "./components/GuideSidebar";
 import CandleSettingsPanel from "./components/CandleSettingsPanel";
-import { sumWantedCost } from "./utils/candleUtils";
+import { sumWantedCost } from "./utils/candleUtils"; // <-- sumWantedCost도 배열용으로 수정
 import html2canvas from "html2canvas";
 import SimpleCandleCalculator from "./components/SimpleCandleCalculator";
 
@@ -36,10 +43,11 @@ export default function CandleCalculatorPage() {
   };
 
   // 필요한 양초 수 (각 영혼별 "want" 상태에 따른 비용 합)
+  // 기존에 트리 구조를 순회하던 sumWantedCost를, 배열을 기반으로 동작하도록 수정(아래 코드 참고)
   const requiredCandles =
-    sumWantedCost(soul1Tree, soulNodeStates[1]) +
-    sumWantedCost(soul2Tree, soulNodeStates[2]) +
-    sumWantedCost(soul3Tree, soulNodeStates[3]);
+    sumWantedCost(soul1Array, soul1SeasonArray, soulNodeStates[1]) +
+    sumWantedCost(soul2Array, soul2SeasonArray, soulNodeStates[2]) +
+    sumWantedCost(soul3Array, soul3SeasonArray, soulNodeStates[3]);
 
   const handlePageClick = () => {
     setOpenMenu(null);
@@ -49,6 +57,7 @@ export default function CandleCalculatorPage() {
     setSelectedSoulIndex(soulIndex);
     setShowSoulModal(true);
   };
+
   const handleDownload = async () => {
     const element = document.querySelector(".calc-container");
     if (!element) return;
@@ -56,7 +65,7 @@ export default function CandleCalculatorPage() {
       const canvas = await html2canvas(element, {
         backgroundColor: null, // CSS 배경 유지
         scale: window.devicePixelRatio, // 고해상도 캡쳐
-        ignoreElements: (el) => el.classList.contains("no-capture"), // no-capture 클래스 요소 무시
+        ignoreElements: (el) => el.classList.contains("no-capture"), // 특정 클래스는 무시
       });
       const dataURL = canvas.toDataURL("image/png");
       const link = document.createElement("a");
@@ -106,8 +115,9 @@ export default function CandleCalculatorPage() {
                 />
                 <span className="soul-selector-text">인사하는 주술사</span>
               </div>
-              <NodeView
-                node={soul3Tree}
+              <ArrayNodeView
+                mainArray={soul3Array}
+                seasonArray={soul3SeasonArray}
                 nodeStates={soulNodeStates[3]}
                 setNodeStates={(updater) => handleSetNodeStates(3, updater)}
                 soulIndex={3}
@@ -123,9 +133,16 @@ export default function CandleCalculatorPage() {
                 123 양초
               </div>
               <div className="candle-selected">
-                선택한 양초: {sumWantedCost(soul3Tree, soulNodeStates[3])}개
+                선택한 양초:{" "}
+                {sumWantedCost(
+                  soul3Array,
+                  soul3SeasonArray,
+                  soulNodeStates[3]
+                )}
+                개
               </div>
             </div>
+
             {/* Soul 2 */}
             <div className="soul-col">
               <div
@@ -139,8 +156,9 @@ export default function CandleCalculatorPage() {
                 />
                 <span className="soul-selector-text">도발하는 곡예사</span>
               </div>
-              <NodeView
-                node={soul2Tree}
+              <ArrayNodeView
+                mainArray={soul2Array}
+                seasonArray={soul2SeasonArray}
                 nodeStates={soulNodeStates[2]}
                 setNodeStates={(updater) => handleSetNodeStates(2, updater)}
                 soulIndex={2}
@@ -156,9 +174,16 @@ export default function CandleCalculatorPage() {
                 139 양초
               </div>
               <div className="candle-selected">
-                선택한 양초: {sumWantedCost(soul2Tree, soulNodeStates[2])}개
+                선택한 양초:{" "}
+                {sumWantedCost(
+                  soul2Array,
+                  soul2SeasonArray,
+                  soulNodeStates[2]
+                )}
+                개
               </div>
             </div>
+
             {/* Soul 1 */}
             <div className="soul-col">
               <div
@@ -172,8 +197,9 @@ export default function CandleCalculatorPage() {
                 />
                 <span className="soul-selector-text">팔짝 뛰는 무용수</span>
               </div>
-              <NodeView
-                node={soul1Tree}
+              <ArrayNodeView
+                mainArray={soul1Array}
+                seasonArray={soul1SeasonArray}
                 nodeStates={soulNodeStates[1]}
                 setNodeStates={(updater) => handleSetNodeStates(1, updater)}
                 soulIndex={1}
@@ -189,7 +215,13 @@ export default function CandleCalculatorPage() {
                 135 양초
               </div>
               <div className="candle-selected">
-                선택한 양초: {sumWantedCost(soul1Tree, soulNodeStates[1])}개
+                선택한 양초:{" "}
+                {sumWantedCost(
+                  soul1Array,
+                  soul1SeasonArray,
+                  soulNodeStates[1]
+                )}
+                개
               </div>
             </div>
           </div>
