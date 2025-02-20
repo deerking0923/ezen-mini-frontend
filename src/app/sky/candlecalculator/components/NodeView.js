@@ -43,22 +43,21 @@ const updateDescendants = (currentNode, newState, updated) => {
     });
   }
 };
-
 const handleSetState = (nodeId, newState) => {
   setNodeStates((prev) => {
     const oldState = prev[nodeId] || "none";
-    // 토글: 같은 상태면 "none", 아니면 newState
+    // 같은 상태면 토글 -> 'none'으로 전환, 아니면 newState 적용
     const realNewState = oldState === newState ? "none" : newState;
     let updated = { ...prev, [nodeId]: realNewState };
 
     if (realNewState !== "none") {
-      // 선택 시: 조상(부모) 노드들도 함께 업데이트
+      // 선택 시: 조상 노드와 각 조상의 시즌패스 노드도 모두 업데이트
       ancestors.forEach((ancId) => {
         updated[ancId] = realNewState;
+        // 조상 노드의 시즌패스 id는 "node"를 "child"로 대체해서 만듦
+        const seasonId = ancId.replace("node", "child");
+        updated[seasonId] = realNewState;
       });
-    } else {
-      // 해제 시: 자식 노드와 그 하위 노드들만 재귀적으로 "none"으로 업데이트 (부모는 그대로 유지)
-      updateDescendants(node, "none", updated);
     }
     return updated;
   });
@@ -71,15 +70,15 @@ const handleSetSeasonState = (seasonId, newState) => {
     let updated = { ...prev, [seasonId]: realNewState };
 
     if (realNewState !== "none") {
-      // 선택 시: 현재 노드(부모)와 ancestors 업데이트
+      // 시즌패스 선택 시: 현재 노드(부모)와 ancestors, 그리고 이들의 시즌패스 노드도 업데이트
       updated[node.id] = realNewState;
+      const parentSeasonId = node.id.replace("node", "child");
+      updated[parentSeasonId] = realNewState;
       ancestors.forEach((ancId) => {
         updated[ancId] = realNewState;
+        const seasonId = ancId.replace("node", "child");
+        updated[seasonId] = realNewState;
       });
-    } else {
-      // 해제 시: 현재 노드와 자손들만 "none"으로 업데이트, ancestors(부모)는 그대로 유지
-      updated[node.id] = "none";
-      updateDescendants(node, "none", updated);
     }
     return updated;
   });
