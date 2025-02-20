@@ -73,15 +73,29 @@
   z-index: 9999; /* 맨 앞으로 */
 }
 
-.menu-overlay button {
+.menu-overlay .menu-btn {
   cursor: pointer;
   border: none;
   padding: 4px 8px;
   border-radius: 4px;
   font-size: 0.8rem;
-  background-color: #bbb;
   color: #fff;
 }
-.menu-overlay button:hover {
-  background-color: #888;
+
+/* "있음" 버튼: 예시로 초록색 계열 */
+.menu-overlay .menu-btn-have {
+  background-color: #5f9fff;
+}
+
+.menu-overlay .menu-btn-have:hover {
+  background-color: #01259d;
+}
+
+/* "원함" 버튼: 예시로 노란색 계열 */
+.menu-overlay .menu-btn-want {
+  background-color: #fdcb6e;
+}
+
+.menu-overlay .menu-btn-want:hover {
+  background-color: #e1b355;
 }
