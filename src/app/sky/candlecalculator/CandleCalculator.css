@@ -127,6 +127,9 @@
   background: #f9f9f9;
   color: #333;
 }
+.guide-sidebar:hover{
+  background: #a6a6a6;
+}
 .guide-box {
   width: 120%;
   text-align: center;
@@ -325,7 +328,7 @@
   overflow: hidden; /* 내용이 넘치지 않도록 설정 */
 }
 .soul-selector:hover {
-  background-color: #e0e0e0;
+  background-color: #a6a6a6;
 }
 .soul-selector-img {
   width: 80px;
@@ -345,6 +348,21 @@
   white-space: nowrap; /* 한 줄로 표시 */
   text-overflow: ellipsis; /* 넘치는 부분은 ... 처리 */
 }
+
+.guide-modal-images {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+}
+.guide-modal-images img {
+  width: 100%;
+  max-width: 600px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin: 0 40px;
+}
+
 
 /* 반응형 미디어 쿼리 */
 /* @media (max-width: 600px) {

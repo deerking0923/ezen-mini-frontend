@@ -77,7 +77,7 @@
   border: none;
   padding: 3px 6px; /* 원래 4px 8px → 3px 6px */
   border-radius: 3px; /* 원래 4px → 3px */
-  font-size: 0.53rem; /* 원래 0.8rem → 약 0.53rem */
+  font-size: 0.5rem; /* 원래 0.8rem → 약 0.53rem */
   color: #fff;
 }
 

@@ -2,9 +2,9 @@
 import React from "react";
 
 
-export default function GuideSidebar() {
+export default function GuideSidebar({ onClick }) {
   return (
-    <div className="guide-sidebar">
+    <div className="guide-sidebar" onClick={onClick} style={{ cursor: "pointer" }}>
       <div className="guide-box">
         <img
           src="/sky/calculator/guide.webp"

@@ -23,6 +23,8 @@ export default function CandleCalculatorPage() {
   const [showSoulModal, setShowSoulModal] = useState(false);
   // 전체 노드표 보기 모달 표시 여부
   const [showTotalInfoModal, setShowTotalInfoModal] = useState(false);
+  // 가이드 정보 모달 표시 여부
+  const [showGuideModal, setShowGuideModal] = useState(false);
 
   const handleSetNodeStates = (soulIndex, updater) => {
     setSoulNodeStates((prev) => {
@@ -64,7 +66,7 @@ export default function CandleCalculatorPage() {
     setOpenMenu(null);
   };
 
-  // 각 영혼 칼럼의 제목 클릭 시 모달에 해당 영혼 정보를 띄움
+  // 각 영혼 컬럼의 선택 컨테이너 클릭 시 모달에 해당 영혼 정보를 띄움
   const handleSoulNameClick = (soulIndex) => {
     setSelectedSoulIndex(soulIndex);
     setShowSoulModal(true);
@@ -97,7 +99,6 @@ export default function CandleCalculatorPage() {
         />
       </div>
       <div className="main-content">
-        {/* 중앙: 노드 영역 */}
         <div className="nodes-container" onClick={(e) => e.stopPropagation()}>
           <div className="souls-wrapper">
             {/* Soul 1 */}
@@ -198,7 +199,7 @@ export default function CandleCalculatorPage() {
             </button>
           </div>
         </div>
-        <GuideSidebar />
+        <GuideSidebar onClick={() => setShowGuideModal(true)} />
       </div>
 
       {/* 모달 창: 선택된 영혼의 정보 사진 표시 */}
@@ -238,14 +239,12 @@ export default function CandleCalculatorPage() {
           onClick={() => setShowTotalInfoModal(false)}
         >
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-            {/* 상단 닫기 버튼 */}
             <button
               className="modal-close"
               onClick={() => setShowTotalInfoModal(false)}
             >
               &times;
             </button>
-            {/* 모달 제목 */}
             <div className="modal-header">
               <h3 className="modal-title">전체 노드표</h3>
             </div>
@@ -254,10 +253,42 @@ export default function CandleCalculatorPage() {
               alt="전체 노드표"
               style={{ width: "100%", maxWidth: "600px", margin: "20px auto" }}
             />
-            {/* 하단 닫기 버튼 */}
             <button
               className="modal-close-bottom"
               onClick={() => setShowTotalInfoModal(false)}
+            >
+              닫기
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* 모달 창: 가이드 정보 보기 (GuideSidebar 클릭 시) */}
+      {showGuideModal && (
+        <div className="modal-overlay" onClick={() => setShowGuideModal(false)}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <button
+              className="modal-close"
+              onClick={() => setShowGuideModal(false)}
+            >
+              &times;
+            </button>
+            
+            <div className="modal-header">
+            <h3 className="modal-title">
+                &lt;sky 네이버 카페&gt; 광채의 시즌 가이드 - 햇비님
+              </h3>
+              <h3 className="modal-title">시즌 안내자</h3>
+            </div>
+            <div className="guide-modal-images">
+              <img src="/sky/calculator/info/guide1.png" alt="Guide 1" />
+              <img src="/sky/calculator/info/guide2.png" alt="Guide 2" />
+              <img src="/sky/calculator/info/guide3.png" alt="Guide 3" />
+              <img src="/sky/calculator/info/guide4.png" alt="Guide 4" />
+            </div>
+            <button
+              className="modal-close-bottom"
+              onClick={() => setShowGuideModal(false)}
             >
               닫기
             </button>

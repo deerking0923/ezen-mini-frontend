@@ -111,9 +111,9 @@ export default function NodeView({
   };
 
   const getBorderColor = (st) => {
-    if (st === "have") return "2px solid rgb(0, 98, 255)"; // 내가 원하는 초록색 코드
-    if (st === "want") return "2px solid rgb(255, 218, 83)"; // 내가 원하는 노란색 코드
-    return "2px solid transparent";
+    if (st === "have") return "3px solid rgb(0, 98, 255)"; // 내가 원하는 초록색 코드
+    if (st === "want") return "3px solid rgb(255, 218, 83)"; // 내가 원하는 노란색 코드
+    return "3px solid transparent";
   };
 
   // 현재 노드의 메뉴가 열려있는지
