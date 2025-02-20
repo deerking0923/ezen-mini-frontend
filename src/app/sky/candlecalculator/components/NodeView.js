@@ -29,7 +29,7 @@ export default function NodeView({
     childImageSrc = `/sky/calculator/spirit${soulIndex}_item${nodeNum}_child.webp`;
   }
 
-  // 재귀적으로 하위 노드들을 업데이트하는 helper 함수 (전체 선택용)
+  // 전체 선택 및 초기화용: 재귀적으로 하위 노드들을 업데이트하는 함수
   const updateAllNodes = (currentNode, newState, updated) => {
     updated[currentNode.id] = newState;
     if (currentNode.seasonChild) {
@@ -42,7 +42,7 @@ export default function NodeView({
     }
   };
 
-  // have/ want 상태 해제 시 재귀적으로 "have" 상태인 노드들만 업데이트하는 helper 함수
+  // 해제 시 have 상태인 노드만 업데이트하는 재귀 함수
   const updateDescendants = (currentNode, newState, updated, prevStates) => {
     if (currentNode.seasonChild && prevStates[currentNode.seasonChild.id] === "have") {
       updated[currentNode.seasonChild.id] = newState;
@@ -110,10 +110,13 @@ export default function NodeView({
     });
   };
 
-  // 전체 선택 버튼 클릭 시 호출: 전체 노드를 newState로 업데이트
+  // 전체 선택 버튼 클릭 시 호출: 이미 선택되어 있으면 초기화("none"), 아니면 전체 선택
   const handleGlobalSelect = (newState) => {
+    // 최상위 노드의 상태가 이미 newState이면 초기화("none") 처리
+    const rootState = nodeStates[node.id] || "none";
+    const targetState = rootState === newState ? "none" : newState;
     const updated = {};
-    updateAllNodes(node, newState, updated);
+    updateAllNodes(node, targetState, updated);
     setNodeStates(updated);
   };
 
@@ -167,10 +170,10 @@ export default function NodeView({
       {ancestors.length === 0 && (
         <div className="global-select-buttons" style={{ marginBottom: "10px" }}>
           <button onClick={() => handleGlobalSelect("have")}>
-           있음!
+            있음!
           </button>
           <button onClick={() => handleGlobalSelect("want")}>
-           원함!
+            원함!
           </button>
         </div>
       )}
