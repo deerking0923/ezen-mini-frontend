@@ -386,3 +386,12 @@
   }
 } */
 
+.calc-container {
+  padding: 13px;
+  font-family: sans-serif;
+  /* 원래 max-width: 800px; 라고 되어 있다면 지우거나 수정 */
+  width: 800px; /* 혹은 min-width: 800px; */
+  margin: 0 auto;
+  text-align: center;
+  overflow-x: auto; /* 수평 스크롤을 허용 */
+}
