@@ -88,7 +88,6 @@
   transform: scale(0.98);
 }
 
-/* 계산 결과 표시 영역 */
 .calc-result {
   width: 100%;
   margin-top: 16px;
@@ -98,4 +97,5 @@
   border-radius: 4px;
   font-size: 1rem;
   text-align: center;
+  white-space: pre-wrap;
 }

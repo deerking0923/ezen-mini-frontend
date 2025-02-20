@@ -17,13 +17,9 @@ export default function CandleCalculatorPage() {
   });
   const [openMenu, setOpenMenu] = useState(null);
   const [currentCandles, setCurrentCandles] = useState(0);
-  // 선택된 영혼 번호 (모달에 표시할 정보)
   const [selectedSoulIndex, setSelectedSoulIndex] = useState(1);
-  // 모달 창 표시 여부 (영혼 정보 모달)
   const [showSoulModal, setShowSoulModal] = useState(false);
-  // 전체 노드표 보기 모달 표시 여부
   const [showTotalInfoModal, setShowTotalInfoModal] = useState(false);
-  // 가이드 정보 모달 표시 여부
   const [showGuideModal, setShowGuideModal] = useState(false);
 
   const handleSetNodeStates = (soulIndex, updater) => {
@@ -37,40 +33,16 @@ export default function CandleCalculatorPage() {
     });
   };
 
-  // 계산 결과 문자열 반환 (alert 대신 결과 문자열을 반환)
-  const onCalculate = () => {
-    const c1 = sumWantedCost(soul1Tree, soulNodeStates[1]);
-    const c2 = sumWantedCost(soul2Tree, soulNodeStates[2]);
-    const c3 = sumWantedCost(soul3Tree, soulNodeStates[3]);
-    const totalRequired = c1 + c2 + c3;
-    const difference = totalRequired - Number(currentCandles);
-
-    let result;
-    if (difference < 0) {
-      result = `
-팔짝 뛰는 무용수: ${c1} candles
-도발하는 곡예사: ${c2} candles
-인사하는 주술사: ${c3} candles
-총 필요: ${totalRequired} candles
-시즌 양초가 ${-difference}개 남습니다!
-      `;
-    } else {
-      result = `
-팔짝 뛰는 무용수: ${c1} candles
-도발하는 곡예사: ${c2} candles
-인사하는 주술사: ${c3} candles
-총 필요: ${totalRequired} candles
-추가 필요: ${difference} candles
-      `;
-    }
-    return result;
-  };
+  // 필요한 양초 수 (각 영혼별 "want" 상태에 따른 비용 합)
+  const requiredCandles =
+    sumWantedCost(soul1Tree, soulNodeStates[1]) +
+    sumWantedCost(soul2Tree, soulNodeStates[2]) +
+    sumWantedCost(soul3Tree, soulNodeStates[3]);
 
   const handlePageClick = () => {
     setOpenMenu(null);
   };
 
-  // 각 영혼 컬럼의 선택 컨테이너 클릭 시 모달에 해당 영혼 정보를 띄움
   const handleSoulNameClick = (soulIndex) => {
     setSelectedSoulIndex(soulIndex);
     setShowSoulModal(true);
@@ -82,7 +54,6 @@ export default function CandleCalculatorPage() {
         스카이 양초 계산기 <span className="byline">made by 진사슴</span>
       </h1>
 
-      {/* 전체 노드표 보기 버튼 */}
       <div className="total-info-container">
         <button
           className="total-info-btn"
@@ -92,11 +63,11 @@ export default function CandleCalculatorPage() {
         </button>
       </div>
 
-      {/* 조건 설정창 */}
+      {/* 조건 설정창에 부모에서 계산한 requiredCandles 전달 */}
       <CandleSettingsPanel
         currentCandles={currentCandles}
         setCurrentCandles={setCurrentCandles}
-        onCalculate={onCalculate}
+        requiredCandles={requiredCandles}
       />
 
       <div className="main-content">
@@ -197,7 +168,6 @@ export default function CandleCalculatorPage() {
         <GuideSidebar onClick={() => setShowGuideModal(true)} />
       </div>
 
-      {/* 모달 창: 선택된 영혼의 정보 사진 표시 */}
       {showSoulModal && (
         <div className="modal-overlay" onClick={() => setShowSoulModal(false)}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
@@ -223,7 +193,6 @@ export default function CandleCalculatorPage() {
         </div>
       )}
 
-      {/* 모달 창: 전체 노드표 보기 */}
       {showTotalInfoModal && (
         <div
           className="modal-overlay"
@@ -254,7 +223,6 @@ export default function CandleCalculatorPage() {
         </div>
       )}
 
-      {/* 모달 창: 가이드 정보 보기 (GuideSidebar 클릭 시) */}
       {showGuideModal && (
         <div className="modal-overlay" onClick={() => setShowGuideModal(false)}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>

@@ -1,4 +1,3 @@
-// Components/CandleSettingsPanel.jsx
 "use client";
 import React, { useState, useEffect } from "react";
 import "./CandleSettingsPanel.css";
@@ -6,21 +5,21 @@ import "./CandleSettingsPanel.css";
 export default function CandleSettingsPanel({
   currentCandles,
   setCurrentCandles,
-  onCalculate, // 계산 결과를 반환하는 함수 (문자열)
+  requiredCandles, // 부모에서 전달한 필요한 양초 수
 }) {
-  // 시즌 패스 소유 여부 선택 (yes: 소유, no: 미소유)
+  // 시즌 패스 소유 여부 (예, 아니오)
   const [ownsSeasonPass, setOwnsSeasonPass] = useState("yes");
-  // ownsSeasonPass가 "no"일 때, 구입할 항목으로 시즌 패스만 선택
+  // 미소유(아니오)일 때 구입 예정 여부
   const [buySeasonPass, setBuySeasonPass] = useState(false);
   // 남은 시즌 일수 (동적으로 계산)
   const [remainingDays, setRemainingDays] = useState(0);
-  // 계산 결과 (문자열)
+  // 계산 결과 문자열
   const [calcResult, setCalcResult] = useState("");
 
   // 시즌 종료일 (예: 4월 7일 16:00, 한국 시간 기준)
   const seasonEnd = new Date("2025-04-07T16:00:00+09:00");
 
-  // 오후 4시(16:00)를 기준으로 시즌 일수가 갱신됩니다.
+  // 오후 4시(16:00)를 기준으로 남은 시즌 일수를 계산합니다.
   const computeRemainingDays = () => {
     const now = new Date();
     const resetHour = 16;
@@ -33,25 +32,19 @@ export default function CandleSettingsPanel({
       0,
       0
     );
-    let effectiveNow;
-    // 현재 시간이 리셋 이전이면 오늘 리셋 시간까지 기다린다고 가정,
-    // 리셋 이후라면 현재 시간을 그대로 사용합니다.
-    if (now < todayReset) {
-      effectiveNow = todayReset;
-    } else {
-      effectiveNow = now;
-    }
-    // 시즌 종료까지 남은 시간(ms)
-    let diffMs = seasonEnd.getTime() - effectiveNow.getTime();
+    // 리셋 이전이면 오늘 리셋 시간, 이후면 현재 시간 사용
+    const effectiveNow = now < todayReset ? todayReset : now;
+    const diffMs = seasonEnd.getTime() - effectiveNow.getTime();
     let daysLeft = Math.ceil(diffMs / (1000 * 60 * 60 * 24));
     if (daysLeft < 0) daysLeft = 0;
-    return daysLeft-1;
+    // 시즌 종료일 전날까지 계산하도록 -1
+    return daysLeft - 1;
   };
 
   useEffect(() => {
-    // 최초 계산
+    // 최초 남은 시즌 일수 계산
     setRemainingDays(computeRemainingDays());
-    // 매 분마다 남은 시즌 일수를 갱신합니다.
+    // 매 분마다 갱신 (리셋 시간이 지나면 1일씩 줄어드는 효과)
     const interval = setInterval(() => {
       setRemainingDays(computeRemainingDays());
     }, 60000);
@@ -62,9 +55,30 @@ export default function CandleSettingsPanel({
     setBuySeasonPass((prev) => !prev);
   };
 
-  // 버튼 클릭 시 onCalculate 함수를 호출하여 결과를 로컬 상태에 저장
+  // 계산하기 버튼 클릭 시 실행되는 함수 (계산 로직 적용)
   const handleCalculate = () => {
-    const result = onCalculate();
+    const current = Number(currentCandles);
+    // 일일 획득 양초 수: 시즌 패스 소유 여부가 "yes"이거나,
+    // "no"인데 구입 예정이면 6, 그렇지 않으면 5
+    const dailyCandleCount =
+      ownsSeasonPass === "yes" || (ownsSeasonPass === "no" && buySeasonPass)
+        ? 6
+        : 5;
+    const seasonCandlesFromDays = remainingDays * dailyCandleCount;
+    // 미소유이면서 구입 예정인 경우 추가 보너스 +30개
+    const extraCandles =
+      ownsSeasonPass === "no" && buySeasonPass ? 30 : 0;
+    const totalSeasonCandles = current + seasonCandlesFromDays + extraCandles;
+    const difference = totalSeasonCandles - Number(requiredCandles);
+
+    const result = `
+현재 보유 양초: ${current}개
+남은 시즌 일수: ${remainingDays}일
+일일 획득 양초: ${dailyCandleCount}개 (총 ${seasonCandlesFromDays}개)
+총 예상 양초: ${totalSeasonCandles}개
+필요한 양초: ${requiredCandles}개
+${difference < 0 ? `부족한 양초: ${-difference}개` : `남는 양초: ${difference}개`}
+    `;
     setCalcResult(result);
   };
 
@@ -103,14 +117,14 @@ export default function CandleSettingsPanel({
 
       {ownsSeasonPass === "no" && (
         <div className="setting-group buy-options">
-          <p>구입 예정:</p>
+          <p>시패 구입 예정:</p>
           <label>
             <input
               type="checkbox"
               checked={buySeasonPass}
               onChange={handleToggleBuySeasonPass}
             />
-            시즌 패스
+            추가 양초 30개
           </label>
         </div>
       )}
