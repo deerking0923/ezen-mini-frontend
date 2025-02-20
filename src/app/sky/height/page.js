@@ -291,7 +291,7 @@ export default function Home() {
       <div className="caption-text">
         &lt;네이버 Sky 카페 - 큐큘님&gt; [미세팁] 카페기준 키재기
       </div>
-      
+
       <div className="controls">
         <div className="zoom-controls">
           <button

@@ -42,7 +42,7 @@
   margin-bottom: 20px;
 }
 
-/* 왼쪽 영혼 선택 영역 (필요 시) */
+/* 왼쪽 영혼 선택 영역 (참고용, 필요 시) */
 .soul-sidebar {
   margin-top: 20px;
   display: flex;
@@ -80,11 +80,22 @@
   flex-direction: column;
   align-items: flex-start;
 }
+/* 영혼 이름 (노드 컬럼 헤더) - 중앙 정렬 및 클릭 가능 */
 .soul-name {
   font-size: 0.8rem;
   margin-bottom: 5px;
   font-weight: bold;
+  text-align: center;
+  cursor: pointer;
+  padding: 5px 10px;
+  background: #f0f0f0;
+  border-radius: 4px;
+  transition: background 0.2s ease;
 }
+.soul-name:hover {
+  background: #e0e0e0;
+}
+
 .btn-row {
   margin-top: 16px;
   display: flex;
@@ -172,6 +183,31 @@
   height: 33px;
 }
 
+/* 이미지 캔버스 영역 */
+.image-canvas {
+  position: relative;
+  width: 100%;
+  max-width: 600px;
+  aspect-ratio: 962 / 881;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  touch-action: none;
+}
+
+/* 이미지 캔버스 내 텍스트 */
+.credit-text {
+  font-size: 1rem;
+  /* 기타 스타일 유지 */
+}
+.caption-text {
+  font-size: 1rem;
+  /* 기타 스타일 유지 */
+}
+
+/* 모달 창 */
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -184,7 +220,6 @@
   justify-content: center;
   z-index: 10000;
 }
-
 .modal-content {
   background: #fff;
   padding: 20px;
@@ -195,8 +230,6 @@
   position: relative;
   margin-top: 20px;
 }
-
-/* 기존 상단 닫기 버튼 */
 .modal-close {
   position: absolute;
   top: 10px;
@@ -212,20 +245,6 @@
   border-radius: 50%;
   cursor: pointer;
 }
-
-/* 모달 제목 영역 */
-.modal-header {
-  margin-bottom: 10px;
-}
-.modal-title {
-  color: #666; /* 회색 */
-  font-size: 1rem;
-  text-align: center;
-  margin: 0;
-  padding: 5px;
-}
-
-/* 모달 하단 닫기 버튼 */
 .modal-close-bottom {
   display: block;
   margin: 20px auto 0;
@@ -238,6 +257,17 @@
   font-size: 1rem;
 }
 
+/* 모달 헤더 및 제목 */
+.modal-header {
+  margin-bottom: 10px;
+}
+.modal-title {
+  color: #666;
+  font-size: 1rem;
+  text-align: center;
+  margin: 0;
+  padding: 5px;
+}
 
 /* Soul Info Sidebar (모달 내부) */
 .soul-info-sidebar {
@@ -257,6 +287,46 @@
   max-width: 600px;
   border: 1px solid #ccc;
   border-radius: 4px;
-  margin-left: 40px;
-  margin-right: 40px;
+  margin: 0 40px;
+}
+
+/* 전체 노드표 보기 버튼 */
+.total-info-container {
+  margin: 20px 0;
+}
+.total-info-btn {
+  padding: 0.75rem 1.5rem;
+  background: #3ad871;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+.total-info-btn:hover {
+  background: #009523;
+}
+
+/* 반응형 미디어 쿼리 */
+@media (max-width: 600px) {
+  .container {
+    padding: 1rem;
+    gap: 1rem;
+  }
+  .controls {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.75rem;
+  }
+  .controls input[type="file"],
+  .controls button {
+    width: 100%;
+    max-width: 300px;
+  }
+  h1 {
+    font-size: 1.75rem;
+    text-align: center;
+  }
 }

@@ -19,8 +19,10 @@ export default function CandleCalculatorPage() {
   const [currentCandles, setCurrentCandles] = useState(0);
   // 선택된 영혼 번호 (모달에 표시할 정보)
   const [selectedSoulIndex, setSelectedSoulIndex] = useState(1);
-  // 모달 창 표시 여부
+  // 모달 창 표시 여부 (영혼 정보 모달)
   const [showSoulModal, setShowSoulModal] = useState(false);
+  // 전체 노드표 보기 모달 표시 여부
+  const [showTotalInfoModal, setShowTotalInfoModal] = useState(false);
 
   const handleSetNodeStates = (soulIndex, updater) => {
     setSoulNodeStates((prev) => {
@@ -82,6 +84,15 @@ export default function CandleCalculatorPage() {
           value={currentCandles}
           onChange={(e) => setCurrentCandles(e.target.value)}
         />
+      </div>
+      {/* 전체 노드표 보기 버튼 */}
+      <div className="total-info-container">
+        <button
+          className="total-info-btn"
+          onClick={() => setShowTotalInfoModal(true)}
+        >
+          전체 노드표 보기
+        </button>
       </div>
       <div className="main-content">
         {/* 중앙: 노드 영역 */}
@@ -154,6 +165,7 @@ export default function CandleCalculatorPage() {
               </div>
             </div>
           </div>
+
           <div className="btn-row">
             <button className="calc-btn" onClick={handleCalculate}>
               계산하기
@@ -174,21 +186,52 @@ export default function CandleCalculatorPage() {
             >
               &times;
             </button>
-
             {/* 모달 제목 */}
             <div className="modal-header">
               <h3 className="modal-title">
                 &lt;sky 네이버 카페&gt; 광채의 시즌 가이드 - 햇비님
               </h3>
             </div>
-
             {/* 영혼 정보 영역 */}
             <SoulInfoSidebar selectedSoulIndex={selectedSoulIndex} />
-
             {/* 하단 닫기 버튼 */}
             <button
               className="modal-close-bottom"
               onClick={() => setShowSoulModal(false)}
+            >
+              닫기
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* 모달 창: 전체 노드표 보기 */}
+      {showTotalInfoModal && (
+        <div
+          className="modal-overlay"
+          onClick={() => setShowTotalInfoModal(false)}
+        >
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            {/* 상단 닫기 버튼 */}
+            <button
+              className="modal-close"
+              onClick={() => setShowTotalInfoModal(false)}
+            >
+              &times;
+            </button>
+            {/* 모달 제목 */}
+            <div className="modal-header">
+              <h3 className="modal-title">전체 노드표</h3>
+            </div>
+            <img
+              src="/sky/calculator/info/totalinfo.png"
+              alt="전체 노드표"
+              style={{ width: "100%", maxWidth: "600px", margin: "20px auto" }}
+            />
+            {/* 하단 닫기 버튼 */}
+            <button
+              className="modal-close-bottom"
+              onClick={() => setShowTotalInfoModal(false)}
             >
               닫기
             </button>
