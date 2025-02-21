@@ -127,3 +127,12 @@ a {
   color: inherit;
 }
 
+@media (max-width: 768px) {
+  .title {
+    font-size: 10px;
+  }
+  .title-container {
+    flex: 1;
+    text-align: center;
+  }
+}

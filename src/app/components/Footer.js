@@ -7,7 +7,7 @@ export default function Footer() {
   return (
     <footer className="footer">
       <div className="footer-content">
-        <span>© 2025 스카이 한국 팬사이트</span>
+        <span>© 2025 한국 하늘 계획표 - thatgamecompany의 Sky:Children of the light의 팬사이트입니다.</span>
         <nav className="footer-nav">
           자료 출처
           <Link href="https://cafe.naver.com/blacknbiqa/478984">햇비님의 광채 시즌 가이드 보러가기</Link>

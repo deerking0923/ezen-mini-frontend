@@ -16,7 +16,7 @@ export default function Layout({ children }) {
       <head>
       <meta name="viewport" content="width=800" />
       {/* <meta name="viewport" content="width=device-width, initial-scale=1" /> */}
-        <title>스카이 한국 팬사이트</title>
+        <title>한국 하늘 계획표</title>
         {/* Google Analytics 추적 코드 */}
         <script async src="https://www.googletagmanager.com/gtag/js?id=G-FTLELSQ2LC"></script>
         <script
@@ -46,14 +46,14 @@ export default function Layout({ children }) {
         <header className="header">
           <div className="title-container">
             <Link href="/" passHref>
-              <h1 className="header-title">스카이 한국 팬사이트</h1>
+              <h1 className="header-title">한국 하늘 계획표</h1>
             </Link>
           </div>
           <div className="nav-links">
             <Link href="/sky/height" passHref>
               <button className="nav-button">키 재기</button>
             </Link>
-            <Link href="/sky/height" passHref>
+            <Link href="/sky/candlecalculator" passHref>
               <button className="nav-button">양초 계산하기</button>
             </Link>
           </div>
