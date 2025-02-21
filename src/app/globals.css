@@ -14,13 +14,13 @@ body {
   margin: 0;
   padding: 0;
   height: 100%;
-  background-color: #6866c0; /* 밝은 스카이 블루 */
+  background-color: hsl(212, 21%, 58%); /* 밝은 스카이 블루 */
   color: #fff;
   font-family: 'Arial', sans-serif;
 }
 
 .header {
-  background-color: #3d4e94; /* 깊고 차분한 블루 */
+  background-color: #41659b; /* 깊고 차분한 블루 */
   padding: 10px 20px;
   display: flex;
   justify-content: space-between;
