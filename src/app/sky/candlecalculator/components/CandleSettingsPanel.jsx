@@ -73,7 +73,7 @@ export default function CandleSettingsPanel({
 
 ${difference < 0 ? `부족한 양초: ${-difference}개` : `남는 양초: ${difference}개`}
 
-${finalitem >= 0  && (ownsSeasonPass === "yes" || buySeasonPass)? `최보까지 ${finalitem}일 남음` : ``}
+${finalitem >= 0  && (ownsSeasonPass === "yes" || buySeasonPass) && finalitem <= remainingDays ? `최보까지 ${finalitem}일 남음` : ``}
   `;
     
     setCalcResult(result);
