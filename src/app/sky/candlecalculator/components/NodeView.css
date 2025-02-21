@@ -56,10 +56,12 @@
   bottom: 3px;
   right: 3px;
   background-color: transparent;
+  z-index: 10; /* 시즌 아이콘을 최상단으로 올림 */
 }
 .season-icon {
-  width: 16px;                /* 원래 24px → 16px */
+  width: 16px;
   height: 16px;
+  z-index: 11; /* 아이콘을 더 앞쪽에 배치 */
 }
 .season-icon-badge {
   position: absolute;
