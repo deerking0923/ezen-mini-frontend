@@ -283,6 +283,9 @@ h1 {
   touch-action: none;
 }
 
+
+
+
 /* 반응형 미디어 쿼리 */
 @media (max-width: 600px) {
   .container {

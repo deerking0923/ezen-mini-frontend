@@ -243,7 +243,7 @@ export default function Home() {
   return (
     <main className="container">
       <h1>
-      빛아 키 재기 <span className="subtitle">made by 진사슴</span>
+        빛아 키 재기 <span className="subtitle">made by 진사슴</span>
       </h1>
 
       <div className="instructions-btn-container">
@@ -283,7 +283,7 @@ export default function Home() {
 
         {/* 이미지 캔버스 우측 하단 텍스트 */}
         <div className="credit-text">
-          &lt;realdeerworld.com&gt;
+          &lt;korea-sky-planner.com&gt;
         </div>
       </div>
 

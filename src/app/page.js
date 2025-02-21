@@ -283,7 +283,7 @@ export default function Home() {
 
         {/* 이미지 캔버스 우측 하단 텍스트 */}
         <div className="credit-text">
-          &lt;realdeerworld.com&gt;
+          &lt;korea-sky-planner.com&gt;
         </div>
       </div>
 
