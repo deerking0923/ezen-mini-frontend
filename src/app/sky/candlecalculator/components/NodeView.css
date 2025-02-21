@@ -13,15 +13,25 @@
 /* 메인 노드 + 시즌패스 노드 나란히 */
 .node-row {
   display: flex;
-  flex-direction: row;
   align-items: center;
+  justify-content: flex-end; /* 기본적으로 오른쪽 정렬 */
   margin-bottom: 16px; /* 원래 24px → 16px */
+}
+
+/* 두 개의 자식이 있는 경우에만 순서를 뒤바꿈 */
+.node-row > .node-image-box:nth-child(1):not(:only-child) {
+  order: 2;
+}
+
+.node-row > .node-image-box:nth-child(2) {
+  order: 1;
+  margin-right: auto; /* 시즌 노드를 왼쪽에 위치시키기 위해 */
 }
 
 /* 이미지 박스 */
 .node-image-box {
   position: relative;
-  margin-right: 13px; /* 원래 20px → 13px */
+  margin-right: 13px; /* 기본값, 필요시 오버라이드 됨 */
 }
 
 /* 이미지 */
@@ -97,8 +107,6 @@
   background-color: #e1b355;
 }
 
-
-
 .season-icon-badge {
   position: absolute;
   bottom: 0px;  /* 비용 뱃지와 동일한 수직 위치 */
@@ -138,4 +146,39 @@
 .global-select-buttons button:last-child {
   background: rgb(255, 218, 83);
   color: #fff;
+}
+
+.node-row {
+  gap: 15px; /* 시즌 노드와 메인 노드 사이의 간격 */
+}
+.node-row > .node-image-box:nth-child(2) {
+  order: 1;
+  margin-right: auto;
+  transform: translateY(-8px); /* 시즌 노드를 5px 위로 이동 */
+}
+
+/* 메인 노드(첫 번째 자식)끼리 연결선 */
+.node-row:not(:last-child) > .node-image-box:first-child::after {
+  content: "";
+  position: absolute;
+  bottom: -20px; /* 이미지 하단에서 시작 (필요에 따라 조정) */
+  left: 50%;
+  transform: translateX(-50%);
+  width: 2px;    /* 연결선 두께 */
+  height: 24px;  /* 연결선 길이 (노드 간 간격에 맞게 조정) */
+  background-color: #ccc; /* 연결선 색상 */
+}
+
+/* 메인 노드와 시즌 노드 연결 대각선 선 */
+/* 시즌 노드(right side)에서 메인 노드 쪽으로 연결하는 선 */
+.node-row > .node-image-box:nth-child(2)::after {
+  content: "";
+  position: absolute;
+  top: 50%; /* 시즌 노드의 수직 중앙 */
+  right: -18px; /* 두 노드 사이의 gap 만큼 오른쪽으로 확장 */
+  width: 18px;  /* 대각선 선 길이 (대략 √(15²+8²) ≒ 17px) */
+  height: 2px;  /* 선 두께 */
+  background-color: #ccc;
+  transform: rotate(28deg); /* 수평:15px, 수직:8px 차이를 반영한 각도 (약 28°) */
+  transform-origin: left center;
 }
