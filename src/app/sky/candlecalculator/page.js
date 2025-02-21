@@ -276,12 +276,15 @@ export default function CandleCalculatorPage() {
               &times;
             </button>
             <div className="modal-header">
-              <h3 className="modal-title">전체 노드표</h3>
+            <h3 className="modal-title">
+                &lt;sky 네이버 카페&gt; 광채의 시즌 가이드 - 햇비님
+              </h3>
+              <h3 className="modal-description">전체 노드표</h3>
             </div>
             <img
               src="/sky/calculator/info/totalinfo.png"
               alt="전체 노드표"
-              style={{ width: "100%", maxWidth: "600px", margin: "20px auto" }}
+              style={{ width: "100%", maxWidth: "600px", margin: "auto" }}
             />
             <button
               className="modal-close-bottom"
@@ -306,7 +309,7 @@ export default function CandleCalculatorPage() {
               <h3 className="modal-title">
                 &lt;sky 네이버 카페&gt; 광채의 시즌 가이드 - 햇비님
               </h3>
-              <h3 className="modal-title">시즌 안내자</h3>
+              <h3 className="modal-description">시즌 안내자</h3>
             </div>
             <div className="guide-modal-images">
               <img src="/sky/calculator/info/guide1.png" alt="Guide 1" />

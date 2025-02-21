@@ -420,3 +420,8 @@
 .download-btn:hover {
   background-color: #218838;
 }
+
+.modal-description {
+  color: #707070; /* 진한 회색 */
+  font-weight: bold; /* 선택 사항: 글씨를 좀 더 두껍게 */
+}
