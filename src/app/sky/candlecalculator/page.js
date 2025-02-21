@@ -63,7 +63,7 @@ export default function CandleCalculatorPage() {
     if (!element) return;
     try {
       const canvas = await html2canvas(element, {
-        backgroundColor: null, // CSS 배경 유지
+        backgroundColor: "#333333", // CSS 배경 유지
         scale: window.devicePixelRatio, // 고해상도 캡쳐
         ignoreElements: (el) => el.classList.contains("no-capture"), // 특정 클래스는 무시
       });
