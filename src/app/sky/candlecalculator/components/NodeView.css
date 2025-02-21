@@ -18,12 +18,6 @@
 .node-row > .node-image-box:nth-child(1):not(:only-child) {
   order: 2;
 }
-.node-row > .node-image-box:nth-child(2) {
-  order: 1;
-  margin-right: auto;         /* 시즌 노드를 왼쪽에 위치 */
-  margin-top: -8px;           /* transform 대체: 위로 이동 */
-  position: relative;         /* stacking context 생성 */
-}
 
 /* 이미지 박스 및 이미지 */
 .node-image-box {
@@ -122,16 +116,24 @@
   background-color: #ccc;
 }
 
+.node-row > .node-image-box:nth-child(2) {
+  order: 1;
+  margin-right: auto;         /* 시즌 노드를 왼쪽에 위치 */
+  margin-top: -30px;           /* transform 대체: 위로 이동 */
+  position: relative;         /* stacking context 생성 */
+}
+
+
 /* 시즌 노드와 메인 노드 연결 대각선 선 */
 .node-row > .node-image-box:nth-child(2)::after {
   content: "";
   position: absolute;
   top: 50%;                   /* 시즌 노드의 수직 중앙 */
-  right: -18px;               /* 두 노드 사이의 gap 만큼 확장 */
-  width: 18px;                /* 대각선 선 길이 */
+  right: -20px;               /* 두 노드 사이의 gap 만큼 확장 */
+  width: 20px;                /* 대각선 선 길이 */
   height: 2px;                /* 선 두께 */
   background-color: #ccc;
-  transform: rotate(28deg);   /* 약 28° 회전 */
+  transform: rotate(40deg);   /* 약 28° 회전 */
   transform-origin: left center;
 }
 
