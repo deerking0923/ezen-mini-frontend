@@ -68,31 +68,30 @@ const removeDescendants = (index, prevStates, updated) => {
     const nodeId = mainArray[index].id;
     setNodeStates((prev) => {
       const oldState = prev[nodeId] || "none";
-      // 토글: 기존 상태와 같으면 "none", 아니면 newState 적용
       const realNewState = oldState === newState ? "none" : newState;
-      // 클릭한 메인 노드는 항상 업데이트
       let updated = { ...prev, [nodeId]: realNewState };
-      
-      // ★ 여기서 현재 노드의 시즌 노드를 업데이트하는 부분을 제거합니다.
-      // (즉, 메인 노드 선택시 시즌 노드는 건드리지 않습니다.)
-      
+  
+      // 현재 메인 노드에 해당하는 시즌 노드 (있는 경우)
+      const currentSeason = seasonArray[index];
+  
       if (realNewState !== "none") {
-        // "have" 상태이면, 기존 로직대로 조상(위쪽 메인 노드들) 모두 "have"로 업데이트
+        // have 상태이면 조상(위쪽 메인 노드들)을 전파
         if (realNewState === "have") {
           applyAncestors(index, updated);
         } else if (realNewState === "want") {
-          // "want" 상태 전파: 조상 노드들을 순회하면서,
-          // 이미 "have"인 조상이 있으면 전파 중단하고,
-          // 그렇지 않으면 오직 메인 노드만 "want"로 업데이트 (시즌 노드는 업데이트하지 않음)
+          // want 상태 전파: 조상 중 이미 have가 있으면 중단하고, 나머지 메인 노드들만 업데이트
           for (let i = index - 1; i >= 0; i--) {
             const ancMainId = mainArray[i].id;
             if ((prev[ancMainId] || "none") === "have") break;
             updated[ancMainId] = "want";
-            // ★ 조상에 해당하는 시즌 노드는 업데이트하지 않습니다.
           }
         }
       } else {
-        // 해제("none")인 경우: 클릭한 노드보다 아래(원본 배열 기준 index+1 ... 끝)에 있는 모든 메인 및 시즌 노드를 "none"으로 업데이트
+        // 해제("none") 시: 클릭한 메인 노드의 시즌 노드도 해제
+        if (currentSeason) {
+          updated[currentSeason.id] = "none";
+        }
+        // 그리고 클릭한 메인 노드보다 아래(원본 배열 기준 index+1 이후)에 있는 모든 메인 및 시즌 노드를 해제
         if (oldState === "have") {
           removeDescendants(index, prev, updated);
         }
@@ -100,6 +99,7 @@ const removeDescendants = (index, prevStates, updated) => {
       return updated;
     });
   };
+  
   
   
   // 시즌 노드 state 토글
