@@ -17,7 +17,7 @@ export default function CandleSettingsPanel({
   const [calcResult, setCalcResult] = useState("");
 
   // 시즌 종료일 (예: 4월 7일 16:00, 한국 시간 기준)
-  const seasonEnd = new Date("2025-04-07T16:00:00+09:00");
+  const seasonEnd = new Date("2025-04-07T17:00:00+09:00");
 
   const computeRemainingDays = () => {
     const now = new Date();
@@ -85,7 +85,7 @@ ${finalitem >= 0  && (ownsSeasonPass === "yes" || buySeasonPass) && finalitem <=
       <div className="season-days">
         남은 시즌 일수 {remainingDays}일
         <span className="season-days-note">
-          (4시 리셋 이후 양초를 얻었다는 가정 하에 계산됩니다.
+          (5시 리셋 이후 양초를 얻었다는 가정 하에 계산됩니다.
         </span>
         <span className="season-days-note"> 아직 리셋 전 오늘
         일퀘를 안하셨다면 일퀘 양초를 포함해서 계산해주세요.)</span>

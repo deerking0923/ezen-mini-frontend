@@ -1,6 +1,3 @@
-
-
-
 /* 기본 리셋 */
 * {
   margin: 0;
@@ -21,14 +18,13 @@ body {
 
 .header {
   background-color: #41659b; /* 깊고 차분한 블루 */
-  padding: 10px 20px;
+  height: 60px; /* 고정된 헤더 높이 */
+  padding: 0 20px; /* 세로 패딩 제거 */
   display: flex;
   justify-content: space-between;
   align-items: center;
   color: #ffffff;
 }
-
-
 
 /* 가운데 타이틀 */
 .title-container {
@@ -36,12 +32,18 @@ body {
   text-align: center;
 }
 
-.title {
+.header-title {
   margin: 0;
-  font-size: 24px;
+  font-size: 20px; /* 작게 조정된 폰트 크기 */
   font-weight: bold;
   color: #ffffff;
   cursor: pointer;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.header-title:hover {
+  transform: scale(1.05);
+  opacity: 0.8;
 }
 
 .nav-links {
@@ -65,13 +67,11 @@ body {
   background-color: #d35400;
 }
 
-
-
-
 /* 메인 (페이지 내용) 스타일 */
 main {
   padding: 20px;
 }
+
 /* 로딩 스피너 */
 .loading-container {
   position: fixed;
@@ -97,7 +97,6 @@ main {
   animation: bounce 1.5s infinite ease-in-out;
 }
 
-/* 각각 지연 시간 부여 */
 .spinner div:nth-child(1) {
   animation-delay: 0s;
 }
@@ -111,7 +110,6 @@ main {
   animation-delay: 0.6s;
 }
 
-/* 물결 모양 애니메이션 */
 @keyframes bounce {
   0%, 100% {
     transform: scale(1);
@@ -121,18 +119,7 @@ main {
   }
 }
 
-/* 링크 기본 스타일 해제 */
 a {
   text-decoration: none;
   color: inherit;
-}
-
-@media (max-width: 768px) {
-  .title {
-    font-size: 10px;
-  }
-  .title-container {
-    flex: 1;
-    text-align: center;
-  }
 }

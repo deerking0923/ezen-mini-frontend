@@ -16,7 +16,6 @@ export default function Layout({ children }) {
       <head>
       <meta name="viewport" content="width=800" />
       {/* <meta name="viewport" content="width=device-width, initial-scale=1" /> */}
-        <title>한국 하늘 계획표</title>
         {/* Google Analytics 추적 코드 */}
         <script async src="https://www.googletagmanager.com/gtag/js?id=G-FTLELSQ2LC"></script>
         <script
