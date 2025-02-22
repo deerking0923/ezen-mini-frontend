@@ -45,7 +45,7 @@ export default function Layout({ children }) {
         <header className="header">
           <div className="title-container">
             <Link href="/" passHref>
-              <h1 className="header-title">한국 하늘 계획표</h1>
+              <h1 className="header-title">스카이 플래너</h1>
             </Link>
           </div>
           <div className="nav-links">

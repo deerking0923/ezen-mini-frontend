@@ -7,7 +7,7 @@ export default function Footer() {
   return (
     <footer className="footer">
       <div className="footer-content">
-        <span>© 2025 한국 하늘 계획표</span>
+        <span>© 2025 한국 하늘 계획표 &lt;만든이 진사슴&gt;</span>
         <nav className="footer-nav">
           자료 출처
           <Link href="https://cafe.naver.com/blacknbiqa/478984">햇비님의 광채 시즌 가이드 보러가기</Link>
