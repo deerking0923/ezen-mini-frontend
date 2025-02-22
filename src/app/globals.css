@@ -16,6 +16,36 @@ body {
   font-family: 'Arial', sans-serif;
 }
 
+.header {
+  background-color: #41659b; /* 깊고 차분한 블루 */
+  height: 60px; /* 고정된 헤더 높이 */
+  padding: 0 20px; /* 세로 패딩 제거 */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #ffffff;
+}
+
+/* 가운데 타이틀 */
+.title-container {
+  flex: 1;
+  text-align: center;
+}
+
+.header-title {
+  margin: 0;
+  font-size: 20px; /* 작게 조정된 폰트 크기 */
+  font-weight: bold;
+  color: #ffffff;
+  cursor: pointer;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.header-title:hover {
+  transform: scale(1.05);
+  opacity: 0.8;
+}
+
 .nav-links {
   flex: 0 0 auto;
   display: flex;
