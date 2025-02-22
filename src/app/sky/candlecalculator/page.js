@@ -79,7 +79,7 @@ export default function CandleCalculatorPage() {
 
   return (
     <div className="calc-container" onClick={handlePageClick}>
-      <h1 className="header-title">
+      <h1 className="header-title-big">
         스카이 양초 계산기 <span className="byline">만든이 진사슴</span>
       </h1>
 

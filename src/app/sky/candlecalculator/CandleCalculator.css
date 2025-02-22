@@ -9,11 +9,11 @@
 
 /* 헤더 영역 */
 .header,
-.header-title {
+.header-title-big {
   text-align: center;
   margin-bottom: 13px;
 }
-.header-title {
+.header-title-big {
   font-size: 1.5rem;
 }
 .byline {

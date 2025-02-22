@@ -17,6 +17,7 @@ export default function Layout({ children }) {
       <meta name="viewport" content="width=800" />
       {/* <meta name="viewport" content="width=device-width, initial-scale=1" /> */}
         {/* Google Analytics 추적 코드 */}
+        <title>스카이 플래너</title>
         <script async src="https://www.googletagmanager.com/gtag/js?id=G-FTLELSQ2LC"></script>
         <script
           dangerouslySetInnerHTML={{
