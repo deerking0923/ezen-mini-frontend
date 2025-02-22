@@ -45,6 +45,32 @@
     color: #333;
   }
   
+/* 소개 텍스트 */
+.intro-text {
+  text-align: center;
+  font-size: 0.9rem;
+  color: #ffffff;
+  margin-bottom: 10px;
+}
+
+/* 전체 페이지 래퍼: 소개 텍스트와 메인 컨테이너를 감싸는 래퍼 */
+.main-page-wrapper {
+  padding: 20px;
+}
+
+/* 기존 .main-page-container 스타일 */
+.main-page-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  gap: 40px;
+  padding: 20px;
+}
+
+/* ... 나머지 기존 CSS는 그대로 유지 ... */
+
+
   /* 반응형: 모바일에서는 세로 배치, 크기 확대 */
   @media (max-width: 768px) {
     .main-page-container {
