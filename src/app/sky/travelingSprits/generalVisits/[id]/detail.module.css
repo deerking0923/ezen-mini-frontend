@@ -1,0 +1,103 @@
+/* detail.module.css */
+
+/* 전체 컨테이너 */
+.container {
+  max-width: 900px;
+  margin: 2rem auto;
+  background-color: #fff;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  color: #333; /* 컨테이너 내 기본 텍스트 색상 */
+}
+
+/* 제목 스타일 */
+.title {
+  font-size: 2rem;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 1.5rem;
+  color: #2c3e50;
+}
+
+/* 컨테이너 내 p 태그 스타일 */
+.container p {
+  font-size: 1rem;
+  line-height: 1.6;
+  margin: 0.75rem 0;
+  color: #333; /* 명시적으로 텍스트 색상 설정 */
+}
+
+/* 섹션 구분 */
+.section {
+  margin-top: 2rem;
+}
+
+/* 이미지 래퍼 */
+.imageWrapper {
+  text-align: center;
+  margin: 1.5rem 0;
+}
+
+/* 이미지 스타일 */
+.image {
+  max-width: 100%;
+  border-radius: 6px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+}
+
+
+
+/* 리스트 스타일 (GIF, 착용샷, 노드 등) */
+.gifList,
+.imageList,
+.nodeList {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin: 1rem 0;
+}
+
+/* 각 리스트 항목 */
+.gifList li,
+.imageList li,
+.nodeList li {
+  flex: 1 1 200px;
+  text-align: center;
+}
+
+/* GIF 및 노드 이미지 스타일 */
+.gifImage,
+.nodeImage {
+  max-width: 100%;
+  border-radius: 6px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+}
+
+
+
+/* 노드 항목 내 텍스트 스타일 */
+.nodeList li p {
+  margin: 0.25rem 0;
+  font-size: 0.9rem;
+  color: #333;
+}
+
+/* 로딩 및 에러 메시지 */
+.loading {
+  text-align: center;
+  font-size: 1.2rem;
+  padding: 2rem;
+  color: #333;
+}
+
+.error {
+  text-align: center;
+  font-size: 1.2rem;
+  padding: 2rem;
+  color: red;
+}
