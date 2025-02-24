@@ -9,7 +9,6 @@ export default function SoulModifyPage() {
   const { id } = useParams();
   const router = useRouter();
 
-  // 텍스트 관련 상태
   const [formData, setFormData] = useState({
     seasonName: "",
     name: "",
@@ -22,19 +21,17 @@ export default function SoulModifyPage() {
     description: "",
   });
 
-  // 파일 관련 상태 (새로 업로드할 파일)
   const [representativeImage, setRepresentativeImage] = useState(null);
   const [locationImage, setLocationImage] = useState(null);
-  const [gestureGifs, setGestureGifs] = useState([]); // 배열
-  const [wearingShotImages, setWearingShotImages] = useState([]); // 배열
-
-  // 기존 파일 미리보기용 상태
+  const [gestureGifs, setGestureGifs] = useState([]);
+  const [wearingShotImages, setWearingShotImages] = useState([]);
+  
+  // 미리보기용 상태
   const [repImagePreview, setRepImagePreview] = useState("");
   const [locImagePreview, setLocImagePreview] = useState("");
   const [gestureGifsPreview, setGestureGifsPreview] = useState([]);
   const [wearingShotImagesPreview, setWearingShotImagesPreview] = useState([]);
 
-  // 노드 관련 상태
   const [centerNodes, setCenterNodes] = useState([]);
   const [leftSideNodes, setLeftSideNodes] = useState([]);
   const [rightSideNodes, setRightSideNodes] = useState([]);
@@ -42,30 +39,23 @@ export default function SoulModifyPage() {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
-  // 폼 텍스트 입력 핸들러
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  // 단일 파일 입력 핸들러
   const handleFileChange = (e, setter) => {
     const file = e.target.files[0];
     setter(file);
   };
 
-  // 다중 파일 입력 핸들러
   const handleMultipleFilesChange = (e, setter) => {
     const files = Array.from(e.target.files);
     setter(files);
   };
 
-  // 노드 추가 및 업데이트 핸들러들
   const addCenterNode = () => {
-    setCenterNodes((prev) => [
-      ...prev,
-      { nodeOrder: "", photo: null, currencyPrice: "" },
-    ]);
+    setCenterNodes((prev) => [...prev, { nodeOrder: "", photo: null, currencyPrice: "" }]);
   };
   const updateCenterNode = (index, key, value) => {
     setCenterNodes((prev) => {
@@ -76,10 +66,7 @@ export default function SoulModifyPage() {
   };
 
   const addLeftSideNode = () => {
-    setLeftSideNodes((prev) => [
-      ...prev,
-      { nodeOrder: "", photo: null, currencyPrice: "" },
-    ]);
+    setLeftSideNodes((prev) => [...prev, { nodeOrder: "", photo: null, currencyPrice: "" }]);
   };
   const updateLeftSideNode = (index, key, value) => {
     setLeftSideNodes((prev) => {
@@ -90,10 +77,7 @@ export default function SoulModifyPage() {
   };
 
   const addRightSideNode = () => {
-    setRightSideNodes((prev) => [
-      ...prev,
-      { nodeOrder: "", photo: null, currencyPrice: "" },
-    ]);
+    setRightSideNodes((prev) => [...prev, { nodeOrder: "", photo: null, currencyPrice: "" }]);
   };
   const updateRightSideNode = (index, key, value) => {
     setRightSideNodes((prev) => {
@@ -103,9 +87,8 @@ export default function SoulModifyPage() {
     });
   };
 
-  // ============ 파일 업로드 로직 ============
-
-  async function uploadFile(file) {
+  // 파일 업로드
+  const uploadFile = async (file) => {
     if (!file) return "";
     const fd = new FormData();
     fd.append("file", file);
@@ -115,34 +98,29 @@ export default function SoulModifyPage() {
     });
     const json = await res.json();
     return json.url;
-  }
+  };
 
-  async function uploadFiles(files) {
+  const uploadFiles = async (files) => {
     const urls = [];
     for (const file of files) {
       const url = await uploadFile(file);
       urls.push(url);
     }
     return urls;
-  }
+  };
 
-  async function uploadNodePhoto(node) {
+  const uploadNodePhoto = async (node) => {
     if (node.photo) {
       return await uploadFile(node.photo);
     }
     return "";
-  }
-
-  // ============ 기존 데이터 불러오기 (GET) ============
+  };
 
   useEffect(() => {
     async function fetchSoul() {
       try {
-        const res = await fetch(
-          `https://korea-sky-planner.com/api/v1/souls/${id}`
-        );
+        const res = await fetch(`https://korea-sky-planner.com/api/v1/souls/${id}`);
         if (!res.ok) throw new Error("영혼 정보를 불러오는데 실패하였습니다.");
-
         const data = await res.json();
         const soul = data.data || data;
 
@@ -163,32 +141,24 @@ export default function SoulModifyPage() {
         setGestureGifsPreview(soul.gestureGifs || []);
         setWearingShotImagesPreview(soul.wearingShotImages || []);
 
-        setCenterNodes(
-          soul.centerNodes?.map((node) => ({
-            nodeOrder: node.nodeOrder,
-            photo: null,
-            preview: node.photo || "",
-            currencyPrice: node.currencyPrice,
-          })) || []
-        );
-
-        setLeftSideNodes(
-          soul.leftSideNodes?.map((node) => ({
-            nodeOrder: node.nodeOrder,
-            photo: null,
-            preview: node.photo || "",
-            currencyPrice: node.currencyPrice,
-          })) || []
-        );
-
-        setRightSideNodes(
-          soul.rightSideNodes?.map((node) => ({
-            nodeOrder: node.nodeOrder,
-            photo: null,
-            preview: node.photo || "",
-            currencyPrice: node.currencyPrice,
-          })) || []
-        );
+        setCenterNodes(soul.centerNodes?.map(node => ({
+          nodeOrder: node.nodeOrder,
+          photo: null,
+          preview: node.photo || "",
+          currencyPrice: node.currencyPrice,
+        })) || []);
+        setLeftSideNodes(soul.leftSideNodes?.map(node => ({
+          nodeOrder: node.nodeOrder,
+          photo: null,
+          preview: node.photo || "",
+          currencyPrice: node.currencyPrice,
+        })) || []);
+        setRightSideNodes(soul.rightSideNodes?.map(node => ({
+          nodeOrder: node.nodeOrder,
+          photo: null,
+          preview: node.photo || "",
+          currencyPrice: node.currencyPrice,
+        })) || []);
       } catch (err) {
         setError(err.message);
       }
@@ -196,94 +166,92 @@ export default function SoulModifyPage() {
     fetchSoul();
   }, [id]);
 
-  // ============ 수정(Submit) ============
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    
     try {
-      // 파일 업로드
-      const representativeImageUrl = representativeImage
-        ? await uploadFile(representativeImage)
-        : repImagePreview;
-      const locationImageUrl = locationImage
-        ? await uploadFile(locationImage)
-        : locImagePreview;
-      const gestureGifsUrls =
-        gestureGifs.length > 0
-          ? await uploadFiles(gestureGifs)
-          : gestureGifsPreview;
-      const wearingShotImagesUrls =
-        wearingShotImages.length > 0
-          ? await uploadFiles(wearingShotImages)
-          : wearingShotImagesPreview;
-
-      // 노드 처리
-      const uploadedCenterNodes = await Promise.all(
-        centerNodes.map(async (node) => {
-          const photoUrl = await uploadNodePhoto(node);
-          return {
-            nodeOrder: Number(node.nodeOrder),
-            photo: photoUrl || node.preview,
-            currencyPrice: Number(node.currencyPrice),
-          };
-        })
-      );
-      const uploadedLeftSideNodes = await Promise.all(
-        leftSideNodes.map(async (node) => {
-          const photoUrl = await uploadNodePhoto(node);
-          return {
-            nodeOrder: Number(node.nodeOrder),
-            photo: photoUrl || node.preview,
-            currencyPrice: Number(node.currencyPrice),
-          };
-        })
-      );
-      const uploadedRightSideNodes = await Promise.all(
-        rightSideNodes.map(async (node) => {
-          const photoUrl = await uploadNodePhoto(node);
-          return {
-            nodeOrder: Number(node.nodeOrder),
-            photo: photoUrl || node.preview,
-            currencyPrice: Number(node.currencyPrice),
-          };
-        })
-      );
-
-      // 요청 페이로드 구성
+      const representativeImageUrl = representativeImage ? await uploadFile(representativeImage) : repImagePreview;
+      const locationImageUrl = locationImage ? await uploadFile(locationImage) : locImagePreview;
+      const gestureGifsUrls = gestureGifs.length > 0 ? await uploadFiles(gestureGifs) : gestureGifsPreview;
+      const wearingShotImagesUrls = wearingShotImages.length > 0 ? await uploadFiles(wearingShotImages) : wearingShotImagesPreview;
+  
+      const uploadedCenterNodes = await Promise.all(centerNodes.map(async (node) => {
+        const photoUrl = await uploadNodePhoto(node);
+        return {
+          nodeOrder: Number(node.nodeOrder),
+          photo: photoUrl || node.preview,
+          currencyPrice: Number(node.currencyPrice),
+        };
+      }));
+  
+      const uploadedLeftSideNodes = await Promise.all(leftSideNodes.map(async (node) => {
+        const photoUrl = await uploadNodePhoto(node);
+        return {
+          nodeOrder: Number(node.nodeOrder),
+          photo: photoUrl || node.preview,
+          currencyPrice: Number(node.currencyPrice),
+        };
+      }));
+  
+      const uploadedRightSideNodes = await Promise.all(rightSideNodes.map(async (node) => {
+        const photoUrl = await uploadNodePhoto(node);
+        return {
+          nodeOrder: Number(node.nodeOrder),
+          photo: photoUrl || node.preview,
+          currencyPrice: Number(node.currencyPrice),
+        };
+      }));
+  
       const payload = {
-        ...formData,
+        seasonName: formData.seasonName,
         representativeImage: representativeImageUrl,
+        name: formData.name,
+        orderNum: Number(formData.orderNum),
+        startDate: formData.startDate,
+        endDate: formData.endDate,
+        rerunCount: Number(formData.rerunCount),
         locationImage: locationImageUrl,
         gestureGifs: gestureGifsUrls,
         wearingShotImages: wearingShotImagesUrls,
+        keywords: formData.keywords
+          ? formData.keywords.split(",").map((s) => s.trim())
+          : [],
+        creator: formData.creator,
+        description: formData.description,
         centerNodes: uploadedCenterNodes,
         leftSideNodes: uploadedLeftSideNodes,
         rightSideNodes: uploadedRightSideNodes,
       };
-
-      const res = await fetch(
-        `https://korea-sky-planner.com/api/v1/souls/${id}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(payload),
-        }
-      );
-
+  
+      console.log("Sending Payload: ", payload); // 디버깅: payload 출력
+  
+      const res = await fetch(`https://korea-sky-planner.com/api/v1/souls/${id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
+  
+      console.log("Response Status: ", res.status);  // 디버깅: 응답 상태 코드 출력
+  
       if (!res.ok) {
-        throw new Error("영혼 수정에 실패하였습니다.");
+        throw new Error(`영혼 수정에 실패하였습니다. 상태 코드: ${res.status}`);
       }
-
+  
       const result = await res.json();
+      console.log("Response from server: ", result);  // 디버깅: 서버 응답 출력
+  
       setSuccess("영혼이 성공적으로 수정되었습니다!");
-      router.push("/sky/travelingSprits/generalVisits/list");
+      router.push(`/sky/travelingSprits/generalVisits/${id}`); // 수정된 영혼 상세 페이지로 리디렉션
     } catch (err) {
+      console.error("Error during submit:", err); // 디버깅: 에러 출력
       setError(err.message);
     }
   };
+  
+  
+
 
   return (
     <div className={styles.container}>
@@ -437,20 +405,19 @@ export default function SoulModifyPage() {
         {/* [9] 착용샷 이미지 */}
         <label className={styles.label}>
           착용샷 이미지 (여러 파일 선택 가능):
-          {wearingShotImagesPreview.length > 0 &&
-            wearingShotImages.length === 0 && (
-              <div className={styles.previewList}>
-                <p>현재 착용샷:</p>
-                {wearingShotImagesPreview.map((img, idx) => (
-                  <img
-                    key={idx}
-                    src={img}
-                    alt={`현재 착용샷 ${idx + 1}`}
-                    className={styles.previewSmallImage}
-                  />
-                ))}
-              </div>
-            )}
+          {wearingShotImagesPreview.length > 0 && wearingShotImages.length === 0 && (
+            <div className={styles.previewList}>
+              <p>현재 착용샷:</p>
+              {wearingShotImagesPreview.map((img, idx) => (
+                <img
+                  key={idx}
+                  src={img}
+                  alt={`현재 착용샷 ${idx + 1}`}
+                  className={styles.previewSmallImage}
+                />
+              ))}
+            </div>
+          )}
           <input
             type="file"
             accept="image/*"
@@ -679,11 +646,11 @@ export default function SoulModifyPage() {
         </label>
 
         {/* 제출 버튼 */}
-        <Link href={`/sky/travelingSprits/generalVisits/${id}`}>
-          <button type="button" className={styles.button}>
-            수정하기
-          </button>
-        </Link>
+        <button type="submit" className={styles.button}>
+  수정하기
+</button>
+
+
       </form>
     </div>
   );
