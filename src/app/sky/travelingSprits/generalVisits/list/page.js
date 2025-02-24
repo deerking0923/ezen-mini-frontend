@@ -34,12 +34,12 @@ export default function SoulListPage() {
     "기억",
     "성장",
     "순간",
-    "부흥",
+    "재생",
     "사슴",
     "둥지",
     "듀엣",
     "무민",
-    "광휘",
+    "광채",
   ];
 
   const fetchSouls = async (pageNumber, query) => {
@@ -172,7 +172,7 @@ export default function SoulListPage() {
         </button>
       </div>
 
-      <h1 className={styles.title}>영혼 목록</h1>
+
 
       <div className={styles.searchContainer}>
         <form onSubmit={handleSearchSubmit} className={styles.searchForm}>

@@ -123,3 +123,20 @@ a {
   text-decoration: none;
   color: inherit;
 }
+  
+
+/* 크레딧 버튼을 왼쪽에 배치 */
+.credit-button {
+  background-color: #3c3c3c; /* 어두운 회색 */
+  color: #e0e0e0;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.credit-button:hover {
+  background-color: #555555; /* 더 어두운 회색 */
+}

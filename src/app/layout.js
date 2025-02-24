@@ -14,9 +14,7 @@ export default function Layout({ children }) {
   return (
     <html lang="ko">
       <head>
-      <meta name="viewport" content="width=800" />
-      {/* <meta name="viewport" content="width=device-width, initial-scale=1" /> */}
-        {/* Google Analytics 추적 코드 */}
+        <meta name="viewport" content="width=800" />
         <title>스카이 플래너</title>
         <script async src="https://www.googletagmanager.com/gtag/js?id=G-FTLELSQ2LC"></script>
         <script
@@ -44,6 +42,7 @@ export default function Layout({ children }) {
           </div>
         )}
         <header className="header">
+          {/* 크레딧 버튼을 왼쪽에 배치 */}
           <div className="title-container">
             <Link href="/" passHref>
               <h1 className="header-title">스카이 플래너</h1>
@@ -55,6 +54,9 @@ export default function Layout({ children }) {
             </Link>
             <Link href="/sky/candlecalculator" passHref>
               <button className="nav-button">양초 계산하기</button>
+            </Link>
+            <Link href="/sky/credit" passHref>
+              <button className="credit-button">크레딧</button>
             </Link>
           </div>
         </header>

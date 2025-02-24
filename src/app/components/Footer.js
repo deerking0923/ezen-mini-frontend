@@ -9,10 +9,7 @@ export default function Footer() {
       <div className="footer-content">
         <span>© 2025 한국 하늘 계획표 &lt;만든이 진사슴&gt;</span>
         <nav className="footer-nav">
-          자료 출처
-          <Link href="https://cafe.naver.com/blacknbiqa/478984">햇비님의 광채 시즌 가이드 보러가기</Link>
-          <Link href="https://sky-children-of-the-light.fandom.com/wiki/Sky:_Children_of_the_Light_Wiki">아이콘은 스카이 위키에서!</Link>
-          {/*<Link href="/">Privacy Policy</Link> */}
+          <Link href="/sky/credit">크레딧</Link>
         </nav>
       </div>
     </footer>
