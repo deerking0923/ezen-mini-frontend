@@ -37,7 +37,6 @@ export default function SoulModifyPage() {
   // 노드 관련 상태
   const [centerNodes, setCenterNodes] = useState([]);
   const [leftSideNodes, setLeftSideNodes] = useState([]);
-  // 수정: GET 응답에서 오른쪽 노드는 이제 rightSideNodes로 내려옴
   const [rightSideNodes, setRightSideNodes] = useState([]);
 
   const [error, setError] = useState("");
@@ -61,13 +60,11 @@ export default function SoulModifyPage() {
     setter(files);
   };
 
-  // ============ 노드 추가 / 업데이트 핸들러들 ============
-
-  // 중앙 노드
+  // 노드 추가 및 업데이트 핸들러들
   const addCenterNode = () => {
     setCenterNodes((prev) => [
       ...prev,
-      { nodeOrder: "", photo: null, preview: "", currencyPrice: "" },
+      { nodeOrder: "", photo: null, currencyPrice: "" },
     ]);
   };
   const updateCenterNode = (index, key, value) => {
@@ -78,11 +75,10 @@ export default function SoulModifyPage() {
     });
   };
 
-  // 왼쪽 노드
   const addLeftSideNode = () => {
     setLeftSideNodes((prev) => [
       ...prev,
-      { nodeOrder: "", photo: null, preview: "", currencyPrice: "" },
+      { nodeOrder: "", photo: null, currencyPrice: "" },
     ]);
   };
   const updateLeftSideNode = (index, key, value) => {
@@ -93,11 +89,10 @@ export default function SoulModifyPage() {
     });
   };
 
-  // 오른쪽 노드 (PUT 시에는 rightSideNodes로 전송)
   const addRightSideNode = () => {
     setRightSideNodes((prev) => [
       ...prev,
-      { nodeOrder: "", photo: null, preview: "", currencyPrice: "" },
+      { nodeOrder: "", photo: null, currencyPrice: "" },
     ]);
   };
   const updateRightSideNode = (index, key, value) => {
@@ -139,6 +134,7 @@ export default function SoulModifyPage() {
   }
 
   // ============ 기존 데이터 불러오기 (GET) ============
+
   useEffect(() => {
     async function fetchSoul() {
       try {
@@ -165,7 +161,6 @@ export default function SoulModifyPage() {
         setGestureGifsPreview(soul.gestureGifs || []);
         setWearingShotImagesPreview(soul.wearingShotImages || []);
 
-        // GET 응답에서는 이제 오른쪽 노드의 필드명도 rightSideNodes로 내려온다고 가정
         setCenterNodes(
           soul.centerNodes?.map((node) => ({
             nodeOrder: node.nodeOrder,
@@ -200,83 +195,50 @@ export default function SoulModifyPage() {
   }, [id]);
 
   // ============ 수정(Submit) ============
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    const formData = new FormData();
+
+    formData.append("seasonName", formData.seasonName);
+    formData.append("name", formData.name);
+    formData.append("orderNum", formData.orderNum);
+    formData.append("startDate", formData.startDate);
+    formData.append("endDate", formData.endDate);
+    formData.append("rerunCount", formData.rerunCount);
+    formData.append("keywords", formData.keywords);
+    formData.append("creator", formData.creator);
+    formData.append("description", formData.description);
+
+    // 파일 업로드 처리
+    if (representativeImage) {
+      formData.append("representativeImage", representativeImage);
+    }
+    if (locationImage) {
+      formData.append("locationImage", locationImage);
+    }
+    if (gestureGifs.length > 0) {
+      gestureGifs.forEach((gif) => formData.append("gestureGifs", gif));
+    }
+    if (wearingShotImages.length > 0) {
+      wearingShotImages.forEach((img) => formData.append("wearingShotImages", img));
+    }
+
+    centerNodes.forEach((node) => {
+      formData.append("centerNodes[]", JSON.stringify(node));
+    });
+    leftSideNodes.forEach((node) => {
+      formData.append("leftSideNodes[]", JSON.stringify(node));
+    });
+    rightSideNodes.forEach((node) => {
+      formData.append("rightSideNodes[]", JSON.stringify(node));
+    });
+
     try {
-      const representativeImageUrl = representativeImage
-        ? await uploadFile(representativeImage)
-        : repImagePreview;
-      const locationImageUrl = locationImage
-        ? await uploadFile(locationImage)
-        : locImagePreview;
-      const gestureGifsUrls =
-        gestureGifs.length > 0
-          ? await uploadFiles(gestureGifs)
-          : gestureGifsPreview;
-      const wearingShotImagesUrls =
-        wearingShotImages.length > 0
-          ? await uploadFiles(wearingShotImages)
-          : wearingShotImagesPreview;
-
-      const uploadedCenterNodes = await Promise.all(
-        centerNodes.map(async (node) => {
-          const photoUrl = await uploadNodePhoto(node);
-          return {
-            nodeOrder: Number(node.nodeOrder),
-            photo: photoUrl || node.preview,
-            currencyPrice: Number(node.currencyPrice),
-          };
-        })
-      );
-      const uploadedLeftSideNodes = await Promise.all(
-        leftSideNodes.map(async (node) => {
-          const photoUrl = await uploadNodePhoto(node);
-          return {
-            nodeOrder: Number(node.nodeOrder),
-            photo: photoUrl || node.preview,
-            currencyPrice: Number(node.currencyPrice),
-          };
-        })
-      );
-      const uploadedRightSideNodes = await Promise.all(
-        rightSideNodes.map(async (node) => {
-          const photoUrl = await uploadNodePhoto(node);
-          return {
-            nodeOrder: Number(node.nodeOrder),
-            photo: photoUrl || node.preview,
-            currencyPrice: Number(node.currencyPrice),
-          };
-        })
-      );
-
-      const payload = {
-        seasonName: formData.seasonName,
-        representativeImage: representativeImageUrl,
-        name: formData.name,
-        orderNum: Number(formData.orderNum),
-        startDate: formData.startDate,
-        endDate: formData.endDate,
-        rerunCount: Number(formData.rerunCount),
-        locationImage: locationImageUrl,
-        gestureGifs: gestureGifsUrls,
-        wearingShotImages: wearingShotImagesUrls,
-        keywords: formData.keywords
-          ? formData.keywords.split(",").map((s) => s.trim())
-          : [],
-        creator: formData.creator,
-        description: formData.description,
-        centerNodes: uploadedCenterNodes,
-        leftSideNodes: uploadedLeftSideNodes,
-        rightSideNodes: uploadedRightSideNodes,
-      };
-
       const res = await fetch(`https://korea-sky-planner.com/api/v1/souls/${id}`, {
         method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(payload),
+        body: formData, // FormData를 그대로 사용
       });
 
       if (!res.ok) {
@@ -292,6 +254,7 @@ export default function SoulModifyPage() {
   };
 
   // ============ JSX 렌더링 ============
+
   return (
     <div className={styles.container}>
       <h1 className={styles.title}>영혼 노드 수정</h1>
