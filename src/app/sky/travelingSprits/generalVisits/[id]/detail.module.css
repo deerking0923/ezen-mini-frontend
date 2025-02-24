@@ -1,12 +1,11 @@
-
 .container {
   max-width: 960px;
   margin: 2rem auto;
-  background-color: var(--container-bg);
+  background-color: #ffffff; /* container-bg */
   padding: 2rem;
   border-radius: 12px;
-  box-shadow: var(--shadow);
-  color: var(--text-color);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* shadow */
+  color: #333; /* text-color */
   font-family: 'Inter', sans-serif;
 }
 
@@ -15,7 +14,7 @@
   font-weight: 700;
   text-align: center;
   margin-bottom: 1rem;
-  color: var(--primary-color);
+  color: #2c3e50; /* primary-color */
 }
 
 /* 상단 정보 행 (순서, 시즌 / 기간, 복각횟수) */
@@ -33,7 +32,6 @@
   padding: 1rem;
   font-size: 1.1rem;
   line-height: 1.7;
-  /* 호버, 애니메이션 효과 제거 */
   transition: none;
 }
 
@@ -59,7 +57,7 @@
   max-width: 80%;
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-  /* 고정 크기를 지정할 수도 있습니다. 예: width: 300px; */
+  /* 예: width: 300px; 고정 크기도 사용 가능 */
 }
 
 /* 섹션 제목 구분선 */
@@ -81,11 +79,11 @@
 }
 
 .container strong {
-  color: var(--primary-color);
+  color: #2c3e50; /* primary-color */
   font-weight: 600;
 }
 
-/* 노드 리스트 스타일 (변경 없음) */
+/* 노드 리스트 스타일 */
 .nodeList {
   margin: 2rem 0 1rem 0;
   list-style: none;
@@ -109,7 +107,7 @@
 .nodeItem p {
   margin: 0.3rem 0;
   font-size: 0.95rem;
-  color: var(--text-color);
+  color: #333; /* text-color */
 }
 
 .nodeImage {
@@ -130,19 +128,57 @@
   flex: 0 0 auto;
 }
 
-/* 작은 이미지 스타일 (제스처, 착용샷) */
 .smallImage {
-  max-width: 150px;
+  max-width: 300px; /* 이전 150px의 2배 */
+  height: 200px; /* 고정 높이 */
+  object-fit: cover; /* 이미지 비율을 유지하면서 중앙을 채움 */
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   transition: none;
 }
 
-/* (선택 사항) 스크롤바 스타일 - 웹킷 브라우저 */
+
+/* 스크롤바 스타일 (웹킷) */
 .horizontalList::-webkit-scrollbar {
   height: 6px;
 }
 .horizontalList::-webkit-scrollbar-thumb {
   background-color: #ccc;
   border-radius: 3px;
+}
+
+.buttonContainer {
+  text-align: center;
+  margin-top: 2rem;
+}
+
+.editButton {
+  display: inline-block;
+  padding: 0.75rem 1.5rem;
+  background-color: #0070f3;
+  color: #fff;
+  font-size: 1rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.editButton:hover {
+  background-color: #005bb5;
+}
+.deleteButton {
+  display: inline-block;
+  padding: 0.75rem 1.5rem;
+  background-color: #dc3545; /* 빨간색 계열 */
+  color: #fff;
+  font-size: 1rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.deleteButton:hover {
+  background-color: #c82333;
 }

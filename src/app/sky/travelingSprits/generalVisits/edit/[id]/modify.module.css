@@ -1,18 +1,18 @@
-
-  .container {
+.container {
     max-width: 600px;
     margin: 0 auto;
     padding: 2rem;
-    background-color: var(--container-bg);
+    background-color: #ffffff; /* container-bg */
     border-radius: 8px;
-    box-shadow: var(--shadow);
-    font-family: sans-serif;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* shadow */
+    font-family: 'Inter', sans-serif;
+    color: #333; /* 기본 텍스트 색상 */
   }
   
   .title {
     text-align: center;
     margin-bottom: 1.5rem;
-    color: var(--primary-color);
+    color: #2c3e50; /* primary-color */
     font-size: 2rem;
   }
   
@@ -31,11 +31,13 @@
   .form {
     display: flex;
     flex-direction: column;
+    color: #333; /* 폼 내부 기본 텍스트 색상 */
   }
   
   .label {
     margin-bottom: 1rem;
     font-size: 1rem;
+    color: #333;
   }
   
   .input {
@@ -44,18 +46,20 @@
     margin-top: 0.5rem;
     border: 1px solid #ccc;
     border-radius: 4px;
+    color: #000; /* 입력 글자색 */
+    background-color: #fff;
   }
   
   .button {
     padding: 0.75rem;
-    background-color: var(--secondary-color);
+    background-color: #0070f3; /* secondary-color */
     color: white;
     border: none;
     border-radius: 4px;
     cursor: pointer;
     font-size: 1rem;
     margin-top: 1rem;
-    transition: background-color var(--transition-duration);
+    transition: background-color 0.3s;
   }
   
   .button:hover {
@@ -64,14 +68,14 @@
   
   .hr {
     border: 0;
-    border-top: 1px solid var(--hr-color);
+    border-top: 1px solid #ddd; /* hr-color */
     margin: 1.5rem 0;
   }
   
   .nodeTitle {
     margin-top: 1rem;
     font-size: 1.25rem;
-    color: var(--primary-color);
+    color: #2c3e50; /* primary-color */
   }
   
   .nodeGroup {
@@ -79,6 +83,7 @@
     padding: 1rem;
     margin-bottom: 1rem;
     border-radius: 4px;
+    color: #333;
   }
   
   .smallButton {
@@ -89,7 +94,7 @@
     border-radius: 4px;
     cursor: pointer;
     margin-bottom: 1rem;
-    transition: background-color var(--transition-duration);
+    transition: background-color 0.3s;
   }
   
   .smallButton:hover {

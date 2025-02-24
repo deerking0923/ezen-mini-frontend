@@ -39,6 +39,30 @@ export default function SoulDetailPage() {
     router.push(`/sky/travelingSprits/generalVisits/edit/${id}`);
   };
 
+  const handleDelete = () => {
+    const confirmation = prompt('정말 삭제하시겠습니까? 삭제를 진행하려면 "1234"를 입력하세요.');
+    if (confirmation !== "1234") {
+      alert("입력이 올바르지 않아 삭제가 취소되었습니다.");
+      return;
+    }
+    // 삭제 요청
+    fetch(`https://korea-sky-planner.com/api/v1/souls/${id}`, {
+      method: "DELETE",
+    })
+      .then((res) => {
+        if (res.ok) {
+          alert("삭제가 완료되었습니다.");
+          router.push("/sky/travelingSprits/generalVisits/list");
+        } else {
+          alert("삭제에 실패하였습니다.");
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+        alert("삭제 도중 오류가 발생하였습니다.");
+      });
+  };
+
   return (
     <div className={styles.container}>
       <h1 className={styles.title}>{soul.name}</h1>
@@ -197,10 +221,13 @@ export default function SoulDetailPage() {
         </div>
       )}
 
-      {/* 수정하기 버튼 */}
+      {/* 수정하기 및 삭제하기 버튼 */}
       <div className={styles.buttonContainer}>
-        <button className={styles.button} onClick={handleEdit}>
+        <button className={styles.editButton} onClick={handleEdit}>
           수정하기
+        </button>
+        <button className={styles.deleteButton} onClick={handleDelete}>
+          삭제하기
         </button>
       </div>
     </div>

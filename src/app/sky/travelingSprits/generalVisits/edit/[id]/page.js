@@ -241,21 +241,27 @@ export default function SoulModifyPage() {
         })
       );
 
-      // 최종 payload 구성 (키워드는 쉼표 분리 문자열 -> 배열 변환)
       const payload = {
-        ...formData,
-        rerunCount: Number(formData.rerunCount),
+        seasonName: formData.seasonName,
         representativeImage: representativeImageUrl,
+        name: formData.name,
+        orderNum: Number(formData.orderNum),  // 숫자로 변환
+        startDate: formData.startDate,
+        endDate: formData.endDate,
+        rerunCount: Number(formData.rerunCount), // 이미 변환되어 있긴 하지만 확인
         locationImage: locationImageUrl,
         gestureGifs: gestureGifsUrls,
         wearingShotImages: wearingShotImagesUrls,
         keywords: formData.keywords
           ? formData.keywords.split(",").map((s) => s.trim())
           : [],
-        centerNodes: uploadedCenterNodes,
+        creator: formData.creator,
+        description: formData.description,
+        centerNodes: uploadedCenterNodes, // 각 노드의 nodeOrder, currencyPrice는 이미 Number() 처리됨
         leftSideNodes: uploadedLeftSideNodes,
         rightSideNodes: uploadedRightSideNodes,
       };
+      
 
       const res = await fetch(`https://korea-sky-planner.com/api/v1/souls/${id}`, {
         method: "PUT",

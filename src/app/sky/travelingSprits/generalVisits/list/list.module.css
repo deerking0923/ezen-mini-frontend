@@ -1,0 +1,258 @@
+/******************************************************
+ * 공지 패널(다크 테마) 스타일
+ ******************************************************/
+ .noticePanel {
+  border: 1px solid #555;
+  padding: 20px;
+  background-color: #2c2c2c;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  margin-bottom: 2rem;
+}
+
+.noticeTitle {
+  font-size: 1.6rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+  color: #ffd166; /* 강조 색상 */
+}
+
+.noticeDescription {
+  font-size: 0.95rem;
+  color: #f1f1f1;
+  line-height: 1.4;
+}
+
+.noticeExample {
+  font-style: italic;
+  color: #ccc;
+}
+
+.noticeSubDescription {
+  font-size: 0.9rem;
+  color: #ddd;
+  margin-top: 1rem;
+}
+
+.seasonChipsContainer {
+  margin-top: 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.seasonChip {
+  background-color: #444;
+  color: #f1f1f1;
+  border: none;
+  border-radius: 4px;
+  padding: 6px 10px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background-color 0.2s, transform 0.1s;
+}
+
+.seasonChip:hover {
+  background-color: #666;
+}
+
+.seasonChip:active {
+  transform: scale(0.95);
+}
+
+/******************************************************
+ * 기본 컨테이너 스타일
+ ******************************************************/
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem;
+  font-family: sans-serif;
+  color: #333;
+}
+
+.title {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+/******************************************************
+ * 검색 영역
+ ******************************************************/
+.searchContainer {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.searchForm {
+  display: inline-flex;
+  gap: 0.5rem;
+}
+
+.searchInput {
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.searchButton {
+  padding: 0.5rem 1rem;
+  background-color: #0070f3;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.searchButton:hover {
+  background-color: #005bb5;
+}
+
+/******************************************************
+ * 상단 버튼 (영혼 생성하기)
+ ******************************************************/
+.buttonContainer {
+  text-align: right;
+  margin-bottom: 1.5rem;
+}
+
+.createButton {
+  padding: 0.5rem 1rem;
+  background-color: #0070f3;
+  border: none;
+  border-radius: 4px;
+  color: white;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.createButton:hover {
+  background-color: #005bb5;
+}
+
+/******************************************************
+ * 목록 스타일
+ ******************************************************/
+.list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* 카드 형태로 각 영혼을 표시 */
+.soulCard {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  border: 1px solid #ddd;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 6px;
+  background-color: #fff;
+}
+
+/* 대표이미지 정사각형 영역 */
+.imageWrapperSquare {
+  width: 120px;
+  height: 120px;
+  overflow: hidden;
+  border-radius: 6px;
+  background-color: #eee;
+  flex-shrink: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.cardImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.noImage {
+  color: #aaa;
+  font-size: 0.9rem;
+}
+
+/* 카드 내 텍스트 정보 */
+.cardContent {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.soulName {
+  font-size: 1.2rem;
+  margin: 0;
+  color: #333;
+}
+
+.seasonName {
+  font-size: 1rem;
+  margin: 0;
+  color: #555;
+}
+
+.rerunCount {
+  font-size: 1rem;
+  margin: 0;
+}
+
+.redCount {
+  color: red;
+  font-weight: bold;
+}
+
+.orderNum {
+  font-size: 0.95rem;
+  margin: 0;
+  color: #666;
+}
+
+.period {
+  font-size: 0.95rem;
+  margin: 0;
+  color: #777;
+}
+
+/******************************************************
+ * 로딩 및 에러
+ ******************************************************/
+.loading,
+.error {
+  text-align: center;
+  font-size: 1.2rem;
+}
+
+/******************************************************
+ * 페이지네이션 스타일
+ ******************************************************/
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.pagination button {
+  padding: 0.5rem 1rem;
+  background-color: #0070f3;
+  border: none;
+  border-radius: 4px;
+  color: white;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.pagination button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.pagination span {
+  font-size: 1rem;
+}
