@@ -112,15 +112,17 @@ export default function SoulCreatePage() {
     return json.url; // 업로드된 파일 URL 반환
   }
 
-  // 다중 파일 업로드 함수
-  async function uploadFiles(files) {
-    const urls = [];
-    for (let file of files) {
-      const url = await uploadFile(file);
-      urls.push(url);
-    }
-    return urls;
+// 다중 파일 업로드 함수
+async function uploadFiles(files) {
+  const urls = [];
+  for (const file of files) {
+    const url = await uploadFile(file);
+    urls.push(url);
   }
+  return urls;
+}
+
+
 
   // 각 노드의 사진 업로드 처리
   async function uploadNodePhoto(node) {

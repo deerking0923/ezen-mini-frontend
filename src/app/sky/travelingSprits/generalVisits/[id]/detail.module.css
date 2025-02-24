@@ -1,103 +1,159 @@
-/* detail.module.css */
-
-/* 전체 컨테이너 */
-.container {
-  max-width: 900px;
-  margin: 2rem auto;
-  background-color: #fff;
-  padding: 2rem;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-  color: #333; /* 컨테이너 내 기본 텍스트 색상 */
+:root {
+  /* 메인 색상 및 폰트, 쉐도우 */
+  --primary-color: #2c3e50;
+  --secondary-color: #0070f3;
+  --background-color: #f5f5f5;
+  --container-bg: #ffffff;
+  --text-color: #333;
+  --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  --transition-duration: 0.3s;
+  --highlight-color: #ffd166;
 }
 
-/* 제목 스타일 */
+.container {
+  max-width: 960px;
+  margin: 2rem auto;
+  background-color: var(--container-bg);
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+  color: var(--text-color);
+  font-family: 'Inter', sans-serif;
+}
+
 .title {
-  font-size: 2rem;
+  font-size: 2.5rem;
   font-weight: 700;
   text-align: center;
+  margin-bottom: 1rem;
+  color: var(--primary-color);
+}
+
+/* 상단 정보 행 (순서, 시즌 / 기간, 복각횟수) */
+.topInfoRow {
+  display: flex;
+  gap: 1rem;
   margin-bottom: 1.5rem;
-  color: #2c3e50;
 }
 
-/* 컨테이너 내 p 태그 스타일 */
-.container p {
-  font-size: 1rem;
-  line-height: 1.6;
-  margin: 0.75rem 0;
-  color: #333; /* 명시적으로 텍스트 색상 설정 */
+.detailItem {
+  flex: 1;
+  background-color: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 1rem;
+  font-size: 1.1rem;
+  line-height: 1.7;
+  /* 호버, 애니메이션 효과 제거 */
+  transition: none;
 }
 
-/* 섹션 구분 */
-.section {
-  margin-top: 2rem;
+/* 제작자 패널 - 오른쪽 정렬 및 넓게 */
+.creatorPanel {
+  background-color: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+  font-size: 1.1rem;
+  line-height: 1.7;
+  text-align: right;
 }
 
-/* 이미지 래퍼 */
+/* 이미지 스타일 - 크기를 줄임 */
 .imageWrapper {
   text-align: center;
-  margin: 1.5rem 0;
+  margin: 2rem 0;
 }
 
-/* 이미지 스타일 */
 .image {
-  max-width: 100%;
-  border-radius: 6px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease;
+  max-width: 80%;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  /* 고정 크기를 지정할 수도 있습니다. 예: width: 300px; */
 }
 
-
-
-/* 리스트 스타일 (GIF, 착용샷, 노드 등) */
-.gifList,
-.imageList,
-.nodeList {
-  list-style: none;
-  padding: 0;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
-  margin: 1rem 0;
+/* 섹션 제목 구분선 */
+.section {
+  margin-top: 2rem;
+  padding-top: 1rem;
+  border-top: 1px solid #e0e0e0;
 }
 
-/* 각 리스트 항목 */
-.gifList li,
-.imageList li,
-.nodeList li {
-  flex: 1 1 200px;
-  text-align: center;
-}
-
-/* GIF 및 노드 이미지 스타일 */
-.gifImage,
-.nodeImage {
-  max-width: 100%;
-  border-radius: 6px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease;
-}
-
-
-
-/* 노드 항목 내 텍스트 스타일 */
-.nodeList li p {
-  margin: 0.25rem 0;
-  font-size: 0.9rem;
-  color: #333;
-}
-
-/* 로딩 및 에러 메시지 */
-.loading {
-  text-align: center;
-  font-size: 1.2rem;
-  padding: 2rem;
-  color: #333;
-}
-
+/* 로딩, 에러 텍스트 */
+.loading,
 .error {
   text-align: center;
   font-size: 1.2rem;
   padding: 2rem;
+}
+.error {
   color: red;
+}
+
+.container strong {
+  color: var(--primary-color);
+  font-weight: 600;
+}
+
+/* 노드 리스트 스타일 (변경 없음) */
+.nodeList {
+  margin: 2rem 0 1rem 0;
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 2rem;
+  padding: 0;
+}
+
+.nodeItem {
+  background-color: #fafafa;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  padding: 1rem;
+  border-radius: 8px;
+  width: 200px;
+  text-align: center;
+  transition: none;
+}
+
+.nodeItem p {
+  margin: 0.3rem 0;
+  font-size: 0.95rem;
+  color: var(--text-color);
+}
+
+.nodeImage {
+  max-width: 100%;
+  border-radius: 4px;
+  margin-top: 0.5rem;
+  transition: none;
+}
+
+/* 가로 스크롤 리스트: 제스처 GIFs, 착용샷 이미지 */
+.horizontalList {
+  display: flex;
+  gap: 1rem;
+  overflow-x: auto;
+  padding-bottom: 1rem;
+}
+.horizontalList li {
+  flex: 0 0 auto;
+}
+
+/* 작은 이미지 스타일 (제스처, 착용샷) */
+.smallImage {
+  max-width: 150px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transition: none;
+}
+
+/* (선택 사항) 스크롤바 스타일 - 웹킷 브라우저 */
+.horizontalList::-webkit-scrollbar {
+  height: 6px;
+}
+.horizontalList::-webkit-scrollbar-thumb {
+  background-color: #ccc;
+  border-radius: 3px;
 }
