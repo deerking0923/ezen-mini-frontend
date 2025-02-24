@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import styles from "./modify.module.css";
+import Link from "next/link";
 
 export default function SoulModifyPage() {
   const { id } = useParams();
@@ -34,9 +35,9 @@ export default function SoulModifyPage() {
   const [wearingShotImagesPreview, setWearingShotImagesPreview] = useState([]);
 
   // 노드 관련 상태
-  // 각 노드에 preview 필드를 추가하여 기존 이미지 URL을 저장
   const [centerNodes, setCenterNodes] = useState([]);
   const [leftSideNodes, setLeftSideNodes] = useState([]);
+  // 수정: GET 응답에서 오른쪽 노드는 이제 rightSideNodes로 내려옴
   const [rightSideNodes, setRightSideNodes] = useState([]);
 
   const [error, setError] = useState("");
@@ -60,14 +61,15 @@ export default function SoulModifyPage() {
     setter(files);
   };
 
-  // 노드 추가 및 업데이트 핸들러들
+  // ============ 노드 추가 / 업데이트 핸들러들 ============
+
+  // 중앙 노드
   const addCenterNode = () => {
     setCenterNodes((prev) => [
       ...prev,
       { nodeOrder: "", photo: null, preview: "", currencyPrice: "" },
     ]);
   };
-
   const updateCenterNode = (index, key, value) => {
     setCenterNodes((prev) => {
       const updated = [...prev];
@@ -76,13 +78,13 @@ export default function SoulModifyPage() {
     });
   };
 
+  // 왼쪽 노드
   const addLeftSideNode = () => {
     setLeftSideNodes((prev) => [
       ...prev,
       { nodeOrder: "", photo: null, preview: "", currencyPrice: "" },
     ]);
   };
-
   const updateLeftSideNode = (index, key, value) => {
     setLeftSideNodes((prev) => {
       const updated = [...prev];
@@ -91,13 +93,13 @@ export default function SoulModifyPage() {
     });
   };
 
+  // 오른쪽 노드 (PUT 시에는 rightSideNodes로 전송)
   const addRightSideNode = () => {
     setRightSideNodes((prev) => [
       ...prev,
       { nodeOrder: "", photo: null, preview: "", currencyPrice: "" },
     ]);
   };
-
   const updateRightSideNode = (index, key, value) => {
     setRightSideNodes((prev) => {
       const updated = [...prev];
@@ -106,8 +108,10 @@ export default function SoulModifyPage() {
     });
   };
 
-  // 파일 업로드 함수 (단일 파일) - 프록시 엔드포인트 사용
+  // ============ 파일 업로드 로직 ============
+
   async function uploadFile(file) {
+    if (!file) return "";
     const fd = new FormData();
     fd.append("file", file);
     const res = await fetch("/api/proxy", {
@@ -118,7 +122,6 @@ export default function SoulModifyPage() {
     return json.url;
   }
 
-  // 다중 파일 업로드 함수
   async function uploadFiles(files) {
     const urls = [];
     for (const file of files) {
@@ -128,7 +131,6 @@ export default function SoulModifyPage() {
     return urls;
   }
 
-  // 각 노드의 사진 업로드 처리
   async function uploadNodePhoto(node) {
     if (node.photo) {
       return await uploadFile(node.photo);
@@ -136,15 +138,16 @@ export default function SoulModifyPage() {
     return "";
   }
 
-  // 수정할 영혼 정보 불러오기
+  // ============ 기존 데이터 불러오기 (GET) ============
   useEffect(() => {
     async function fetchSoul() {
       try {
         const res = await fetch(`https://korea-sky-planner.com/api/v1/souls/${id}`);
         if (!res.ok) throw new Error("영혼 정보를 불러오는데 실패하였습니다.");
+
         const data = await res.json();
         const soul = data.data || data;
-        // 텍스트 필드 업데이트 (키워드는 배열 -> 쉼표 구분 문자열)
+
         setFormData({
           seasonName: soul.seasonName || "",
           name: soul.name || "",
@@ -156,20 +159,22 @@ export default function SoulModifyPage() {
           creator: soul.creator || "",
           description: soul.description || "",
         });
-        // 기존 이미지 미리보기 설정
+
         setRepImagePreview(soul.representativeImage || "");
         setLocImagePreview(soul.locationImage || "");
         setGestureGifsPreview(soul.gestureGifs || []);
         setWearingShotImagesPreview(soul.wearingShotImages || []);
-        // 노드 정보 설정 (기존 이미지 URL은 preview 필드에 저장)
+
+        // GET 응답에서는 이제 오른쪽 노드의 필드명도 rightSideNodes로 내려온다고 가정
         setCenterNodes(
           soul.centerNodes?.map((node) => ({
             nodeOrder: node.nodeOrder,
-            photo: null, // 새 파일 선택 시 업로드
+            photo: null,
             preview: node.photo || "",
             currencyPrice: node.currencyPrice,
           })) || []
         );
+
         setLeftSideNodes(
           soul.leftSideNodes?.map((node) => ({
             nodeOrder: node.nodeOrder,
@@ -178,6 +183,7 @@ export default function SoulModifyPage() {
             currencyPrice: node.currencyPrice,
           })) || []
         );
+
         setRightSideNodes(
           soul.rightSideNodes?.map((node) => ({
             nodeOrder: node.nodeOrder,
@@ -193,29 +199,32 @@ export default function SoulModifyPage() {
     fetchSoul();
   }, [id]);
 
+  // ============ 수정(Submit) ============
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      // 파일 업로드 (영혼 관련)
       const representativeImageUrl = representativeImage
         ? await uploadFile(representativeImage)
-        : repImagePreview; // 새 파일 없으면 기존 URL 유지
+        : repImagePreview;
       const locationImageUrl = locationImage
         ? await uploadFile(locationImage)
         : locImagePreview;
       const gestureGifsUrls =
-        gestureGifs.length > 0 ? await uploadFiles(gestureGifs) : gestureGifsPreview;
+        gestureGifs.length > 0
+          ? await uploadFiles(gestureGifs)
+          : gestureGifsPreview;
       const wearingShotImagesUrls =
-        wearingShotImages.length > 0 ? await uploadFiles(wearingShotImages) : wearingShotImagesPreview;
+        wearingShotImages.length > 0
+          ? await uploadFiles(wearingShotImages)
+          : wearingShotImagesPreview;
 
-      // 노드 관련 업로드
       const uploadedCenterNodes = await Promise.all(
         centerNodes.map(async (node) => {
           const photoUrl = await uploadNodePhoto(node);
           return {
             nodeOrder: Number(node.nodeOrder),
-            photo: photoUrl || node.preview, // 새 파일 없으면 기존 미리보기 URL 사용
+            photo: photoUrl || node.preview,
             currencyPrice: Number(node.currencyPrice),
           };
         })
@@ -245,10 +254,10 @@ export default function SoulModifyPage() {
         seasonName: formData.seasonName,
         representativeImage: representativeImageUrl,
         name: formData.name,
-        orderNum: Number(formData.orderNum),  // 숫자로 변환
+        orderNum: Number(formData.orderNum),
         startDate: formData.startDate,
         endDate: formData.endDate,
-        rerunCount: Number(formData.rerunCount), // 이미 변환되어 있긴 하지만 확인
+        rerunCount: Number(formData.rerunCount),
         locationImage: locationImageUrl,
         gestureGifs: gestureGifsUrls,
         wearingShotImages: wearingShotImagesUrls,
@@ -257,11 +266,10 @@ export default function SoulModifyPage() {
           : [],
         creator: formData.creator,
         description: formData.description,
-        centerNodes: uploadedCenterNodes, // 각 노드의 nodeOrder, currencyPrice는 이미 Number() 처리됨
+        centerNodes: uploadedCenterNodes,
         leftSideNodes: uploadedLeftSideNodes,
         rightSideNodes: uploadedRightSideNodes,
       };
-      
 
       const res = await fetch(`https://korea-sky-planner.com/api/v1/souls/${id}`, {
         method: "PUT",
@@ -283,13 +291,15 @@ export default function SoulModifyPage() {
     }
   };
 
+  // ============ JSX 렌더링 ============
   return (
     <div className={styles.container}>
       <h1 className={styles.title}>영혼 노드 수정</h1>
       {error && <p className={styles.error}>{error}</p>}
       {success && <p className={styles.success}>{success}</p>}
+
       <form onSubmit={handleSubmit} className={styles.form}>
-        {/* 영혼 정보 입력 */}
+        {/* [1] 시즌 이름 */}
         <label className={styles.label}>
           시즌 이름:
           <input
@@ -301,6 +311,8 @@ export default function SoulModifyPage() {
             required
           />
         </label>
+
+        {/* [2] 순서 */}
         <label className={styles.label}>
           순서:
           <input
@@ -312,7 +324,8 @@ export default function SoulModifyPage() {
             required
           />
         </label>
-        {/* 대표 이미지 미리보기 및 파일 선택 */}
+
+        {/* [3] 대표 이미지 */}
         <label className={styles.label}>
           대표 이미지:
           {repImagePreview && !representativeImage && (
@@ -332,6 +345,8 @@ export default function SoulModifyPage() {
             className={styles.input}
           />
         </label>
+
+        {/* [4] 영혼 이름 */}
         <label className={styles.label}>
           이름:
           <input
@@ -343,6 +358,8 @@ export default function SoulModifyPage() {
             required
           />
         </label>
+
+        {/* [5] 날짜 */}
         <label className={styles.label}>
           시작 날짜:
           <input
@@ -365,6 +382,8 @@ export default function SoulModifyPage() {
             required
           />
         </label>
+
+        {/* [6] 복각 횟수 */}
         <label className={styles.label}>
           복각 횟수:
           <input
@@ -375,7 +394,8 @@ export default function SoulModifyPage() {
             className={styles.input}
           />
         </label>
-        {/* 위치 이미지 미리보기 및 파일 선택 */}
+
+        {/* [7] 위치 이미지 */}
         <label className={styles.label}>
           위치 이미지:
           {locImagePreview && !locationImage && (
@@ -395,7 +415,8 @@ export default function SoulModifyPage() {
             className={styles.input}
           />
         </label>
-        {/* 제스처 GIF 미리보기 및 파일 선택 */}
+
+        {/* [8] 제스처 GIF */}
         <label className={styles.label}>
           제스처 GIF (여러 파일 선택 가능):
           {gestureGifsPreview.length > 0 && gestureGifs.length === 0 && (
@@ -419,7 +440,8 @@ export default function SoulModifyPage() {
             className={styles.input}
           />
         </label>
-        {/* 착용샷 이미지 미리보기 및 파일 선택 */}
+
+        {/* [9] 착용샷 이미지 */}
         <label className={styles.label}>
           착용샷 이미지 (여러 파일 선택 가능):
           {wearingShotImagesPreview.length > 0 && wearingShotImages.length === 0 && (
@@ -443,6 +465,8 @@ export default function SoulModifyPage() {
             className={styles.input}
           />
         </label>
+
+        {/* [10] 키워드 */}
         <label className={styles.label}>
           키워드 (쉼표로 구분):
           <input
@@ -507,7 +531,11 @@ export default function SoulModifyPage() {
             </label>
           </div>
         ))}
-        <button type="button" onClick={addCenterNode} className={styles.smallButton}>
+        <button
+          type="button"
+          onClick={addCenterNode}
+          className={styles.smallButton}
+        >
           중앙 노드 추가
         </button>
 
@@ -564,7 +592,11 @@ export default function SoulModifyPage() {
             </label>
           </div>
         ))}
-        <button type="button" onClick={addLeftSideNode} className={styles.smallButton}>
+        <button
+          type="button"
+          onClick={addLeftSideNode}
+          className={styles.smallButton}
+        >
           왼쪽 사이드 노드 추가
         </button>
 
@@ -621,12 +653,17 @@ export default function SoulModifyPage() {
             </label>
           </div>
         ))}
-        <button type="button" onClick={addRightSideNode} className={styles.smallButton}>
+        <button
+          type="button"
+          onClick={addRightSideNode}
+          className={styles.smallButton}
+        >
           오른쪽 사이드 노드 추가
         </button>
 
         <hr className={styles.hr} />
 
+        {/* 제작자 / 설명 */}
         <label className={styles.label}>
           제작자 명:
           <input
@@ -647,9 +684,12 @@ export default function SoulModifyPage() {
           />
         </label>
 
-        <button type="submit" className={styles.button}>
-          수정하기
-        </button>
+        {/* 제출 버튼 */}
+        <Link href={`/sky/travelingSprits/generalVisits/${id}`}>
+  <button type="button" className={styles.button}>
+    수정하기
+  </button>
+</Link>
       </form>
     </div>
   );

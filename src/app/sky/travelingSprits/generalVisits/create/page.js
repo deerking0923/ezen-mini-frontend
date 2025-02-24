@@ -9,7 +9,7 @@ export default function SoulCreatePage() {
   const [formData, setFormData] = useState({
     seasonName: "",
     name: "",
-    orderNum: 0, // 추가: 순서 필드
+    orderNum: 0, // 순서 필드
     startDate: "",
     endDate: "",
     rerunCount: 0,
@@ -21,8 +21,8 @@ export default function SoulCreatePage() {
   // 파일 관련 상태
   const [representativeImage, setRepresentativeImage] = useState(null);
   const [locationImage, setLocationImage] = useState(null);
-  const [gestureGifs, setGestureGifs] = useState([]); // 배열 (여러 파일)
-  const [wearingShotImages, setWearingShotImages] = useState([]); // 배열
+  const [gestureGifs, setGestureGifs] = useState([]); // 여러 파일
+  const [wearingShotImages, setWearingShotImages] = useState([]); // 여러 파일
 
   // 노드 관련 상태
   const [centerNodes, setCenterNodes] = useState([]);
@@ -55,13 +55,14 @@ export default function SoulCreatePage() {
   };
 
   // 노드 추가 및 업데이트 핸들러들
+
+  // 중앙 노드
   const addCenterNode = () => {
     setCenterNodes((prev) => [
       ...prev,
       { nodeOrder: "", photo: null, currencyPrice: "" },
     ]);
   };
-
   const updateCenterNode = (index, key, value) => {
     setCenterNodes((prev) => {
       const updated = [...prev];
@@ -70,13 +71,13 @@ export default function SoulCreatePage() {
     });
   };
 
+  // 왼쪽 노드
   const addLeftSideNode = () => {
     setLeftSideNodes((prev) => [
       ...prev,
       { nodeOrder: "", photo: null, currencyPrice: "" },
     ]);
   };
-
   const updateLeftSideNode = (index, key, value) => {
     setLeftSideNodes((prev) => {
       const updated = [...prev];
@@ -85,13 +86,13 @@ export default function SoulCreatePage() {
     });
   };
 
+  // 오른쪽 노드 (항상 rightSideNodes로 사용)
   const addRightSideNode = () => {
     setRightSideNodes((prev) => [
       ...prev,
       { nodeOrder: "", photo: null, currencyPrice: "" },
     ]);
   };
-
   const updateRightSideNode = (index, key, value) => {
     setRightSideNodes((prev) => {
       const updated = [...prev];
@@ -112,17 +113,15 @@ export default function SoulCreatePage() {
     return json.url; // 업로드된 파일 URL 반환
   }
 
-// 다중 파일 업로드 함수
-async function uploadFiles(files) {
-  const urls = [];
-  for (const file of files) {
-    const url = await uploadFile(file);
-    urls.push(url);
+  // 다중 파일 업로드 함수
+  async function uploadFiles(files) {
+    const urls = [];
+    for (const file of files) {
+      const url = await uploadFile(file);
+      urls.push(url);
+    }
+    return urls;
   }
-  return urls;
-}
-
-
 
   // 각 노드의 사진 업로드 처리
   async function uploadNodePhoto(node) {
@@ -146,9 +145,7 @@ async function uploadFiles(files) {
       const gestureGifsUrls =
         gestureGifs.length > 0 ? await uploadFiles(gestureGifs) : [];
       const wearingShotImagesUrls =
-        wearingShotImages.length > 0
-          ? await uploadFiles(wearingShotImages)
-          : [];
+        wearingShotImages.length > 0 ? await uploadFiles(wearingShotImages) : [];
 
       // 노드 관련 업로드
       const uploadedCenterNodes = await Promise.all(
@@ -182,7 +179,7 @@ async function uploadFiles(files) {
         })
       );
 
-      // 최종 payload 구성
+      // 최종 payload 구성 (POST 시 rightSideNodes 필드 사용)
       const payload = {
         ...formData,
         rerunCount: Number(formData.rerunCount),
@@ -484,6 +481,7 @@ async function uploadFiles(files) {
         >
           오른쪽 사이드 노드 추가
         </button>
+
         <label className="label">
           제작자 명:
           <input
