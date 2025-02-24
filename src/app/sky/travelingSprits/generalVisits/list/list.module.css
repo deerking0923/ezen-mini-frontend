@@ -386,6 +386,45 @@
   background-color: #3a3a3a;
 }
 
+/* 시즌 이름을 감싸는 스타일 */
+.seasonName {
+  display: inline-block;
+  padding: 5px 15px;
+  border-radius: 30px;  /* 동그란 모양 */
+  font-size: 0.9rem;
+  font-weight: bold;
+  color: #fff; /* 텍스트 색상 */
+  margin: 0 5px;
+}
+.seasonChipsContainer {
+  margin-top: 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.seasonChip {
+  background-color: transparent;  /* 배경색은 스타일로 처리하므로 투명 */
+  color: #f1f1f1;
+  border: none;
+  border-radius: 20px;  /* 동그란 모양 */
+  padding: 6px 12px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background-color 0.3s ease, transform 0.1s ease;
+  font-weight: bold;
+}
+
+.seasonChip:hover {
+  background-color: #666;
+}
+
+.seasonChip:active {
+  transform: scale(0.95);
+}
+
+
 /* 모바일 화면에서 텍스트 및 버튼 크기 조정 */
 @media (max-width: 768px) {
   /* 공지판 제목 크기 조정 */

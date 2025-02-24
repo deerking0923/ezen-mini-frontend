@@ -16,32 +16,32 @@ export default function SoulListPage() {
 
   // 시즌 이름 목록 (클릭 시 자동 검색)
   const seasonList = [
-    "감사",
-    "빛추",
-    "친밀",
-    "리듬",
-    "마법",
-    "낙원",
-    "예언",
-    "꿈",
-    "협력",
-    "어린왕자",
-    "비행",
-    "심해",
-    "공연",
-    "파편",
-    "오로라",
-    "기억",
-    "성장",
-    "순간",
-    "재생",
-    "사슴",
-    "둥지",
-    "듀엣",
-    "무민",
-    "광채",
+    { name: "감사", color: "#FFD700" },  // 노란색
+    { name: "빛추", color: "#FF6347" },  // 토마토
+    { name: "친밀", color: "#4CAF50" },  // 초록색
+    { name: "리듬", color: "#3F51B5" },  // 파란색
+    { name: "마법", color: "#9C27B0" },  // 보라색
+    { name: "낙원", color: "#FF5722" },  // 오렌지색
+    { name: "예언", color: "#9E9E9E" },  // 회색
+    { name: "꿈", color: "#00BCD4" },    // 청록색
+    { name: "협력", color: "#8BC34A" },  // 연두색
+    { name: "어린왕자", color: "#FFC107" }, // 노란색
+    { name: "비행", color: "#03A9F4" },   // 파란색
+    { name: "심해", color: "#2196F3" },   // 진한 파란색
+    { name: "공연", color: "#FF4081" },   // 핑크색
+    { name: "파편", color: "#607D8B" },   // 회색
+    { name: "오로라", color: "#673AB7" }, // 보라색
+    { name: "기억", color: "#009688" },   // 청록색
+    { name: "성장", color: "#8BC34A" },   // 초록색
+    { name: "순간", color: "#FF9800" },   // 오렌지색
+    { name: "재생", color: "#3F51B5" },   // 파란색
+    { name: "사슴", color: "#A1887F" },   // 갈색
+    { name: "둥지", color: "#795548" },   // 갈색
+    { name: "듀엣", color: "#FFEB3B" },   // 노란색
+    { name: "무민", color: "#CDDC39" },   // 연두색
+    { name: "광채", color: "#FF1493" },   // 딥핑크
   ];
-
+  
   const fetchSouls = async (pageNumber, query) => {
     setLoading(true);
     let url = "";
@@ -140,16 +140,18 @@ export default function SoulListPage() {
           아래 시즌 이름을 클릭하면 자동 검색됩니다:
         </p>
         <div className={styles.seasonChipsContainer}>
-          {seasonList.map((season) => (
-            <button
-              key={season}
-              className={styles.seasonChip}
-              onClick={() => handleSeasonClick(season)}
-            >
-              {season}
-            </button>
-          ))}
-        </div>
+  {seasonList.map((season) => (
+    <button
+      key={season.name}  // 고유한 key 값은 name 사용
+      className={styles.seasonChip}
+      style={{ backgroundColor: season.color }}  // 동적으로 배경색을 적용
+      onClick={() => handleSeasonClick(season.name)}
+    >
+      {season.name}
+    </button>
+  ))}
+</div>
+
       </div>
 
       {/* 탭 버튼 */}
@@ -223,7 +225,15 @@ export default function SoulListPage() {
                 </div>
                 <div className={styles.cardContent}>
                   <p className={styles.firstLine}>
-                    <span className={styles.seasonName}>{soul.seasonName}</span>{" "}
+                  <span
+  className={styles.seasonName}
+  style={{
+    backgroundColor: seasonList.find(season => season.name === soul.seasonName)?.color || "#444", // 색상 적용
+  }}
+>
+  {soul.seasonName}
+</span>
+{" "}
                     <span className={styles.soulName}>{soul.name}</span>{" "}
                     <span className={styles.orderNum}>
                       순서: {soul.orderNum}
