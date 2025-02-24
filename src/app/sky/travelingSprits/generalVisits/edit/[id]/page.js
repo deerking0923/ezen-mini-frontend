@@ -138,7 +138,9 @@ export default function SoulModifyPage() {
   useEffect(() => {
     async function fetchSoul() {
       try {
-        const res = await fetch(`https://korea-sky-planner.com/api/v1/souls/${id}`);
+        const res = await fetch(
+          `https://korea-sky-planner.com/api/v1/souls/${id}`
+        );
         if (!res.ok) throw new Error("영혼 정보를 불러오는데 실패하였습니다.");
 
         const data = await res.json();
@@ -199,61 +201,89 @@ export default function SoulModifyPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const formData = new FormData();
-
-    formData.append("seasonName", formData.seasonName);
-    formData.append("name", formData.name);
-    formData.append("orderNum", formData.orderNum);
-    formData.append("startDate", formData.startDate);
-    formData.append("endDate", formData.endDate);
-    formData.append("rerunCount", formData.rerunCount);
-    formData.append("keywords", formData.keywords);
-    formData.append("creator", formData.creator);
-    formData.append("description", formData.description);
-
-    // 파일 업로드 처리
-    if (representativeImage) {
-      formData.append("representativeImage", representativeImage);
-    }
-    if (locationImage) {
-      formData.append("locationImage", locationImage);
-    }
-    if (gestureGifs.length > 0) {
-      gestureGifs.forEach((gif) => formData.append("gestureGifs", gif));
-    }
-    if (wearingShotImages.length > 0) {
-      wearingShotImages.forEach((img) => formData.append("wearingShotImages", img));
-    }
-
-    centerNodes.forEach((node) => {
-      formData.append("centerNodes[]", JSON.stringify(node));
-    });
-    leftSideNodes.forEach((node) => {
-      formData.append("leftSideNodes[]", JSON.stringify(node));
-    });
-    rightSideNodes.forEach((node) => {
-      formData.append("rightSideNodes[]", JSON.stringify(node));
-    });
-
     try {
-      const res = await fetch(`https://korea-sky-planner.com/api/v1/souls/${id}`, {
-        method: "PUT",
-        body: formData, // FormData를 그대로 사용
-      });
+      // 파일 업로드
+      const representativeImageUrl = representativeImage
+        ? await uploadFile(representativeImage)
+        : repImagePreview;
+      const locationImageUrl = locationImage
+        ? await uploadFile(locationImage)
+        : locImagePreview;
+      const gestureGifsUrls =
+        gestureGifs.length > 0
+          ? await uploadFiles(gestureGifs)
+          : gestureGifsPreview;
+      const wearingShotImagesUrls =
+        wearingShotImages.length > 0
+          ? await uploadFiles(wearingShotImages)
+          : wearingShotImagesPreview;
+
+      // 노드 처리
+      const uploadedCenterNodes = await Promise.all(
+        centerNodes.map(async (node) => {
+          const photoUrl = await uploadNodePhoto(node);
+          return {
+            nodeOrder: Number(node.nodeOrder),
+            photo: photoUrl || node.preview,
+            currencyPrice: Number(node.currencyPrice),
+          };
+        })
+      );
+      const uploadedLeftSideNodes = await Promise.all(
+        leftSideNodes.map(async (node) => {
+          const photoUrl = await uploadNodePhoto(node);
+          return {
+            nodeOrder: Number(node.nodeOrder),
+            photo: photoUrl || node.preview,
+            currencyPrice: Number(node.currencyPrice),
+          };
+        })
+      );
+      const uploadedRightSideNodes = await Promise.all(
+        rightSideNodes.map(async (node) => {
+          const photoUrl = await uploadNodePhoto(node);
+          return {
+            nodeOrder: Number(node.nodeOrder),
+            photo: photoUrl || node.preview,
+            currencyPrice: Number(node.currencyPrice),
+          };
+        })
+      );
+
+      // 요청 페이로드 구성
+      const payload = {
+        ...formData,
+        representativeImage: representativeImageUrl,
+        locationImage: locationImageUrl,
+        gestureGifs: gestureGifsUrls,
+        wearingShotImages: wearingShotImagesUrls,
+        centerNodes: uploadedCenterNodes,
+        leftSideNodes: uploadedLeftSideNodes,
+        rightSideNodes: uploadedRightSideNodes,
+      };
+
+      const res = await fetch(
+        `https://korea-sky-planner.com/api/v1/souls/${id}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(payload),
+        }
+      );
 
       if (!res.ok) {
         throw new Error("영혼 수정에 실패하였습니다.");
       }
 
-      await res.json();
+      const result = await res.json();
       setSuccess("영혼이 성공적으로 수정되었습니다!");
       router.push("/sky/travelingSprits/generalVisits/list");
     } catch (err) {
       setError(err.message);
     }
   };
-
-  // ============ JSX 렌더링 ============
 
   return (
     <div className={styles.container}>
@@ -407,19 +437,20 @@ export default function SoulModifyPage() {
         {/* [9] 착용샷 이미지 */}
         <label className={styles.label}>
           착용샷 이미지 (여러 파일 선택 가능):
-          {wearingShotImagesPreview.length > 0 && wearingShotImages.length === 0 && (
-            <div className={styles.previewList}>
-              <p>현재 착용샷:</p>
-              {wearingShotImagesPreview.map((img, idx) => (
-                <img
-                  key={idx}
-                  src={img}
-                  alt={`현재 착용샷 ${idx + 1}`}
-                  className={styles.previewSmallImage}
-                />
-              ))}
-            </div>
-          )}
+          {wearingShotImagesPreview.length > 0 &&
+            wearingShotImages.length === 0 && (
+              <div className={styles.previewList}>
+                <p>현재 착용샷:</p>
+                {wearingShotImagesPreview.map((img, idx) => (
+                  <img
+                    key={idx}
+                    src={img}
+                    alt={`현재 착용샷 ${idx + 1}`}
+                    className={styles.previewSmallImage}
+                  />
+                ))}
+              </div>
+            )}
           <input
             type="file"
             accept="image/*"
@@ -649,10 +680,10 @@ export default function SoulModifyPage() {
 
         {/* 제출 버튼 */}
         <Link href={`/sky/travelingSprits/generalVisits/${id}`}>
-  <button type="button" className={styles.button}>
-    수정하기
-  </button>
-</Link>
+          <button type="button" className={styles.button}>
+            수정하기
+          </button>
+        </Link>
       </form>
     </div>
   );
