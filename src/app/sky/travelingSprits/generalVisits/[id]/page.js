@@ -1,11 +1,12 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import styles from "./detail.module.css";
 
 export default function SoulDetailPage() {
   const { id } = useParams();
+  const router = useRouter();
   const [soul, setSoul] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -32,6 +33,11 @@ export default function SoulDetailPage() {
   if (loading) return <div className={styles.loading}>Loading...</div>;
   if (error) return <div className={styles.error}>Error: {error}</div>;
   if (!soul) return <div className={styles.error}>영혼 정보가 없습니다.</div>;
+
+  const handleEdit = () => {
+    // 수정 페이지로 이동 (예: /sky/travelingSprits/generalVisits/edit/[id])
+    router.push(`/sky/travelingSprits/generalVisits/edit/${id}`);
+  };
 
   return (
     <div className={styles.container}>
@@ -190,6 +196,13 @@ export default function SoulDetailPage() {
           </ul>
         </div>
       )}
+
+      {/* 수정하기 버튼 */}
+      <div className={styles.buttonContainer}>
+        <button className={styles.button} onClick={handleEdit}>
+          수정하기
+        </button>
+      </div>
     </div>
   );
 }

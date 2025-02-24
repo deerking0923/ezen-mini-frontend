@@ -1,4 +1,4 @@
-:root {
+:global(:root){
   /* 메인 색상 및 폰트, 쉐도우 */
   --primary-color: #2c3e50;
   --secondary-color: #0070f3;
