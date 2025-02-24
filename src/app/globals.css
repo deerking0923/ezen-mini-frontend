@@ -128,13 +128,12 @@ a {
 /* 크레딧 버튼을 왼쪽에 배치 */
 .credit-button {
   background-color: #3c3c3c; /* 어두운 회색 */
-  color: #e0e0e0;
-  padding: 10px 20px;
   border: none;
-  border-radius: 5px;
-  font-size: 1rem;
+  padding: 8px 12px;
+  border-radius: 4px;
+  color: #ffffff;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: background 0.2s ease;
 }
 
 .credit-button:hover {
