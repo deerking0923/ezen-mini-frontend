@@ -385,3 +385,163 @@
 .tableRow:hover {
   background-color: #3a3a3a;
 }
+
+/* 모바일 화면에서 텍스트 및 버튼 크기 조정 */
+@media (max-width: 768px) {
+  /* 공지판 제목 크기 조정 */
+  .noticeTitle {
+    font-size: 1.4rem;
+  }
+
+  /* 공지판 내용 텍스트 크기 조정 */
+  .noticeDescription {
+    font-size: 0.85rem;
+  }
+
+  /* 탭 버튼 크기 조정 */
+  .tabButton {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.9rem;
+  }
+
+  /* 기본 컨테이너 내부 패딩 줄이기 */
+  .container {
+    padding: 1rem;
+  }
+
+  .cardsGrid {
+    grid-template-columns: repeat(3, 1fr); /* 화면 크기에 맞춰 3개 열로 변경 */
+  }
+
+  /* 카드 내 이미지 크기 조정 */
+  .imageWrapperSquare {
+    padding-top: 100%;
+  }
+
+  /* 카드 크기 및 텍스트 크기 조정 */
+  .soulCard {
+    width: 100%; /* 카드 전체 너비 사용 */
+  }
+
+  .cardContent {
+    padding: 0.5rem;
+  }
+
+  .firstLine {
+    font-size: 0.9rem;
+  }
+
+  .secondLine {
+    font-size: 0.85rem;
+  }
+
+  /* 리스트 항목에서 폰트 크기 줄이기 */
+  .listItem {
+    font-size: 0.85rem;
+    padding: 0.5rem;
+  }
+
+  /* 페이지네이션 버튼 크기 조정 */
+  .pagination button {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.9rem;
+  }
+
+  /* 작은 화면에서 테이블의 폰트 크기 줄이기 */
+  .tableView th, .tableView td {
+    padding: 8px;
+    font-size: 0.85rem;
+  }
+
+  /* 테이블에서 열 너비를 더 작게 설정 */
+  .thOrder, .tdOrder {
+    width: 15%;
+  }
+
+  .thSeason, .tdSeason {
+    width: 25%;
+  }
+
+  .thName, .tdName {
+    width: 25%;
+  }
+
+  .thPeriod, .tdPeriod {
+    width: 25%;
+  }
+
+  .thRerun, .tdRerun {
+    width: 10%;
+  }
+}
+
+/* 더 작은 화면에서의 스타일 */
+@media (max-width: 480px) {
+  /* 공지판 제목 및 텍스트 더 작게 조정 */
+  .noticeTitle {
+    font-size: 1.2rem;
+  }
+
+  .noticeDescription {
+    font-size: 0.8rem;
+  }
+
+  /* 탭 버튼 크기 더욱 축소 */
+  .tabButton {
+    padding: 0.3rem 0.6rem;
+    font-size: 0.8rem;
+  }
+
+  .cardsGrid {
+    grid-template-columns: repeat(2, 1fr); /* 화면 크기에 맞춰 3개 열로 변경 */
+  }
+
+  .soulCard {
+    width: 100%;
+  }
+
+  .cardContent {
+    padding: 0.4rem;
+  }
+
+  .firstLine, .secondLine {
+    font-size: 0.8rem;
+  }
+
+  .listItem {
+    font-size: 0.75rem;
+    padding: 0.5rem;
+  }
+
+  /* 페이지네이션 버튼 크기 더욱 축소 */
+  .pagination button {
+    padding: 0.3rem 0.6rem;
+    font-size: 0.8rem;
+  }
+
+  /* 테이블 내용 더 작은 화면에 맞춰 스타일 조정 */
+  .tableView th, .tableView td {
+    padding: 6px;
+    font-size: 0.75rem;
+  }
+
+  .thOrder, .tdOrder {
+    width: 15%;
+  }
+
+  .thSeason, .tdSeason {
+    width: 25%;
+  }
+
+  .thName, .tdName {
+    width: 25%;
+  }
+
+  .thPeriod, .tdPeriod {
+    width: 25%;
+  }
+
+  .thRerun, .tdRerun {
+    width: 10%;
+  }
+}

@@ -309,3 +309,101 @@
   opacity: 0;
   pointer-events: none;
 }
+
+/* 작은 화면에서 더 많은 공간을 차지하지 않도록 패딩 및 텍스트 크기 조정 */
+@media (max-width: 768px) {
+  /* 모바일 화면에서 제목 크기 줄이기 */
+  .title {
+    font-size: 1.8rem;
+  }
+
+  /* 모바일 화면에서 상단 레이아웃 이미지 크기 조정 */
+  .representativeImageWrapper {
+    width: 200px;
+    height: 200px;
+  }
+
+  /* 노드 크기 조정 */
+  .nodeItem {
+    width: 70px;
+    height: 70px;
+  }
+
+  /* 각 노드의 텍스트 크기 및 간격 조정 */
+  .nodeItem p {
+    font-size: 0.7rem;
+  }
+
+  .nodeColumn {
+    gap: 0.8rem; /* 노드 간격 줄이기 */
+  }
+
+  /* 상단 레이아웃에서 정보와 이미지 간 간격 조정 */
+  .topLayout {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  /* 모바일에서 더 많은 여백을 주기 위해 패딩 증가 */
+  .infoSection {
+    padding: 1rem;
+  }
+
+  /* 버튼 크기 줄이기 */
+  .nav-button,
+  .credit-button {
+    font-size: 0.9rem;
+    padding: 6px 10px;
+  }
+
+  /* 스크롤바 스타일 크기 조정 */
+  .horizontalList::-webkit-scrollbar {
+    height: 4px;
+  }
+  .horizontalList::-webkit-scrollbar-thumb {
+    background-color: #444;
+    border-radius: 3px;
+  }
+}
+
+/* 더 작은 화면에서 이미지 크기와 노드 크기 조정 */
+@media (max-width: 480px) {
+  /* 제목 크기 더 줄이기 */
+  .title {
+    font-size: 1.6rem;
+  }
+
+  /* 대표 이미지 크기 축소 */
+  .representativeImageWrapper {
+    width: 150px;
+    height: 150px;
+  }
+
+  /* 노드 크기 더 줄이기 */
+  .nodeItem {
+    width: 60px;
+    height: 60px;
+  }
+
+  /* 노드 간격 더 좁히기 */
+  .nodeColumn {
+    gap: 0.6rem;
+  }
+
+  /* 모바일에서 텍스트를 더 작게 */
+  .nodeItem p {
+    font-size: 0.6rem;
+  }
+
+  /* 모바일에서는 노드 안에 있는 내용이 잘 안 보일 수 있으므로 텍스트 더 작게 */
+  .nodePrice {
+    font-size: 0.55rem;
+  }
+
+  /* 버튼 크기 더 줄이기 */
+  .nav-button,
+  .credit-button {
+    font-size: 0.85rem;
+    padding: 5px 8px;
+  }
+}
