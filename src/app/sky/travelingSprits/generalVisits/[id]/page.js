@@ -111,9 +111,11 @@ export default function SoulDetailPage() {
         <div className={styles.infoSection}>
           <div className={styles.topInfoGrid}>
             <div className={styles.detailItem}>
-              {soul.orderNum}
-              <strong>번째 영혼</strong>
+              {soul.orderNum < 0
+                ? `${Math.abs(soul.orderNum)}번째 유랑단`
+                : `${soul.orderNum}번째 영혼`}
             </div>
+
             <div className={styles.detailItem}>
               <strong>시즌:</strong> {soul.seasonName}
             </div>
@@ -121,7 +123,8 @@ export default function SoulDetailPage() {
               <strong>기간: </strong> {soul.startDate} ~ {soul.endDate}
             </div>
             <div className={styles.detailItem}>
-              {soul.rerunCount}<strong>차 복각</strong>
+              {soul.rerunCount}
+              <strong>차 복각</strong>
             </div>
           </div>
 
@@ -280,9 +283,11 @@ export default function SoulDetailPage() {
               </span>
             ))}
           </div>
-          {soul.creator && (
-            <div className={styles.creatorTag}>자료 출처: {soul.creator}</div>
-          )}
+        </div>
+      )}
+      {soul.creator && (
+        <div className={styles.creatorTag} style={{ textAlign: "right" }}>
+          자료 출처: {soul.creator}
         </div>
       )}
 

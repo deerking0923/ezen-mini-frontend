@@ -266,6 +266,7 @@ export default function SoulModifyPage() {
           };
         })
       );
+      
 
       const payload = {
         seasonName: formData.seasonName,
@@ -388,25 +389,26 @@ export default function SoulModifyPage() {
         </label>
 
         {/* [5] 날짜 */}
-        <label className={styles.label}>
+        {/* [5] 날짜 */}
+        <label className="label">
           시작 날짜:
           <input
-            type="date"
+            type="text"
             name="startDate"
             value={formData.startDate}
             onChange={handleChange}
-            className={styles.input}
+            className="input"
             required
           />
         </label>
-        <label className={styles.label}>
+        <label className="label">
           마감 날짜:
           <input
-            type="date"
+            type="text"
             name="endDate"
             value={formData.endDate}
             onChange={handleChange}
-            className={styles.input}
+            className="input"
             required
           />
         </label>

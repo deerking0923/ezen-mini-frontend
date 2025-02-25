@@ -6,6 +6,7 @@ import styles from "./list.module.css";
 import { useRouter } from "next/navigation";
 
 export default function SoulListPage() {
+
   const router = useRouter();
   const [souls, setSouls] = useState([]);
   const [page, setPage] = useState(0);
@@ -15,6 +16,18 @@ export default function SoulListPage() {
   const [viewMode, setViewMode] = useState("card"); // "card" or "list"
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  const currentPage = page + 1;
+  const pageBlockStart = Math.floor((currentPage - 1) / 10) * 10 + 1;
+  const pageBlockEnd = Math.min(pageBlockStart + 9, totalPages);
+  const pageButtons = [];
+  for (let i = pageBlockStart; i <= pageBlockEnd; i++) {
+    pageButtons.push(i);
+  }
+  const handlePageChange = (pageNumber) => {
+    setPage(pageNumber - 1);
+  };
+  
 
   // 시즌 이름 목록 (클릭 시 자동 검색)
   const seasonList = [
@@ -43,6 +56,8 @@ export default function SoulListPage() {
     { name: "무민", color: "#CDDC39" }, // 연두색
     { name: "광채", color: "#FF1493" }, // 딥핑크
   ];
+
+  
 
   const fetchSouls = async (pageNumber, query) => {
     setLoading(true);
@@ -173,12 +188,12 @@ export default function SoulListPage() {
         >
           리스트 보기
         </button>
-        <button
+        {/* <button
           className={styles.tabButton}
           onClick={() => router.push("/sky/travelingSprits/specialVisits/list")}
         >
           유랑단 보러가기
-        </button>
+        </button> */}
       </div>
       <div className={styles.searchContainer}>
         <form onSubmit={handleSearchSubmit} className={styles.searchForm}>
@@ -245,8 +260,12 @@ export default function SoulListPage() {
                   </p>
                   {/* 두 번째 줄: 순서와 복각 횟수 */}
                   <p className={styles.secondLine}>
-                    {soul.orderNum}번째 | {soul.rerunCount}차 복각
+                    {soul.orderNum < 0
+                      ? `${Math.abs(soul.orderNum)}번째 유랑단`
+                      : `${soul.orderNum}번째`}{" "}
+                    | {soul.rerunCount}차 복각
                   </p>
+
                   {/* 세 번째 줄: 날짜만 표시 (기간 레이블 없이, 작은 글씨) */}
                   <p className={styles.thirdLine}>
                     {soul.startDate} ~ {soul.endDate}
@@ -257,19 +276,18 @@ export default function SoulListPage() {
           </div>
           {/* 카드 보기는 페이지네이션 있음 */}
           <div className={styles.pagination}>
-            <button onClick={() => goToPage(page - 1)} disabled={page === 0}>
-              이전
-            </button>
-            <span>
-              {page + 1} / {totalPages}
-            </span>
-            <button
-              onClick={() => goToPage(page + 1)}
-              disabled={page >= totalPages - 1}
-            >
-              다음
-            </button>
-          </div>
+  {pageButtons.map((p) => (
+    <button
+      key={p}
+      onClick={() => handlePageChange(p)}
+      className={currentPage === p ? styles.activePage : ""}
+    >
+      {p}
+    </button>
+  ))}
+</div>
+
+
         </>
       ) : (
         // 리스트 보기: 전체 목록, 페이지네이션 없이 테이블 형식 표시

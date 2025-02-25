@@ -385,28 +385,28 @@ export default function SoulAddPage() {
         </label>
 
         {/* [5] 날짜 */}
-        <label className={styles.label}>
-          시작 날짜:
-          <input
-            type="date"
-            name="startDate"
-            value={formData.startDate}
-            onChange={handleChange}
-            className={styles.input}
-            required
-          />
-        </label>
-        <label className={styles.label}>
-          마감 날짜:
-          <input
-            type="date"
-            name="endDate"
-            value={formData.endDate}
-            onChange={handleChange}
-            className={styles.input}
-            required
-          />
-        </label>
+        <label className="label">
+  시작 날짜:
+  <input
+    type="text"
+    name="startDate"
+    value={formData.startDate}
+    onChange={handleChange}
+    className="input"
+    required
+  />
+</label>
+<label className="label">
+  마감 날짜:
+  <input
+    type="text"
+    name="endDate"
+    value={formData.endDate}
+    onChange={handleChange}
+    className="input"
+    required
+  />
+</label>
 
         {/* [6] 복각 횟수 */}
         <label className={styles.label}>
