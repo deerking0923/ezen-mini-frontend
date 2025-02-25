@@ -36,6 +36,9 @@ export default function SoulDetailPage() {
   const handleEdit = () => {
     router.push(`/sky/travelingSprits/generalVisits/edit/${id}`);
   };
+  const handleAdd = () => {
+    router.push(`/sky/travelingSprits/generalVisits/add/${id}`);
+  };
 
   const handleDelete = () => {
     const confirmation = prompt(
@@ -115,7 +118,7 @@ export default function SoulDetailPage() {
               <strong>시즌:</strong> {soul.seasonName}
             </div>
             <div className={styles.detailItem}>
-              <string>기간: </string> {soul.startDate} ~ {soul.endDate}
+              <strong>기간: </strong> {soul.startDate} ~ {soul.endDate}
             </div>
             <div className={styles.detailItem}>
               <strong>복각 횟수:</strong> {soul.rerunCount}
@@ -293,6 +296,9 @@ export default function SoulDetailPage() {
       </div>
 
       <div className={styles.buttonContainer}>
+      <button className={styles.editButton} onClick={handleAdd}>
+          추가하기
+        </button>
         <button className={styles.editButton} onClick={handleEdit}>
           수정하기
         </button>
