@@ -3,25 +3,27 @@
  ******************************************************/
  .noticePanel {
   border: 1px solid #555;
-  padding: 20px;
+  padding: 30px;         /* 패딩을 늘려서 내부 여백 증가 */
   background-color: #2c2c2c;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-  margin-bottom: 2rem;
+  border-radius: 4px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+  margin-bottom: 1rem;
   text-align: center;
+  min-height: 200px;     /* 최소 높이를 추가하여 영역이 더 커지도록 */
 }
 
+
 .noticeTitle {
-  font-size: 1.6rem;
+  font-size: 1.4rem; /* 기존 1.6rem → 1.4rem */
   font-weight: bold;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.3rem; /* 기존 0.5rem → 0.3rem */
   color: #ffd166;
 }
 
 .noticeDescription {
-  font-size: 0.95rem;
+  font-size: 0.85rem; /* 기존 0.95rem → 0.85rem */
   color: #f1f1f1;
-  line-height: 1.4;
+  line-height: 1.2;
 }
 
 .noticeExample {
@@ -30,17 +32,17 @@
 }
 
 .noticeSubDescription {
-  font-size: 0.9rem;
+  font-size: 0.8rem; /* 기존 0.9rem → 0.8rem */
   color: #ddd;
-  margin-top: 1rem;
+  margin-top: 0.5rem;
 }
 
 .seasonChipsContainer {
-  margin-top: 1rem;
+  margin-top: 0.5rem;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 0.5rem;
+  gap: 0.3rem;
 }
 
 .seasonChip {
@@ -48,9 +50,9 @@
   color: #f1f1f1;
   border: none;
   border-radius: 4px;
-  padding: 6px 10px;
+  padding: 4px 8px;
   cursor: pointer;
-  font-size: 0.9rem;
+  font-size: 0.8rem;
   transition: background-color 0.2s, transform 0.1s;
 }
 
@@ -68,17 +70,17 @@
 .viewTabs {
   display: flex;
   justify-content: center;
-  gap: 1rem;
-  margin-bottom: 1rem;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
 }
 
 .tabButton {
-  padding: 0.5rem 1rem;
+  padding: 0.3rem 0.6rem;
   background-color: #eee;
   border: 1px solid #ccc;
   border-radius: 4px;
   cursor: pointer;
-  font-size: 1rem;
+  font-size: 0.8rem;
   transition: background-color 0.2s;
 }
 
@@ -96,44 +98,45 @@
  * 기본 컨테이너 및 검색 영역
  ******************************************************/
 .container {
-  max-width: 1200px;
+  max-width: 1000px; /* 약간 줄임 */
   margin: 0 auto;
-  padding: 2rem;
+  padding: 1rem; /* 기존 2rem → 1rem */
   font-family: sans-serif;
   color: #333;
 }
 
 .title {
   text-align: center;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem; /* 기존 1.5rem → 1rem */
+  font-size: 1.5rem; /* 약간 줄임 */
 }
 
 .searchContainer,
 .buttonContainer {
   text-align: center;
-  margin-bottom: 1rem;
+  margin-bottom: 0.5rem;
 }
 
 .searchForm {
   display: inline-flex;
-  gap: 0.5rem;
+  gap: 0.3rem;
 }
 
 .searchInput {
-  padding: 0.5rem 1rem;
-  font-size: 1rem;
+  padding: 0.3rem 0.5rem;
+  font-size: 0.8rem;
   border: 1px solid #ccc;
   border-radius: 4px;
 }
 
 .searchButton {
-  padding: 0.5rem 1rem;
+  padding: 0.3rem 0.5rem;
   background-color: #0070f3;
   color: white;
   border: none;
   border-radius: 4px;
   cursor: pointer;
-  font-size: 1rem;
+  font-size: 0.8rem;
 }
 
 .searchButton:hover {
@@ -141,13 +144,13 @@
 }
 
 .createButton {
-  padding: 0.5rem 1rem;
+  padding: 0.3rem 0.5rem;
   background-color: #0070f3;
   border: none;
   border-radius: 4px;
   color: white;
   cursor: pointer;
-  font-size: 1rem;
+  font-size: 0.8rem;
 }
 
 .createButton:hover {
@@ -157,21 +160,21 @@
 /******************************************************
  * 카드 그리드 레이아웃 (사진 보기)
  ******************************************************/
-.cardsGrid {
+ .cardsGrid {
   display: grid;
-  grid-template-columns: repeat(5, 1fr); /* 5열 고정 */
-  gap: 1rem;
+  grid-template-columns: repeat(5, 1fr); /* 5열 배치 */
+  gap: 0.5rem;
 }
 
-/* 카드 스타일 */
+/* 카드 스타일: 전체 카드 크기를 약간 늘림 */
 .soulCard {
   display: flex;
   flex-direction: column;
   border: 1px solid #ddd;
-  border-radius: 6px;
+  border-radius: 4px;
   background-color: #fff;
   overflow: hidden;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
   text-decoration: none;
   color: inherit;
   cursor: pointer;
@@ -179,23 +182,24 @@
 }
 
 .soulCard:hover {
-  transform: translateY(-3px);
+  transform: translateY(-2px);
 }
 
+/* 이미지 컨테이너: grid 열에 맞게 전체 너비를 사용하고, 4:3 비율로 높이를 늘림 */
 .imageWrapperSquare {
   width: 100%;
-  padding-top: 100%; /* 정사각형 비율 */
-  position: relative;
+  aspect-ratio: 4 / 3;  /* 4:3 비율 → 높이가 늘어나게 됨 */
+  overflow: hidden;
+  border-radius: 4px;
   background-color: #eee;
+  margin: 0 auto;
 }
 
 .cardImage {
-  position: absolute;
-  top: 0;
-  left: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
+  object-position: center;
 }
 
 .noImage {
@@ -204,33 +208,50 @@
   align-items: center;
   height: 100%;
   color: #aaa;
-  font-size: 0.9rem;
+  font-size: 0.8rem;
 }
 
 .cardContent {
-  padding: 0.5rem 0.75rem;
+  padding: 0.3rem 0.5rem;
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 2px;
 }
 
 .firstLine {
-  font-size: 1rem;
+  font-size: 0.9rem;
   margin: 0;
-  color: #333;
+  display: flex;
+  align-items: center;
+}
+
+.seasonName {
+  display: inline-block;
+  padding: 2px 6px;
+  border-radius: 20px;
+  font-size: 0.7rem;
+  font-weight: bold;
+  color: #fff;
+  margin-right: 4px;
+}
+
+.soulName {
+  font-size: 0.8rem;
+  font-weight: bold;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .secondLine {
-  font-size: 0.9rem;
+  font-size: 0.8rem;
   margin: 0;
-  color: #555;
 }
 
-.seasonName,
-.soulName,
-.orderNum,
-.rerunCount {
-  margin-right: 0.5rem;
+.thirdLine {
+  font-size: 0.7rem;
+  margin: 0;
+  color: #777;
 }
 
 /******************************************************
@@ -245,10 +266,10 @@
 .listItem {
   display: flex;
   align-items: center;
-  gap: 1rem;
-  padding: 0.75rem;
+  gap: 0.5rem;
+  padding: 0.5rem;
   border-bottom: 1px solid #ddd;
-  font-size: 0.95rem;
+  font-size: 0.85rem;
 }
 
 .listItem span {
@@ -262,7 +283,7 @@
 .loading,
 .error {
   text-align: center;
-  font-size: 1.2rem;
+  font-size: 1rem;
 }
 
 /******************************************************
@@ -272,18 +293,18 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 1rem;
-  margin-top: 1.5rem;
+  gap: 0.3rem;
+  margin-top: 1rem;
 }
 
 .pagination button {
-  padding: 0.5rem 1rem;
+  padding: 0.3rem 0.5rem;
   background-color: #0070f3;
   border: none;
   border-radius: 4px;
   color: white;
   cursor: pointer;
-  font-size: 1rem;
+  font-size: 0.8rem;
 }
 
 .pagination button:disabled {
@@ -292,7 +313,7 @@
 }
 
 .pagination span {
-  font-size: 1rem;
+  font-size: 0.8rem;
 }
 
 /******************************************************
@@ -302,10 +323,10 @@
   background-color: #28a745;
   color: white;
   border: none;
-  padding: 0.5rem 1rem;
+  padding: 0.3rem 0.5rem;
   border-radius: 4px;
   cursor: pointer;
-  margin-bottom: 1rem;
+  margin-bottom: 0.5rem;
   transition: background-color 0.3s;
 }
 
@@ -313,28 +334,28 @@
   background-color: #218838;
 }
 
-
-
-
+/******************************************************
+ * 테이블 스타일 (리스트 보기)
+ ******************************************************/
 .tableView {
   width: 100%;
   border-collapse: collapse;
-  margin: 0 auto 2rem auto;
+  margin: 0 auto 1rem auto;
   background-color: #2c2c2c;
 }
 
 .tableView th,
 .tableView td {
   border: 1px solid #444;
-  padding: 12px 10px;
+  padding: 8px 6px;
   text-align: center;
-  font-size: 0.95rem;
+  font-size: 0.85rem;
   color: #f1f1f1;
 }
 
 .tableView th {
   background-color: #1e1e1e;
-  color: #ffffff;
+  color: #fff;
   font-weight: bold;
 }
 
@@ -362,7 +383,7 @@
 
 /* 링크 스타일 (이름) */
 .tdName a {
-  color: #ffffff;
+  color: #fff;
   text-decoration: none;
   transition: color 0.2s, text-decoration 0.2s;
 }
@@ -372,7 +393,7 @@
   color: #ffd166;
 }
 
-/* 행 배경 색상: 짝수행은 약간 어둡게, 홀수행은 조금 밝게 */
+/* 행 배경 색상 */
 .tableRow:nth-child(even) {
   background-color: #222;
 }
@@ -381,37 +402,37 @@
   background-color: #2c2c2c;
 }
 
-/* 호버 효과: 마우스 오버 시 행 배경 살짝 밝아짐 */
 .tableRow:hover {
   background-color: #3a3a3a;
 }
 
-/* 시즌 이름을 감싸는 스타일 */
+/* 시즌 이름 패널 (리스트) */
 .seasonName {
   display: inline-block;
-  padding: 5px 15px;
-  border-radius: 30px;  /* 동그란 모양 */
-  font-size: 0.9rem;
+  padding: 2px 6px;
+  border-radius: 20px;
+  font-size: 0.7rem;
   font-weight: bold;
-  color: #fff; /* 텍스트 색상 */
-  margin: 0 5px;
+  color: #fff;
+  margin: 0 4px;
 }
+
+/* 시즌 칩 */
 .seasonChipsContainer {
-  margin-top: 1rem;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
+  display: grid;
+  grid-template-columns: repeat(10, auto);
   gap: 0.5rem;
 }
 
+
 .seasonChip {
-  background-color: transparent;  /* 배경색은 스타일로 처리하므로 투명 */
+  background-color: transparent;
   color: #f1f1f1;
   border: none;
-  border-radius: 20px;  /* 동그란 모양 */
-  padding: 6px 12px;
+  border-radius: 20px;
+  padding: 4px 8px;
   cursor: pointer;
-  font-size: 0.9rem;
+  font-size: 0.8rem;
   transition: background-color 0.3s ease, transform 0.1s ease;
   font-weight: bold;
 }
@@ -422,165 +443,4 @@
 
 .seasonChip:active {
   transform: scale(0.95);
-}
-
-
-/* 모바일 화면에서 텍스트 및 버튼 크기 조정 */
-@media (max-width: 768px) {
-  /* 공지판 제목 크기 조정 */
-  .noticeTitle {
-    font-size: 1.4rem;
-  }
-
-  /* 공지판 내용 텍스트 크기 조정 */
-  .noticeDescription {
-    font-size: 0.85rem;
-  }
-
-  /* 탭 버튼 크기 조정 */
-  .tabButton {
-    padding: 0.4rem 0.8rem;
-    font-size: 0.9rem;
-  }
-
-  /* 기본 컨테이너 내부 패딩 줄이기 */
-  .container {
-    padding: 1rem;
-  }
-
-  .cardsGrid {
-    grid-template-columns: repeat(3, 1fr); /* 화면 크기에 맞춰 3개 열로 변경 */
-  }
-
-  /* 카드 내 이미지 크기 조정 */
-  .imageWrapperSquare {
-    padding-top: 100%;
-  }
-
-  /* 카드 크기 및 텍스트 크기 조정 */
-  .soulCard {
-    width: 100%; /* 카드 전체 너비 사용 */
-  }
-
-  .cardContent {
-    padding: 0.5rem;
-  }
-
-  .firstLine {
-    font-size: 0.9rem;
-  }
-
-  .secondLine {
-    font-size: 0.85rem;
-  }
-
-  /* 리스트 항목에서 폰트 크기 줄이기 */
-  .listItem {
-    font-size: 0.85rem;
-    padding: 0.5rem;
-  }
-
-  /* 페이지네이션 버튼 크기 조정 */
-  .pagination button {
-    padding: 0.4rem 0.8rem;
-    font-size: 0.9rem;
-  }
-
-  /* 작은 화면에서 테이블의 폰트 크기 줄이기 */
-  .tableView th, .tableView td {
-    padding: 8px;
-    font-size: 0.85rem;
-  }
-
-  /* 테이블에서 열 너비를 더 작게 설정 */
-  .thOrder, .tdOrder {
-    width: 15%;
-  }
-
-  .thSeason, .tdSeason {
-    width: 25%;
-  }
-
-  .thName, .tdName {
-    width: 25%;
-  }
-
-  .thPeriod, .tdPeriod {
-    width: 25%;
-  }
-
-  .thRerun, .tdRerun {
-    width: 10%;
-  }
-}
-
-/* 더 작은 화면에서의 스타일 */
-@media (max-width: 480px) {
-  /* 공지판 제목 및 텍스트 더 작게 조정 */
-  .noticeTitle {
-    font-size: 1.2rem;
-  }
-
-  .noticeDescription {
-    font-size: 0.8rem;
-  }
-
-  /* 탭 버튼 크기 더욱 축소 */
-  .tabButton {
-    padding: 0.3rem 0.6rem;
-    font-size: 0.8rem;
-  }
-
-  .cardsGrid {
-    grid-template-columns: repeat(2, 1fr); /* 화면 크기에 맞춰 3개 열로 변경 */
-  }
-
-  .soulCard {
-    width: 100%;
-  }
-
-  .cardContent {
-    padding: 0.4rem;
-  }
-
-  .firstLine, .secondLine {
-    font-size: 0.8rem;
-  }
-
-  .listItem {
-    font-size: 0.75rem;
-    padding: 0.5rem;
-  }
-
-  /* 페이지네이션 버튼 크기 더욱 축소 */
-  .pagination button {
-    padding: 0.3rem 0.6rem;
-    font-size: 0.8rem;
-  }
-
-  /* 테이블 내용 더 작은 화면에 맞춰 스타일 조정 */
-  .tableView th, .tableView td {
-    padding: 6px;
-    font-size: 0.75rem;
-  }
-
-  .thOrder, .tdOrder {
-    width: 15%;
-  }
-
-  .thSeason, .tdSeason {
-    width: 25%;
-  }
-
-  .thName, .tdName {
-    width: 25%;
-  }
-
-  .thPeriod, .tdPeriod {
-    width: 25%;
-  }
-
-  .thRerun, .tdRerun {
-    width: 10%;
-  }
 }

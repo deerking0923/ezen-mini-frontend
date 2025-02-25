@@ -13,7 +13,7 @@ export default function MainPage() {
   return (
     <div className="main-page-wrapper">
       <div className="intro-text">
-        본 사이트는 thatgamecompany의 Sky:Children of the light 팬사이트입니다.
+        본 사이트는 thatgamecompany의 Sky:Children of the light &lt;비공식&gt; 팬사이트입니다.
       </div>
       <div className="main-page-container">
         <div

@@ -221,6 +221,7 @@ export default function SoulListPage() {
                   )}
                 </div>
                 <div className={styles.cardContent}>
+                  {/* 첫 번째 줄: 시즌 이름 패널 + 영혼 이름 */}
                   <p className={styles.firstLine}>
                     <span
                       className={styles.seasonName}
@@ -228,21 +229,20 @@ export default function SoulListPage() {
                         backgroundColor:
                           seasonList.find(
                             (season) => season.name === soul.seasonName
-                          )?.color || "#444", // 색상 적용
+                          )?.color || "#444",
                       }}
                     >
                       {soul.seasonName}
-                    </span>{" "}
-                    <span className={styles.soulName}>{soul.name}</span>{" "}
-                    <span className={styles.orderNum}>
-                      순서: {soul.orderNum}
-                    </span>{" "}
-                    <span className={styles.rerunCount}>
-                      복각: {soul.rerunCount}
                     </span>
+                    <span className={styles.soulName}>{soul.name}</span>
                   </p>
+                  {/* 두 번째 줄: 순서와 복각 횟수 */}
                   <p className={styles.secondLine}>
-                    기간: {soul.startDate} ~ {soul.endDate}
+                    {soul.orderNum}번째 | {soul.rerunCount}번 복각
+                  </p>
+                  {/* 세 번째 줄: 날짜만 표시 (기간 레이블 없이, 작은 글씨) */}
+                  <p className={styles.thirdLine}>
+                    {soul.startDate} ~ {soul.endDate}
                   </p>
                 </div>
               </Link>
