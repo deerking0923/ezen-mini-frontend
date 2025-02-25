@@ -64,16 +64,34 @@ export default function SoulDetailPage() {
 
   // 중앙 노드의 개수를 기반으로 왼쪽과 오른쪽 노드를 렌더링
   const centerNodesCount = soul.centerNodes ? soul.centerNodes.length : 0;
-  const leftNodesToRender = Array.from({ length: centerNodesCount }, (_, i) =>
-    (soul.leftSideNodes && soul.leftSideNodes.find((node) => node.nodeOrder === i + 1)) || { dummy: true }
+  const leftNodesToRender = Array.from(
+    { length: centerNodesCount },
+    (_, i) =>
+      (soul.leftSideNodes &&
+        soul.leftSideNodes.find((node) => node.nodeOrder === i + 1)) || {
+        dummy: true,
+      }
   );
-  const rightNodesToRender = Array.from({ length: centerNodesCount }, (_, i) =>
-    (soul.rightSideNodes && soul.rightSideNodes.find((node) => node.nodeOrder === i + 1)) || { dummy: true }
+  const rightNodesToRender = Array.from(
+    { length: centerNodesCount },
+    (_, i) =>
+      (soul.rightSideNodes &&
+        soul.rightSideNodes.find((node) => node.nodeOrder === i + 1)) || {
+        dummy: true,
+      }
   );
 
   return (
     <div className={styles.container}>
       <h1 className={styles.title}>{soul.name}</h1>
+      <div className={styles.topNavigation}>
+        <button
+          className={styles.listButton}
+          onClick={() => router.push("/sky/travelingSprits/generalVisits/list")}
+        >
+          목록 가기
+        </button>
+      </div>
 
       {/* 상단 레이아웃: 대표 이미지(왼), 정보(오른) */}
       <div className={styles.topLayout}>
@@ -90,40 +108,41 @@ export default function SoulDetailPage() {
         <div className={styles.infoSection}>
           <div className={styles.topInfoGrid}>
             <div className={styles.detailItem}>
-              <strong>순서:</strong> {soul.orderNum}
+              {soul.orderNum}
+              <strong>번째 영혼</strong>
             </div>
             <div className={styles.detailItem}>
               <strong>시즌:</strong> {soul.seasonName}
             </div>
             <div className={styles.detailItem}>
-              <strong>기간:</strong> {soul.startDate} ~ {soul.endDate}
+              <string>기간: </string> {soul.startDate} ~ {soul.endDate}
             </div>
             <div className={styles.detailItem}>
               <strong>복각 횟수:</strong> {soul.rerunCount}
             </div>
           </div>
 
-          {soul.creator && (
-            <div className={styles.creatorPanel}>
-              <strong>자료 제작자:</strong> {soul.creator}
-            </div>
-          )}
-
           {soul.description && (
             <div className={styles.detailItem}>
-              <strong>설명:</strong>
               <p className={styles.descriptionText}>{soul.description}</p>
-            </div>
-          )}
-
-          {soul.keywords && soul.keywords.length > 0 && (
-            <div className={styles.detailItem}>
-              <strong>키워드:</strong> {soul.keywords.join(", ")}
             </div>
           )}
         </div>
       </div>
-
+      {/* 노드표 이미지: 값이 있을 때만 표시 */}
+      {soul.nodeTableImage && (
+        <div className={styles.nodeTableSection}>
+          <span className={styles.nodeTableLabel}>노드표</span>
+          <div className={styles.nodeTableImageWrapper}>
+            <img
+              src={soul.nodeTableImage}
+              alt="노드표 이미지"
+              className={styles.nodeTableImage}
+            />
+          </div>
+        </div>
+      )}
+      {/* 영혼 위치 이미지 */}
       {soul.locationImage && (
         <div className={styles.locationSection}>
           <span className={styles.locationLabel}>영혼 위치</span>
@@ -137,22 +156,9 @@ export default function SoulDetailPage() {
         </div>
       )}
 
-      {soul.nodeTableImage && (
-        <div className={styles.locationSection}>
-          <span className={styles.locationLabel}>노드표 이미지</span>
-          <div className={styles.locationImageWrapper}>
-            <img
-              src={soul.nodeTableImage}
-              alt="노드표 이미지"
-              className={styles.locationImage}
-            />
-          </div>
-        </div>
-      )}
-
       {soul.wearingShotImages && soul.wearingShotImages.length > 0 && (
         <div className={styles.section}>
-          <strong>착용샷 이미지:</strong>
+          <strong>착용샷</strong>
           <ul className={styles.horizontalList}>
             {soul.wearingShotImages.map((img, index) => (
               <li key={index}>
@@ -185,13 +191,14 @@ export default function SoulDetailPage() {
       )}
 
       <div className={styles.nodeSection}>
-        <div className={styles.nodeSectionTitle}>노드 표</div>
         <div className={styles.nodeContainer}>
           {/* 왼쪽 노드 */}
           <div className={styles.nodeColumn}>
             {leftNodesToRender.map((node, i) => (
               <div
-                className={`${styles.nodeItem} ${node.dummy ? styles.dummyNode : ""}`}
+                className={`${styles.nodeItem} ${
+                  node.dummy ? styles.dummyNode : ""
+                }`}
                 key={`left-${i}`}
               >
                 {!node.dummy && (
@@ -204,7 +211,9 @@ export default function SoulDetailPage() {
                         className={styles.nodeImage}
                       />
                     )}
-                    <span className={styles.nodePrice}>{node.currencyPrice}</span>
+                    <span className={styles.nodePrice}>
+                      {node.currencyPrice}
+                    </span>
                   </>
                 )}
               </div>
@@ -232,7 +241,9 @@ export default function SoulDetailPage() {
           <div className={styles.nodeColumn}>
             {rightNodesToRender.map((node, i) => (
               <div
-                className={`${styles.nodeItem} ${node.dummy ? styles.dummyNode : ""}`}
+                className={`${styles.nodeItem} ${
+                  node.dummy ? styles.dummyNode : ""
+                }`}
                 key={`right-${i}`}
               >
                 {!node.dummy && (
@@ -245,13 +256,40 @@ export default function SoulDetailPage() {
                         className={styles.nodeImage}
                       />
                     )}
-                    <span className={styles.nodePrice}>{node.currencyPrice}</span>
+                    <span className={styles.nodePrice}>
+                      {node.currencyPrice}
+                    </span>
                   </>
                 )}
               </div>
             ))}
           </div>
         </div>
+      </div>
+
+      {soul.keywords && soul.keywords.length > 0 && (
+        <div className={styles.keywordsSection}>
+          <div className={styles.keywordsLeft}>
+            <strong className={styles.keywordsLabel}>키워드:</strong>
+            {soul.keywords.map((keyword, idx) => (
+              <span key={idx} className={styles.keywordChip}>
+                {keyword}
+              </span>
+            ))}
+          </div>
+          {soul.creator && (
+            <div className={styles.creatorTag}>자료 제작자: {soul.creator}</div>
+          )}
+        </div>
+      )}
+
+      <div className={styles.centerNavigation}>
+        <button
+          className={styles.centerListButton}
+          onClick={() => router.push("/sky/travelingSprits/generalVisits/list")}
+        >
+          목록가기
+        </button>
       </div>
 
       <div className={styles.buttonContainer}>
