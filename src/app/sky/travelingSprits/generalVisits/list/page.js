@@ -3,8 +3,10 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import styles from "./list.module.css";
+import { useRouter } from "next/navigation";
 
 export default function SoulListPage() {
+  const router = useRouter();
   const [souls, setSouls] = useState([]);
   const [page, setPage] = useState(0);
   const [totalPages, setTotalPages] = useState(1);
@@ -171,8 +173,13 @@ export default function SoulListPage() {
         >
           리스트 보기
         </button>
+        <button
+          className={styles.tabButton}
+          onClick={() => router.push("/sky/travelingSprits/specialVisits/list")}
+        >
+          유랑단 보러가기
+        </button>
       </div>
-
       <div className={styles.searchContainer}>
         <form onSubmit={handleSearchSubmit} className={styles.searchForm}>
           <input

@@ -444,3 +444,23 @@
 .seasonChip:active {
   transform: scale(0.95);
 }
+.tabButton {
+  padding: 0.3rem 0.6rem;
+  background-color: #eee;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.8rem;
+  transition: background-color 0.2s;
+  margin-right: 0.5rem;
+}
+
+.tabButton:hover {
+  background-color: #ddd;
+}
+
+.activeTab {
+  background-color: #0070f3;
+  color: #fff;
+  border-color: #0070f3;
+}
