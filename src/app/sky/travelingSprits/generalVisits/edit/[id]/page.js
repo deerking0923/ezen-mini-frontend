@@ -19,6 +19,7 @@ export default function SoulModifyPage() {
     keywords: "",
     creator: "",
     description: "",
+    materialUrl: "", // 추가된 필드
   });
 
   // 파일 관련 상태 (신규 업로드할 파일)
@@ -27,7 +28,7 @@ export default function SoulModifyPage() {
   const [nodeTableImage, setNodeTableImage] = useState(null);
   const [gestureGifs, setGestureGifs] = useState([]);
   const [wearingShotImages, setWearingShotImages] = useState([]);
-  
+
   // 미리보기용 상태 (기존 URL)
   const [repImagePreview, setRepImagePreview] = useState("");
   const [locImagePreview, setLocImagePreview] = useState("");
@@ -63,7 +64,10 @@ export default function SoulModifyPage() {
 
   // 노드 추가 및 수정 핸들러들
   const addCenterNode = () => {
-    setCenterNodes((prev) => [...prev, { nodeOrder: "", photo: null, currencyPrice: "" }]);
+    setCenterNodes((prev) => [
+      ...prev,
+      { nodeOrder: "", photo: null, currencyPrice: "" },
+    ]);
   };
   const updateCenterNode = (index, key, value) => {
     setCenterNodes((prev) => {
@@ -77,7 +81,10 @@ export default function SoulModifyPage() {
   };
 
   const addLeftSideNode = () => {
-    setLeftSideNodes((prev) => [...prev, { nodeOrder: "", photo: null, currencyPrice: "" }]);
+    setLeftSideNodes((prev) => [
+      ...prev,
+      { nodeOrder: "", photo: null, currencyPrice: "" },
+    ]);
   };
   const updateLeftSideNode = (index, key, value) => {
     setLeftSideNodes((prev) => {
@@ -91,7 +98,10 @@ export default function SoulModifyPage() {
   };
 
   const addRightSideNode = () => {
-    setRightSideNodes((prev) => [...prev, { nodeOrder: "", photo: null, currencyPrice: "" }]);
+    setRightSideNodes((prev) => [
+      ...prev,
+      { nodeOrder: "", photo: null, currencyPrice: "" },
+    ]);
   };
   const updateRightSideNode = (index, key, value) => {
     setRightSideNodes((prev) => {
@@ -143,7 +153,9 @@ export default function SoulModifyPage() {
   useEffect(() => {
     async function fetchSoul() {
       try {
-        const res = await fetch(`https://korea-sky-planner.com/api/v1/souls/${id}`);
+        const res = await fetch(
+          `https://korea-sky-planner.com/api/v1/souls/${id}`
+        );
         if (!res.ok) throw new Error("영혼 정보를 불러오는데 실패하였습니다.");
         const data = await res.json();
         const soul = data.data || data;
@@ -166,26 +178,32 @@ export default function SoulModifyPage() {
         setGestureGifsPreview(soul.gestureGifs || []);
         setWearingShotImagesPreview(soul.wearingShotImages || []);
 
-        setCenterNodes(soul.centerNodes?.map((node) => ({
-          nodeOrder: node.nodeOrder,
-          photo: null,
-          preview: node.photo || "",
-          currencyPrice: node.currencyPrice,
-        })) || []);
+        setCenterNodes(
+          soul.centerNodes?.map((node) => ({
+            nodeOrder: node.nodeOrder,
+            photo: null,
+            preview: node.photo || "",
+            currencyPrice: node.currencyPrice,
+          })) || []
+        );
 
-        setLeftSideNodes(soul.leftSideNodes?.map((node) => ({
-          nodeOrder: node.nodeOrder,
-          photo: null,
-          preview: node.photo || "",
-          currencyPrice: node.currencyPrice,
-        })) || []);
+        setLeftSideNodes(
+          soul.leftSideNodes?.map((node) => ({
+            nodeOrder: node.nodeOrder,
+            photo: null,
+            preview: node.photo || "",
+            currencyPrice: node.currencyPrice,
+          })) || []
+        );
 
-        setRightSideNodes(soul.rightSideNodes?.map((node) => ({
-          nodeOrder: node.nodeOrder,
-          photo: null,
-          preview: node.photo || "",
-          currencyPrice: node.currencyPrice,
-        })) || []);
+        setRightSideNodes(
+          soul.rightSideNodes?.map((node) => ({
+            nodeOrder: node.nodeOrder,
+            photo: null,
+            preview: node.photo || "",
+            currencyPrice: node.currencyPrice,
+          })) || []
+        );
       } catch (err) {
         setError(err.message);
       }
@@ -197,48 +215,56 @@ export default function SoulModifyPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const representativeImageUrl = representativeImage 
-        ? await uploadFile(representativeImage) 
+      const representativeImageUrl = representativeImage
+        ? await uploadFile(representativeImage)
         : repImagePreview;
-      const locationImageUrl = locationImage 
-        ? await uploadFile(locationImage) 
+      const locationImageUrl = locationImage
+        ? await uploadFile(locationImage)
         : locImagePreview;
-      const nodeTableImageUrl = nodeTableImage 
-        ? await uploadFile(nodeTableImage) 
+      const nodeTableImageUrl = nodeTableImage
+        ? await uploadFile(nodeTableImage)
         : nodeTableImagePreview;
-      const gestureGifsUrls = gestureGifs.length > 0 
-        ? await uploadFiles(gestureGifs) 
-        : gestureGifsPreview;
-      const wearingShotImagesUrls = wearingShotImages.length > 0 
-        ? await uploadFiles(wearingShotImages) 
-        : wearingShotImagesPreview;
+      const gestureGifsUrls =
+        gestureGifs.length > 0
+          ? await uploadFiles(gestureGifs)
+          : gestureGifsPreview;
+      const wearingShotImagesUrls =
+        wearingShotImages.length > 0
+          ? await uploadFiles(wearingShotImages)
+          : wearingShotImagesPreview;
 
-      const uploadedCenterNodes = await Promise.all(centerNodes.map(async (node) => {
-        const photoUrl = await uploadNodePhoto(node);
-        return {
-          nodeOrder: Number(node.nodeOrder),
-          photo: photoUrl || node.preview,
-          currencyPrice: Number(node.currencyPrice),
-        };
-      }));
+      const uploadedCenterNodes = await Promise.all(
+        centerNodes.map(async (node) => {
+          const photoUrl = await uploadNodePhoto(node);
+          return {
+            nodeOrder: Number(node.nodeOrder),
+            photo: photoUrl || node.preview,
+            currencyPrice: Number(node.currencyPrice),
+          };
+        })
+      );
 
-      const uploadedLeftSideNodes = await Promise.all(leftSideNodes.map(async (node) => {
-        const photoUrl = await uploadNodePhoto(node);
-        return {
-          nodeOrder: Number(node.nodeOrder),
-          photo: photoUrl || node.preview,
-          currencyPrice: Number(node.currencyPrice),
-        };
-      }));
+      const uploadedLeftSideNodes = await Promise.all(
+        leftSideNodes.map(async (node) => {
+          const photoUrl = await uploadNodePhoto(node);
+          return {
+            nodeOrder: Number(node.nodeOrder),
+            photo: photoUrl || node.preview,
+            currencyPrice: Number(node.currencyPrice),
+          };
+        })
+      );
 
-      const uploadedRightSideNodes = await Promise.all(rightSideNodes.map(async (node) => {
-        const photoUrl = await uploadNodePhoto(node);
-        return {
-          nodeOrder: Number(node.nodeOrder),
-          photo: photoUrl || node.preview,
-          currencyPrice: Number(node.currencyPrice),
-        };
-      }));
+      const uploadedRightSideNodes = await Promise.all(
+        rightSideNodes.map(async (node) => {
+          const photoUrl = await uploadNodePhoto(node);
+          return {
+            nodeOrder: Number(node.nodeOrder),
+            photo: photoUrl || node.preview,
+            currencyPrice: Number(node.currencyPrice),
+          };
+        })
+      );
 
       const payload = {
         seasonName: formData.seasonName,
@@ -257,6 +283,7 @@ export default function SoulModifyPage() {
           : [],
         creator: formData.creator,
         description: formData.description,
+        materialUrl: formData.materialUrl, // 추가된 자료 URL
         centerNodes: uploadedCenterNodes,
         leftSideNodes: uploadedLeftSideNodes,
         rightSideNodes: uploadedRightSideNodes,
@@ -264,13 +291,16 @@ export default function SoulModifyPage() {
 
       console.log("Payload to send:", payload);
 
-      const res = await fetch(`https://korea-sky-planner.com/api/v1/souls/${id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(payload),
-      });
+      const res = await fetch(
+        `https://korea-sky-planner.com/api/v1/souls/${id}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(payload),
+        }
+      );
 
       console.log("Response status:", res.status);
 
@@ -462,19 +492,20 @@ export default function SoulModifyPage() {
         {/* [10] 착용샷 이미지 */}
         <label className={styles.label}>
           착용샷 이미지 (여러 파일 선택 가능):
-          {wearingShotImagesPreview.length > 0 && wearingShotImages.length === 0 && (
-            <div className={styles.previewList}>
-              <p>현재 착용샷:</p>
-              {wearingShotImagesPreview.map((img, idx) => (
-                <img
-                  key={idx}
-                  src={img}
-                  alt={`현재 착용샷 ${idx + 1}`}
-                  className={styles.previewSmallImage}
-                />
-              ))}
-            </div>
-          )}
+          {wearingShotImagesPreview.length > 0 &&
+            wearingShotImages.length === 0 && (
+              <div className={styles.previewList}>
+                <p>현재 착용샷:</p>
+                {wearingShotImagesPreview.map((img, idx) => (
+                  <img
+                    key={idx}
+                    src={img}
+                    alt={`현재 착용샷 ${idx + 1}`}
+                    className={styles.previewSmallImage}
+                  />
+                ))}
+              </div>
+            )}
           <input
             type="file"
             accept="image/*"
@@ -497,6 +528,17 @@ export default function SoulModifyPage() {
         </label>
 
         <hr className={styles.hr} />
+        {/* [12] 자료 URL */}
+        <label className="label">
+          자료 URL:
+          <input
+            type="url"
+            name="materialUrl"
+            value={formData.materialUrl}
+            onChange={handleChange}
+            className="input"
+          />
+        </label>
 
         {/* [12] 중앙 노드 */}
         <h2 className={styles.nodeTitle}>중앙 노드</h2>
@@ -507,7 +549,9 @@ export default function SoulModifyPage() {
               <input
                 type="number"
                 value={node.nodeOrder}
-                onChange={(e) => updateCenterNode(index, "nodeOrder", e.target.value)}
+                onChange={(e) =>
+                  updateCenterNode(index, "nodeOrder", e.target.value)
+                }
                 className={styles.input}
                 required
               />
@@ -527,7 +571,9 @@ export default function SoulModifyPage() {
               <input
                 type="file"
                 accept="image/*"
-                onChange={(e) => updateCenterNode(index, "photo", e.target.files[0])}
+                onChange={(e) =>
+                  updateCenterNode(index, "photo", e.target.files[0])
+                }
                 className={styles.input}
               />
             </label>
@@ -536,17 +582,27 @@ export default function SoulModifyPage() {
               <input
                 type="number"
                 value={node.currencyPrice}
-                onChange={(e) => updateCenterNode(index, "currencyPrice", e.target.value)}
+                onChange={(e) =>
+                  updateCenterNode(index, "currencyPrice", e.target.value)
+                }
                 className={styles.input}
                 required
               />
             </label>
-            <button type="button" onClick={() => deleteCenterNode(index)} className={styles.deleteButton}>
+            <button
+              type="button"
+              onClick={() => deleteCenterNode(index)}
+              className={styles.deleteButton}
+            >
               삭제
             </button>
           </div>
         ))}
-        <button type="button" onClick={addCenterNode} className={styles.smallButton}>
+        <button
+          type="button"
+          onClick={addCenterNode}
+          className={styles.smallButton}
+        >
           중앙 노드 추가
         </button>
 
@@ -561,7 +617,9 @@ export default function SoulModifyPage() {
               <input
                 type="number"
                 value={node.nodeOrder}
-                onChange={(e) => updateLeftSideNode(index, "nodeOrder", e.target.value)}
+                onChange={(e) =>
+                  updateLeftSideNode(index, "nodeOrder", e.target.value)
+                }
                 className={styles.input}
                 required
               />
@@ -581,7 +639,9 @@ export default function SoulModifyPage() {
               <input
                 type="file"
                 accept="image/*"
-                onChange={(e) => updateLeftSideNode(index, "photo", e.target.files[0])}
+                onChange={(e) =>
+                  updateLeftSideNode(index, "photo", e.target.files[0])
+                }
                 className={styles.input}
               />
             </label>
@@ -590,17 +650,27 @@ export default function SoulModifyPage() {
               <input
                 type="number"
                 value={node.currencyPrice}
-                onChange={(e) => updateLeftSideNode(index, "currencyPrice", e.target.value)}
+                onChange={(e) =>
+                  updateLeftSideNode(index, "currencyPrice", e.target.value)
+                }
                 className={styles.input}
                 required
               />
             </label>
-            <button type="button" onClick={() => deleteLeftSideNode(index)} className={styles.deleteButton}>
+            <button
+              type="button"
+              onClick={() => deleteLeftSideNode(index)}
+              className={styles.deleteButton}
+            >
               삭제
             </button>
           </div>
         ))}
-        <button type="button" onClick={addLeftSideNode} className={styles.smallButton}>
+        <button
+          type="button"
+          onClick={addLeftSideNode}
+          className={styles.smallButton}
+        >
           왼쪽 사이드 노드 추가
         </button>
 
@@ -615,7 +685,9 @@ export default function SoulModifyPage() {
               <input
                 type="number"
                 value={node.nodeOrder}
-                onChange={(e) => updateRightSideNode(index, "nodeOrder", e.target.value)}
+                onChange={(e) =>
+                  updateRightSideNode(index, "nodeOrder", e.target.value)
+                }
                 className={styles.input}
                 required
               />
@@ -635,7 +707,9 @@ export default function SoulModifyPage() {
               <input
                 type="file"
                 accept="image/*"
-                onChange={(e) => updateRightSideNode(index, "photo", e.target.files[0])}
+                onChange={(e) =>
+                  updateRightSideNode(index, "photo", e.target.files[0])
+                }
                 className={styles.input}
               />
             </label>
@@ -644,17 +718,27 @@ export default function SoulModifyPage() {
               <input
                 type="number"
                 value={node.currencyPrice}
-                onChange={(e) => updateRightSideNode(index, "currencyPrice", e.target.value)}
+                onChange={(e) =>
+                  updateRightSideNode(index, "currencyPrice", e.target.value)
+                }
                 className={styles.input}
                 required
               />
             </label>
-            <button type="button" onClick={() => deleteRightSideNode(index)} className={styles.deleteButton}>
+            <button
+              type="button"
+              onClick={() => deleteRightSideNode(index)}
+              className={styles.deleteButton}
+            >
               삭제
             </button>
           </div>
         ))}
-        <button type="button" onClick={addRightSideNode} className={styles.smallButton}>
+        <button
+          type="button"
+          onClick={addRightSideNode}
+          className={styles.smallButton}
+        >
           오른쪽 사이드 노드 추가
         </button>
 

@@ -286,6 +286,14 @@ export default function SoulDetailPage() {
         </div>
       )}
 
+      {soul.materialUrl && (
+        <div className={styles.sourceLink}>
+          <a href={soul.materialUrl} target="_blank" rel="noopener noreferrer">
+            자료 출처
+          </a>
+        </div>
+      )}
+
       <div className={styles.centerNavigation}>
         <button
           className={styles.centerListButton}
@@ -296,7 +304,7 @@ export default function SoulDetailPage() {
       </div>
 
       <div className={styles.buttonContainer}>
-      <button className={styles.editButton} onClick={handleAdd}>
+        <button className={styles.editButton} onClick={handleAdd}>
           추가하기
         </button>
         <button className={styles.editButton} onClick={handleEdit}>

@@ -295,7 +295,7 @@
  ******************************************************/
 .buttonContainer {
   text-align: center;
-  margin-top: 2rem;
+  margin-top: 1rem;
 }
 .editButton {
   display: inline-block;
@@ -485,6 +485,21 @@
   background-color: #6a6a6a;
 }
 
+.sourceLink {
+  text-align: right;
+  margin-bottom: 10px;
+  margin-right: 17px;
+}
+
+.sourceLink a {
+  color: #0070f3;
+  text-decoration: none;
+  font-size: 0.8rem; 
+}
+
+.sourceLink a:hover {
+  text-decoration: underline;
+}
 
 /******************************************************
  * 반응형 (모바일 등)

@@ -16,6 +16,7 @@ export default function SoulCreatePage() {
     keywords: "",
     creator: "",
     description: "",
+    materialUrl: "", // 추가: 자료 URL
   });
 
   // 파일 관련 상태
@@ -193,6 +194,7 @@ export default function SoulCreatePage() {
           : [],
         creator: formData.creator,
         description: formData.description,
+        materialUrl: formData.materialUrl, // 추가된 자료 URL 필드
         centerNodes: uploadedCenterNodes,
         leftSideNodes: uploadedLeftSideNodes,
         rightSideNodes: uploadedRightSideNodes,
@@ -359,10 +361,21 @@ export default function SoulCreatePage() {
             className="input"
           />
         </label>
+        {/* [12] 자료 URL - 새 필드 추가 */}
+        <label className="label">
+          자료 URL:
+          <input
+            type="url"
+            name="materialUrl"
+            value={formData.materialUrl}
+            onChange={handleChange}
+            className="input"
+          />
+        </label>
 
         <hr className="hr" />
 
-        {/* 중앙 노드 */}
+        {/* [13] 중앙 노드 */}
         <h2 className="nodeTitle">중앙 노드</h2>
         {centerNodes.map((node, index) => (
           <div key={index} className="nodeGroup">
@@ -409,7 +422,7 @@ export default function SoulCreatePage() {
 
         <hr className="hr" />
 
-        {/* 왼쪽 사이드 노드 */}
+        {/* [14] 왼쪽 사이드 노드 */}
         <h2 className="nodeTitle">왼쪽 사이드 노드</h2>
         {leftSideNodes.map((node, index) => (
           <div key={index} className="nodeGroup">
@@ -456,7 +469,7 @@ export default function SoulCreatePage() {
 
         <hr className="hr" />
 
-        {/* 오른쪽 사이드 노드 */}
+        {/* [15] 오른쪽 사이드 노드 */}
         <h2 className="nodeTitle">오른쪽 사이드 노드</h2>
         {rightSideNodes.map((node, index) => (
           <div key={index} className="nodeGroup">
@@ -503,7 +516,7 @@ export default function SoulCreatePage() {
 
         <hr className="hr" />
 
-        {/* 제작자 / 설명 */}
+        {/* [16] 제작자 / 설명 */}
         <label className="label">
           제작자 명:
           <input
