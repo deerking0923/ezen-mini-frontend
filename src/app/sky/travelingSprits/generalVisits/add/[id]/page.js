@@ -540,7 +540,7 @@ export default function SoulAddPage() {
         <hr className={styles.hr} />
 
         {/* [12] 중앙 노드 */}
-        <h2 className={styles.nodeTitle}>중앙 노드</h2>
+        {/* <h2 className={styles.nodeTitle}>중앙 노드</h2>
         {centerNodes.map((node, index) => (
           <div key={index} className={styles.nodeGroup}>
             <label className={styles.label}>
@@ -607,7 +607,6 @@ export default function SoulAddPage() {
 
         <hr className={styles.hr} />
 
-        {/* [13] 왼쪽 사이드 노드 */}
         <h2 className={styles.nodeTitle}>왼쪽 사이드 노드</h2>
         {leftSideNodes.map((node, index) => (
           <div key={index} className={styles.nodeGroup}>
@@ -675,7 +674,6 @@ export default function SoulAddPage() {
 
         <hr className={styles.hr} />
 
-        {/* [14] 오른쪽 사이드 노드 */}
         <h2 className={styles.nodeTitle}>오른쪽 사이드 노드</h2>
         {rightSideNodes.map((node, index) => (
           <div key={index} className={styles.nodeGroup}>
@@ -739,7 +737,7 @@ export default function SoulAddPage() {
           className={styles.smallButton}
         >
           오른쪽 사이드 노드 추가
-        </button>
+        </button> */}
 
         <hr className={styles.hr} />
 

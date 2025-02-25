@@ -121,7 +121,7 @@ export default function SoulDetailPage() {
               <strong>기간: </strong> {soul.startDate} ~ {soul.endDate}
             </div>
             <div className={styles.detailItem}>
-              <strong>복각 횟수:</strong> {soul.rerunCount}
+              {soul.rerunCount}<strong>차 복각</strong>
             </div>
           </div>
 
@@ -281,7 +281,7 @@ export default function SoulDetailPage() {
             ))}
           </div>
           {soul.creator && (
-            <div className={styles.creatorTag}>자료 제작자: {soul.creator}</div>
+            <div className={styles.creatorTag}>자료 출처: {soul.creator}</div>
           )}
         </div>
       )}

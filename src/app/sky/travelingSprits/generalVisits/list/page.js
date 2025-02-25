@@ -245,7 +245,7 @@ export default function SoulListPage() {
                   </p>
                   {/* 두 번째 줄: 순서와 복각 횟수 */}
                   <p className={styles.secondLine}>
-                    {soul.orderNum}번째 | {soul.rerunCount}번째 복각
+                    {soul.orderNum}번째 | {soul.rerunCount}차 복각
                   </p>
                   {/* 세 번째 줄: 날짜만 표시 (기간 레이블 없이, 작은 글씨) */}
                   <p className={styles.thirdLine}>

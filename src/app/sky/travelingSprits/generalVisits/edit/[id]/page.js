@@ -170,6 +170,7 @@ export default function SoulModifyPage() {
           keywords: soul.keywords ? soul.keywords.join(", ") : "",
           creator: soul.creator || "",
           description: soul.description || "",
+          materialUrl: soul.materialUrl || "", // 추가된 필드
         });
 
         setRepImagePreview(soul.representativeImage || "");
@@ -534,14 +535,14 @@ export default function SoulModifyPage() {
           <input
             type="url"
             name="materialUrl"
-            value={formData.materialUrl}
+            value={formData.materialUrl || ""}
             onChange={handleChange}
             className="input"
           />
         </label>
 
         {/* [12] 중앙 노드 */}
-        <h2 className={styles.nodeTitle}>중앙 노드</h2>
+        {/* <h2 className={styles.nodeTitle}>중앙 노드</h2>
         {centerNodes.map((node, index) => (
           <div key={index} className={styles.nodeGroup}>
             <label className={styles.label}>
@@ -608,7 +609,6 @@ export default function SoulModifyPage() {
 
         <hr className={styles.hr} />
 
-        {/* [13] 왼쪽 사이드 노드 */}
         <h2 className={styles.nodeTitle}>왼쪽 사이드 노드</h2>
         {leftSideNodes.map((node, index) => (
           <div key={index} className={styles.nodeGroup}>
@@ -676,7 +676,6 @@ export default function SoulModifyPage() {
 
         <hr className={styles.hr} />
 
-        {/* [14] 오른쪽 사이드 노드 */}
         <h2 className={styles.nodeTitle}>오른쪽 사이드 노드</h2>
         {rightSideNodes.map((node, index) => (
           <div key={index} className={styles.nodeGroup}>
@@ -740,7 +739,7 @@ export default function SoulModifyPage() {
           className={styles.smallButton}
         >
           오른쪽 사이드 노드 추가
-        </button>
+        </button> */}
 
         <hr className={styles.hr} />
 

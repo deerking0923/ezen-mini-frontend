@@ -376,7 +376,7 @@ export default function SoulCreatePage() {
         <hr className="hr" />
 
         {/* [13] 중앙 노드 */}
-        <h2 className="nodeTitle">중앙 노드</h2>
+        {/* <h2 className="nodeTitle">중앙 노드</h2>
         {centerNodes.map((node, index) => (
           <div key={index} className="nodeGroup">
             <label className="label">
@@ -422,7 +422,6 @@ export default function SoulCreatePage() {
 
         <hr className="hr" />
 
-        {/* [14] 왼쪽 사이드 노드 */}
         <h2 className="nodeTitle">왼쪽 사이드 노드</h2>
         {leftSideNodes.map((node, index) => (
           <div key={index} className="nodeGroup">
@@ -469,7 +468,6 @@ export default function SoulCreatePage() {
 
         <hr className="hr" />
 
-        {/* [15] 오른쪽 사이드 노드 */}
         <h2 className="nodeTitle">오른쪽 사이드 노드</h2>
         {rightSideNodes.map((node, index) => (
           <div key={index} className="nodeGroup">
@@ -512,7 +510,7 @@ export default function SoulCreatePage() {
         ))}
         <button type="button" onClick={addRightSideNode} className="smallButton">
           오른쪽 사이드 노드 추가
-        </button>
+        </button> */}
 
         <hr className="hr" />
 
