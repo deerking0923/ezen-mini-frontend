@@ -310,6 +310,14 @@
   pointer-events: none;
 }
 
+.description {
+  white-space: pre-line;
+}
+.descriptionText {
+  white-space: pre-line;
+}
+
+
 /* 작은 화면에서 더 많은 공간을 차지하지 않도록 패딩 및 텍스트 크기 조정 */
 @media (max-width: 768px) {
   /* 모바일 화면에서 제목 크기 줄이기 */

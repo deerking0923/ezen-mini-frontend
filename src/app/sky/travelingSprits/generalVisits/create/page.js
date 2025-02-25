@@ -21,6 +21,7 @@ export default function SoulCreatePage() {
   // 파일 관련 상태
   const [representativeImage, setRepresentativeImage] = useState(null);
   const [locationImage, setLocationImage] = useState(null);
+  const [nodeTableImage, setNodeTableImage] = useState(null);
   const [gestureGifs, setGestureGifs] = useState([]); // 여러 파일
   const [wearingShotImages, setWearingShotImages] = useState([]); // 여러 파일
 
@@ -42,21 +43,19 @@ export default function SoulCreatePage() {
     }));
   };
 
-  // 파일 입력 핸들러 (단일 파일)
+  // 단일 파일 입력 핸들러
   const handleFileChange = (e, setter) => {
     const file = e.target.files[0];
     setter(file);
   };
 
-  // 파일 입력 핸들러 (다중 파일)
+  // 다중 파일 입력 핸들러
   const handleMultipleFilesChange = (e, setter) => {
     const files = Array.from(e.target.files);
     setter(files);
   };
 
-  // 노드 추가 및 업데이트 핸들러들
-
-  // 중앙 노드
+  // 중앙 노드 추가 및 업데이트
   const addCenterNode = () => {
     setCenterNodes((prev) => [
       ...prev,
@@ -71,7 +70,7 @@ export default function SoulCreatePage() {
     });
   };
 
-  // 왼쪽 노드
+  // 왼쪽 노드 추가 및 업데이트
   const addLeftSideNode = () => {
     setLeftSideNodes((prev) => [
       ...prev,
@@ -86,7 +85,7 @@ export default function SoulCreatePage() {
     });
   };
 
-  // 오른쪽 노드 (항상 rightSideNodes로 사용)
+  // 오른쪽 노드 추가 및 업데이트
   const addRightSideNode = () => {
     setRightSideNodes((prev) => [
       ...prev,
@@ -103,6 +102,7 @@ export default function SoulCreatePage() {
 
   // 파일 업로드 함수 (단일 파일)
   async function uploadFile(file) {
+    if (!file) return "";
     const fd = new FormData();
     fd.append("file", file);
     const res = await fetch("https://korea-sky-planner.com/api/v1/upload", {
@@ -135,19 +135,20 @@ export default function SoulCreatePage() {
     e.preventDefault();
 
     try {
-      // 파일 업로드 (영혼 관련)
       const representativeImageUrl = representativeImage
         ? await uploadFile(representativeImage)
         : "";
       const locationImageUrl = locationImage
         ? await uploadFile(locationImage)
         : "";
+      const nodeTableImageUrl = nodeTableImage
+        ? await uploadFile(nodeTableImage)
+        : "";
       const gestureGifsUrls =
         gestureGifs.length > 0 ? await uploadFiles(gestureGifs) : [];
       const wearingShotImagesUrls =
         wearingShotImages.length > 0 ? await uploadFiles(wearingShotImages) : [];
 
-      // 노드 관련 업로드
       const uploadedCenterNodes = await Promise.all(
         centerNodes.map(async (node) => {
           const photoUrl = await uploadNodePhoto(node);
@@ -179,21 +180,25 @@ export default function SoulCreatePage() {
         })
       );
 
-      // 최종 payload 구성 (POST 시 rightSideNodes 필드 사용)
       const payload = {
         ...formData,
         rerunCount: Number(formData.rerunCount),
         representativeImage: representativeImageUrl,
         locationImage: locationImageUrl,
+        nodeTableImage: nodeTableImageUrl,
         gestureGifs: gestureGifsUrls,
         wearingShotImages: wearingShotImagesUrls,
         keywords: formData.keywords
           ? formData.keywords.split(",").map((s) => s.trim())
           : [],
+        creator: formData.creator,
+        description: formData.description,
         centerNodes: uploadedCenterNodes,
         leftSideNodes: uploadedLeftSideNodes,
         rightSideNodes: uploadedRightSideNodes,
       };
+
+      console.log("Sending Payload: ", payload);
 
       const res = await fetch("https://korea-sky-planner.com/api/v1/souls", {
         method: "POST",
@@ -221,7 +226,7 @@ export default function SoulCreatePage() {
       {error && <p className="error">{error}</p>}
       {success && <p className="success">{success}</p>}
       <form onSubmit={handleSubmit} className="form">
-        {/* 영혼 정보 입력 */}
+        {/* [1] 시즌 이름 */}
         <label className="label">
           시즌 이름:
           <input
@@ -233,6 +238,7 @@ export default function SoulCreatePage() {
             required
           />
         </label>
+        {/* [2] 순서 */}
         <label className="label">
           순서:
           <input
@@ -244,7 +250,7 @@ export default function SoulCreatePage() {
             required
           />
         </label>
-
+        {/* [3] 대표 이미지 */}
         <label className="label">
           대표 이미지:
           <input
@@ -254,6 +260,7 @@ export default function SoulCreatePage() {
             className="input"
           />
         </label>
+        {/* [4] 영혼 이름 */}
         <label className="label">
           이름:
           <input
@@ -265,6 +272,7 @@ export default function SoulCreatePage() {
             required
           />
         </label>
+        {/* [5] 날짜 */}
         <label className="label">
           시작 날짜:
           <input
@@ -287,6 +295,7 @@ export default function SoulCreatePage() {
             required
           />
         </label>
+        {/* [6] 복각 횟수 */}
         <label className="label">
           복각 횟수:
           <input
@@ -297,6 +306,7 @@ export default function SoulCreatePage() {
             className="input"
           />
         </label>
+        {/* [7] 위치 이미지 */}
         <label className="label">
           위치 이미지:
           <input
@@ -306,6 +316,17 @@ export default function SoulCreatePage() {
             className="input"
           />
         </label>
+        {/* [8] 노드 이미지 */}
+        <label className="label">
+          노드 이미지:
+          <input
+            type="file"
+            accept="image/*"
+            onChange={(e) => handleFileChange(e, setNodeTableImage)}
+            className="input"
+          />
+        </label>
+        {/* [9] 제스처 GIF */}
         <label className="label">
           제스처 GIF (여러 파일 선택 가능):
           <input
@@ -316,6 +337,7 @@ export default function SoulCreatePage() {
             className="input"
           />
         </label>
+        {/* [10] 착용샷 이미지 */}
         <label className="label">
           착용샷 이미지 (여러 파일 선택 가능):
           <input
@@ -326,6 +348,7 @@ export default function SoulCreatePage() {
             className="input"
           />
         </label>
+        {/* [11] 키워드 */}
         <label className="label">
           키워드 (쉼표로 구분):
           <input
@@ -337,10 +360,10 @@ export default function SoulCreatePage() {
           />
         </label>
 
-        <hr />
+        <hr className="hr" />
 
         {/* 중앙 노드 */}
-        <h2>중앙 노드</h2>
+        <h2 className="nodeTitle">중앙 노드</h2>
         {centerNodes.map((node, index) => (
           <div key={index} className="nodeGroup">
             <label className="label">
@@ -384,10 +407,10 @@ export default function SoulCreatePage() {
           중앙 노드 추가
         </button>
 
-        <hr />
+        <hr className="hr" />
 
         {/* 왼쪽 사이드 노드 */}
-        <h2>왼쪽 사이드 노드</h2>
+        <h2 className="nodeTitle">왼쪽 사이드 노드</h2>
         {leftSideNodes.map((node, index) => (
           <div key={index} className="nodeGroup">
             <label className="label">
@@ -431,10 +454,10 @@ export default function SoulCreatePage() {
           왼쪽 사이드 노드 추가
         </button>
 
-        <hr />
+        <hr className="hr" />
 
         {/* 오른쪽 사이드 노드 */}
-        <h2>오른쪽 사이드 노드</h2>
+        <h2 className="nodeTitle">오른쪽 사이드 노드</h2>
         {rightSideNodes.map((node, index) => (
           <div key={index} className="nodeGroup">
             <label className="label">
@@ -474,14 +497,13 @@ export default function SoulCreatePage() {
             </label>
           </div>
         ))}
-        <button
-          type="button"
-          onClick={addRightSideNode}
-          className="smallButton"
-        >
+        <button type="button" onClick={addRightSideNode} className="smallButton">
           오른쪽 사이드 노드 추가
         </button>
 
+        <hr className="hr" />
+
+        {/* 제작자 / 설명 */}
         <label className="label">
           제작자 명:
           <input
@@ -502,7 +524,7 @@ export default function SoulCreatePage() {
           />
         </label>
 
-        <hr />
+        <hr className="hr" />
 
         <button type="submit" className="button">
           생성하기

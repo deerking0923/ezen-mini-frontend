@@ -23,12 +23,15 @@ export default function SoulModifyPage() {
 
   const [representativeImage, setRepresentativeImage] = useState(null);
   const [locationImage, setLocationImage] = useState(null);
+  const [nodeTableImage, setNodeTableImage] = useState(null);
+
   const [gestureGifs, setGestureGifs] = useState([]);
   const [wearingShotImages, setWearingShotImages] = useState([]);
   
   // 미리보기용 상태
   const [repImagePreview, setRepImagePreview] = useState("");
   const [locImagePreview, setLocImagePreview] = useState("");
+  const [nodeTableImagePreview, setNodeTableImagePreview] = useState("");
   const [gestureGifsPreview, setGestureGifsPreview] = useState([]);
   const [wearingShotImagesPreview, setWearingShotImagesPreview] = useState([]);
 
@@ -138,6 +141,7 @@ export default function SoulModifyPage() {
 
         setRepImagePreview(soul.representativeImage || "");
         setLocImagePreview(soul.locationImage || "");
+        setNodeTableImagePreview(soul.nodeTableImage || "");
         setGestureGifsPreview(soul.gestureGifs || []);
         setWearingShotImagesPreview(soul.wearingShotImages || []);
 
@@ -172,6 +176,7 @@ export default function SoulModifyPage() {
     try {
       const representativeImageUrl = representativeImage ? await uploadFile(representativeImage) : repImagePreview;
       const locationImageUrl = locationImage ? await uploadFile(locationImage) : locImagePreview;
+      const nodeTableImageUrl = nodeTableImage ? await uploadFile(nodeTableImage) : nodeTableImagePreview;
       const gestureGifsUrls = gestureGifs.length > 0 ? await uploadFiles(gestureGifs) : gestureGifsPreview;
       const wearingShotImagesUrls = wearingShotImages.length > 0 ? await uploadFiles(wearingShotImages) : wearingShotImagesPreview;
   
@@ -211,6 +216,7 @@ export default function SoulModifyPage() {
         endDate: formData.endDate,
         rerunCount: Number(formData.rerunCount),
         locationImage: locationImageUrl,
+        nodeTableImage: nodeTableImageUrl,
         gestureGifs: gestureGifsUrls,
         wearingShotImages: wearingShotImagesUrls,
         keywords: formData.keywords
@@ -373,6 +379,26 @@ export default function SoulModifyPage() {
             type="file"
             accept="image/*"
             onChange={(e) => handleFileChange(e, setLocationImage)}
+            className={styles.input}
+          />
+        </label>
+
+        <label className={styles.label}>
+          노드표 이미지:
+          {nodeTableImagePreview && !nodeTableImage && (
+            <div className={styles.preview}>
+              <p>현재 이미지:</p>
+              <img
+                src={nodeTableImagePreview}
+                alt="현재 위치 이미지"
+                className={styles.previewImage}
+              />
+            </div>
+          )}
+          <input
+            type="file"
+            accept="image/*"
+            onChange={(e) => handleFileChange(e, setNodeTableImage)}
             className={styles.input}
           />
         </label>

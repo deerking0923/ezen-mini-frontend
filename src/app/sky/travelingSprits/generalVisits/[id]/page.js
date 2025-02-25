@@ -64,8 +64,6 @@ export default function SoulDetailPage() {
 
   // 중앙 노드의 개수를 기반으로 왼쪽과 오른쪽 노드를 렌더링
   const centerNodesCount = soul.centerNodes ? soul.centerNodes.length : 0;
-
-  // 왼쪽, 오른쪽 노드는 중앙 노드의 개수만큼 렌더링 (dummy 노드는 투명 처리)
   const leftNodesToRender = Array.from({ length: centerNodesCount }, (_, i) =>
     (soul.leftSideNodes && soul.leftSideNodes.find((node) => node.nodeOrder === i + 1)) || { dummy: true }
   );
@@ -107,13 +105,14 @@ export default function SoulDetailPage() {
 
           {soul.creator && (
             <div className={styles.creatorPanel}>
-              <strong>제작자:</strong> {soul.creator}
+              <strong>자료 제작자:</strong> {soul.creator}
             </div>
           )}
 
           {soul.description && (
             <div className={styles.detailItem}>
-              <strong>설명:</strong> {soul.description}
+              <strong>설명:</strong>
+              <p className={styles.descriptionText}>{soul.description}</p>
             </div>
           )}
 
@@ -132,6 +131,19 @@ export default function SoulDetailPage() {
             <img
               src={soul.locationImage}
               alt="위치 이미지"
+              className={styles.locationImage}
+            />
+          </div>
+        </div>
+      )}
+
+      {soul.nodeTableImage && (
+        <div className={styles.locationSection}>
+          <span className={styles.locationLabel}>노드표 이미지</span>
+          <div className={styles.locationImageWrapper}>
+            <img
+              src={soul.nodeTableImage}
+              alt="노드표 이미지"
               className={styles.locationImage}
             />
           </div>
@@ -175,13 +187,11 @@ export default function SoulDetailPage() {
       <div className={styles.nodeSection}>
         <div className={styles.nodeSectionTitle}>노드 표</div>
         <div className={styles.nodeContainer}>
-          {/* 왼쪽 노드 - 중앙 노드의 개수만큼 렌더링 */}
+          {/* 왼쪽 노드 */}
           <div className={styles.nodeColumn}>
             {leftNodesToRender.map((node, i) => (
               <div
-                className={`${styles.nodeItem} ${
-                  node.dummy ? styles.dummyNode : ""
-                }`}
+                className={`${styles.nodeItem} ${node.dummy ? styles.dummyNode : ""}`}
                 key={`left-${i}`}
               >
                 {!node.dummy && (
@@ -194,9 +204,7 @@ export default function SoulDetailPage() {
                         className={styles.nodeImage}
                       />
                     )}
-                    <span className={styles.nodePrice}>
-                      {node.currencyPrice}
-                    </span>
+                    <span className={styles.nodePrice}>{node.currencyPrice}</span>
                   </>
                 )}
               </div>
@@ -215,20 +223,16 @@ export default function SoulDetailPage() {
                     className={styles.nodeImage}
                   />
                 )}
-                <span className={styles.nodePrice}>
-                  {node.currencyPrice}
-                </span>
+                <span className={styles.nodePrice}>{node.currencyPrice}</span>
               </div>
             ))}
           </div>
 
-          {/* 오른쪽 노드 - 중앙 노드의 개수만큼 렌더링 */}
+          {/* 오른쪽 노드 */}
           <div className={styles.nodeColumn}>
             {rightNodesToRender.map((node, i) => (
               <div
-                className={`${styles.nodeItem} ${
-                  node.dummy ? styles.dummyNode : ""
-                }`}
+                className={`${styles.nodeItem} ${node.dummy ? styles.dummyNode : ""}`}
                 key={`right-${i}`}
               >
                 {!node.dummy && (
@@ -241,9 +245,7 @@ export default function SoulDetailPage() {
                         className={styles.nodeImage}
                       />
                     )}
-                    <span className={styles.nodePrice}>
-                      {node.currencyPrice}
-                    </span>
+                    <span className={styles.nodePrice}>{node.currencyPrice}</span>
                   </>
                 )}
               </div>
