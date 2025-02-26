@@ -6,7 +6,6 @@ import styles from "./list.module.css";
 import { useRouter } from "next/navigation";
 
 export default function SoulListPage() {
-
   const router = useRouter();
   const [souls, setSouls] = useState([]);
   const [page, setPage] = useState(0);
@@ -27,7 +26,6 @@ export default function SoulListPage() {
   const handlePageChange = (pageNumber) => {
     setPage(pageNumber - 1);
   };
-  
 
   // 시즌 이름 목록 (클릭 시 자동 검색)
   const seasonList = [
@@ -56,8 +54,6 @@ export default function SoulListPage() {
     { name: "무민", color: "#CDDC39" }, // 연두색
     { name: "광채", color: "#FF1493" }, // 딥핑크
   ];
-
-  
 
   const fetchSouls = async (pageNumber, query) => {
     setLoading(true);
@@ -260,9 +256,13 @@ export default function SoulListPage() {
                   </p>
                   {/* 두 번째 줄: 순서와 복각 횟수 */}
                   <p className={styles.secondLine}>
-                    {soul.orderNum < 0
-                      ? `${Math.abs(soul.orderNum)}번째 유랑단`
-                      : `${soul.orderNum}번째`}{" "}
+                    {soul.orderNum < 0 ? (
+                      <strong style={{ color: "blue" }}>
+                        {`${Math.abs(soul.orderNum)}번째 유랑단`}
+                      </strong>
+                    ) : (
+                      `${soul.orderNum}번째`
+                    )}{" "}
                     | {soul.rerunCount}차 복각
                   </p>
 
@@ -276,18 +276,16 @@ export default function SoulListPage() {
           </div>
           {/* 카드 보기는 페이지네이션 있음 */}
           <div className={styles.pagination}>
-  {pageButtons.map((p) => (
-    <button
-      key={p}
-      onClick={() => handlePageChange(p)}
-      className={currentPage === p ? styles.activePage : ""}
-    >
-      {p}
-    </button>
-  ))}
-</div>
-
-
+            {pageButtons.map((p) => (
+              <button
+                key={p}
+                onClick={() => handlePageChange(p)}
+                className={currentPage === p ? styles.activePage : ""}
+              >
+                {p}
+              </button>
+            ))}
+          </div>
         </>
       ) : (
         // 리스트 보기: 전체 목록, 페이지네이션 없이 테이블 형식 표시
@@ -298,13 +296,22 @@ export default function SoulListPage() {
               <th className={styles.thSeason}>시즌</th>
               <th className={styles.thName}>이름</th>
               <th className={styles.thPeriod}>기간</th>
-              <th className={styles.thRerun}>복각 횟수</th>
+              <th className={styles.thRerun}>n차 복각</th>
             </tr>
           </thead>
           <tbody>
             {souls.map((soul) => (
               <tr key={soul.id} className={styles.tableRow}>
-                <td className={styles.tdOrder}>{soul.orderNum}</td>
+                <td className={styles.tdOrder}>
+                  {soul.orderNum < 0 ? (
+                    <span style={{ color: "blue" }}>
+                      {`${Math.abs(soul.orderNum)}번째 유랑단`}
+                    </span>
+                  ) : (
+                    `${soul.orderNum}번째`
+                  )}
+                </td>
+
                 <td className={styles.tdSeason}>
                   <span
                     className={styles.seasonName}
