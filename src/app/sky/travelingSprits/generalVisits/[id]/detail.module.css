@@ -253,6 +253,24 @@
   color: #ffffff;
   font-weight: bold;
 }
+.representativeImageWrapper {
+  width: 250px;
+  aspect-ratio: 1 / 1; /* 1:1 영역 유지 */
+  overflow: hidden;
+  border-radius: 10px;
+  flex-shrink: 0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.representativeImage {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain; /* 원본 비율 유지하며 컨테이너 안에 들어감 */
+  object-position: center;
+}
 
 .descriptionText {
   white-space: pre-line;
