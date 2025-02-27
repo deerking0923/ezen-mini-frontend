@@ -148,19 +148,6 @@ export default function SoulDetailPage() {
           </div>
         </div>
       )}
-      {/* 영혼 위치 이미지 */}
-      {soul.locationImage && (
-        <div className={styles.locationSection}>
-          <span className={styles.locationLabel}>영혼 위치</span>
-          <div className={styles.locationImageWrapper}>
-            <img
-              src={soul.locationImage}
-              alt="위치 이미지"
-              className={styles.locationImage}
-            />
-          </div>
-        </div>
-      )}
 
       {soul.wearingShotImages && soul.wearingShotImages.length > 0 && (
         <div className={styles.section}>
@@ -179,99 +166,19 @@ export default function SoulDetailPage() {
         </div>
       )}
 
-      {soul.gestureGifs && soul.gestureGifs.length > 0 && (
-        <div className={styles.section}>
-          <strong>제스처 GIFs:</strong>
-          <ul className={styles.horizontalList}>
-            {soul.gestureGifs.map((gif, index) => (
-              <li key={index}>
-                <img
-                  src={gif}
-                  alt={`제스처 GIF ${index + 1}`}
-                  className={styles.smallImage}
-                />
-              </li>
-            ))}
-          </ul>
+      {/* 영혼 위치 이미지 */}
+      {soul.locationImage && (
+        <div className={styles.locationSection}>
+          <span className={styles.locationLabel}>영혼 위치</span>
+          <div className={styles.locationImageWrapper}>
+            <img
+              src={soul.locationImage}
+              alt="위치 이미지"
+              className={styles.locationImage}
+            />
+          </div>
         </div>
       )}
-
-      <div className={styles.nodeSection}>
-        <div className={styles.nodeContainer}>
-          {/* 왼쪽 노드 */}
-          <div className={styles.nodeColumn}>
-            {leftNodesToRender.map((node, i) => (
-              <div
-                className={`${styles.nodeItem} ${
-                  node.dummy ? styles.dummyNode : ""
-                }`}
-                key={`left-${i}`}
-              >
-                {!node.dummy && (
-                  <>
-                    <p>순서 {node.nodeOrder}</p>
-                    {node.photo && (
-                      <img
-                        src={node.photo}
-                        alt={`왼쪽 노드 ${node.nodeOrder}`}
-                        className={styles.nodeImage}
-                      />
-                    )}
-                    <span className={styles.nodePrice}>
-                      {node.currencyPrice}
-                    </span>
-                  </>
-                )}
-              </div>
-            ))}
-          </div>
-
-          {/* 중앙 노드 */}
-          <div className={styles.nodeColumn}>
-            {soul.centerNodes?.map((node, i) => (
-              <div className={styles.nodeItem} key={`center-${i}`}>
-                <p>순서 {node.nodeOrder}</p>
-                {node.photo && (
-                  <img
-                    src={node.photo}
-                    alt={`중앙 노드 ${node.nodeOrder}`}
-                    className={styles.nodeImage}
-                  />
-                )}
-                <span className={styles.nodePrice}>{node.currencyPrice}</span>
-              </div>
-            ))}
-          </div>
-
-          {/* 오른쪽 노드 */}
-          <div className={styles.nodeColumn}>
-            {rightNodesToRender.map((node, i) => (
-              <div
-                className={`${styles.nodeItem} ${
-                  node.dummy ? styles.dummyNode : ""
-                }`}
-                key={`right-${i}`}
-              >
-                {!node.dummy && (
-                  <>
-                    <p>순서 {node.nodeOrder}</p>
-                    {node.photo && (
-                      <img
-                        src={node.photo}
-                        alt={`오른쪽 노드 ${node.nodeOrder}`}
-                        className={styles.nodeImage}
-                      />
-                    )}
-                    <span className={styles.nodePrice}>
-                      {node.currencyPrice}
-                    </span>
-                  </>
-                )}
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
 
       {soul.keywords && soul.keywords.length > 0 && (
         <div className={styles.keywordsSection}>
