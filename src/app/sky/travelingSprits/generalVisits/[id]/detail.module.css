@@ -187,7 +187,8 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: 0.5rem;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
   padding: 0 1rem;
 }
 
@@ -253,6 +254,9 @@
   font-weight: bold;
 }
 
+.descriptionText {
+  white-space: pre-line;
+}
 
 
 @media screen and (max-width: 768px) {
