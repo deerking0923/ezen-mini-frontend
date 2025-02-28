@@ -34,7 +34,7 @@ body {
 
 .header-title {
   margin: 0;
-  font-size: 20px; /* 작게 조정된 폰트 크기 */
+  font-size: 20px; /* 기본 폰트 크기 */
   font-weight: bold;
   color: #ffffff;
   cursor: pointer;
@@ -123,7 +123,6 @@ a {
   text-decoration: none;
   color: inherit;
 }
-  
 
 /* 크레딧 버튼을 왼쪽에 배치 */
 .credit-button {
@@ -138,4 +137,28 @@ a {
 
 .credit-button:hover {
   background-color: #555555; /* 더 어두운 회색 */
+}
+
+/* 모바일 화면에 적용될 스타일 */
+@media (max-width: 768px) {
+  .header {
+    min-height: 50px; /* 모바일에서 헤더 높이를 100px로 설정 */
+    padding: 0 15px;  /* 모바일에서 좌우 여백 약간 줄이기 */
+  }
+
+  .header-title {
+    font-size: 18px; /* 모바일에서 헤더 제목 크기 줄이기 */
+    line-height: 1.5; /* 모바일에서 줄 간격을 늘려서 보기 좋게 하기 */
+  }
+
+  .nav-button, .credit-button {
+    padding: 4px 6px; /* 모바일에서 버튼 크기 줄이기 */
+    font-size: 0.9rem; /* 버튼 글자 크기 줄이기 */
+  }
+
+  html, body {
+    overflow-x: hidden;
+    width: 100vw; /* 전체 너비를 100%로 설정 */
+    min-width: 1000px; /* 최소 너비를 1000px로 설정하여 PC와 유사한 크기 유지 */
+  }
 }

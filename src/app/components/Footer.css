@@ -1,3 +1,15 @@
+/* 기본 스타일 */
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* 최소 높이를 100vh로 설정하여 화면을 꽉 채우게 설정 */
+}
+
+main {
+  flex: 1; /* main이 flex로 확장되어 화면을 채우게 설정 */
+}
+
+/* 푸터 고정 설정 */
 .footer {
   background-color: #41659b;
   color: #e0e0e0;
@@ -5,9 +17,9 @@
   padding: 15px 20px;
   margin-top: 30px;
   width: 100%;
-  padding: 1rem;
-  position: relative; /* 푸터가 하단에 자연스럽게 배치되도록 */
+  position: relative;
   bottom: 0;
+  flex-shrink: 0; /* 푸터가 줄어들지 않도록 설정 */
 }
 
 .footer-content {
@@ -15,17 +27,4 @@
   flex-direction: column;
   align-items: center;
   gap: 10px;
-}
-
-/* 링크 스타일 */
-.footer-nav a {
-  color: #e0e0e0;
-  text-decoration: none;
-  margin: 0 10px;
-  font-size: 0.9rem;
-  transition: color 0.2s ease;
-}
-
-.footer-nav a:hover {
-  color: #818181;
 }
