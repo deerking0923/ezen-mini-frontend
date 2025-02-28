@@ -156,9 +156,9 @@ a {
     font-size: 0.9rem; /* 버튼 글자 크기 줄이기 */
   }
 
-  html, body {
+  /* html, body {
     overflow-x: hidden;
-    width: 100vw; /* 전체 너비를 100%로 설정 */
-    min-width: 1000px; /* 최소 너비를 1000px로 설정하여 PC와 유사한 크기 유지 */
-  }
+    width: 100vw; 
+    min-width: 1000px; 
+  } */
 }

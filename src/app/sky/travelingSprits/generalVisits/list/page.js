@@ -152,20 +152,23 @@ function SoulListContent() {
       <div className={styles.noticePanel}>
         <h2 className={styles.noticeTitle}>역대 유랑</h2>
         <p className={styles.noticeDescription}>
+        <br />
           본 게시판은 지금까지 온 유랑들의 정보를 담고 있는 게시판입니다.
+          <br />
           <br />
           찾고 있는 유랑이 기억나지 않을 때 검색창에 키워드를 입력해 검색해주세요.
           <br />
-          시즌 이름이나 대표 이름으로 검색이 가능합니다.
           <br />
           <span className={styles.noticeExample}>
             (ex - 족제비, 유랑단, 수염)
           </span>
         </p>
+        <br />
         <p className={styles.noticeSubDescription}>
           아래 시즌 이름을 클릭하면 자동 검색됩니다:
         </p>
         <br />
+        
         <div className={styles.seasonChipsContainer}>
           {seasonList.map((season) => (
             <button
