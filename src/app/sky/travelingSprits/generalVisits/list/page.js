@@ -2,19 +2,27 @@
 
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
+import { useRouter, useSearchParams } from "next/navigation";
 import styles from "./list.module.css";
-import { useRouter } from "next/navigation";
 
 export default function SoulListPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  // URL의 page 값을 읽어 초기 페이지(1-indexed) 결정
+  const initialPage = parseInt(searchParams.get("page") || "1", 10);
+
   const [souls, setSouls] = useState([]);
-  const [page, setPage] = useState(0);
+  // 내부 state는 0-indexed로 관리 (ex. 0 => 1페이지)
+  const [page, setPage] = useState(initialPage - 1);
   const [totalPages, setTotalPages] = useState(1);
   const [searchQuery, setSearchQuery] = useState("");
   const [submittedQuery, setSubmittedQuery] = useState("");
   const [viewMode, setViewMode] = useState("card"); // "card" or "list"
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  // 리스트 보기 모드에서 정렬 기준 ("latest" : 최신순, "oldest" : 오래된 순)
+  const [listSort, setListSort] = useState("latest");
 
   const currentPage = page + 1;
   const pageBlockStart = Math.floor((currentPage - 1) / 10) * 10 + 1;
@@ -23,43 +31,12 @@ export default function SoulListPage() {
   for (let i = pageBlockStart; i <= pageBlockEnd; i++) {
     pageButtons.push(i);
   }
-  const handlePageChange = (pageNumber) => {
-    setPage(pageNumber - 1);
-  };
-
-  // 시즌 이름 목록 (클릭 시 자동 검색)
-  const seasonList = [
-    { name: "감사", color: "#FFD700" }, // 노란색
-    { name: "빛추", color: "#FF6347" }, // 토마토
-    { name: "친밀", color: "#4CAF50" }, // 초록색
-    { name: "리듬", color: "#3F51B5" }, // 파란색
-    { name: "마법", color: "#9C27B0" }, // 보라색
-    { name: "낙원", color: "#FF5722" }, // 오렌지색
-    { name: "예언", color: "#9E9E9E" }, // 회색
-    { name: "꿈", color: "#00BCD4" }, // 청록색
-    { name: "협력", color: "#8BC34A" }, // 연두색
-    { name: "어린왕자", color: "#FFC107" }, // 노란색
-    { name: "비행", color: "#03A9F4" }, // 파란색
-    { name: "심해", color: "#2196F3" }, // 진한 파란색
-    { name: "공연", color: "#FF4081" }, // 핑크색
-    { name: "파편", color: "#607D8B" }, // 회색
-    { name: "오로라", color: "#673AB7" }, // 보라색
-    { name: "기억", color: "#009688" }, // 청록색
-    { name: "성장", color: "#8BC34A" }, // 초록색
-    { name: "순간", color: "#FF9800" }, // 오렌지색
-    { name: "재생", color: "#3F51B5" }, // 파란색
-    { name: "사슴", color: "#A1887F" }, // 갈색
-    { name: "둥지", color: "#795548" }, // 갈색
-    { name: "듀엣", color: "#FFEB3B" }, // 노란색
-    { name: "무민", color: "#CDDC39" }, // 연두색
-    { name: "광채", color: "#FF1493" }, // 딥핑크
-  ];
 
   const fetchSouls = async (pageNumber, query) => {
     setLoading(true);
     let url = "";
     if (query && query.trim() !== "") {
-      // 검색어가 있으면 search 엔드포인트 사용
+      // 검색어가 있으면 search 엔드포인트 사용 (페이지네이션 X)
       url = `https://korea-sky-planner.com/api/v1/souls/search?query=${encodeURIComponent(
         query
       )}`;
@@ -68,8 +45,12 @@ export default function SoulListPage() {
         // 카드 보기: 페이지네이션 적용 (한 페이지당 12개)
         url = `https://korea-sky-planner.com/api/v1/souls?page=${pageNumber}`;
       } else {
-        // 리스트 보기: 전체 목록 반환 (엔드포인트 가정: /api/v1/souls/all)
-        url = `https://korea-sky-planner.com/api/v1/souls/all`;
+        // 리스트 보기: 전체 목록 반환, 정렬에 따라 API 선택
+        if (listSort === "oldest") {
+          url = `https://korea-sky-planner.com/api/v1/souls/reverse`;
+        } else {
+          url = `https://korea-sky-planner.com/api/v1/souls/all`;
+        }
       }
     }
     try {
@@ -84,7 +65,7 @@ export default function SoulListPage() {
           results = Array.isArray(data.data?.content) ? data.data.content : [];
           setTotalPages(data.data?.totalPages || 1);
         } else {
-          // 리스트 view: 전체 목록 (페이지네이션 없음)
+          // 리스트 보기: 전체 목록, 페이지네이션 없이
           results = Array.isArray(data.data) ? data.data : [];
           setTotalPages(1);
         }
@@ -98,17 +79,10 @@ export default function SoulListPage() {
     }
   };
 
+  // viewMode, page, submittedQuery, listSort 변경 시 데이터를 다시 가져옵니다.
   useEffect(() => {
-    // 리스팅 방식(viewMode)이 바뀌면 페이지를 초기화합니다.
-    setPage(0);
-    fetchSouls(0, submittedQuery);
-  }, [submittedQuery, viewMode]);
-
-  useEffect(() => {
-    if (viewMode === "card") {
-      fetchSouls(page, submittedQuery);
-    }
-  }, [page, submittedQuery, viewMode]);
+    fetchSouls(page, submittedQuery);
+  }, [page, submittedQuery, viewMode, listSort]);
 
   const handleSearchChange = (e) => {
     setSearchQuery(e.target.value);
@@ -118,19 +92,48 @@ export default function SoulListPage() {
     e.preventDefault();
     setPage(0);
     setSubmittedQuery(searchQuery);
+    router.push(`/sky/travelingSprits/generalVisits/list?page=1`);
   };
 
   const handleSeasonClick = (seasonName) => {
     setSearchQuery(seasonName);
     setSubmittedQuery(seasonName);
     setPage(0);
+    router.push(`/sky/travelingSprits/generalVisits/list?page=1`);
   };
 
-  const goToPage = (newPage) => {
-    if (newPage >= 0 && newPage < totalPages) {
-      setPage(newPage);
-    }
+  // 페이지 버튼 클릭 시 state와 URL 업데이트 (카드 보기에서만 적용)
+  const handlePageChange = (pageNumber) => {
+    setPage(pageNumber - 1);
+    router.push(`/sky/travelingSprits/generalVisits/list?page=${pageNumber}`);
   };
+
+  const seasonList = [
+    { name: "감사", color: "#FFD700" },
+    { name: "빛추", color: "#FF6347" },
+    { name: "친밀", color: "#4CAF50" },
+    { name: "리듬", color: "#3F51B5" },
+    { name: "마법", color: "#9C27B0" },
+    { name: "낙원", color: "#FF5722" },
+    { name: "예언", color: "#9E9E9E" },
+    { name: "꿈", color: "#00BCD4" },
+    { name: "협력", color: "#8BC34A" },
+    { name: "어린왕자", color: "#FFC107" },
+    { name: "비행", color: "#03A9F4" },
+    { name: "심해", color: "#2196F3" },
+    { name: "공연", color: "#FF4081" },
+    { name: "파편", color: "#607D8B" },
+    { name: "오로라", color: "#673AB7" },
+    { name: "기억", color: "#009688" },
+    { name: "성장", color: "#8BC34A" },
+    { name: "순간", color: "#FF9800" },
+    { name: "재생", color: "#3F51B5" },
+    { name: "사슴", color: "#A1887F" },
+    { name: "둥지", color: "#795548" },
+    { name: "듀엣", color: "#FFEB3B" },
+    { name: "무민", color: "#CDDC39" },
+    { name: "광채", color: "#FF1493" },
+  ];
 
   return (
     <div className={styles.container}>
@@ -146,18 +149,19 @@ export default function SoulListPage() {
           시즌 이름이나 대표 이름으로 검색이 가능합니다.
           <br />
           <span className={styles.noticeExample}>
-            (ex - 족제비, 불템, 마법)
+            (ex - 족제비, 유랑단, 수염)
           </span>
         </p>
         <p className={styles.noticeSubDescription}>
           아래 시즌 이름을 클릭하면 자동 검색됩니다:
         </p>
+        <br />
         <div className={styles.seasonChipsContainer}>
           {seasonList.map((season) => (
             <button
-              key={season.name} // 고유한 key 값은 name 사용
+              key={season.name}
               className={styles.seasonChip}
-              style={{ backgroundColor: season.color }} // 동적으로 배경색을 적용
+              style={{ backgroundColor: season.color }}
               onClick={() => handleSeasonClick(season.name)}
             >
               {season.name}
@@ -165,7 +169,21 @@ export default function SoulListPage() {
           ))}
         </div>
       </div>
-
+      {/* 검색 영역 */}
+      <div className={styles.searchContainer}>
+        <form onSubmit={handleSearchSubmit} className={styles.searchForm}>
+          <input
+            type="text"
+            placeholder="키워드, 시즌, 영혼 이름 검색"
+            value={searchQuery}
+            onChange={handleSearchChange}
+            className={styles.searchInput}
+          />
+          <button type="submit" className={styles.searchButton}>
+            검색
+          </button>
+        </form>
+      </div>
       {/* 탭 버튼 */}
       <div className={styles.viewTabs}>
         <button
@@ -184,34 +202,27 @@ export default function SoulListPage() {
         >
           리스트 보기
         </button>
-        {/* <button
-          className={styles.tabButton}
-          onClick={() => router.push("/sky/travelingSprits/specialVisits/list")}
-        >
-          유랑단 보러가기
-        </button> */}
+        {viewMode === "list" && (
+          <div className={styles.sortButtons}>
+            <button
+              className={`${styles.sortButton} ${
+                listSort === "latest" ? styles.activeSort : ""
+              }`}
+              onClick={() => setListSort("latest")}
+            >
+              최신순
+            </button>
+            <button
+              className={`${styles.sortButton} ${
+                listSort === "oldest" ? styles.activeSort : ""
+              }`}
+              onClick={() => setListSort("oldest")}
+            >
+              오래된 순
+            </button>
+          </div>
+        )}
       </div>
-      <div className={styles.searchContainer}>
-        <form onSubmit={handleSearchSubmit} className={styles.searchForm}>
-          <input
-            type="text"
-            placeholder="키워드, 시즌, 영혼 이름 검색"
-            value={searchQuery}
-            onChange={handleSearchChange}
-            className={styles.searchInput}
-          />
-          <button type="submit" className={styles.searchButton}>
-            검색
-          </button>
-        </form>
-      </div>
-
-      <div className={styles.buttonContainer}>
-        <Link href="/sky/travelingSprits/generalVisits/create">
-          <button className={styles.createButton}>영혼 생성하기</button>
-        </Link>
-      </div>
-
       {loading ? (
         <div className={styles.loading}>Loading...</div>
       ) : error ? (
@@ -223,7 +234,7 @@ export default function SoulListPage() {
           <div className={styles.cardsGrid}>
             {souls.map((soul) => (
               <Link
-                href={`/sky/travelingSprits/generalVisits/${soul.id}`}
+                href={`/sky/travelingSprits/generalVisits/${soul.id}?page=${currentPage}`}
                 key={soul.id}
                 className={styles.soulCard}
               >
@@ -239,7 +250,6 @@ export default function SoulListPage() {
                   )}
                 </div>
                 <div className={styles.cardContent}>
-                  {/* 첫 번째 줄: 시즌 이름 패널 + 영혼 이름 */}
                   <p className={styles.firstLine}>
                     <span
                       className={styles.seasonName}
@@ -254,7 +264,6 @@ export default function SoulListPage() {
                     </span>
                     <span className={styles.soulName}>{soul.name}</span>
                   </p>
-                  {/* 두 번째 줄: 순서와 복각 횟수 */}
                   <p className={styles.secondLine}>
                     {soul.orderNum < 0 ? (
                       <strong style={{ color: "blue" }}>
@@ -265,8 +274,6 @@ export default function SoulListPage() {
                     )}{" "}
                     | {soul.rerunCount}차 복각
                   </p>
-
-                  {/* 세 번째 줄: 날짜만 표시 (기간 레이블 없이, 작은 글씨) */}
                   <p className={styles.thirdLine}>
                     {soul.startDate} ~ {soul.endDate}
                   </p>
@@ -274,70 +281,74 @@ export default function SoulListPage() {
               </Link>
             ))}
           </div>
-          {/* 카드 보기는 페이지네이션 있음 */}
-          <div className={styles.pagination}>
-            {pageButtons.map((p) => (
-              <button
-                key={p}
-                onClick={() => handlePageChange(p)}
-                className={currentPage === p ? styles.activePage : ""}
-              >
-                {p}
-              </button>
-            ))}
-          </div>
+          {submittedQuery.trim() === "" && viewMode === "card" && (
+            <div className={styles.pagination}>
+              {pageButtons.map((p) => (
+                <button
+                  key={p}
+                  onClick={() => handlePageChange(p)}
+                  className={currentPage === p ? styles.activePage : ""}
+                >
+                  {p}
+                </button>
+              ))}
+            </div>
+          )}
         </>
       ) : (
-        // 리스트 보기: 전체 목록, 페이지네이션 없이 테이블 형식 표시
-        <table className={styles.tableView}>
-          <thead>
-            <tr>
-              <th className={styles.thOrder}>순서</th>
-              <th className={styles.thSeason}>시즌</th>
-              <th className={styles.thName}>이름</th>
-              <th className={styles.thPeriod}>기간</th>
-              <th className={styles.thRerun}>n차 복각</th>
-            </tr>
-          </thead>
-          <tbody>
-            {souls.map((soul) => (
-              <tr key={soul.id} className={styles.tableRow}>
-                <td className={styles.tdOrder}>
-                  {soul.orderNum < 0 ? (
-                    <span style={{ color: "blue" }}>
-                      {`${Math.abs(soul.orderNum)}번째 유랑단`}
-                    </span>
-                  ) : (
-                    `${soul.orderNum}번째`
-                  )}
-                </td>
-
-                <td className={styles.tdSeason}>
-                  <span
-                    className={styles.seasonName}
-                    style={{
-                      backgroundColor:
-                        seasonList.find(
-                          (season) => season.name === soul.seasonName
-                        )?.color || "#444", // 색상 적용
-                    }}
-                  >
-                    {soul.seasonName}
-                  </span>
-                </td>
-                <td className={styles.tdName}>
-                  <Link href={`/sky/travelingSprits/generalVisits/${soul.id}`}>
-                    {soul.name}
-                  </Link>
-                </td>
-                <td className={styles.tdPeriod}>
-                  {soul.startDate} ~ {soul.endDate}
-                </td>
-                <td className={styles.tdRerun}>{soul.rerunCount}</td>
+        <>
+          {/* 리스트 보기 모드: 정렬 버튼 */}
+          <table className={styles.tableView}>
+            <thead>
+              <tr>
+                <th className={styles.thOrder}>순서</th>
+                <th className={styles.thSeason}>시즌</th>
+                <th className={styles.thName}>이름</th>
+                <th className={styles.thPeriod}>기간</th>
+                <th className={styles.thRerun}>n차 복각</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {souls.map((soul) => (
+                <tr
+                  key={soul.id}
+                  className={styles.tableRow}
+                  onClick={() =>
+                    router.push(`/sky/travelingSprits/generalVisits/${soul.id}`)
+                  }
+                >
+                  <td className={styles.tdOrder}>
+                    {soul.orderNum < 0 ? (
+                      <span style={{ color: "blue" }}>
+                        {`${Math.abs(soul.orderNum)}번째 유랑단`}
+                      </span>
+                    ) : (
+                      `${soul.orderNum}번째`
+                    )}
+                  </td>
+                  <td className={styles.tdSeason}>
+                    <span
+                      className={styles.seasonName}
+                      style={{
+                        backgroundColor:
+                          seasonList.find(
+                            (season) => season.name === soul.seasonName
+                          )?.color || "#444",
+                      }}
+                    >
+                      {soul.seasonName}
+                    </span>
+                  </td>
+                  <td className={styles.tdName}>{soul.name}</td>
+                  <td className={styles.tdPeriod}>
+                    {soul.startDate} ~ {soul.endDate}
+                  </td>
+                  <td className={styles.tdRerun}>{soul.rerunCount}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </>
       )}
     </div>
   );

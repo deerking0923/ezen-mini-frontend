@@ -1,15 +1,18 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { useParams, useRouter } from "next/navigation";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
+
 import styles from "./detail.module.css";
 
 export default function SoulDetailPage() {
+  const searchParams = useSearchParams(); 
   const { id } = useParams();
   const router = useRouter();
   const [soul, setSoul] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const currentPage = searchParams.get("page") || 1;
   // 모바일용 착용샷 토글 state
   const [showMoreWearingShots, setShowMoreWearingShots] = useState(false);
 
@@ -91,7 +94,11 @@ export default function SoulDetailPage() {
       <div className={styles.topNavigation}>
         <button
           className={styles.listButton}
-          onClick={() => router.push("/sky/travelingSprits/generalVisits/list")}
+          onClick={() =>
+            router.push(
+              `/sky/travelingSprits/generalVisits/list?page=${currentPage}`
+            )
+          }
         >
           목록 가기
         </button>
@@ -193,9 +200,7 @@ export default function SoulDetailPage() {
             </div>
             {soul.wearingShotImages.length > 1 && (
               <button
-                onClick={() =>
-                  setShowMoreWearingShots((prev) => !prev)
-                }
+                onClick={() => setShowMoreWearingShots((prev) => !prev)}
                 className={styles.toggleButton}
               >
                 {showMoreWearingShots ? "접기" : "더보기"}
@@ -248,7 +253,11 @@ export default function SoulDetailPage() {
       <div className={styles.centerNavigation}>
         <button
           className={styles.centerListButton}
-          onClick={() => router.push("/sky/travelingSprits/generalVisits/list")}
+          onClick={() =>
+            router.push(
+              `/sky/travelingSprits/generalVisits/list?page=${currentPage}`
+            )
+          }
         >
           목록가기
         </button>
