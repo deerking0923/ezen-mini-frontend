@@ -413,6 +413,15 @@ export default function SoulModifyPage() {
           />
         </label>
 
+        <label className={styles.label}>
+          설명:
+          <textarea
+            name="description"
+            value={formData.description}
+            onChange={handleChange}
+            className={styles.input}
+          />
+        </label>
         {/* [6] 복각 횟수 */}
         <label className={styles.label}>
           복각 횟수:
@@ -752,15 +761,6 @@ export default function SoulModifyPage() {
             type="text"
             name="creator"
             value={formData.creator}
-            onChange={handleChange}
-            className={styles.input}
-          />
-        </label>
-        <label className={styles.label}>
-          설명:
-          <textarea
-            name="description"
-            value={formData.description}
             onChange={handleChange}
             className={styles.input}
           />

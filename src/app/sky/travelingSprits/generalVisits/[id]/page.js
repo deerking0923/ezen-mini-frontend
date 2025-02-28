@@ -10,6 +10,8 @@ export default function SoulDetailPage() {
   const [soul, setSoul] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  // 모바일용 착용샷 토글 state
+  const [showMoreWearingShots, setShowMoreWearingShots] = useState(false);
 
   useEffect(() => {
     fetch(`https://korea-sky-planner.com/api/v1/souls/${id}`)
@@ -39,7 +41,6 @@ export default function SoulDetailPage() {
   const handleAdd = () => {
     router.push(`/sky/travelingSprits/generalVisits/add/${id}`);
   };
-
   const handleDelete = () => {
     const confirmation = prompt(
       '정말 삭제하시겠습니까? 삭제를 진행하려면 "1234"를 입력하세요.'
@@ -65,7 +66,7 @@ export default function SoulDetailPage() {
       });
   };
 
-  // 중앙 노드의 개수를 기반으로 왼쪽과 오른쪽 노드를 렌더링
+  // 기타 노드 렌더링 등은 그대로 유지
   const centerNodesCount = soul.centerNodes ? soul.centerNodes.length : 0;
   const leftNodesToRender = Array.from(
     { length: centerNodesCount },
@@ -96,7 +97,7 @@ export default function SoulDetailPage() {
         </button>
       </div>
 
-      {/* 상단 레이아웃: 대표 이미지(왼), 정보(오른) */}
+      {/* 상단 레이아웃 */}
       <div className={styles.topLayout}>
         <div className={styles.representativeImageWrapper}>
           {soul.representativeImage && (
@@ -107,7 +108,6 @@ export default function SoulDetailPage() {
             />
           )}
         </div>
-
         <div className={styles.infoSection}>
           <div className={styles.topInfoGrid}>
             <div className={styles.detailItem}>
@@ -115,7 +115,6 @@ export default function SoulDetailPage() {
                 ? `${Math.abs(soul.orderNum)}번째 유랑단`
                 : `${soul.orderNum}번째 영혼`}
             </div>
-
             <div className={styles.detailItem}>
               <strong>시즌:</strong> {soul.seasonName}
             </div>
@@ -127,7 +126,6 @@ export default function SoulDetailPage() {
               <strong>차 복각</strong>
             </div>
           </div>
-
           {soul.description && (
             <div className={styles.detailItem}>
               <p className={styles.descriptionText}>{soul.description}</p>
@@ -135,7 +133,8 @@ export default function SoulDetailPage() {
           )}
         </div>
       </div>
-      {/* 노드표 이미지: 값이 있을 때만 표시 */}
+
+      {/* 노드표 */}
       {soul.nodeTableImage && (
         <div className={styles.nodeTableSection}>
           <span className={styles.nodeTableLabel}>노드표</span>
@@ -149,8 +148,9 @@ export default function SoulDetailPage() {
         </div>
       )}
 
+      {/* PC용 가로 스크롤 착용샷 */}
       {soul.wearingShotImages && soul.wearingShotImages.length > 0 && (
-        <div className={styles.section}>
+        <div className={styles.desktopWearingShot}>
           <strong>착용샷</strong>
           <ul className={styles.horizontalList}>
             {soul.wearingShotImages.map((img, index) => (
@@ -163,6 +163,45 @@ export default function SoulDetailPage() {
               </li>
             ))}
           </ul>
+        </div>
+      )}
+
+      {/* 모바일용 세로 리스트 + 토글 버튼 착용샷 */}
+      {soul.wearingShotImages && soul.wearingShotImages.length > 0 && (
+        <div className={styles.mobileWearingShot}>
+          <strong>착용샷</strong>
+          <div className={styles.wearingShotWrapper}>
+            <div
+              className={`${styles.wearingShotContainer} ${
+                showMoreWearingShots ? styles.showMore : ""
+              }`}
+            >
+              <ul className={styles.verticalList}>
+                {(showMoreWearingShots
+                  ? soul.wearingShotImages
+                  : [soul.wearingShotImages[0]]
+                ).map((img, index) => (
+                  <li key={index}>
+                    <img
+                      src={img}
+                      alt={`착용샷 ${index + 1}`}
+                      className={styles.smallImage}
+                    />
+                  </li>
+                ))}
+              </ul>
+            </div>
+            {soul.wearingShotImages.length > 1 && (
+              <button
+                onClick={() =>
+                  setShowMoreWearingShots((prev) => !prev)
+                }
+                className={styles.toggleButton}
+              >
+                {showMoreWearingShots ? "접기" : "더보기"}
+              </button>
+            )}
+          </div>
         </div>
       )}
 
@@ -180,6 +219,7 @@ export default function SoulDetailPage() {
         </div>
       )}
 
+      {/* 키워드 및 제작자 영역 */}
       {soul.keywords && soul.keywords.length > 0 && (
         <div className={styles.keywordsSection}>
           <div className={styles.keywordsLeft}>
@@ -197,7 +237,6 @@ export default function SoulDetailPage() {
           자료 출처: {soul.creator}
         </div>
       )}
-
       {soul.materialUrl && (
         <div className={styles.sourceLink}>
           <a href={soul.materialUrl} target="_blank" rel="noopener noreferrer">

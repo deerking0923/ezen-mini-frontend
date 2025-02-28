@@ -310,7 +310,7 @@ export default function SoulAddPage() {
       console.log("Server response:", result);
 
       setSuccess("영혼이 성공적으로 생성되었습니다!");
-      router.push("/sky/travelingSprits/generalVisits/list");
+      router.push(`/sky/travelingSprits/generalVisits/${id}`);
     } catch (err) {
       console.error("Error during submit:", err);
       setError(err.message);
@@ -384,29 +384,39 @@ export default function SoulAddPage() {
           />
         </label>
 
+        <label className={styles.label}>
+          설명:
+          <textarea
+            name="description"
+            value={formData.description}
+            onChange={handleChange}
+            className={styles.input}
+          />
+        </label>
+
         {/* [5] 날짜 */}
         <label className="label">
-  시작 날짜:
-  <input
-    type="text"
-    name="startDate"
-    value={formData.startDate}
-    onChange={handleChange}
-    className="input"
-    required
-  />
-</label>
-<label className="label">
-  마감 날짜:
-  <input
-    type="text"
-    name="endDate"
-    value={formData.endDate}
-    onChange={handleChange}
-    className="input"
-    required
-  />
-</label>
+          시작 날짜:
+          <input
+            type="text"
+            name="startDate"
+            value={formData.startDate}
+            onChange={handleChange}
+            className="input"
+            required
+          />
+        </label>
+        <label className="label">
+          마감 날짜:
+          <input
+            type="text"
+            name="endDate"
+            value={formData.endDate}
+            onChange={handleChange}
+            className="input"
+            required
+          />
+        </label>
 
         {/* [6] 복각 횟수 */}
         <label className={styles.label}>
@@ -748,15 +758,6 @@ export default function SoulAddPage() {
             type="text"
             name="creator"
             value={formData.creator}
-            onChange={handleChange}
-            className={styles.input}
-          />
-        </label>
-        <label className={styles.label}>
-          설명:
-          <textarea
-            name="description"
-            value={formData.description}
             onChange={handleChange}
             className={styles.input}
           />

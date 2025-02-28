@@ -72,4 +72,10 @@
   .smallButton:hover {
     background-color: #218838;
   }
+
+
+  textarea[name="description"] {
+    height: 200px; /* 원하는 높이로 조절 */
+    resize: vertical;
+  }
   
