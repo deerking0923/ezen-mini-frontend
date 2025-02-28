@@ -5,7 +5,6 @@ import dynamic from "next/dynamic";
 import Image from "next/image";
 import "./heighmeter.css";
 
-
 /** html2canvas는 서버 사이드에서 동작할 수 없으므로 ssr: false 옵션으로 동적 임포트 */
 const html2canvas = dynamic(() => import("html2canvas"), { ssr: false });
 
@@ -170,7 +169,7 @@ export default function Home() {
 
     const dragMultiplier = 1.0;
     // zoomSensitivity는 상태 변수로 사용 (모바일/PC에 따라 다름)
-    
+
     if (initialTouchData.type === "drag" && e.touches.length === 1) {
       const { pageX, pageY } = e.touches[0];
       const deltaX = pageX - initialTouchData.startX;
@@ -184,12 +183,17 @@ export default function Home() {
       const newDistance = getDistance(t1, t2);
       const ratio = newDistance / initialTouchData.startDistance;
       const dampingFactor = 0.5;
-    let newScale = initialTouchData.initialScale * (1 + (ratio - 1) * dampingFactor);
+      let newScale =
+        initialTouchData.initialScale * (1 + (ratio - 1) * dampingFactor);
       //if (newScale < 0.2) newScale = 0.2; // 최소 스케일 제한
       const { pinchCenter } = initialTouchData;
       const oldScale = initialTouchData.initialScale;
-      let newX = initialTouchData.initialPosition.x + pinchCenter.x * (1 - newScale / oldScale);
-      let newY = initialTouchData.initialPosition.y + pinchCenter.y * (1 - newScale / oldScale);
+      let newX =
+        initialTouchData.initialPosition.x +
+        pinchCenter.x * (1 - newScale / oldScale);
+      let newY =
+        initialTouchData.initialPosition.y +
+        pinchCenter.y * (1 - newScale / oldScale);
       const clamped = clampPosition(newX, newY, newScale);
       setScale(newScale);
       setPosition(clamped);
@@ -207,7 +211,9 @@ export default function Home() {
     const touchStartHandler = (e) => handleTouchStart(e);
     const touchMoveHandler = (e) => handleTouchMove(e);
     const touchEndHandler = () => handleTouchEnd();
-    canvas.addEventListener("touchstart", touchStartHandler, { passive: false });
+    canvas.addEventListener("touchstart", touchStartHandler, {
+      passive: false,
+    });
     canvas.addEventListener("touchmove", touchMoveHandler, { passive: false });
     canvas.addEventListener("touchend", touchEndHandler, { passive: false });
     return () => {
@@ -242,12 +248,28 @@ export default function Home() {
 
   return (
     <main className="container">
-      <h1>
-        빛아 키 재기 <span className="subtitle">만든이 진사슴</span>
-      </h1>
-
-      <div className="instructions-btn-container">
-        <button onClick={() => setShowInstructions(true)}>측정 방법 보기</button>
+      {/* 공지 영역 */}
+      <div className="noticePanel">
+        <h2 className="noticeTitle">
+          키 재기<span className="subtitle">만든이 진사슴</span>
+        </h2>
+        <p className="noticeDescription">
+        <br/>
+          빛아의 키를 측정할 수 있는 페이지입니다.
+          <br />
+          <br/>
+          측정을 위해 아래 측정 방법을 정확하게 따라주세요. 가이드를 보시면 편합니다.
+          <br />
+          <br/>
+          머리 장식 X, 신발 X, 참새 머리, 기본 자세로
+          헤어-망토 사이의 등불에서 재기
+          <br />
+        </p>
+        <div className="instructions-btn-container">
+          <button onClick={() => setShowInstructions(true)}>
+            측정 방법 보기
+          </button>
+        </div>
       </div>
       <div className="controls">
         <input type="file" accept="image/*" onChange={handleImageUpload} />
@@ -274,17 +296,11 @@ export default function Home() {
             }}
           />
         )}
-       {/* 업로드 여부와 상관없이 항상 가이드라인 이미지(오버레이) 표시 */}
-        <img
-          src="/sky-test.png"
-          alt="Overlay"
-          className="overlay-fixed"
-        />
+        {/* 업로드 여부와 상관없이 항상 가이드라인 이미지(오버레이) 표시 */}
+        <img src="/sky-test.png" alt="Overlay" className="overlay-fixed" />
 
         {/* 이미지 캔버스 우측 하단 텍스트 */}
-        <div className="credit-text">
-          &lt;korea-sky-planner.com&gt;
-        </div>
+        <div className="credit-text">&lt;korea-sky-planner.com&gt;</div>
       </div>
 
       {/* 새로운 캡션 텍스트 추가 (이미지 캔버스 바로 아래, 다운로드 버튼 위) */}
@@ -321,7 +337,11 @@ export default function Home() {
           <button
             className="arrow-btn"
             onClick={() => {
-              const newPos = clampPosition(position.x, position.y - arrowStep, scale);
+              const newPos = clampPosition(
+                position.x,
+                position.y - arrowStep,
+                scale
+              );
               setPosition(newPos);
             }}
           >
@@ -330,7 +350,11 @@ export default function Home() {
           <button
             className="arrow-btn"
             onClick={() => {
-              const newPos = clampPosition(position.x, position.y + arrowStep, scale);
+              const newPos = clampPosition(
+                position.x,
+                position.y + arrowStep,
+                scale
+              );
               setPosition(newPos);
             }}
           >
@@ -339,7 +363,11 @@ export default function Home() {
           <button
             className="arrow-btn"
             onClick={() => {
-              const newPos = clampPosition(position.x - arrowStep, position.y, scale);
+              const newPos = clampPosition(
+                position.x - arrowStep,
+                position.y,
+                scale
+              );
               setPosition(newPos);
             }}
           >
@@ -348,7 +376,11 @@ export default function Home() {
           <button
             className="arrow-btn"
             onClick={() => {
-              const newPos = clampPosition(position.x + arrowStep, position.y, scale);
+              const newPos = clampPosition(
+                position.x + arrowStep,
+                position.y,
+                scale
+              );
               setPosition(newPos);
             }}
           >
@@ -366,9 +398,13 @@ export default function Home() {
         <div className="modal" onClick={() => setShowInstructions(false)}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
             <p className="popup-header">
-              &lt;네이버 Sky 카페 - 미욘새님&gt; 키 재는 방법 [지켜야 할 사항] 정리
+              &lt;네이버 Sky 카페 - 미욘새님&gt; 키 재는 방법 [지켜야 할 사항]
+              정리
             </p>
-            <button className="close-btn" onClick={() => setShowInstructions(false)}>
+            <button
+              className="close-btn"
+              onClick={() => setShowInstructions(false)}
+            >
               &times;
             </button>
             <img src="/guide.png" alt="측정 방법" />
