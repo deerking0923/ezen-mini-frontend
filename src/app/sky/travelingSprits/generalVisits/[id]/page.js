@@ -2,19 +2,28 @@
 
 import React, { useEffect, useState } from "react";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
-
 import styles from "./detail.module.css";
 
 export default function SoulDetailPage() {
-  const searchParams = useSearchParams(); 
+  const [isClient, setIsClient] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  
+  const searchParams = useSearchParams();
   const { id } = useParams();
   const router = useRouter();
   const [soul, setSoul] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const currentPage = searchParams.get("page") || 1;
-  // 모바일용 착용샷 토글 state
+  
   const [showMoreWearingShots, setShowMoreWearingShots] = useState(false);
+
+  // 클라이언트 사이드에서만 searchParams를 설정
+  useEffect(() => {
+    setIsClient(true);
+    if (searchParams) {
+      setCurrentPage(searchParams.get("page") || 1);
+    }
+  }, [searchParams]);
 
   useEffect(() => {
     fetch(`https://korea-sky-planner.com/api/v1/souls/${id}`)
@@ -34,6 +43,8 @@ export default function SoulDetailPage() {
       });
   }, [id]);
 
+  if (!isClient) return null; // 클라이언트가 아니면 아무 것도 렌더링하지 않음
+
   if (loading) return <div className={styles.loading}>Loading...</div>;
   if (error) return <div className={styles.error}>Error: {error}</div>;
   if (!soul) return <div className={styles.error}>영혼 정보가 없습니다.</div>;
@@ -41,9 +52,11 @@ export default function SoulDetailPage() {
   const handleEdit = () => {
     router.push(`/sky/travelingSprits/generalVisits/edit/${id}`);
   };
+  
   const handleAdd = () => {
     router.push(`/sky/travelingSprits/generalVisits/add/${id}`);
   };
+  
   const handleDelete = () => {
     const confirmation = prompt(
       '정말 삭제하시겠습니까? 삭제를 진행하려면 "1234"를 입력하세요.'
