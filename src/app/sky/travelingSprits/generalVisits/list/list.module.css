@@ -579,12 +579,7 @@
   /* 모바일 반응형 설정 */
 /* 뷰포트 설정: 모바일에서도 PC처럼 보기 */
 @media (max-width: 768px) {
-    /* 전체 레이아웃 */
-    html, body {
-      overflow-x: hidden;
-      width: 100vw; /* 전체 너비를 100%로 설정 */
-      min-width: 1000px; /* 최소 너비를 1000px로 설정하여 PC와 유사한 크기 유지 */
-    }
+
   
     /* 검색창 크기 */
     .searchContainer {
