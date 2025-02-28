@@ -1,45 +1,42 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import Link from "next/link";
+import React, { useState, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import Link from "next/link";
 import styles from "./list.module.css";
 
 export default function SoulListPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  // URL의 page 값을 읽어 초기 페이지(1-indexed) 결정
-  const initialPage = parseInt(searchParams.get("page") || "1", 10);
-
+  
+  // 클라이언트 사이드에서만 useSearchParams()를 사용하도록 설정
+  const [isClient, setIsClient] = useState(false);
   const [souls, setSouls] = useState([]);
-  // 내부 state는 0-indexed로 관리 (ex. 0 => 1페이지)
-  const [page, setPage] = useState(initialPage - 1);
-  const [totalPages, setTotalPages] = useState(1);
-  const [searchQuery, setSearchQuery] = useState("");
-  const [submittedQuery, setSubmittedQuery] = useState("");
-  const [viewMode, setViewMode] = useState("card"); // "card" or "list"
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // 리스트 보기 모드에서 정렬 기준 ("latest" : 최신순, "oldest" : 오래된 순)
+  const [page, setPage] = useState(0);
+  const [viewMode, setViewMode] = useState("card");
   const [listSort, setListSort] = useState("latest");
+  
+  const [searchQuery, setSearchQuery] = useState("");
 
-  const currentPage = page + 1;
-  const pageBlockStart = Math.floor((currentPage - 1) / 10) * 10 + 1;
-  const pageBlockEnd = Math.min(pageBlockStart + 9, totalPages);
-  const pageButtons = [];
-  for (let i = pageBlockStart; i <= pageBlockEnd; i++) {
-    pageButtons.push(i);
-  }
+  useEffect(() => {
+    setIsClient(true); // 클라이언트에서만 실행되게 설정
+  }, []);
+
+  // 페이지 값이 클라이언트 사이드에서만 사용되도록 수정
+  useEffect(() => {
+    const initialPage = parseInt(searchParams.get("page") || "1", 10);
+    setPage(initialPage - 1);
+  }, [searchParams]);
 
   const fetchSouls = async (pageNumber, query) => {
     setLoading(true);
     let url = "";
     if (query && query.trim() !== "") {
       // 검색어가 있으면 search 엔드포인트 사용 (페이지네이션 X)
-      url = `https://korea-sky-planner.com/api/v1/souls/search?query=${encodeURIComponent(
-        query
-      )}`;
+      url = `https://korea-sky-planner.com/api/v1/souls/search?query=${encodeURIComponent(query)}`;
     } else {
       if (viewMode === "card") {
         // 카드 보기: 페이지네이션 적용 (한 페이지당 12개)
@@ -56,33 +53,20 @@ export default function SoulListPage() {
     try {
       const res = await fetch(url);
       const data = await res.json();
-      let results = [];
-      if (query && query.trim() !== "") {
-        results = data.data && Array.isArray(data.data) ? data.data : [];
-        setTotalPages(1);
-      } else {
-        if (viewMode === "card") {
-          results = Array.isArray(data.data?.content) ? data.data.content : [];
-          setTotalPages(data.data?.totalPages || 1);
-        } else {
-          // 리스트 보기: 전체 목록, 페이지네이션 없이
-          results = Array.isArray(data.data) ? data.data : [];
-          setTotalPages(1);
-        }
-      }
+      const results = data.data && Array.isArray(data.data) ? data.data : [];
       setSouls(results);
       setLoading(false);
     } catch (err) {
-      console.error(err);
       setError(err.message);
       setLoading(false);
     }
   };
 
-  // viewMode, page, submittedQuery, listSort 변경 시 데이터를 다시 가져옵니다.
   useEffect(() => {
-    fetchSouls(page, submittedQuery);
-  }, [page, submittedQuery, viewMode, listSort]);
+    if (isClient) {
+      fetchSouls(page, searchQuery);
+    }
+  }, [page, searchQuery, viewMode, listSort, isClient]);
 
   const handleSearchChange = (e) => {
     setSearchQuery(e.target.value);
@@ -91,18 +75,9 @@ export default function SoulListPage() {
   const handleSearchSubmit = (e) => {
     e.preventDefault();
     setPage(0);
-    setSubmittedQuery(searchQuery);
     router.push(`/sky/travelingSprits/generalVisits/list?page=1`);
   };
 
-  const handleSeasonClick = (seasonName) => {
-    setSearchQuery(seasonName);
-    setSubmittedQuery(seasonName);
-    setPage(0);
-    router.push(`/sky/travelingSprits/generalVisits/list?page=1`);
-  };
-
-  // 페이지 버튼 클릭 시 state와 URL 업데이트 (카드 보기에서만 적용)
   const handlePageChange = (pageNumber) => {
     setPage(pageNumber - 1);
     router.push(`/sky/travelingSprits/generalVisits/list?page=${pageNumber}`);
@@ -134,6 +109,8 @@ export default function SoulListPage() {
     { name: "무민", color: "#CDDC39" },
     { name: "광채", color: "#FF1493" },
   ];
+
+  if (!isClient) return null; // 클라이언트가 아닐 경우 아무것도 렌더링하지 않음
 
   return (
     <div className={styles.container}>
