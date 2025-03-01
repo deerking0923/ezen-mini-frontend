@@ -107,17 +107,19 @@ function SoulListContent() {
   };
 
   // 페이지네이션 범위 계산
-  const getPaginationRange = () => {
-    const pageGroup = getCurrentPageGroup();
-    const start = pageGroup * 10 + 1;
-    const end = Math.min(start + 9, totalPages);
-    
-    const range = [];
-    for (let i = start; i <= end; i++) {
-      range.push(i);
-    }
-    return range;
-  };
+// 페이지네이션 범위 계산
+const getPaginationRange = () => {
+  const pageGroup = getCurrentPageGroup();
+  const start = pageGroup * 5 + 1;  // 5개씩 그룹화
+  const end = Math.min(start + 4, totalPages);  // 5개의 페이지 번호를 표시
+
+  const range = [];
+  for (let i = start; i <= end; i++) {
+    range.push(i);
+  }
+  return range;
+};
+
 
   const seasonList = [
     { name: "감사", color: "#FFD700" },
@@ -290,90 +292,86 @@ function SoulListContent() {
           ))}
         </div>
       ) : (
-        <table className={styles.tableView}>
-          <thead>
-            <tr>
-            <th className={styles.thOrder}>순서</th>
-            <th className={styles.thSeason}>시즌</th>
-            <th className={styles.thName}>이름</th>
-            <th className={styles.thPeriod}>기간</th>
-            <th className={styles.thRerun}>n차 복각</th>
-          </tr>
-        </thead>
-        <tbody>
-          {souls.map((soul) => (
-            <tr key={soul.id} className={styles.tableRow}>
-              <td className={styles.tdOrder}>
-                {soul.orderNum < 0 ? (
-                  <span style={{ color: "blue" }}>
-                    {`${Math.abs(soul.orderNum)}번째 유랑단`}
-                  </span>
-                ) : (
-                  `${soul.orderNum}번째`
-                )}
-              </td>
-              <td className={styles.tdSeason}>
-                <span
-                  className={styles.seasonName}
-                  style={{
-                    backgroundColor:
-                      seasonList.find((season) => season.name === soul.seasonName)?.color || "#444",
-                  }}
-                >
-                  {soul.seasonName}
-                </span>
-              </td>
-              <td className={styles.tdName}>
-                <Link href={`/sky/travelingSprits/generalVisits/${soul.id}`}>
-                  {soul.name}
-                </Link>
-              </td>
-              <td className={styles.tdPeriod}>{soul.startDate} ~ {soul.endDate}</td>
-              <td className={styles.tdRerun}>{soul.rerunCount}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+<table className={styles.tableView}>
+    <thead>
+      <tr>
+        <th className={styles.thOrder}>순서</th>
+        <th className={styles.thSeason}>시즌</th>
+        <th className={styles.thName}>이름</th>
+        <th className={styles.thPeriod}>기간</th>
+        <th className={styles.thRerun}>n차</th>
+      </tr>
+    </thead>
+    <tbody>
+      {souls.map((soul) => (
+        <tr key={soul.id} className={styles.tableRow}>
+          <td className={`${styles.tdOrder} ${soul.orderNum < 0 ? 'negative' : ''}`}>
+            {soul.orderNum < 0 ? (
+              <span>{Math.abs(soul.orderNum)}</span> // 파란색 처리하고 # 추가
+            ) : (
+              soul.orderNum
+            )}
+          </td>
+          <td className={styles.tdSeason}>
+            <span
+              className={styles.seasonName}
+              style={{
+                backgroundColor:
+                  seasonList.find((season) => season.name === soul.seasonName)?.color || "#444",
+              }}
+            >
+              {soul.seasonName}
+            </span>
+          </td>
+          <td className={styles.tdName}>
+            <Link href={`/sky/travelingSprits/generalVisits/${soul.id}`}>
+              {soul.name}
+            </Link>
+          </td>
+          <td className={styles.tdPeriod}>{soul.startDate} ~ {soul.endDate}</td>
+          <td className={styles.tdRerun}>{soul.rerunCount}</td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
     )}
 
       {/* 페이지네이션 */}
-      {viewMode === "card" && totalPages > 1 && (
-        <div className={styles.pagination}>
-          {/* 이전 페이지 그룹으로 이동 */}
-          {getCurrentPageGroup() > 0 && (
-            <button 
-              className={styles.pageButton} 
-              onClick={() => handlePageChange(getCurrentPageGroup() * 10)}
-            >
-              &laquo;
-            </button>
-          )}
+{viewMode === "card" && totalPages > 1 && (
+  <div className={styles.pagination}>
+    {/* 이전 페이지 그룹으로 이동 */}
+    {getCurrentPageGroup() > 0 && (
+      <button 
+        className={styles.pageButton} 
+        onClick={() => handlePageChange(getCurrentPageGroup() * 5 + 1)} // 5개씩 그룹을 이동
+      >
+        &laquo;
+      </button>
+    )}
 
-          
-          {/* 페이지 번호 */}
-          {getPaginationRange().map(pageNum => (
-            <button
-              key={pageNum}
-              className={`${styles.pageButton} ${pageNum === currentPage ? styles.activePage : ''}`}
-              onClick={() => handlePageChange(pageNum)}
-            >
-              {pageNum}
-            </button>
-          ))}
-          
+    {/* 페이지 번호 */}
+    {getPaginationRange().map(pageNum => (
+      <button
+        key={pageNum}
+        className={`${styles.pageButton} ${pageNum === currentPage ? styles.activePage : ''}`}
+        onClick={() => handlePageChange(pageNum)}
+      >
+        {pageNum}
+      </button>
+    ))}
 
-          
-          {/* 다음 페이지 그룹으로 이동 */}
-          {(getCurrentPageGroup() + 1) * 10 < totalPages && (
-            <button 
-              className={styles.pageButton} 
-              onClick={() => handlePageChange((getCurrentPageGroup() + 1) * 10 + 1)}
-            >
-              &raquo;
-            </button>
-          )}
-        </div>
-      )}
+    {/* 다음 페이지 그룹으로 이동 */}
+    {(getCurrentPageGroup() + 1) * 5 < totalPages && (
+      <button 
+        className={styles.pageButton} 
+        onClick={() => handlePageChange((getCurrentPageGroup() + 1) * 5 + 1)} // 5개씩 그룹을 이동
+      >
+        &raquo;
+      </button>
+    )}
+  </div>
+)}
+
     </div>
   );
 }

@@ -575,8 +575,23 @@
     color: #fff;
     border-color: #aaa;
   }
+  /* 순서가 -인 경우 파란색으로 처리하고 # 추가 */
+
+  .tableRow .tdOrder span {
+    color: blue; /* -인 경우 파란색 처리 */
+  }
+
+  .tableRow .tdOrder span::before {
+    content: "#"; /* - 앞에 # 추가 */
+    margin-right: 5px;
+  }
+
   
   @media screen and (max-width: 768px) {
+      /* 리스트 보기에서 테이블 헤더 수정 */
+      .tableRow .tdPeriod {
+        font-size: 0.8rem; /* 기존보다 더 작은 크기로 줄이기 */
+      }
     /* 검색창과 사진보기 버튼 간의 간격 추가 */
     .searchContainer {
       margin-bottom: 1rem; /* 검색창과 버튼 사이에 여백 추가 */
@@ -595,23 +610,25 @@
       font-size: 0.8rem; /* 버튼 글씨 크기 줄이기 */
     }
   
-    /* 사진 보기와 리스트 보기 버튼 나란히 배치 */
-    .viewTabs {
-      display: flex;
-      justify-content: space-between; /* 버튼들이 양쪽에 배치되도록 */
-      gap: 0.5rem;
-    }
-  
-    .tabButton {
-      padding: 0.5rem 1rem;
-      font-size: 0.8rem; /* 버튼 크기 줄이기 */
-    }
-  
-    .activeTab {
-      background-color: #545454;
-      color: #fff;
-      border-color: #aaa;
-    }
+  /* 리스트 보기 버튼들 붙여주기 */
+  .viewTabs {
+    display: flex;
+    justify-content: space-between; /* 양쪽 정렬 */
+    gap: 0; /* 버튼 간격을 없앰 */
+  }
+
+  .tabButton, .activeTab {
+    padding: 0.4rem 0.8rem; /* 버튼 크기 동일하게 맞추기 */
+    font-size: 0.7rem; /* 글씨 크기 줄이기 */
+    border: 1px solid #ccc; /* 버튼에 테두리 추가 (선택된 버튼에도 테두리 추가) */
+    border-radius: 4px; /* 버튼의 테두리 둥글게 */
+  }
+
+  .activeTab {
+    background-color: #545454;
+    color: #fff;
+    border-color: #aaa;
+  }
   
     /* 영혼 카드 그리드 설정 */
     .cardsGrid {
@@ -710,7 +727,7 @@
     }
   
     .pagination button {
-      padding: 0.4rem 0.8rem; /* 버튼 크기 줄이기 */
+      padding: 0.6rem 1rem; /* 버튼 크기 줄이기 */
       font-size: 0.8rem; /* 글씨 크기 줄이기 */
     }
   
