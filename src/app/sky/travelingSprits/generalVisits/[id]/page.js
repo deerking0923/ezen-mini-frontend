@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
-
+import PhotoLightbox from "./PhotoLightbox";
 import styles from "./detail.module.css";
 
 export default function SoulDetailPage() {
@@ -25,6 +25,8 @@ export default function SoulDetailPage() {
   const currentPage = searchParams.get("page") || 1;
   // 모바일용 착용샷 토글 state
   const [showMoreWearingShots, setShowMoreWearingShots] = useState(false);
+  const [lightboxOpen, setLightboxOpen] = useState(false);
+  const [initialLightboxIndex, setInitialLightboxIndex] = useState(0);
 
   useEffect(() => {
     fetch(`https://korea-sky-planner.com/api/v1/souls/${id}`)
@@ -48,6 +50,10 @@ export default function SoulDetailPage() {
   if (error) return <div className={styles.error}>Error: {error}</div>;
   if (!soul) return <div className={styles.error}>영혼 정보가 없습니다.</div>;
 
+  const handleImageClick = (index) => {
+    setInitialLightboxIndex(index);
+    setLightboxOpen(true);
+  };
   const handleEdit = () => {
     router.push(`/sky/travelingSprits/generalVisits/edit/${id}`);
   };
@@ -116,7 +122,6 @@ export default function SoulDetailPage() {
         </div>
       )}
 
-      {/* 상단 레이아웃 */}
       <div className={styles.topLayout}>
         <div className={styles.representativeImageWrapper}>
           {soul.representativeImage && (
@@ -124,6 +129,8 @@ export default function SoulDetailPage() {
               src={soul.representativeImage}
               alt="대표 이미지"
               className={styles.representativeImage}
+              onClick={() => handleImageClick(0)} // 인덱스 0으로 라이트박스 열기
+              style={{ cursor: "pointer" }}
             />
           )}
         </div>
@@ -134,13 +141,8 @@ export default function SoulDetailPage() {
                 ? `${Math.abs(soul.orderNum)}번째 유랑단`
                 : `${soul.orderNum}번째 영혼`}
             </div>
-            <div className={styles.detailItem}>
-              {soul.rerunCount}
-              차 복각
-            </div>
-            <div className={styles.detailItem}>
-              {soul.seasonName} 시즌
-            </div>
+            <div className={styles.detailItem}>{soul.rerunCount} 차 복각</div>
+            <div className={styles.detailItem}>{soul.seasonName} 시즌</div>
             <div className={styles.detailItem}>
               기간: {soul.startDate} ~ {soul.endDate}
             </div>
@@ -152,21 +154,28 @@ export default function SoulDetailPage() {
           )}
         </div>
       </div>
-
+      {lightboxOpen && (
+        <PhotoLightbox
+          images={[soul.representativeImage, ...soul.wearingShotImages]}
+          initialIndex={initialLightboxIndex}
+          onClose={() => setLightboxOpen(false)}
+        />
+      )}
       {/* 노드표 */}
       {soul.nodeTableImage && (
-        <div className={styles.nodeTableSection}>
-          <span className={styles.nodeTableLabel}>노드표</span>
-          <div className={styles.nodeTableImageWrapper}>
-            <img
-              src={soul.nodeTableImage}
-              alt="노드표 이미지"
-              className={styles.nodeTableImage}
-            />
-          </div>
-        </div>
-      )}
-
+  <div className={styles.nodeTableSection}>
+    <span className={styles.nodeTableLabel}>노드표</span>
+    <div className={styles.nodeTableImageWrapper}>
+      <img
+        src={soul.nodeTableImage}
+        alt="노드표 이미지"
+        className={styles.nodeTableImage}
+        onClick={() => handleImageClick( /* 적절한 인덱스 */ )}
+        style={{ cursor: "pointer" }}
+      />
+    </div>
+  </div>
+)}
       {/* PC용 가로 스크롤 착용샷 */}
       {soul.wearingShotImages && soul.wearingShotImages.length > 0 && (
         <div className={styles.desktopWearingShot}>
@@ -178,64 +187,66 @@ export default function SoulDetailPage() {
                   src={img}
                   alt={`착용샷 ${index + 1}`}
                   className={styles.smallImage}
+                  onClick={() => handleImageClick(index + 1)} // 대표 이미지 이후 index 부여
+                  style={{ cursor: "pointer" }}
                 />
               </li>
             ))}
           </ul>
         </div>
       )}
-
       {/* 모바일용 세로 리스트 + 토글 버튼 착용샷 */}
-      {soul.wearingShotImages && soul.wearingShotImages.length > 0 && (
-        <div className={styles.mobileWearingShot}>
-          <strong>착용샷</strong>
-          <div className={styles.wearingShotWrapper}>
-            <div
-              className={`${styles.wearingShotContainer} ${
-                showMoreWearingShots ? styles.showMore : ""
-              }`}
-            >
-              <ul className={styles.verticalList}>
-                {(showMoreWearingShots
-                  ? soul.wearingShotImages
-                  : [soul.wearingShotImages[0]]
-                ).map((img, index) => (
-                  <li key={index}>
-                    <img
-                      src={img}
-                      alt={`착용샷 ${index + 1}`}
-                      className={styles.smallImage}
-                    />
-                  </li>
-                ))}
-              </ul>
-            </div>
-            {soul.wearingShotImages.length > 1 && (
-              <button
-                onClick={() => setShowMoreWearingShots((prev) => !prev)}
-                className={styles.toggleButton}
-              >
-                {showMoreWearingShots ? "접기" : "더보기"}
-              </button>
-            )}
-          </div>
-        </div>
+      { soul.wearingShotImages && soul.wearingShotImages.length > 0 && (
+  <div className={styles.mobileWearingShot}>
+    <strong>착용샷</strong>
+    <div className={styles.wearingShotWrapper}>
+      <div
+        className={`${styles.wearingShotContainer} ${showMoreWearingShots ? styles.showMore : ""}`}
+      >
+        <ul className={styles.verticalList}>
+          {(showMoreWearingShots
+            ? soul.wearingShotImages
+            : [soul.wearingShotImages[0]]
+          ).map((img, index) => (
+            <li key={index}>
+              <img
+                src={img}
+                alt={`착용샷 ${index + 1}`}
+                className={styles.smallImage}
+                onClick={() => handleImageClick(index + 1)}
+                style={{ cursor: "pointer" }}
+              />
+            </li>
+          ))}
+        </ul>
+      </div>
+      {soul.wearingShotImages.length > 1 && (
+        <button
+          onClick={() => setShowMoreWearingShots((prev) => !prev)}
+          className={styles.toggleButton}
+        >
+          {showMoreWearingShots ? "접기" : "더보기"}
+        </button>
       )}
+    </div>
+  </div>
+)}
 
       {/* 영혼 위치 이미지 */}
       {soul.locationImage && (
-        <div className={styles.locationSection}>
-          <span className={styles.locationLabel}>영혼 위치</span>
-          <div className={styles.locationImageWrapper}>
-            <img
-              src={soul.locationImage}
-              alt="위치 이미지"
-              className={styles.locationImage}
-            />
-          </div>
-        </div>
-      )}
-
+  <div className={styles.locationSection}>
+    <span className={styles.locationLabel}>영혼 위치</span>
+    <div className={styles.locationImageWrapper}>
+      <img
+        src={soul.locationImage}
+        alt="위치 이미지"
+        className={styles.locationImage}
+        onClick={() => handleImageClick( /* 적절한 인덱스 */ )}
+        style={{ cursor: "pointer" }}
+      />
+    </div>
+  </div>
+)}
       {/* 키워드 및 제작자 영역 */}
       {soul.keywords && soul.keywords.length > 0 && (
         <div className={styles.keywordsSection}>
@@ -261,7 +272,6 @@ export default function SoulDetailPage() {
           </a>
         </div>
       )}
-
       <div className={styles.copyUrlContainer}>
         <button
           onClick={() => {
@@ -273,9 +283,7 @@ export default function SoulDetailPage() {
           URL 복사
         </button>
       </div>
-
-      {showCopied && <div className={styles.copiedToast}>URL이 복사되었습니다.</div>}
-
+      {/* {showCopied && <div className={styles.copiedToast}>URL이 복사되었습니다.</div>} */}
       <div className={styles.centerNavigation}>
         <button
           className={styles.centerListButton}
@@ -288,7 +296,6 @@ export default function SoulDetailPage() {
           목록가기
         </button>
       </div>
-
       <div className={styles.buttonContainer}>
         <button className={styles.editButton} onClick={handleAdd}>
           추가하기

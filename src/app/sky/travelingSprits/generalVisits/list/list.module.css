@@ -714,7 +714,8 @@
   
     /* 세 번째 줄에 기간 */
     .thirdLine {
-      font-size: 0.6rem; /* 세 번째 줄 글씨 크기 줄이기 */
+      font-size: 0.55rem; /* 세 번째 줄 글씨 크기 줄이기 */
+      text-align: center;
     }
   
     /* 페이지네이션 버튼 가로로 정렬 */
