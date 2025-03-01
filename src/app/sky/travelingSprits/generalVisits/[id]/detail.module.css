@@ -349,6 +349,133 @@
 .toggleButton:hover {
   background-color: #005bb5;
 }
+/******************************************************
+ * 기본 컨테이너 및 타이틀
+ ******************************************************/
+ .container {
+  max-width: 920px;
+  margin: 2rem auto;
+  background-color: #2c2c2c;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  color: #eaeaea;
+  font-family: 'Inter', sans-serif;
+}
+
+.title {
+  font-size: 1.8rem; /* 이름 크기 조정 */
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 1.5rem;
+  color: #fbcf06; /* 황금빛 노란색 */
+  text-transform: uppercase; /* 대문자로 세련되게 */
+}
+
+/******************************************************
+ * 상단 네비게이션
+ ******************************************************/
+.topNavigation, .centerNavigation {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 1rem;
+}
+
+.centerNavigation {
+  justify-content: center;
+}
+
+/******************************************************
+ * 버튼 스타일
+ ******************************************************/
+.listButton, .centerListButton,
+.editButton, .deleteButton {
+  padding: 0.5rem 1rem; /* 버튼 크기 줄임 */
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem; /* 버튼 텍스트 크기 줄임 */
+  transition: background-color 0.3s ease;
+}
+
+.listButton, .centerListButton {
+  background-color: #555;
+  color: #fff;
+}
+
+.listButton:hover, .centerListButton:hover {
+  background-color: #6a6a6a;
+}
+
+.editButton {
+  background-color: #0070f3;
+  color: #fff;
+  margin-right: 1rem;
+}
+
+.editButton:hover {
+  background-color: #005bb5;
+}
+
+.deleteButton {
+  background-color: #dc3545;
+  color: #fff;
+}
+
+.deleteButton:hover {
+  background-color: #c82333;
+}
+
+/******************************************************
+ * 상단 레이아웃 (대표 이미지 + 정보)
+ ******************************************************/
+.topLayout {
+  display: flex;
+  gap: 1.5rem;
+  align-items: flex-start;
+  margin-bottom: 2rem;
+  flex-wrap: wrap; /* 모바일에서 wrap되도록 추가 */
+}
+
+.representativeImageWrapper {
+  width: 250px;
+  height: 250px;
+  overflow: hidden;
+  border-radius: 10px;
+  flex-shrink: 0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+.infoSection {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.topInfoGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+
+.detailItem {
+  background-color: #3c3c3c;
+  border-radius: 8px;
+  padding: 1rem;
+  line-height: 1.6;
+  font-size: 1rem;
+  color: #f0f0f0;
+}
+
+.topInfoGrid .detailItem {
+  text-align: left;
+}
+
 
 /******************************************************
  * 반응형 스타일
@@ -431,5 +558,56 @@
   
   .mobileWearingShot {
     display: block;
+  }
+  .container {
+    padding: 1rem;
+    margin: 1rem;
+  }
+
+  .title {
+    font-size: 1.6rem; /* 모바일에서 이름 크기 조금 줄임 */
+  }
+
+  .topLayout {
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .representativeImageWrapper {
+    width: 100%;
+    max-width: 250px;
+    height: auto;
+  }
+
+  .infoSection {
+    margin-top: 1rem;
+    text-align: center;
+  }
+
+  .topInfoGrid {
+    grid-template-columns: 1fr; /* 모바일에서는 1열로 */
+    gap: 0.5rem;
+  }
+
+  .detailItem {
+    background-color: #3c3c3c;
+    padding: 0.8rem;
+    font-size: 0.9rem;
+  }
+
+  .listButton, .centerListButton, .editButton, .deleteButton {
+    width: 100%;
+    margin: 0.5rem 0;
+    padding: 0.75rem;
+  }
+
+  .listButton, .centerListButton {
+    font-size: 1rem;
+  }
+
+  .descriptionText {
+    white-space: pre-line;
+    line-height: 1.8;
   }
 }

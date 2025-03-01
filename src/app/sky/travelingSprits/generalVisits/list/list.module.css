@@ -701,7 +701,7 @@
   
     /* 영혼 이름을 두 번째 줄에 배치 */
     .soulName {
-      font-size: 0.7rem; /* 영혼 이름 크기는 그대로 유지 */
+      font-size: 0.62rem; /* 영혼 이름 크기는 그대로 유지 */
       display: block; /* 새로운 줄에 표시 */
       white-space: normal; /* 영혼 이름이 길어져도 ...으로 잘리지 않도록 설정 */
       overflow: visible; /* 잘림 방지 */
