@@ -613,10 +613,10 @@
       border-color: #aaa;
     }
   
-    /* 영혼 카드의 사진 영역 크기 조정 */
+    /* 영혼 카드 그리드 설정 */
     .cardsGrid {
       grid-template-columns: repeat(3, 1fr); /* 모바일에서는 3개씩 한 줄에 표시 */
-      gap: 0; /* 카드 간 간격을 없앰 */
+      gap: 0.5rem; /* 카드 간 간격 */
     }
   
     .soulCard {
@@ -633,21 +633,24 @@
       transition: transform 0.2s ease;
       max-width: 100%;
       margin: 0; /* 카드 간 여백 없애기 */
+      height: auto; /* 높이를 자동으로 설정 */
     }
-  
+    
     .imageWrapperSquare {
       width: 100%;
-      aspect-ratio: 16 / 9; /* 모바일에서 이미지 비율을 16:9로 설정 */
+      height: 60%; /* 이미지 영역을 카드 높이의 60%로 설정 */
       overflow: hidden;
       background-color: #eee;
     }
-  
+    
     .cardImage {
       width: 100%;
-      height: 100%;
-      object-fit: cover; /* 이미지가 영역을 꽉 채우도록 설정 */
+      height: 100%; /* 높이를 100%로 설정하여 이미지가 차지하는 공간을 100%로 */
+      object-fit: contain; /* 비율을 맞추어 이미지가 잘리지 않도록 설정 */
+      object-position: center; /* 이미지가 중앙에 위치하도록 설정 */
     }
-  
+    
+    
     .noImage {
       display: flex;
       justify-content: center;
@@ -657,32 +660,42 @@
       font-size: 0.8rem;
     }
   
-    /* 영혼 카드 내용 글씨 크기 줄이기 */
+    /* 카드 내용 글씨 크기 조정 */
     .cardContent {
       padding: 0.3rem 0.5rem;
-      font-size: 0.7rem; /* 카드 내용 글씨 크기 더 줄이기 */
+      font-size: 0.7rem; /* 카드 내용 글씨 크기 줄이기 */
     }
   
     .firstLine {
       font-size: 0.75rem; /* 첫 번째 줄 글씨 크기 줄이기 */
+      display: flex;
+      flex-direction: column; /* 시즌 이름과 영혼 이름을 세로로 배치 */
+      gap: 0.3rem;
     }
   
+    /* 시즌 이름을 첫 번째 줄에 배치 */
     .seasonName {
       font-size: 0.6rem; /* 시즌 이름 크기 줄이기 */
+      display: block; /* 새로운 줄에 표시 */
+      margin-bottom: 0; /* 두 항목 간의 간격 추가 */
       white-space: normal; /* 시즌 이름이 길어져도 ...으로 잘리지 않도록 설정 */
       overflow: visible; /* 잘림 방지 */
     }
   
+    /* 영혼 이름을 두 번째 줄에 배치 */
     .soulName {
       font-size: 0.7rem; /* 영혼 이름 크기는 그대로 유지 */
+      display: block; /* 새로운 줄에 표시 */
       white-space: normal; /* 영혼 이름이 길어져도 ...으로 잘리지 않도록 설정 */
       overflow: visible; /* 잘림 방지 */
     }
   
+    /* 두 번째 줄에 순서와 복각 횟수 */
     .secondLine {
-      font-size: 0.7rem; /* 두 번째 줄 글씨 크기 줄이기 */
+      font-size: 0.65rem; /* 두 번째 줄 글씨 크기 줄이기 */
     }
   
+    /* 세 번째 줄에 기간 */
     .thirdLine {
       font-size: 0.6rem; /* 세 번째 줄 글씨 크기 줄이기 */
     }
@@ -721,36 +734,5 @@
       font-size: 0.7rem; /* 칩 글자 크기 줄이기 */
       padding: 3px 6px;
     }
-    .cardContent {
-        padding: 0.3rem 0.5rem;
-        font-size: 0.7rem; /* 카드 내용 글씨 크기 더 줄이기 */
-      }
-    
-      .firstLine {
-        font-size: 0.75rem; /* 첫 번째 줄 글씨 크기 줄이기 */
-      }
-    
-      .seasonName {
-        font-size: 0.6rem; /* 시즌 이름 크기 줄이기 */
-        display: block; /* 새로운 줄에 표시 */
-        margin-bottom: 0.3rem; /* 두 항목 간의 간격 추가 */
-        white-space: normal; /* 시즌 이름이 길어져도 ...으로 잘리지 않도록 설정 */
-        overflow: visible; /* 잘림 방지 */
-      }
-    
-      .soulName {
-        font-size: 0.7rem; /* 영혼 이름 크기는 그대로 유지 */
-        display: block; /* 새로운 줄에 표시 */
-        white-space: normal; /* 영혼 이름이 길어져도 ...으로 잘리지 않도록 설정 */
-        overflow: visible; /* 잘림 방지 */
-      }
-    
-      .secondLine {
-        font-size: 0.7rem; /* 두 번째 줄 글씨 크기 줄이기 */
-      }
-    
-      .thirdLine {
-        font-size: 0.6rem; /* 세 번째 줄 글씨 크기 줄이기 */
-      }
   }
   
