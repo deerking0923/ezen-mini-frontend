@@ -14,6 +14,9 @@ export default function MainPage() {
     <div className="main-page-wrapper">
       <div className="intro-text">
         본 사이트는 thatgamecompany의 Sky:Children of the light &lt;비공식&gt; 팬사이트입니다.
+        <br/>
+        <br/>
+        만든이 진사슴
       </div>
       <div className="main-page-container">
         <div

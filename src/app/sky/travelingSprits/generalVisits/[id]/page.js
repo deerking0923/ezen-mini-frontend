@@ -7,6 +7,29 @@ import styles from "./detail.module.css";
 export default function SoulDetailPage() {
   const [showCopied, setShowCopied] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [showMoreWearingShots, setShowMoreWearingShots] = useState(false);
+  const [soul, setSoul] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  const searchParams = useSearchParams();
+  const { id } = useParams();
+  const router = useRouter();
+
+  // URL 파라미터에서 페이지, 뷰모드, 검색 쿼리 읽기
+  const currentPage = searchParams.get("page") || 1;
+  const viewMode = searchParams.get("mode") || "card";
+  const query = searchParams.get("query") || "";
+
+  // 새로 고침 시(리로드) 쿼리 파라미터 제거하여 "새로운" 페이지로 만듦
+  useEffect(() => {
+    if (typeof window !== "undefined" && window.performance) {
+      // 1: Reload, 0: Navigation through history, 2: Navigation through other means
+      if (window.performance.navigation.type === window.performance.navigation.TYPE_RELOAD) {
+        router.replace(`/sky/travelingSprits/generalVisits/detail/${id}`);
+      }
+    }
+  }, [id, router]);
 
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth < 768);
@@ -14,16 +37,6 @@ export default function SoulDetailPage() {
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
-
-  const searchParams = useSearchParams();
-  const { id } = useParams();
-  const router = useRouter();
-  const [soul, setSoul] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const currentPage = searchParams.get("page") || 1;
-  // 모바일용 착용샷 토글 state
-  const [showMoreWearingShots, setShowMoreWearingShots] = useState(false);
 
   useEffect(() => {
     fetch(`https://korea-sky-planner.com/api/v1/souls/${id}`)
@@ -67,7 +80,9 @@ export default function SoulDetailPage() {
       .then((res) => {
         if (res.ok) {
           alert("삭제가 완료되었습니다.");
-          router.push("/sky/travelingSprits/generalVisits/list");
+          router.push(
+            `/sky/travelingSprits/generalVisits/list?page=${currentPage}&mode=${viewMode}&query=${encodeURIComponent(query)}`
+          );
         } else {
           alert("삭제에 실패하였습니다.");
         }
@@ -78,23 +93,15 @@ export default function SoulDetailPage() {
       });
   };
 
-  // 기타 노드 렌더링 등은 그대로 유지
+  // 노드 렌더링: centerNodes 수에 맞춰 왼쪽, 오른쪽에 dummy 노드를 사용
   const centerNodesCount = soul.centerNodes ? soul.centerNodes.length : 0;
-  const leftNodesToRender = Array.from(
-    { length: centerNodesCount },
-    (_, i) =>
-      (soul.leftSideNodes &&
-        soul.leftSideNodes.find((node) => node.nodeOrder === i + 1)) || {
-        dummy: true,
-      }
+  const leftNodesToRender = Array.from({ length: centerNodesCount }, (_, i) =>
+    (soul.leftSideNodes &&
+      soul.leftSideNodes.find((node) => node.nodeOrder === i + 1)) || { dummy: true }
   );
-  const rightNodesToRender = Array.from(
-    { length: centerNodesCount },
-    (_, i) =>
-      (soul.rightSideNodes &&
-        soul.rightSideNodes.find((node) => node.nodeOrder === i + 1)) || {
-        dummy: true,
-      }
+  const rightNodesToRender = Array.from({ length: centerNodesCount }, (_, i) =>
+    (soul.rightSideNodes &&
+      soul.rightSideNodes.find((node) => node.nodeOrder === i + 1)) || { dummy: true }
   );
 
   return (
@@ -106,7 +113,7 @@ export default function SoulDetailPage() {
             className={styles.listButton}
             onClick={() =>
               router.push(
-                `/sky/travelingSprits/generalVisits/list?page=${currentPage}`
+                `/sky/travelingSprits/generalVisits/list?page=${currentPage}&mode=${viewMode}&query=${encodeURIComponent(query)}`
               )
             }
           >
@@ -273,12 +280,13 @@ export default function SoulDetailPage() {
         </button>
       </div>
 
+      {/* 중앙 "목록가기" 버튼 - URL에 page, mode, query 포함 */}
       <div className={styles.centerNavigation}>
         <button
           className={styles.centerListButton}
           onClick={() =>
             router.push(
-              `/sky/travelingSprits/generalVisits/list?page=${currentPage}`
+              `/sky/travelingSprits/generalVisits/list?page=${currentPage}&mode=${viewMode}&query=${encodeURIComponent(query)}`
             )
           }
         >

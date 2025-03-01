@@ -11,7 +11,7 @@ function SoulListContent() {
   const searchParams = useSearchParams();
 
   const [souls, setSouls] = useState([]);
-  const [page, setPage] = useState(0); // Page state (0-based index)
+  const [page, setPage] = useState(0); // 0-based index
   const [totalPages, setTotalPages] = useState(1);
   const [searchQuery, setSearchQuery] = useState("");
   const [submittedQuery, setSubmittedQuery] = useState("");
@@ -19,14 +19,12 @@ function SoulListContent() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [listSort, setListSort] = useState("latest");
-
-  const [isClient, setIsClient] = useState(false); // To check if the code is running client-side
-
-  const currentPage = page + 1; // 1-based page number for display
-
-  // 상단에 추가
+  const [isClient, setIsClient] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
 
+  const currentPage = page + 1; // 1-based for display
+
+  // 모바일 여부 체크
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth < 768);
     handleResize();
@@ -40,31 +38,34 @@ function SoulListContent() {
       ? `${parts[0].slice(-2)}.${parts[1]}.${parts[2]}`
       : dateStr;
   };
+
   useEffect(() => {
     setIsClient(true);
   }, []);
 
+  // URL 쿼리로부터 초기 state 복원 (page, mode, query)
   useEffect(() => {
     const initialPage = parseInt(searchParams.get("page") || "1", 10);
-    setPage(initialPage - 1); // Adjust for 0-based index
+    const initialMode = searchParams.get("mode") || "card";
+    const initialQuery = searchParams.get("query") || "";
+    setPage(initialPage - 1);
+    setViewMode(initialMode);
+    setSearchQuery(initialQuery);
+    setSubmittedQuery(initialQuery);
   }, [searchParams]);
 
   const fetchSouls = async (pageNumber, query) => {
     setLoading(true);
     let url = "";
     if (query && query.trim() !== "") {
-      url = `https://korea-sky-planner.com/api/v1/souls/search?query=${encodeURIComponent(
-        query
-      )}`;
+      url = `https://korea-sky-planner.com/api/v1/souls/search?query=${encodeURIComponent(query)}`;
     } else {
       if (viewMode === "card") {
         url = `https://korea-sky-planner.com/api/v1/souls?page=${pageNumber}`;
       } else {
-        if (listSort === "oldest") {
-          url = `https://korea-sky-planner.com/api/v1/souls/reverse`;
-        } else {
-          url = `https://korea-sky-planner.com/api/v1/souls/all`;
-        }
+        url = listSort === "oldest"
+          ? `https://korea-sky-planner.com/api/v1/souls/reverse`
+          : `https://korea-sky-planner.com/api/v1/souls/all`;
       }
     }
 
@@ -104,33 +105,41 @@ function SoulListContent() {
     e.preventDefault();
     setPage(0);
     setSubmittedQuery(searchQuery);
-    router.push(`/sky/travelingSprits/generalVisits/list?page=1`);
+    router.push(
+      `/sky/travelingSprits/generalVisits/list?page=1&mode=${viewMode}&query=${encodeURIComponent(searchQuery)}`
+    );
   };
 
   const handlePageChange = (pageNumber) => {
     setPage(pageNumber - 1);
-    router.push(`/sky/travelingSprits/generalVisits/list?page=${pageNumber}`);
+    router.push(
+      `/sky/travelingSprits/generalVisits/list?page=${pageNumber}&mode=${viewMode}&query=${encodeURIComponent(submittedQuery)}`
+    );
   };
 
   const handleSeasonClick = (seasonName) => {
     setSearchQuery(seasonName);
     setSubmittedQuery(seasonName);
     setPage(0);
-    router.push(`/sky/travelingSprits/generalVisits/list?page=1`);
+    router.push(
+      `/sky/travelingSprits/generalVisits/list?page=1&mode=${viewMode}&query=${encodeURIComponent(seasonName)}`
+    );
   };
 
-  // 현재 페이지 그룹 계산 (1-10, 11-20 등)
-  const getCurrentPageGroup = () => {
-    return Math.floor((currentPage - 1) / 5);
+  // 뷰 모드 탭 변경 시 URL 업데이트
+  const handleViewModeChange = (mode) => {
+    setViewMode(mode);
+    router.push(
+      `/sky/travelingSprits/generalVisits/list?page=${currentPage}&mode=${mode}&query=${encodeURIComponent(submittedQuery)}`
+    );
   };
 
-  // 페이지네이션 범위 계산
-  // 페이지네이션 범위 계산
+  // 페이지네이션 관련 계산 (5개씩 그룹)
+  const getCurrentPageGroup = () => Math.floor((currentPage - 1) / 5);
   const getPaginationRange = () => {
     const pageGroup = getCurrentPageGroup();
-    const start = pageGroup * 5 + 1; // 5개씩 그룹화
-    const end = Math.min(start + 4, totalPages); // 5개의 페이지 번호를 표시
-
+    const start = pageGroup * 5 + 1;
+    const end = Math.min(start + 4, totalPages);
     const range = [];
     for (let i = start; i <= end; i++) {
       range.push(i);
@@ -169,14 +178,13 @@ function SoulListContent() {
     <div className={styles.container}>
       {/* 공지 영역 */}
       <div className={styles.noticePanel}>
-        <h2 className={styles.noticeTitle}>역대 유랑</h2>
+        <h2 className={styles.noticeTitle}>유랑 대백과</h2>
         <p className={styles.noticeDescription}>
           <br />
-          본 게시판은 지금까지 온 유랑들의 정보를 담고 있는 게시판입니다.
+          찾고 있는 유랑이 기억나지 않을 때 검색창에 키워드를 입력해 검색해주세요.
           <br />
           <br />
-          찾고 있는 유랑이 기억나지 않을 때 검색창에 키워드를 입력해
-          검색해주세요.
+          전체 보기로 돌아오고 싶으면 빈 검색창 상태로 검색하시면 됩니다.
           <br />
           <br />
           <span className={styles.noticeExample}>
@@ -188,7 +196,6 @@ function SoulListContent() {
           아래 시즌 이름을 클릭하면 자동 검색됩니다:
         </p>
         <br />
-
         <div className={styles.seasonChipsContainer}>
           {seasonList.map((season) => (
             <button
@@ -225,7 +232,7 @@ function SoulListContent() {
           className={`${styles.tabButton} ${
             viewMode === "card" ? styles.activeTab : ""
           }`}
-          onClick={() => setViewMode("card")}
+          onClick={() => handleViewModeChange("card")}
         >
           사진 보기
         </button>
@@ -233,7 +240,7 @@ function SoulListContent() {
           className={`${styles.tabButton} ${
             viewMode === "list" ? styles.activeTab : ""
           }`}
-          onClick={() => setViewMode("list")}
+          onClick={() => handleViewModeChange("list")}
         >
           리스트 보기
         </button>
@@ -270,7 +277,9 @@ function SoulListContent() {
         <div className={styles.cardsGrid}>
           {souls.map((soul) => (
             <Link
-              href={`/sky/travelingSprits/generalVisits/${soul.id}?page=${currentPage}`}
+              href={`/sky/travelingSprits/generalVisits/${soul.id}?page=${currentPage}&mode=${viewMode}&query=${encodeURIComponent(
+                submittedQuery
+              )}`}
               key={soul.id}
               className={styles.soulCard}
             >
@@ -336,7 +345,11 @@ function SoulListContent() {
                 key={soul.id}
                 className={styles.tableRow}
                 onClick={() =>
-                  router.push(`/sky/travelingSprits/generalVisits/${soul.id}`)
+                  router.push(
+                    `/sky/travelingSprits/generalVisits/${soul.id}?page=${currentPage}&mode=${viewMode}&query=${encodeURIComponent(
+                      submittedQuery
+                    )}`
+                  )
                 }
                 style={{ cursor: "pointer" }}
               >
@@ -384,7 +397,7 @@ function SoulListContent() {
               className={styles.pageButton}
               onClick={() =>
                 handlePageChange((getCurrentPageGroup() - 1) * 5 + 1)
-              } // 5개씩 그룹을 이동
+              }
             >
               &laquo;
             </button>
@@ -409,7 +422,7 @@ function SoulListContent() {
               className={styles.pageButton}
               onClick={() =>
                 handlePageChange((getCurrentPageGroup() + 1) * 5 + 1)
-              } // 5개씩 그룹을 이동
+              }
             >
               &raquo;
             </button>
@@ -420,7 +433,7 @@ function SoulListContent() {
   );
 }
 
-// 메인 컴포넌트는 useSearchParams를 직접 사용하지 않고 SoulListContent를 Suspense로 감쌉니다
+// 메인 컴포넌트는 SoulListContent를 Suspense로 감쌉니다.
 export default function SoulListPage() {
   return (
     <Suspense fallback={<div>Loading...</div>}>
