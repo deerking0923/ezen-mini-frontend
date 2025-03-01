@@ -135,7 +135,7 @@ export default function SoulDetailPage() {
                 : `${soul.orderNum}번째 영혼`}
             </div>
             <div className={styles.detailItem}>
-              {soul.rerunCount} 차 복각
+              {soul.rerunCount}차 복각
             </div>
             <div className={styles.detailItem}>
               {soul.seasonName} 시즌

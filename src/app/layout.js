@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Head from 'next/head';
 import Footer from './components/Footer';
+import GoogleAnalytics from './GoogleAnalytics';
 
 export default function RootLayout({ children }) {
   const [loading, setLoading] = useState(true);
@@ -20,20 +21,8 @@ export default function RootLayout({ children }) {
       <Head>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <title>스카이 플래너</title>
-        <script async src="https://www.googletagmanager.com/gtag/js?id=G-FTLELSQ2LC"></script>
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              window.dataLayer = window.dataLayer || [];
-              function gtag(){dataLayer.push(arguments);}
-              gtag('js', new Date());
-              gtag('config', 'G-FTLELSQ2LC', {
-                page_path: window.location.pathname,
-              });
-            `,
-          }}
-        />
       </Head>
+      <GoogleAnalytics />
       <body>
         {loading && (
           <div className="loading-container">
@@ -67,7 +56,10 @@ export default function RootLayout({ children }) {
           {/* 모바일 전용: mounted 후 렌더링 */}
           {mounted && (
             <>
-              <div className="hamburger" onClick={() => setShowHamburger(!showHamburger)}>
+              <div
+                className="hamburger"
+                onClick={() => setShowHamburger(!showHamburger)}
+              >
                 <span className="bar"></span>
                 <span className="bar"></span>
                 <span className="bar"></span>
