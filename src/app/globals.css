@@ -16,14 +16,16 @@ body {
   font-family: 'Arial', sans-serif;
 }
 
+/* 헤더 스타일 */
 .header {
   background-color: #41659b; /* 깊고 차분한 블루 */
   height: 60px; /* 고정된 헤더 높이 */
-  padding: 0 20px; /* 세로 패딩 제거 */
+  padding: 20px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   color: #ffffff;
+  position: relative; /* 모바일 내비게이션의 absolute 위치 기준 */
 }
 
 /* 가운데 타이틀 */
@@ -34,7 +36,7 @@ body {
 
 .header-title {
   margin: 0;
-  font-size: 20px; /* 기본 폰트 크기 */
+  font-size: 20px;
   font-weight: bold;
   color: #ffffff;
   cursor: pointer;
@@ -46,13 +48,14 @@ body {
   opacity: 0.8;
 }
 
+/* PC용 내비게이션 링크 */
 .nav-links {
-  flex: 0 0 auto;
   display: flex;
   align-items: center;
   gap: 10px;
 }
 
+/* 네비게이션 버튼 스타일 */
 .nav-button {
   background-color: #f39c12;
   border: none;
@@ -65,6 +68,61 @@ body {
 
 .nav-button:hover {
   background-color: #d35400;
+}
+
+.credit-button {
+  background-color: #3c3c3c;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 4px;
+  color: #ffffff;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.credit-button:hover {
+  background-color: #555555;
+}
+
+/* 모바일 전용 햄버거 버튼: 기본 숨김 */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 4px;
+  cursor: pointer;
+  z-index: 101;
+  width: 25px; /* 고정 너비 지정 */
+}
+
+.hamburger .bar {
+  width: 100%; /* 부모 너비(25px)를 상속 */
+  height: 3px;
+  background-color: #fff;
+}
+
+/* 모바일 전용 드롭다운 메뉴 */
+.mobile-nav {
+  display: none;
+  flex-direction: column;
+  position: absolute;
+  top: 60px;
+  right: 20px;
+  background-color: #2c2c2c;
+  padding: 1rem;
+  border-radius: 4px;
+  gap: 8px;
+  z-index: 100;
+  opacity: 0;
+  transform: translateY(-10px);
+  pointer-events: none;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.mobile-nav.show {
+  display: flex;
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
 }
 
 /* 메인 (페이지 내용) 스타일 */
@@ -97,26 +155,14 @@ main {
   animation: bounce 1.5s infinite ease-in-out;
 }
 
-.spinner div:nth-child(1) {
-  animation-delay: 0s;
-}
-.spinner div:nth-child(2) {
-  animation-delay: 0.2s;
-}
-.spinner div:nth-child(3) {
-  animation-delay: 0.4s;
-}
-.spinner div:nth-child(4) {
-  animation-delay: 0.6s;
-}
+.spinner div:nth-child(1) { animation-delay: 0s; }
+.spinner div:nth-child(2) { animation-delay: 0.2s; }
+.spinner div:nth-child(3) { animation-delay: 0.4s; }
+.spinner div:nth-child(4) { animation-delay: 0.6s; }
 
 @keyframes bounce {
-  0%, 100% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.5);
-  }
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.5); }
 }
 
 a {
@@ -124,41 +170,14 @@ a {
   color: inherit;
 }
 
-/* 크레딧 버튼을 왼쪽에 배치 */
-.credit-button {
-  background-color: #3c3c3c; /* 어두운 회색 */
-  border: none;
-  padding: 8px 12px;
-  border-radius: 4px;
-  color: #ffffff;
-  cursor: pointer;
-  transition: background 0.2s ease;
-}
-
-.credit-button:hover {
-  background-color: #555555; /* 더 어두운 회색 */
-}
-
-/* 모바일 화면에 적용될 스타일 */
+/* 모바일 스타일: 화면 폭 768px 이하에서 적용 */
 @media (max-width: 768px) {
-  .header {
-    min-height: 50px; /* 모바일에서 헤더 높이를 100px로 설정 */
-    padding: 0 15px;  /* 모바일에서 좌우 여백 약간 줄이기 */
+  /* PC용 내비게이션 숨김 */
+  .nav-links {
+    display: none;
   }
-
-  .header-title {
-    font-size: 18px; /* 모바일에서 헤더 제목 크기 줄이기 */
-    line-height: 1.5; /* 모바일에서 줄 간격을 늘려서 보기 좋게 하기 */
+  /* 햄버거 버튼 보임 */
+  .hamburger {
+    display: flex;
   }
-
-  .nav-button, .credit-button {
-    padding: 4px 6px; /* 모바일에서 버튼 크기 줄이기 */
-    font-size: 0.9rem; /* 버튼 글자 크기 줄이기 */
-  }
-
-  /* html, body {
-    overflow-x: hidden;
-    width: 100vw; 
-    min-width: 1000px; 
-  } */
 }

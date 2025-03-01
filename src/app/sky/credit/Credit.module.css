@@ -1,51 +1,50 @@
 .creditPage {
-    background-color: #2c2c2c;
-    color: #eaeaea;
-    padding: 2rem;
-    max-width: 920px;
-    margin: 2rem auto;
-    font-family: 'Inter', sans-serif;
-    border-radius: 12px;
-    min-height: calc(100vh - 120px); /* 콘텐츠가 적을 때도 푸터가 아래로 위치하도록 */
-  }
-  
-  .creditPage h1 {
-    font-size: 2.4rem;
-    font-weight: 700;
-    text-align: center;
-    margin-bottom: 2rem;
-    color: #ffffff;
-  }
-  
-  .creditContent {
-    font-size: 1.2rem;
-    line-height: 1.8;
-  }
-  
-  .links {
-    margin-top: 1rem;
-  }
-  
-  .links p {
-    font-weight: 600;
-    margin-bottom: 1rem;
-  }
-  
-  .links ul {
-    list-style-type: none;
-    padding-left: 0;
-  }
-  
-  .links li {
-    margin-bottom: 1rem;
-  }
-  
-  .links a {
-    color: #0070f3;
-    text-decoration: none;
-  }
-  
-  .links a:hover {
-    text-decoration: underline;
-  }
-  
+  background-color: #2c2c2c;
+  color: #eaeaea;
+  padding: 2rem;
+  max-width: 920px;
+  margin: 2rem auto;
+  font-family: 'Noto Sans KR', sans-serif;
+  border-radius: 12px;
+  min-height: calc(100vh - 120px);
+}
+
+.creditPage h1 {
+  font-size: 2.4rem;
+  font-weight: 600; /* 기존 700에서 600으로 낮춤 */
+  text-align: center;
+  margin-bottom: 2rem;
+  color: #ffffff;
+}
+
+.creditContent {
+  font-size: 1.2rem;
+  line-height: 1.8;
+}
+
+.links {
+  margin-top: 1rem;
+}
+
+.links p {
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.links ul {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+.links li {
+  margin-bottom: 1rem;
+}
+
+.links a {
+  color: #0070f3;
+  text-decoration: none;
+}
+
+.links a:hover {
+  text-decoration: underline;
+}

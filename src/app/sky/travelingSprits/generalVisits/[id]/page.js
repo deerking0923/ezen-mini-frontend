@@ -6,7 +6,17 @@ import { useParams, useRouter, useSearchParams } from "next/navigation";
 import styles from "./detail.module.css";
 
 export default function SoulDetailPage() {
-  const searchParams = useSearchParams(); 
+  const [showCopied, setShowCopied] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  const searchParams = useSearchParams();
   const { id } = useParams();
   const router = useRouter();
   const [soul, setSoul] = useState(null);
@@ -91,18 +101,20 @@ export default function SoulDetailPage() {
   return (
     <div className={styles.container}>
       <h1 className={styles.title}>{soul.name}</h1>
-      <div className={styles.topNavigation}>
-        <button
-          className={styles.listButton}
-          onClick={() =>
-            router.push(
-              `/sky/travelingSprits/generalVisits/list?page=${currentPage}`
-            )
-          }
-        >
-          목록 가기
-        </button>
-      </div>
+      {!isMobile && (
+        <div className={styles.topNavigation}>
+          <button
+            className={styles.listButton}
+            onClick={() =>
+              router.push(
+                `/sky/travelingSprits/generalVisits/list?page=${currentPage}`
+              )
+            }
+          >
+            목록 가기
+          </button>
+        </div>
+      )}
 
       {/* 상단 레이아웃 */}
       <div className={styles.topLayout}>
@@ -123,14 +135,14 @@ export default function SoulDetailPage() {
                 : `${soul.orderNum}번째 영혼`}
             </div>
             <div className={styles.detailItem}>
-              <strong>시즌:</strong> {soul.seasonName}
-            </div>
-            <div className={styles.detailItem}>
-              <strong>기간: </strong> {soul.startDate} ~ {soul.endDate}
-            </div>
-            <div className={styles.detailItem}>
               {soul.rerunCount}
-              <strong>차 복각</strong>
+              차 복각
+            </div>
+            <div className={styles.detailItem}>
+              {soul.seasonName} 시즌
+            </div>
+            <div className={styles.detailItem}>
+              기간: {soul.startDate} ~ {soul.endDate}
             </div>
           </div>
           {soul.description && (
@@ -249,6 +261,20 @@ export default function SoulDetailPage() {
           </a>
         </div>
       )}
+
+      <div className={styles.copyUrlContainer}>
+        <button
+          onClick={() => {
+            navigator.clipboard.writeText(window.location.href);
+            setShowCopied(true);
+            setTimeout(() => setShowCopied(false), 2000);
+          }}
+        >
+          URL 복사
+        </button>
+      </div>
+
+      {showCopied && <div className={styles.copiedToast}>URL이 복사되었습니다.</div>}
 
       <div className={styles.centerNavigation}>
         <button

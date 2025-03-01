@@ -6,11 +6,12 @@ import styles from "./Credit.module.css";
 export default function Credit() {
   return (
     <div className={styles.creditPage}>
-      <h1>출처</h1>
+      <h1>크레딧</h1>
       <div className={styles.creditContent}>
-        <p>제작자: 진사슴</p>
-        <div className={styles.links}>
+        <p>제작자 - 진사슴</p>
+          <div className={styles.links}>
           <ul>
+            <li>유랑 대백과 자료 제작 - 무륵, 망고, 엔</li>
             <li>
               <Link href="https://cafe.naver.com/blacknbiqa/482371">
                 사이트 가이드 보러가기
