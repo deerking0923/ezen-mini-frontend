@@ -334,12 +334,12 @@ export default function Home() {
 
         {/* 방향키 컨트롤 추가 (일렬로 표시) */}
         <div className="arrow-controls">
-          <button
+        <button
             className="arrow-btn"
             onClick={() => {
               const newPos = clampPosition(
                 position.x,
-                position.y - arrowStep,
+                position.y + arrowStep,
                 scale
               );
               setPosition(newPos);
@@ -352,7 +352,7 @@ export default function Home() {
             onClick={() => {
               const newPos = clampPosition(
                 position.x,
-                position.y + arrowStep,
+                position.y - arrowStep,
                 scale
               );
               setPosition(newPos);
@@ -364,7 +364,7 @@ export default function Home() {
             className="arrow-btn"
             onClick={() => {
               const newPos = clampPosition(
-                position.x - arrowStep,
+                position.x + arrowStep,
                 position.y,
                 scale
               );
@@ -377,7 +377,7 @@ export default function Home() {
             className="arrow-btn"
             onClick={() => {
               const newPos = clampPosition(
-                position.x + arrowStep,
+                position.x - arrowStep,
                 position.y,
                 scale
               );
