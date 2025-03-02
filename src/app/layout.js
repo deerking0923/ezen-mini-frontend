@@ -68,9 +68,9 @@ export default function RootLayout({ children }) {
                 <Link href="/sky/height">
                   <button className="nav-button">키 재기</button>
                 </Link>
-                {/* <Link href="/sky/travelingSprits/generalVisits/list">
+                <Link href="/sky/travelingSprits/generalVisits/list">
                   <button className="nav-button">유랑 대백과</button>
-                </Link> */}
+                </Link>
                 <Link href="/sky/candlecalculator">
                   <button className="nav-button">양초 계산하기</button>
                 </Link>

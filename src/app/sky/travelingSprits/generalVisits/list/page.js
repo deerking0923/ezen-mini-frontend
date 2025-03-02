@@ -54,6 +54,7 @@ function SoulListContent() {
     setSubmittedQuery(initialQuery);
   }, [searchParams]);
 
+  
   const fetchSouls = async (pageNumber, query) => {
     setLoading(true);
     let url = "";
@@ -180,11 +181,11 @@ function SoulListContent() {
       <div className={styles.noticePanel}>
         <h2 className={styles.noticeTitle}>유랑 대백과</h2>
         <p className={styles.noticeDescription}>
+        <br />
+          유랑 대백과의 제작 자료는 스카이 플래너를 출처로 남기시면 사용 가능합니다.
+          <br />
           <br />
           찾고 있는 유랑이 기억나지 않을 때 검색창에 키워드를 입력해 검색해주세요.
-          <br />
-          <br />
-          전체 보기로 돌아오고 싶으면 빈 검색창 상태로 검색하시면 됩니다.
           <br />
           <br />
           <span className={styles.noticeExample}>
@@ -234,7 +235,7 @@ function SoulListContent() {
           }`}
           onClick={() => handleViewModeChange("card")}
         >
-          사진 보기
+          카드 보기
         </button>
         <button
           className={`${styles.tabButton} ${
