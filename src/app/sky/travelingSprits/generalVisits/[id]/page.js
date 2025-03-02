@@ -22,19 +22,6 @@ export default function SoulDetailPage() {
   const viewMode = searchParams.get("mode") || "card";
   const query = searchParams.get("query") || "";
 
-  // 새로 고침 시(리로드) 쿼리 파라미터 제거하여 "새로운" 페이지로 만듦
-  useEffect(() => {
-    if (typeof window !== "undefined" && window.performance) {
-      // 1: Reload, 0: Navigation through history, 2: Navigation through other means
-      if (
-        window.performance.navigation.type ===
-        window.performance.navigation.TYPE_RELOAD
-      ) {
-        router.replace(`/sky/travelingSprits/generalVisits/detail/${id}`);
-      }
-    }
-  }, [id, router]);
-
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth < 768);
     handleResize();
