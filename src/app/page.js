@@ -19,6 +19,17 @@ export default function MainPage() {
         만든이 진사슴
       </div>
       <div className="main-page-container">
+      {/* <div
+          className="option-container"
+          onClick={() => navigateTo("/sky/travelingSprits/generalVisits/list")}
+        >
+          <img
+            src="/sky/extra/dictionary.png"
+            alt="유랑 대백과"
+            className="option-image"
+          />
+          <h2 className="option-title">유랑 대백과</h2>
+        </div> */}
         <div
           className="option-container"
           onClick={() => navigateTo("/sky/height")}

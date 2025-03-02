@@ -215,7 +215,7 @@
   font-weight: bold;
   color: #cacaca;
   text-align: right;
-  margin-top: 2rem;
+  margin-top: 1rem;
 }
 
 .sourceLink {
@@ -540,6 +540,62 @@
 }
 
 
+/* 전체 이웃 네비 영역: 이전 글, 현재 글, 다음 글을 세로로 배치 */
+.neighborContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  margin-top: 1.5rem;
+  padding-top: 0.8rem;
+  border-top: 1px solid #444;
+}
+
+/* 클릭 가능한 이웃 항목 */
+.neighborItem {
+  display: block;
+  padding: 0.6rem;
+  background-color: #3c3c3c;
+  color: #eaeaea;
+  text-decoration: none;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+  font-size: 0.8rem;
+}
+
+.neighborItem:hover {
+  background-color: #555;
+}
+
+/* 현재 글 항목 - 강조 처리 */
+.currentItem {
+  padding: 0.6rem;
+  background-color: #686869;
+  color: #ffffff;
+  border-radius: 4px;
+  font-weight: bold;
+  text-align: center;
+  font-size: 0.9rem;
+}
+
+/* 내부 항목의 레이아웃: 각 정보(순서, 시즌, 이름, 기간, 복각 횟수)를 균등 분배 */
+.neighborDetails {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  justify-content: space-between;
+}
+
+/* 각 정보 항목 스타일 */
+.orderNum,
+.seasonName,
+.soulName,
+.period,
+.rerunCount {
+  flex: 1;
+  text-align: center;
+  font-size: 0.75rem;
+}
+
 
 /******************************************************
  * 반응형 스타일
@@ -670,4 +726,20 @@
     line-height: 1.4;
     text-align: left;
   }
+  .period,
+  .rerunCount {
+    display: none;
+  }
+  /* html, body {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+  }
+  .container {
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+    padding: 1rem;
+    border-radius: 0;
+  } */
 }

@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
 import styles from "./detail.module.css";
+import Link from "next/link";
 
 export default function SoulDetailPage() {
   const [showCopied, setShowCopied] = useState(false);
@@ -11,7 +12,7 @@ export default function SoulDetailPage() {
   const [soul, setSoul] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
+  const [neighbors, setNeighbors] = useState({ prev: [], next: [] });
   const searchParams = useSearchParams();
   const { id } = useParams();
   const router = useRouter();
@@ -25,7 +26,10 @@ export default function SoulDetailPage() {
   useEffect(() => {
     if (typeof window !== "undefined" && window.performance) {
       // 1: Reload, 0: Navigation through history, 2: Navigation through other means
-      if (window.performance.navigation.type === window.performance.navigation.TYPE_RELOAD) {
+      if (
+        window.performance.navigation.type ===
+        window.performance.navigation.TYPE_RELOAD
+      ) {
         router.replace(`/sky/travelingSprits/generalVisits/detail/${id}`);
       }
     }
@@ -55,6 +59,14 @@ export default function SoulDetailPage() {
         setLoading(false);
       });
   }, [id]);
+  // 상단에 import 문이 이미 있으므로 useState, useEffect 사용
+
+  useEffect(() => {
+    fetch(`https://korea-sky-planner.com/api/v1/souls/${id}/neighbors`)
+      .then((res) => res.json())
+      .then((data) => setNeighbors(data.data || data)) // ApiResponse 내부에 data가 있으면
+      .catch((err) => console.error(err));
+  }, [id]);
 
   if (loading) return <div className={styles.loading}>Loading...</div>;
   if (error) return <div className={styles.error}>Error: {error}</div>;
@@ -81,7 +93,9 @@ export default function SoulDetailPage() {
         if (res.ok) {
           alert("삭제가 완료되었습니다.");
           router.push(
-            `/sky/travelingSprits/generalVisits/list?page=${currentPage}&mode=${viewMode}&query=${encodeURIComponent(query)}`
+            `/sky/travelingSprits/generalVisits/list?page=${currentPage}&mode=${viewMode}&query=${encodeURIComponent(
+              query
+            )}`
           );
         } else {
           alert("삭제에 실패하였습니다.");
@@ -95,13 +109,21 @@ export default function SoulDetailPage() {
 
   // 노드 렌더링: centerNodes 수에 맞춰 왼쪽, 오른쪽에 dummy 노드를 사용
   const centerNodesCount = soul.centerNodes ? soul.centerNodes.length : 0;
-  const leftNodesToRender = Array.from({ length: centerNodesCount }, (_, i) =>
-    (soul.leftSideNodes &&
-      soul.leftSideNodes.find((node) => node.nodeOrder === i + 1)) || { dummy: true }
+  const leftNodesToRender = Array.from(
+    { length: centerNodesCount },
+    (_, i) =>
+      (soul.leftSideNodes &&
+        soul.leftSideNodes.find((node) => node.nodeOrder === i + 1)) || {
+        dummy: true,
+      }
   );
-  const rightNodesToRender = Array.from({ length: centerNodesCount }, (_, i) =>
-    (soul.rightSideNodes &&
-      soul.rightSideNodes.find((node) => node.nodeOrder === i + 1)) || { dummy: true }
+  const rightNodesToRender = Array.from(
+    { length: centerNodesCount },
+    (_, i) =>
+      (soul.rightSideNodes &&
+        soul.rightSideNodes.find((node) => node.nodeOrder === i + 1)) || {
+        dummy: true,
+      }
   );
 
   return (
@@ -113,7 +135,9 @@ export default function SoulDetailPage() {
             className={styles.listButton}
             onClick={() =>
               router.push(
-                `/sky/travelingSprits/generalVisits/list?page=${currentPage}&mode=${viewMode}&query=${encodeURIComponent(query)}`
+                `/sky/travelingSprits/generalVisits/list?page=${currentPage}&mode=${viewMode}&query=${encodeURIComponent(
+                  query
+                )}`
               )
             }
           >
@@ -141,12 +165,8 @@ export default function SoulDetailPage() {
                 ? `${Math.abs(soul.orderNum)}번째 유랑단`
                 : `${soul.orderNum}번째 영혼`}
             </div>
-            <div className={styles.detailItem}>
-              {soul.rerunCount}차 복각
-            </div>
-            <div className={styles.detailItem}>
-              {soul.seasonName} 시즌
-            </div>
+            <div className={styles.detailItem}>{soul.rerunCount}차 복각</div>
+            <div className={styles.detailItem}>{soul.seasonName} 시즌</div>
             <div className={styles.detailItem}>
               기간: {soul.startDate} ~ {soul.endDate}
             </div>
@@ -286,12 +306,89 @@ export default function SoulDetailPage() {
           className={styles.centerListButton}
           onClick={() =>
             router.push(
-              `/sky/travelingSprits/generalVisits/list?page=${currentPage}&mode=${viewMode}&query=${encodeURIComponent(query)}`
+              `/sky/travelingSprits/generalVisits/list?page=${currentPage}&mode=${viewMode}&query=${encodeURIComponent(
+                query
+              )}`
             )
           }
         >
           목록가기
         </button>
+      </div>
+
+      <div className={styles.neighborContainer}>
+        {neighbors.prev.map((post) => (
+          <Link
+            key={post.id}
+            href={`/sky/travelingSprits/generalVisits/${
+              post.id
+            }?page=${currentPage}&mode=${viewMode}&query=${encodeURIComponent(
+              query
+            )}`}
+            className={styles.neighborItem}
+          >
+            <div className={styles.neighborDetails}>
+              <span className={styles.orderNum}>
+                {post.orderNum < 0
+                  ? `${Math.abs(post.orderNum)}번째 유랑단`
+                  : `${post.orderNum}번째 영혼`}
+              </span>
+              <span className={styles.seasonName}>{post.seasonName}</span>
+              <span className={styles.soulName}>{post.name}</span>
+              <span className={styles.period}>
+                {post.startDate} ~ {post.endDate}
+              </span>
+              <span className={styles.rerunCount}>
+                {post.rerunCount}차 복각
+              </span>
+            </div>
+          </Link>
+        ))}
+
+        {/* 현재 글 - 링크 없이 강조하여 표시 */}
+        <div className={styles.currentItem}>
+          <div className={styles.neighborDetails}>
+            <span className={styles.orderNum}>
+              {soul.orderNum < 0
+                ? `${Math.abs(soul.orderNum)}번째 유랑단`
+                : `${soul.orderNum}번째 영혼`}
+            </span>
+            <span className={styles.seasonName}>{soul.seasonName}</span>
+            <span className={styles.soulName}>{soul.name}</span>
+            <span className={styles.period}>
+              {soul.startDate} ~ {soul.endDate}
+            </span>
+            <span className={styles.rerunCount}>{soul.rerunCount}차 복각</span>
+          </div>
+        </div>
+
+        {neighbors.next.map((post) => (
+          <Link
+            key={post.id}
+            href={`/sky/travelingSprits/generalVisits/${
+              post.id
+            }?page=${currentPage}&mode=${viewMode}&query=${encodeURIComponent(
+              query
+            )}`}
+            className={styles.neighborItem}
+          >
+            <div className={styles.neighborDetails}>
+              <span className={styles.orderNum}>
+                {post.orderNum < 0
+                  ? `${Math.abs(post.orderNum)}번째 유랑단`
+                  : `${post.orderNum}번째 영혼`}
+              </span>
+              <span className={styles.seasonName}>{post.seasonName}</span>
+              <span className={styles.soulName}>{post.name}</span>
+              <span className={styles.period}>
+                {post.startDate} ~ {post.endDate}
+              </span>
+              <span className={styles.rerunCount}>
+                {post.rerunCount}차 복각
+              </span>
+            </div>
+          </Link>
+        ))}
       </div>
 
       <div className={styles.buttonContainer}>

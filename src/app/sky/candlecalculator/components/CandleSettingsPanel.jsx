@@ -90,7 +90,7 @@ ${finalitem >= 0  && (ownsSeasonPass === "yes" || buySeasonPass) && finalitem <=
         <span className="season-days-note"> 아직 리셋 전 오늘
         일퀘를 안하셨다면 일퀘 양초를 포함해서 계산해주세요.</span>
         <span className="season-days-note">최보 최단 일수 계산은 '원함!' 전체 선택 후 가지고 있는 아이템을 모두 표시하고 계산하시기 바랍니다.</span>
-        <span className="season-days-note">(시즌초 2배 이벤트 미적용)</span>
+        <span className="season-days-note">(시즌초 2배 이벤트 미포함)</span>
       </div>
 
       <div className="setting-group">

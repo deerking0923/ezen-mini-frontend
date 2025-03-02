@@ -180,4 +180,16 @@ a {
   .hamburger {
     display: flex;
   }
+  .mobile-nav {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .mobile-nav .nav-button,
+  .mobile-nav .credit-button {
+    display: block;
+    width: 100%;
+    text-align: center;
+    margin:auto; /* 버튼 간 간격 조절 */
+  }
 }
