@@ -391,7 +391,7 @@ export default function SoulDetailPage() {
         ))}
       </div>
 
-      <div className={styles.buttonContainer}>
+      {/* <div className={styles.buttonContainer}>
         <button className={styles.editButton} onClick={handleAdd}>
           추가하기
         </button>
@@ -401,7 +401,7 @@ export default function SoulDetailPage() {
         <button className={styles.deleteButton} onClick={handleDelete}>
           삭제하기
         </button>
-      </div>
+      </div> */}
     </div>
   );
 }
