@@ -344,7 +344,7 @@ h1 {
     max-width: 300px;
   }
   .credit-text {
-    font-size: 0.7rem; /* 모바일에서 더 작게 */
+    font-size: 0.5rem; /* 모바일에서 더 작게 */
   }
 
   h1 {
