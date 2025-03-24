@@ -6,7 +6,7 @@
 
 사이트 URL: https://korea-sky-planner.com/
 
-## 🛠 기술 스택
+## 기술 스택
 | Category | Technologies |
 |----------|--------------|
 | Architecture | Layered Architecture (Frontend 단 분리 구조) |
@@ -18,7 +18,7 @@
 | Domain Management | Gabia (SSL 인증서, DNS 설정) |
 | Dev Environment | VS Code, Chrome DevTools |
 
-## 📈 학습 포인트
+## 학습 포인트
 - 실제 사용자 대상 UX/UI 설계 및 반영  
 - 도메인 구매 및 SSL 인증 설정 경험 (Gabia)  
 - Google Analytics를 통한 사용자 행동 추적 적용  
