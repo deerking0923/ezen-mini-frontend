@@ -5,7 +5,7 @@ import Link from 'next/link';
 import Head from 'next/head';
 import Footer from './components/Footer';
 import GoogleAnalytics from './GoogleAnalytics';
-
+import { QuizProvider } from './sky/context/QuizContext';
 export default function RootLayout({ children }) {
   const [loading, setLoading] = useState(true);
   const [showHamburger, setShowHamburger] = useState(false);
@@ -24,6 +24,7 @@ export default function RootLayout({ children }) {
       </Head>
       <GoogleAnalytics />
       <body>
+      <QuizProvider>
         {loading && (
           <div className="loading-container">
             <div className="spinner">
@@ -71,6 +72,9 @@ export default function RootLayout({ children }) {
                 <Link href="/sky/travelingSprits/generalVisits/list">
                   <button className="nav-button">유랑 대백과</button>
                 </Link>
+                {/* <Link href="/sky/mbti">
+                  <button className="nav-button">성향 테스트</button>
+                </Link> */}
                 <Link href="/sky/candlecalculator">
                   <button className="nav-button">양초 계산하기</button>
                 </Link>
@@ -83,6 +87,7 @@ export default function RootLayout({ children }) {
         </header>
         <main>{children}</main>
         <Footer />
+        </QuizProvider>
       </body>
     </html>
   );

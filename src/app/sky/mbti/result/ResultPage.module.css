@@ -1,0 +1,128 @@
+.container {
+    max-width: 600px;
+    margin: auto;
+    padding: 1rem;
+    text-align: center;
+  }
+  
+  .imageWrapper {
+    width: 100%;
+    margin-bottom: 2rem;
+    overflow: hidden;
+  }
+  
+  /* 버튼들을 한 줄에 배치 */
+  .buttonRow {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+  }
+  
+  /* 기본 버튼 스타일 (크기가 큰 버튼용) */
+  .button {
+    background-color: #444;
+    border: 1px solid #555;
+    border-radius: 8px;
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    color: #f1c40f;
+    cursor: pointer;
+    transition: background 0.2s;
+    flex: 1;
+    min-width: 180px;
+  }
+  
+  .button:hover {
+    background-color: #555;
+  }
+  
+  /* 다운로드 버튼: 하이퍼링크 느낌 */
+  .downloadLink {
+    background: transparent;
+    border: none;
+    text-decoration: underline;
+    padding: 0;
+    flex: none;
+    min-width: auto;
+    color: #f1c40f;
+  }
+  
+  .downloadLink:hover {
+    color: #b7950b;
+  }
+  
+  /* 두번째 줄 버튼들을 위한 세컨더리 스타일 */
+  .secondaryRow {
+    /* 이 행에 들어가는 버튼들은 개별적으로 크기를 조정 */
+    gap: 1rem;
+  }
+  
+  .secondaryButton {
+    background-color: #444;
+    border: 1px solid #555;
+    border-radius: 8px;
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+    color: #f1c40f;
+    cursor: pointer;
+    transition: background 0.2s;
+    flex: 1;
+    min-width: 140px;
+  }
+  
+  .secondaryButton:hover {
+    background-color: #555;
+  }
+
+  .downloadLink {
+    background: transparent;
+    border: none;
+    text-decoration: underline;
+    padding: 0;
+    flex: none;
+    min-width: auto;
+    color: #444;
+  }
+  
+  .downloadLink:hover {
+    background: transparent !important;
+    color: #dddddd !important;
+  }
+  
+
+  /* 두번째 줄 버튼들을 위한 세컨더리 스타일 */
+.secondaryRow {
+    gap: 1rem;
+    justify-content: center;
+  }
+  
+  .secondaryButton {
+    background-color: #444;
+    border: 1px solid #555;
+    border-radius: 8px;
+    padding: 0.75rem 0.8rem; /* 세로 패딩 0.75rem, 좌우 패딩 0.5rem */
+    font-size: 0.9rem;
+    color: #f1c40f;
+    cursor: pointer;
+    transition: background 0.2s;
+    flex: none;           /* 공간을 강제 채우지 않도록 제거 */
+    min-width: 80px;      /* 원하는 최소 너비로 설정 */
+    width: auto;          /* 버튼 내용에 따라 크기 조절 */
+  }
+  
+  .secondaryButton:hover {
+    background-color: #555;
+  }
+  
+  
+  /* 반응형 모바일 디자인 */
+  @media (max-width: 600px) {
+    .button {
+      padding: 0.6rem 1rem;
+      font-size: 0.9rem;
+      min-width: 140px;
+    }
+  }
+  
