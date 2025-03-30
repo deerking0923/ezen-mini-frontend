@@ -41,7 +41,7 @@ export default function MainPage() {
           />
           <h2 className="option-title">키 재기</h2>
         </div>
-        {/* <div
+        <div
           className="option-container"
           onClick={() => navigateTo("/sky/mbti")}
         >
@@ -51,7 +51,7 @@ export default function MainPage() {
             className="option-image"
           />
           <h2 className="option-title">성향 테스트</h2>
-        </div> */}
+        </div>
         <div
           className="option-container"
           onClick={() => navigateTo("/sky/candlecalculator")}

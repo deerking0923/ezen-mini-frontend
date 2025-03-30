@@ -12,6 +12,6 @@ export const questions = [
   { id:11, dimension:'EI', text:'11', options:['A. 내가 합류하는 편이다.','B. 상대가 합류해주길 기다린다.'] },
   { id:12, dimension:'TF', text:'12', options:['A. 빛만 주고 받는 빛지니스','B. 간간히 대화도 하는 교류가 있는 스친.'] },
   { id:13, dimension:'JP', text:'13', options:['A. 꼭 수집하는 편이다.','B. 아이템 몇 개 정도는 놓쳐도 괜찮다.'] },
-  { id:14, dimension:'EI', text:'14', options:['A. 살갑게 인사하는 편이다.','B. 말걸기 전에는 가만히 있거나 제스처로만 간단하게 인사한다.'] },
+  { id:14, dimension:'EI', text:'14', options:['A. 적극적으로 말을 걸거나 격하게 반긴다.','B. 가만히 있거나 간단하게 인사한다.'] },
   { id:15, dimension:'JP', text:'15', options:['A. 물약이 충분할 때만 키도박을 시도한다.','B. 물약이 세개만 있어도 시도해본다.'] },
 ]

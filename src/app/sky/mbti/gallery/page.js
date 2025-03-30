@@ -43,7 +43,7 @@ export default function GalleryPage() {
           공유하기
         </button>
         <button className={styles.homeButton} onClick={handleGoHome}>
-          돌아가기
+          홈으로
         </button>
       </div>
       {copySuccess && <span className={styles.copyMessage}>{copySuccess}</span>}

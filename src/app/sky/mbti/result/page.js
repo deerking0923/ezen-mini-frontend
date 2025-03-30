@@ -38,8 +38,12 @@ export default function ResultPage() {
     document.body.removeChild(link)
   }
 
-  const handleRetake = () => {
-    router.push('/sky/mbti')
+  const handleShare = async () => {
+    try {
+      await navigator.clipboard.writeText("https://korea-sky-planner.com/sky/mbti")
+    } catch (err) {
+      console.error("링크 복사 실패:", err)
+    }
   }
 
   const handleViewOther = () => {
@@ -59,16 +63,13 @@ export default function ResultPage() {
         />
       </div>
       <div className={styles.buttonRow}>
-        <button className={`${styles.button} ${styles.downloadLink}`} onClick={handleDownloadHead}>
-          대표 이미지 다운로드
-        </button>
         <button className={`${styles.button} ${styles.downloadLink}`} onClick={handleDownloadFull}>
           결과 다운로드
         </button>
       </div>
       <div className={`${styles.buttonRow} ${styles.secondaryRow}`}>
-        <button className={styles.secondaryButton} onClick={handleRetake}>
-          다시 검사하기
+        <button className={styles.secondaryButton} onClick={handleShare}>
+          공유하기
         </button>
         <button className={styles.secondaryButton} onClick={handleViewOther}>
           다른 유형 보러가기
