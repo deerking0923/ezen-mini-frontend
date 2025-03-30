@@ -63,7 +63,7 @@ export default function ResultPage() {
         />
       </div>
       <div className={styles.buttonRow}>
-        <button className={`${styles.button} ${styles.downloadLink}`} onClick={handleDownloadFull}>
+        <button className={`${styles.button} ${styles.downloadLink}`} onClick={handleDownloadHead}>
           결과 다운로드
         </button>
       </div>
