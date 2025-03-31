@@ -49,7 +49,7 @@ export default function ResultPage() {
   const handleViewOther = () => {
     router.push('/sky/mbti/gallery')
   }
-//결과 이미지 수정.
+//결과 이미지 수정.은 왜 안디ㅗ냐
   return (
     <main className={styles.container}>
       <div className={styles.imageWrapper}>
