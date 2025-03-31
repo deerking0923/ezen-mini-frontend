@@ -9,8 +9,8 @@ import styles from './ResultPage.module.css'
 export default function ResultPage() {
   const { answers } = useContext(QuizContext)
   const code = calcResult(answers)
-  const fullImageSrc = `/sky/mbti/result2/${code.toLowerCase()}.jpg`
-  const headImageSrc = `/sky/mbti/result2/${code.toLowerCase()}_head.jpg`
+  const fullImageSrc = `/sky/mbti/result/${code.toLowerCase()}.jpg`
+  const headImageSrc = `/sky/mbti/result/${code.toLowerCase()}_head.jpg`
   const router = useRouter()
 
   // 클라이언트에서 마운트된 이후에만 렌더링
