@@ -585,7 +585,13 @@
     content: "#"; /* - 앞에 # 추가 */
     margin-right: 5px;
   }
-
+  .tableThumbnail {
+    width: 30px;
+    height: 30px;
+    object-fit: contain; /* 또는 cover로 변경 가능 (contain은 이미지 전체를, cover는 꽉 채우면서 자를 수 있음) */
+    margin-right: 8px;
+  }
+  
   
   @media screen and (max-width: 768px) {
       /* 리스트 보기에서 테이블 헤더 수정 */

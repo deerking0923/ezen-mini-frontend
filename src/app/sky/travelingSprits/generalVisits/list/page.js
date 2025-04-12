@@ -330,63 +330,68 @@ function SoulListContent() {
           ))}
         </div>
       ) : (
-        <table className={styles.tableView}>
-          <thead>
-            <tr>
-              <th className={styles.thOrder}>순서</th>
-              <th className={styles.thSeason}>시즌</th>
-              <th className={styles.thName}>이름</th>
-              <th className={styles.thPeriod}>기간</th>
-              <th className={styles.thRerun}>n차</th>
-            </tr>
-          </thead>
-          <tbody>
-            {souls.map((soul) => (
-              <tr
-                key={soul.id}
-                className={styles.tableRow}
-                onClick={() =>
-                  router.push(
-                    `/sky/travelingSprits/generalVisits/${soul.id}?page=${currentPage}&mode=${viewMode}&query=${encodeURIComponent(
-                      submittedQuery
-                    )}`
-                  )
-                }
-                style={{ cursor: "pointer" }}
-              >
-                <td
-                  className={`${styles.tdOrder} ${
-                    soul.orderNum < 0 ? "negative" : ""
-                  }`}
-                >
-                  {soul.orderNum < 0 ? (
-                    <span>{Math.abs(soul.orderNum)}</span>
-                  ) : (
-                    soul.orderNum
-                  )}
-                </td>
-                <td className={styles.tdSeason}>
-                  <span
-                    className={styles.seasonName}
-                    style={{
-                      backgroundColor:
-                        seasonList.find(
-                          (season) => season.name === soul.seasonName
-                        )?.color || "#444",
-                    }}
-                  >
-                    {soul.seasonName}
-                  </span>
-                </td>
-                <td className={styles.tdName}>{soul.name}</td>
-                <td className={styles.tdPeriod}>
-                  {soul.startDate} ~ {soul.endDate}
-                </td>
-                <td className={styles.tdRerun}>{soul.rerunCount}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        // 기존 코드의 리스트(viewMode === "list") 렌더링 부분 수정
+<table className={styles.tableView}>
+  <thead>
+    <tr>
+      <th className={styles.thOrder}>순서</th>
+      <th className={styles.thSeason}>시즌</th>
+      <th className={styles.thName}>이름</th>
+      <th className={styles.thPeriod}>기간</th>
+      <th className={styles.thRerun}>n차</th>
+    </tr>
+  </thead>
+  <tbody>
+    {souls.map((soul) => (
+      <tr
+        key={soul.id}
+        className={styles.tableRow}
+        onClick={() =>
+          router.push(
+            `/sky/travelingSprits/generalVisits/${soul.id}?page=${currentPage}&mode=${viewMode}&query=${encodeURIComponent(
+              submittedQuery
+            )}`
+          )
+        }
+        style={{ cursor: "pointer" }}
+      >
+        <td className={`${styles.tdOrder} ${soul.orderNum < 0 ? "negative" : ""}`}>
+          {soul.representativeImage && (
+            <img
+              src={soul.representativeImage}
+              alt={soul.name}
+              className={styles.tableThumbnail}
+              style={{ width: "30px", height: "30px", marginRight: "8px", verticalAlign: "middle" }}
+            />
+          )}
+          {soul.orderNum < 0 ? (
+            <span>{Math.abs(soul.orderNum)}</span>
+          ) : (
+            soul.orderNum
+          )}
+        </td>
+        <td className={styles.tdSeason}>
+          <span
+            className={styles.seasonName}
+            style={{
+              backgroundColor:
+                seasonList.find((season) => season.name === soul.seasonName)?.color ||
+                "#444",
+            }}
+          >
+            {soul.seasonName}
+          </span>
+        </td>
+        <td className={styles.tdName}>{soul.name}</td>
+        <td className={styles.tdPeriod}>
+          {soul.startDate} ~ {soul.endDate}
+        </td>
+        <td className={styles.tdRerun}>{soul.rerunCount}</td>
+      </tr>
+    ))}
+  </tbody>
+</table>
+
       )}
 
       {/* 페이지네이션 */}
