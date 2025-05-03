@@ -8,21 +8,27 @@ import {
   soul2SeasonArray,
   soul3Array,
   soul3SeasonArray,
-} from "./data/arrays"; // <-- 배열 데이터 불러오기
-import ArrayNodeView from "./components/ArrayNodeView"; // <-- 새 컴포넌트
+  soul4Array,
+  soul4SeasonArray,
+  soul5Array,
+  soul5SeasonArray,
+} from "./data/arrays";
+import ArrayNodeView from "./components/ArrayNodeView";
 import SoulInfoSidebar from "./components/SoulInfoSidebar";
 import GuideSidebar from "./components/GuideSidebar";
 import CandleSettingsPanel from "./components/CandleSettingsPanel";
-import { sumWantedCost } from "./utils/candleUtils"; // <-- sumWantedCost도 배열용으로 수정
+import { sumWantedCost } from "./utils/candleUtils";
 import html2canvas from "html2canvas";
 import SimpleCandleCalculator from "./components/SimpleCandleCalculator";
 
 export default function CandleCalculatorPage() {
-  // 영혼별 노드 상태 분리
+  // 영혼별 노드 상태 분리 (1~5)
   const [soulNodeStates, setSoulNodeStates] = useState({
     1: {},
     2: {},
     3: {},
+    4: {},
+    5: {},
   });
   const [openMenu, setOpenMenu] = useState(null);
   const [currentCandles, setCurrentCandles] = useState(0);
@@ -35,23 +41,19 @@ export default function CandleCalculatorPage() {
     setSoulNodeStates((prev) => {
       const old = prev[soulIndex] || {};
       const newSlice = typeof updater === "function" ? updater(old) : updater;
-      return {
-        ...prev,
-        [soulIndex]: newSlice,
-      };
+      return { ...prev, [soulIndex]: newSlice };
     });
   };
 
-  // 필요한 양초 수 (각 영혼별 "want" 상태에 따른 비용 합)
-  // 기존에 트리 구조를 순회하던 sumWantedCost를, 배열을 기반으로 동작하도록 수정(아래 코드 참고)
+  // 필요한 양초 수: 1~5 영혼 합산
   const requiredCandles =
     sumWantedCost(soul1Array, soul1SeasonArray, soulNodeStates[1]) +
     sumWantedCost(soul2Array, soul2SeasonArray, soulNodeStates[2]) +
-    sumWantedCost(soul3Array, soul3SeasonArray, soulNodeStates[3]);
+    sumWantedCost(soul3Array, soul3SeasonArray, soulNodeStates[3]) +
+    sumWantedCost(soul4Array, soul4SeasonArray, soulNodeStates[4]) +
+    sumWantedCost(soul5Array, soul5SeasonArray, soulNodeStates[5]);
 
-  const handlePageClick = () => {
-    setOpenMenu(null);
-  };
+  const handlePageClick = () => setOpenMenu(null);
 
   const handleSoulNameClick = (soulIndex) => {
     setSelectedSoulIndex(soulIndex);
@@ -63,9 +65,9 @@ export default function CandleCalculatorPage() {
     if (!element) return;
     try {
       const canvas = await html2canvas(element, {
-        backgroundColor: "#333333", // CSS 배경 유지
-        scale: window.devicePixelRatio, // 고해상도 캡쳐
-        ignoreElements: (el) => el.classList.contains("no-capture"), // 특정 클래스는 무시
+        backgroundColor: "#333333",
+        scale: window.devicePixelRatio,
+        ignoreElements: (el) => el.classList.contains("no-capture"),
       });
       const dataURL = canvas.toDataURL("image/png");
       const link = document.createElement("a");
@@ -92,7 +94,6 @@ export default function CandleCalculatorPage() {
         </button>
       </div>
 
-      {/* 조건 설정창에 부모에서 계산한 requiredCandles 전달 */}
       <CandleSettingsPanel
         currentCandles={currentCandles}
         setCurrentCandles={setCurrentCandles}
@@ -102,25 +103,25 @@ export default function CandleCalculatorPage() {
       <div className="main-content">
         <div className="nodes-container" onClick={(e) => e.stopPropagation()}>
           <div className="souls-wrapper">
-            {/* Soul 3 */}
+            {/* Soul 1 */}
             <div className="soul-col">
               <div
                 className="soul-selector"
-                onClick={() => handleSoulNameClick(3)}
+                onClick={() => handleSoulNameClick(1)}
               >
                 <img
-                  src="/sky/calculator/spirit3.webp"
-                  alt="인사하는 주술사"
+                  src="/sky/calculator/spirit1.webp"
+                  alt="영혼 1"
                   className="soul-selector-img"
                 />
-                <span className="soul-selector-text">인사하는 주술사</span>
+                <span className="soul-selector-text">점치는 현명한 노인</span>
               </div>
               <ArrayNodeView
-                mainArray={soul3Array}
-                seasonArray={soul3SeasonArray}
-                nodeStates={soulNodeStates[3]}
-                setNodeStates={(updater) => handleSetNodeStates(3, updater)}
-                soulIndex={3}
+                mainArray={soul1Array}
+                seasonArray={soul1SeasonArray}
+                nodeStates={soulNodeStates[1]}
+                setNodeStates={(upd) => handleSetNodeStates(1, upd)}
+                soulIndex={1}
                 openMenu={openMenu}
                 setOpenMenu={setOpenMenu}
               />
@@ -130,14 +131,14 @@ export default function CandleCalculatorPage() {
                   alt="Candle"
                   className="candle-icon"
                 />
-                123 양초
+                62 양초
               </div>
               <div className="candle-selected">
                 선택한 양초:{" "}
                 {sumWantedCost(
-                  soul3Array,
-                  soul3SeasonArray,
-                  soulNodeStates[3]
+                  soul1Array,
+                  soul1SeasonArray,
+                  soulNodeStates[1]
                 )}
                 개
               </div>
@@ -151,16 +152,16 @@ export default function CandleCalculatorPage() {
               >
                 <img
                   src="/sky/calculator/spirit2.webp"
-                  alt="도발하는 곡예사"
+                  alt="영혼 2"
                   className="soul-selector-img"
                 />
-                <span className="soul-selector-text">도발하는 곡예사</span>
+                <span className="soul-selector-text">분장한 꽃가루 사촌</span>
               </div>
               <ArrayNodeView
                 mainArray={soul2Array}
                 seasonArray={soul2SeasonArray}
                 nodeStates={soulNodeStates[2]}
-                setNodeStates={(updater) => handleSetNodeStates(2, updater)}
+                setNodeStates={(upd) => handleSetNodeStates(2, upd)}
                 soulIndex={2}
                 openMenu={openMenu}
                 setOpenMenu={setOpenMenu}
@@ -171,7 +172,7 @@ export default function CandleCalculatorPage() {
                   alt="Candle"
                   className="candle-icon"
                 />
-                139 양초
+                97 양초
               </div>
               <div className="candle-selected">
                 선택한 양초:{" "}
@@ -184,25 +185,25 @@ export default function CandleCalculatorPage() {
               </div>
             </div>
 
-            {/* Soul 1 */}
+            {/* Soul 3 */}
             <div className="soul-col">
               <div
                 className="soul-selector"
-                onClick={() => handleSoulNameClick(1)}
+                onClick={() => handleSoulNameClick(3)}
               >
                 <img
-                  src="/sky/calculator/spirit1.webp"
-                  alt="팔짝 뛰는 무용수"
+                  src="/sky/calculator/spirit3.webp"
+                  alt="영혼 3"
                   className="soul-selector-img"
                 />
-                <span className="soul-selector-text">팔짝 뛰는 무용수</span>
+                <span className="soul-selector-text">고귀한 쓰다듬는 청년</span>
               </div>
               <ArrayNodeView
-                mainArray={soul1Array}
-                seasonArray={soul1SeasonArray}
-                nodeStates={soulNodeStates[1]}
-                setNodeStates={(updater) => handleSetNodeStates(1, updater)}
-                soulIndex={1}
+                mainArray={soul3Array}
+                seasonArray={soul3SeasonArray}
+                nodeStates={soulNodeStates[3]}
+                setNodeStates={(upd) => handleSetNodeStates(3, upd)}
+                soulIndex={3}
                 openMenu={openMenu}
                 setOpenMenu={setOpenMenu}
               />
@@ -212,24 +213,105 @@ export default function CandleCalculatorPage() {
                   alt="Candle"
                   className="candle-icon"
                 />
-                135 양초
+                86 양초
               </div>
               <div className="candle-selected">
                 선택한 양초:{" "}
                 {sumWantedCost(
-                  soul1Array,
-                  soul1SeasonArray,
-                  soulNodeStates[1]
+                  soul3Array,
+                  soul3SeasonArray,
+                  soulNodeStates[3]
+                )}
+                개
+              </div>
+            </div>
+
+            {/* Soul 4 */}
+            <div className="soul-col">
+              <div
+                className="soul-selector"
+                onClick={() => handleSoulNameClick(4)}
+              >
+                <img
+                  src="/sky/calculator/spirit4.webp"
+                  alt="영혼 4"
+                  className="soul-selector-img"
+                />
+                <span className="soul-selector-text">그리워하는 폭죽장이 부모</span>
+              </div>
+              <ArrayNodeView
+                mainArray={soul4Array}
+                seasonArray={soul4SeasonArray}
+                nodeStates={soulNodeStates[4]}
+                setNodeStates={(upd) => handleSetNodeStates(4, upd)}
+                soulIndex={4}
+                openMenu={openMenu}
+                setOpenMenu={setOpenMenu}
+              />
+              <div className="candle-count">
+                <img
+                  src="/sky/calculator/candle.webp"
+                  alt="Candle"
+                  className="candle-icon"
+                />
+                68 양초
+              </div>
+              <div className="candle-selected">
+                선택한 양초:{" "}
+                {sumWantedCost(
+                  soul4Array,
+                  soul4SeasonArray,
+                  soulNodeStates[4]
+                )}
+                개
+              </div>
+            </div>
+
+            {/* Soul 5 */}
+            <div className="soul-col">
+              <div
+                className="soul-selector"
+                onClick={() => handleSoulNameClick(5)}
+              >
+                <img
+                  src="/sky/calculator/spirit5.webp"
+                  alt="영혼 5"
+                  className="soul-selector-img"
+                />
+                <span className="soul-selector-text">나무베는 애원하는 부모</span>
+              </div>
+              <ArrayNodeView
+                mainArray={soul5Array}
+                seasonArray={soul5SeasonArray}
+                nodeStates={soulNodeStates[5]}
+                setNodeStates={(upd) => handleSetNodeStates(5, upd)}
+                soulIndex={5}
+                openMenu={openMenu}
+                setOpenMenu={setOpenMenu}
+              />
+              <div className="candle-count">
+                <img
+                  src="/sky/calculator/candle.webp"
+                  alt="Candle"
+                  className="candle-icon"
+                />
+                71 양초
+              </div>
+              <div className="candle-selected">
+                선택한 양초:{" "}
+                {sumWantedCost(
+                  soul5Array,
+                  soul5SeasonArray,
+                  soulNodeStates[5]
                 )}
                 개
               </div>
             </div>
           </div>
         </div>
-        <GuideSidebar onClick={() => setShowGuideModal(true)} />
+        {/* <GuideSidebar onClick={() => setShowGuideModal(true)} /> */}
       </div>
 
-      {/* 결과 다운로드 버튼 */}
       <div className="download-btn-container no-capture">
         <button className="download-btn" onClick={handleDownload}>
           결과 다운로드
@@ -249,7 +331,7 @@ export default function CandleCalculatorPage() {
             </button>
             <div className="modal-header">
               <h3 className="modal-title">
-                &lt;sky 네이버 카페&gt; 광채의 시즌 가이드 - 햇비님
+                &lt;sky 네이버 카페&gt; 광채의 시즌 가이드
               </h3>
             </div>
             <SoulInfoSidebar selectedSoulIndex={selectedSoulIndex} />
@@ -276,8 +358,8 @@ export default function CandleCalculatorPage() {
               &times;
             </button>
             <div className="modal-header">
-            <h3 className="modal-title">
-                &lt;sky 네이버 카페&gt; 광채의 시즌 가이드 - 햇비님
+              <h3 className="modal-title">
+                &lt;sky 네이버 카페&gt; 광채의 시즌 가이드
               </h3>
               <h3 className="modal-description">전체 노드표</h3>
             </div>
@@ -307,7 +389,7 @@ export default function CandleCalculatorPage() {
             </button>
             <div className="modal-header">
               <h3 className="modal-title">
-                &lt;sky 네이버 카페&gt; 광채의 시즌 가이드 - 햇비님
+                &lt;sky 네이버 카페&gt; 광채의 시즌 가이드
               </h3>
               <h3 className="modal-description">시즌 안내자</h3>
             </div>

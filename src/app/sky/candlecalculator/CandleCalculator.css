@@ -425,3 +425,20 @@
   color: #707070; /* 진한 회색 */
   font-weight: bold; /* 선택 사항: 글씨를 좀 더 두껍게 */
 }
+/* 기존 .calc-container 수정 */
+.calc-container {
+  padding: 13px;
+  font-family: sans-serif;
+  /* width: 800px;  ← 제거 */
+  max-width: none;       /* 추가 */
+  margin: 0 auto;
+  text-align: center;
+  overflow-x: auto;      /* 가로 스크롤 허용 */
+}
+
+/* 노드 영역 최소 너비 설정 */
+.nodes-container {
+  min-width: 1000px;     /* 필요에 따라 조정 */
+}
+
+/* .souls-wrapper 등 기존 스타일은 그대로 유지 */
