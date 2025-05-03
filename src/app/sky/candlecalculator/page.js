@@ -331,7 +331,7 @@ export default function CandleCalculatorPage() {
             </button>
             <div className="modal-header">
               <h3 className="modal-title">
-                &lt;sky 네이버 카페&gt; 광채의 시즌 가이드
+                &lt;sky 네이버 카페&gt; 햇비님 - 파랑새의 시즌 가이드
               </h3>
             </div>
             <SoulInfoSidebar selectedSoulIndex={selectedSoulIndex} />
@@ -359,7 +359,7 @@ export default function CandleCalculatorPage() {
             </button>
             <div className="modal-header">
               <h3 className="modal-title">
-                &lt;sky 네이버 카페&gt; 광채의 시즌 가이드
+                &lt;sky 네이버 카페&gt; 햇비님 - 파랑새의 시즌 가이드
               </h3>
               <h3 className="modal-description">전체 노드표</h3>
             </div>
@@ -389,7 +389,7 @@ export default function CandleCalculatorPage() {
             </button>
             <div className="modal-header">
               <h3 className="modal-title">
-                &lt;sky 네이버 카페&gt; 광채의 시즌 가이드
+                &lt;sky 네이버 카페&gt; 햇비님 - 파랑새의 시즌 가이드
               </h3>
               <h3 className="modal-description">시즌 안내자</h3>
             </div>

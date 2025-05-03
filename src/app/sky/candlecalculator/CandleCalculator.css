@@ -1,21 +1,29 @@
+/* -------------------------------------------------
+   Consolidated Candle Calculator CSS
+   - Removed duplicate .calc-container blocks
+   - Unified width/overflow rules
+   - Removed .guide-sidebar (season guide)
+------------------------------------------------- */
+
 /* 기본 컨테이너 */
 .calc-container {
   padding: 13px;
   font-family: sans-serif;
-  max-width: 800px;
+  /* 고정 너비 1000px */
+  width: 1000px;
+  max-width: none;
   margin: 0 auto;
   text-align: center;
+  overflow-x: hidden; /* 가로 스크롤 제거 */
 }
 
-/* 헤더 영역 */
+/* 헤더 */
 .header,
 .header-title-big {
   text-align: center;
   margin-bottom: 13px;
 }
-.header-title-big {
-  font-size: 1.5rem;
-}
+.header-title-big { font-size: 1.5rem; }
 .byline {
   font-size: 0.8rem;
   color: #bbb;
@@ -23,16 +31,24 @@
   vertical-align: bottom;
 }
 
-/* 양초 입력 영역 */
-.candle-input {
-  text-align: center;
-  margin-bottom: 13px;
+/* 설정 패널 */
+.candle-settings-panel {
+  border: 1px solid #555;
+  padding: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 20px;
+  background-color: #2c2c2c;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
 }
-.candle-input input {
-  width: 53px;
-  padding: 3px;
-  font-size: 0.67rem;
-}
+.candle-settings-panel .season-days { width:100%; font-weight:bold; color:#f1f1f1; }
+.candle-settings-panel .setting-group { margin:8px; color:#f1f1f1; }
+.candle-settings-panel .setting-group label { font-weight:bold; margin-bottom:6px; }
+.candle-settings-panel input, .candle-settings-panel select { padding:6px 10px; border:1px solid #777; border-radius:4px; background:#444; color:#f1f1f1; }
+.candle-settings-panel .buy-options { border-top:1px solid #666; padding-top:12px; }
+.candle-settings-panel .calc-btn { padding:10px 18px; background:#007bff; color:#fff; border:none; border-radius:4px; cursor:pointer; }
 
 /* 메인 콘텐츠 영역 */
 .main-content {
@@ -42,30 +58,9 @@
   margin-bottom: 20px;
 }
 
-/* (참고용) 왼쪽 영혼 선택 영역 */
-.soul-sidebar {
-  margin-top: 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  align-items: center;
-  width: 133px;
-}
-.soul-item {
-  text-align: center;
-}
-.soul-photo {
-  width: 100px;
-  border-radius: 8px;
-}
-.soul-label {
-  margin-top: 5px;
-  font-weight: bold;
-  font-size: 0.6rem;
-}
-
-/* 중앙 노드 영역 */
+/* 노드 영역 */
 .nodes-container {
+  /* min-width 제거: 컨테이너 내에서 유동 조정 */
   flex: 1;
 }
 .souls-wrapper {
@@ -75,370 +70,51 @@
   align-items: flex-start;
   margin-top: 16px;
 }
-.soul-col {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-.soul-name {
-  font-size: 0.8rem;
-  margin-bottom: 5px;
-  font-weight: bold;
-  text-align: center;
-  cursor: pointer;
-  padding: 5px 10px;
-  background: #f0f0f0;
-  border-radius: 4px;
-  transition: background 0.2s ease;
-}
-.soul-name:hover {
-  background: #e0e0e0;
-}
+.soul-col { display: flex; flex-direction: column; align-items: center; }
+.soul-selector { width:133px; height:120px; display:flex; flex-direction:column; align-items:center; justify-content:center; cursor:pointer; background:#f8f8f8; border:1px solid #ddd; border-radius:4px; margin-bottom:5px; overflow:hidden; transition:background 0.2s; }
+.soul-selector:hover { background:#a6a6a6; }
+.soul-selector-img { width:80px; height:80px; object-fit:contain; border-radius:8px; }
+.soul-selector-text { margin-top:5px; font-size:0.75rem; font-weight:bold; color:#333; white-space:nowrap; text-overflow:ellipsis; overflow:hidden; }
 
-.btn-row {
-  margin-top: 16px;
-  display: flex;
-  justify-content: center;
-}
-.calc-btn {
-  background: #f39c12;
-  color: #fff;
-  border: none;
-  padding: 7px 11px;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: background 0.3s ease;
-}
-.calc-btn:hover {
-  background: #d35400;
-}
+/* NodeView styling */
+.node-row { display:flex; align-items:center; justify-content:flex-end; margin-bottom:16px; gap:15px; }
+.node-image-box { position:relative; margin-right:13px; }
+.node-image { width:67px; cursor:pointer; border:1.5px solid transparent; border-radius:4px; }
+.cost-badge { position:absolute; bottom:3px; right:3px; background:rgba(0,0,0,0.6); color:#fff; font-size:0.53rem; padding:1px 3px; border-radius:3px; }
+.season-badge, .season-icon-badge { position:absolute; z-index:10; }
+.season-icon { width:16px; height:16px; z-index:11; }
+.menu-overlay { position:absolute; top:106%; left:0; background:#f3f3f3; border:1px solid #ccc; padding:3px; border-radius:3px; display:flex; gap:3px; z-index:1000; }
+.menu-overlay .menu-btn { padding:3px 6px; border:none; border-radius:3px; font-size:0.5rem; color:#fff; cursor:pointer; }
+.menu-btn-have { background:#5f9fff; }
+.menu-btn-want { background:#fdcb6e; }
 
-/* 오른쪽 시즌 가이드 영역 */
-.guide-sidebar {
-  margin-top: 20px;
-  width: 233px;
-  align-self: flex-start;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  border: 1.5px solid #ccc;
-  border-radius: 5px;
-  padding: 5px;
-  background: #f9f9f9;
-  color: #333;
-}
-.guide-sidebar:hover{
-  background: #a6a6a6;
-}
-.guide-box {
-  width: 120%;
-  text-align: center;
-}
-.guide-photo {
-  width: 100%;
-  max-width: 213px;
-  max-height: 213px;
-  object-fit: cover;
-  border-radius: 8px;
-  margin-bottom: 5px;
-}
-.guide-items {
-  display: flex;
-  flex-direction: row;
-  gap: 13px;
-  justify-content: center;
-  width: 100%;
-}
-.guide-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin: 0;
-  padding: 0;
-}
-.guide-item-photo {
-  width: 53px;
-  border-radius: 4px;
-  margin-bottom: 3px;
-}
-.guide-item-cost {
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  font-weight: bold;
-}
-.heart-icon {
-  width: 16px;
-  height: 16px;
-}
+/* Candle count & simple calculator */
+.candle-count { margin-top:5px; font-size:1rem; font-weight:bold; display:flex; align-items:center; gap:3px; }
+.candle-icon { width:33px; height:33px; }
+.simple-candle-calculator { display:flex; align-items:center; gap:16px; padding:12px; border:1px solid #ccc; border-radius:8px; background:#f7f7f7; margin-top:20px; width:220px; }
+.calc-buttons button { width:32px; height:32px; border:none; background:#007bff; color:#fff; font-size:1.2rem; cursor:pointer; border-radius:4px; }
+.calc-buttons button:hover { background:#005bb5; }
 
-/* 양초 카운트 */
-.candle-count {
-  margin-top: 5px;
-  font-size: 1rem;
-  font-weight: bold;
-  display: flex;
-  align-items: center;
-  gap: 3px;
-}
-.candle-icon {
-  width: 33px;
-  height: 33px;
-}
+/* Download button */
+.download-btn-container { text-align:center; margin-top:40px; }
+.download-btn { padding:10px 20px; background:#28a745; color:#fff; border:none; border-radius:4px; cursor:pointer; }
+.download-btn:hover { background:#218838; }
 
-/* 이미지 캔버스 영역 */
-.image-canvas {
-  position: relative;
-  width: 100%;
-  max-width: 600px;
-  aspect-ratio: 962 / 881;
-  background-color: #fff;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  overflow: hidden;
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-  touch-action: none;
-}
+/* Modal */
+.modal-overlay { position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); display:flex; align-items:center; justify-content:center; z-index:10000; }
+.modal-content { background:#fff; padding:20px; border-radius:8px; max-width:80%; max-height:80%; overflow-y:auto; position:relative; }
+.modal-close, .modal-close-bottom { cursor:pointer; }
+.modal-close { position:absolute; top:10px; right:10px; background:#aaa; color:#fff; border:none; border-radius:50%; width:35px; height:35px; font-size:1.5rem; }
+.modal-close-bottom { display:block; margin:20px auto 0; padding:5px 10px; background:#aaa; color:#fff; border:none; border-radius:4px; }
 
-/* 이미지 캔버스 내 텍스트 */
-.credit-text {
-  font-size: 1rem;
-  /* 기타 스타일 유지 */
-}
-.caption-text {
-  font-size: 1rem;
-  /* 기타 스타일 유지 */
-}
+/* Soul Info Sidebar */
+.soul-info-sidebar { display:flex; flex-direction:column; gap:10px; align-items:center; }
+.soul-info-header { font-size:1.2rem; font-weight:bold; color:#333; }
+.soul-info-img { width:100%; max-width:600px; border:1px solid #ccc; border-radius:4px; }
 
-/* 모달 창 */
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.5);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 10000;
-}
-.modal-content {
-  background: #fff;
-  padding: 20px;
-  border-radius: 8px;
-  max-width: 80%;
-  max-height: 80%;
-  overflow-y: auto;
-  position: relative;
-  margin-top: 20px;
-}
-.modal-close {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  border: none;
-  background: #aaa;
-  color: #fff;
-  font-size: 1.5rem;
-  width: 35px;
-  height: 35px;
-  line-height: 35px;
-  text-align: center;
-  border-radius: 50%;
-  cursor: pointer;
-}
-.modal-close-bottom {
-  display: block;
-  margin: 20px auto 0;
-  padding: 5px 10px;
-  background: #aaa;
-  color: #fff;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 1rem;
-}
-
-/* 모달 헤더 및 제목 */
-.modal-header {
-  margin-bottom: 10px;
-}
-.modal-title {
-  color: #666;
-  font-size: 1rem;
-  text-align: center;
-  margin: 0;
-  padding: 5px;
-}
-
-/* Soul Info Sidebar (모달 내부) */
-.soul-info-sidebar {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  align-items: center;
-}
-.soul-info-header {
-  font-size: 1.2rem;
-  font-weight: bold;
-  margin-bottom: 10px;
-  color: #333;
-}
-.soul-info-img {
-  width: 100%;
-  max-width: 600px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  margin: 0 40px;
-}
-
-/* 전체 노드표 보기 버튼 */
+/* Total info button */
+.total-info-btn { padding:0.75rem 1.5rem; background:#f39c12; color:#fff; border:none; border-radius:4px; cursor:pointer; }
+.total-info-btn:hover { background:#d35400; }
 .total-info-container {
-  margin: 20px 0;
+  margin: 20px 0; /* 위아래 간격 추가 */
 }
-.total-info-btn {
-  padding: 0.75rem 1.5rem;
-  background: #f39c12;
-  color: #fff;
-  border: none;
-  border-radius: 4px;
-  font-size: 1rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: background 0.3s ease;
-}
-.total-info-btn:hover {
-  background: #d35400;
-}
-
-.soul-selector {
-  width: 133px;              
-  height: 120px;             
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  background-color: #f8f8f8; 
-  border: 1px solid #ddd;    
-  border-radius: 4px;
-  transition: background 0.2s ease;
-  margin-bottom: 5px;
-  overflow: hidden; /* 내용이 넘치지 않도록 설정 */
-}
-.soul-selector:hover {
-  background-color: #a6a6a6;
-}
-.soul-selector-img {
-  width: 80px;
-  height: 80px;
-  object-fit: contain;
-  border-radius: 8px;
-  display: block;
-}
-
-.soul-selector-text {
-  margin-top: 5px;
-  font-size: 0.9rem;   
-  font-weight: bold;
-  color: #333;         
-  text-align: center;
-  overflow: hidden;  /* 텍스트가 넘치지 않도록 */
-  white-space: nowrap; /* 한 줄로 표시 */
-  text-overflow: ellipsis; /* 넘치는 부분은 ... 처리 */
-}
-
-.guide-modal-images {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  align-items: center;
-}
-.guide-modal-images img {
-  width: 100%;
-  max-width: 600px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  margin: 0 40px;
-}
-
-
-/* 반응형 미디어 쿼리 */
-/* @media (max-width: 600px) {
-  .container {
-    padding: 1rem;
-    gap: 1rem;
-  }
-  .controls {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 0.75rem;
-  }
-  .controls input[type="file"],
-  .controls button {
-    width: 100%;
-    max-width: 300px;
-  }
-  h1 {
-    font-size: 1.75rem;
-    text-align: center;
-  }
-} */
-
-.calc-container {
-  padding: 13px;
-  font-family: sans-serif;
-  /* 원래 max-width: 800px; 라고 되어 있다면 지우거나 수정 */
-  width: 800px; /* 혹은 min-width: 800px; */
-  margin: 0 auto;
-  text-align: center;
-  overflow-x: auto; /* 수평 스크롤을 허용 */
-}
-.candle-selected {
-  font-size: 0.9rem;
-  color: #fff;
-  margin-top: 4px;
-}
-.download-btn-container {
-  width: 100%;
-  text-align: center;
-  margin-top: 40px;
-}
-
-.download-btn {
-  padding: 10px 20px;
-  background-color: #28a745;
-  color: #fff;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 1rem;
-  transition: background-color 0.2s;
-}
-
-.download-btn:hover {
-  background-color: #218838;
-}
-
-.modal-description {
-  color: #707070; /* 진한 회색 */
-  font-weight: bold; /* 선택 사항: 글씨를 좀 더 두껍게 */
-}
-/* 기존 .calc-container 수정 */
-.calc-container {
-  padding: 13px;
-  font-family: sans-serif;
-  /* width: 800px;  ← 제거 */
-  max-width: none;       /* 추가 */
-  margin: 0 auto;
-  text-align: center;
-  overflow-x: auto;      /* 가로 스크롤 허용 */
-}
-
-/* 노드 영역 최소 너비 설정 */
-.nodes-container {
-  min-width: 1000px;     /* 필요에 따라 조정 */
-}
-
-/* .souls-wrapper 등 기존 스타일은 그대로 유지 */

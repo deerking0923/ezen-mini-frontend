@@ -75,8 +75,8 @@ export default function RootLayout({ children }) {
                 <Link href="/sky/mbti">
                   <button className="nav-button">성향 테스트</button>
                 </Link>
-                <Link href="/sky/temp">
-                  <button className="nav-button">양초 계산하기</button>
+                <Link href="/sky/candlecalculator">
+                  <button className="nav-button">양초 계산기</button>
                 </Link>
                 <Link href="/sky/credit">
                   <button className="credit-button">크레딧</button>
