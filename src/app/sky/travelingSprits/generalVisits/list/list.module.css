@@ -280,6 +280,7 @@
   
   .secondLine {
     font-size: 0.8rem;
+    /* text-align: center; */
     margin: 0;
   }
   
@@ -715,7 +716,8 @@
   
     /* 두 번째 줄에 순서와 복각 횟수 */
     .secondLine {
-      font-size: 0.65rem; /* 두 번째 줄 글씨 크기 줄이기 */
+      font-size: 0.55rem; /* 두 번째 줄 글씨 크기 줄이기 */
+      text-align: center; /* 가운데 정렬 */
     }
   
     /* 세 번째 줄에 기간 */
