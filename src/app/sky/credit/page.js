@@ -29,11 +29,6 @@ export default function Credit() {
               </Link>
             </li>
             <li>
-              <Link href="https://cafe.naver.com/blacknbiqa/356014">
-                미욘새님의 키재는 방법
-              </Link>
-            </li>
-            <li>
               <Link href="https://cafe.naver.com/blacknbiqa/72508">
                 큐큘님의 카페 기준 키재기
               </Link>

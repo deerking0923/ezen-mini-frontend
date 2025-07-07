@@ -398,8 +398,7 @@ export default function Home() {
         <div className="modal" onClick={() => setShowInstructions(false)}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
             <p className="popup-header">
-              &lt;네이버 Sky 카페 - 미욘새님&gt; 키 재는 방법 [지켜야 할 사항]
-              정리
+              
             </p>
             <button
               className="close-btn"
