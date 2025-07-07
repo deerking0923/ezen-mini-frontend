@@ -1,0 +1,30 @@
+/* chat.module.css */
+.chatPage {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem;
+    /* background-color: #f9fafb; */
+    min-height: 100vh;
+    box-sizing: border-box;
+  }
+  
+  .title {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 2rem;
+    color: #333;
+  }
+  
+  /* Mobile Responsive */
+  @media (max-width: 768px) {
+    .chatPage {
+      padding-left: 1rem;
+      padding-right: 1rem;
+    }
+    .title {
+      font-size: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+  }
+  

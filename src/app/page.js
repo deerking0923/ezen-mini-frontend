@@ -54,7 +54,7 @@ export default function MainPage() {
         </div>
         <div
           className="option-container"
-          onClick={() => navigateTo("/sky/candlecalculator")}
+          onClick={() => navigateTo("/sky/temp")}
         >
           <img
             src="/sky/extra/calculator.png"

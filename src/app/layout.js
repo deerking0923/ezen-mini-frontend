@@ -39,7 +39,7 @@ export default function RootLayout({ children }) {
           {/* 제목: 링크 포함 */}
           <div className="title-container">
             <Link href="/">
-              <h1 className="header-title">스카이 플래너</h1>
+              <h1 className="header-title">스카이 아카이브</h1>
             </Link>
           </div>
           {/* PC용 내비게이션: 모바일에서는 숨김 */}
@@ -75,7 +75,7 @@ export default function RootLayout({ children }) {
                 <Link href="/sky/mbti">
                   <button className="nav-button">성향 테스트</button>
                 </Link>
-                <Link href="/sky/candlecalculator">
+                <Link href="/sky/temp">
                   <button className="nav-button">양초 계산기</button>
                 </Link>
                 <Link href="/sky/credit">
