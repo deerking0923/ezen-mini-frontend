@@ -398,7 +398,7 @@ export default function Home() {
         <div className="modal" onClick={() => setShowInstructions(false)}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
             <p className="popup-header">
-              키재기
+              
             </p>
             <button
               className="close-btn"
