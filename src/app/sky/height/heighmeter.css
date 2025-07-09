@@ -312,8 +312,8 @@ h1 {
 .image-canvas {
   position: relative;
   width: 100%;
-  max-width: 600px;  /* 원래 962px의 절반 */
-  aspect-ratio: 962 / 881;
+  max-width: 500px;  /* 원래 962px의 절반 */
+  aspect-ratio: 1800 / 1800;
   background-color: #fff;
   border: 1px solid #ccc;
   border-radius: 8px;
@@ -351,4 +351,5 @@ h1 {
     font-size: 1.75rem;
     text-align: center;
   }
+  
 }

@@ -28,11 +28,6 @@ export default function Credit() {
                 스카이 위키로 아이콘 보러가기
               </Link>
             </li>
-            <li>
-              <Link href="https://cafe.naver.com/blacknbiqa/72508">
-                큐큘님의 카페 기준 키재기
-              </Link>
-            </li>
           </ul>
         </div>
       </div>

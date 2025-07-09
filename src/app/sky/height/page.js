@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import "./heighmeter.css";
@@ -11,8 +11,8 @@ const html2canvas = dynamic(() => import("html2canvas"), { ssr: false });
 export default function Home() {
   const [uploadedImage, setUploadedImage] = useState(null);
 
-  // 스케일 / 위치
-  const [scale, setScale] = useState(1);
+  // 스케일 / 위치 (초기 스케일 0.5 ― 원본의 50% 크기로 시작)
+  const [scale, setScale] = useState(0.3);
   const [position, setPosition] = useState({ x: 0, y: 0 });
 
   // 이미지 원본 크기 (naturalWidth, naturalHeight)
@@ -31,7 +31,7 @@ export default function Home() {
   useEffect(() => {
     if (typeof window !== "undefined") {
       if (window.innerWidth < 768) {
-        setArrowStep(1); // 모바일에서는 더 정밀하게 (예: 2픽셀)
+        setArrowStep(1); // 모바일에서는 더 정밀하게 (예: 1픽셀)
       } else {
         setArrowStep(1);
       }
@@ -44,9 +44,9 @@ export default function Home() {
   useEffect(() => {
     if (typeof window !== "undefined") {
       if (window.innerWidth < 768) {
-        setZoomStep(0.0005); // 모바일에서는 좀 더 정밀하게
+        setZoomStep(0.0002); // 모바일에서는 좀 더 정밀하게
       } else {
-        setZoomStep(0.003);
+        setZoomStep(0.0003);
       }
     }
   }, []);
@@ -64,7 +64,7 @@ export default function Home() {
   /**
    * 위치를 제한(clamp)하는 함수
    */
-  function clampPosition(posX, posY, newScale) {
+  const clampPosition = useCallback((posX, posY, newScale) => {
     const canvas = canvasRef.current;
     if (!canvas) return { x: posX, y: posY };
 
@@ -80,7 +80,8 @@ export default function Home() {
     const scaledWidth = imgW * newScale;
     const scaledHeight = imgH * newScale;
 
-    const multiple = 1.5; // 이동 범위 조절
+    // 이동 범위 조절 (multiple 값이 클수록 더 멀리 이동 가능)
+    const multiple = 1.5;
     const minX = containerWidth - scaledWidth * multiple;
     const maxX = scaledWidth * (multiple - 1);
     const minY = containerHeight - scaledHeight * multiple;
@@ -90,7 +91,7 @@ export default function Home() {
     const clampedY = Math.min(Math.max(posY, minY), maxY);
 
     return { x: clampedX, y: clampedY };
-  }
+  }, [imageSize]);
 
   // --- 드래그 (마우스) ---
   const handleDrag = (e) => {
@@ -102,10 +103,7 @@ export default function Home() {
   };
 
   // --- 휠 줌 (마우스) ---
-  const handleWheel = (e) => {
-    if (e.cancelable) {
-      e.preventDefault();
-    }
+  const handleWheelInternal = useCallback((e) => {
     const canvas = canvasRef.current;
     if (!canvas) return;
     const rect = canvas.getBoundingClientRect();
@@ -115,7 +113,7 @@ export default function Home() {
 
     const oldScale = scale;
     const zoomIn = e.deltaY < 0;
-    let newScale = oldScale + (zoomIn ? 0.05 : -0.05);
+    let newScale = oldScale + (zoomIn ? 0.003 : -0.003);
     if (newScale < 0.1) newScale = 0.1;
 
     let newX = position.x + offsetX * (1 - newScale / oldScale);
@@ -124,7 +122,21 @@ export default function Home() {
 
     setScale(newScale);
     setPosition(clamped);
-  };
+  }, [scale, position, clampPosition]);
+
+  // --- 캔버스에 수동 wheel 리스너 등록 (passive:false) ---
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+
+    const wheelHandler = (e) => {
+      if (e.cancelable) e.preventDefault(); // 페이지 스크롤 방지
+      handleWheelInternal(e);
+    };
+
+    canvas.addEventListener("wheel", wheelHandler, { passive: false });
+    return () => canvas.removeEventListener("wheel", wheelHandler);
+  }, [handleWheelInternal]);
 
   // --- 터치 계산용 ---
   const getDistance = (touch1, touch2) => {
@@ -168,7 +180,6 @@ export default function Home() {
     if (!initialTouchData) return;
 
     const dragMultiplier = 1.0;
-    // zoomSensitivity는 상태 변수로 사용 (모바일/PC에 따라 다름)
 
     if (initialTouchData.type === "drag" && e.touches.length === 1) {
       const { pageX, pageY } = e.touches[0];
@@ -183,17 +194,12 @@ export default function Home() {
       const newDistance = getDistance(t1, t2);
       const ratio = newDistance / initialTouchData.startDistance;
       const dampingFactor = 0.5;
-      let newScale =
-        initialTouchData.initialScale * (1 + (ratio - 1) * dampingFactor);
-      //if (newScale < 0.2) newScale = 0.2; // 최소 스케일 제한
+      let newScale = initialTouchData.initialScale * (1 + (ratio - 1) * dampingFactor);
+      if (newScale < 0.2) newScale = 0.2; // 최소 스케일 제한
       const { pinchCenter } = initialTouchData;
       const oldScale = initialTouchData.initialScale;
-      let newX =
-        initialTouchData.initialPosition.x +
-        pinchCenter.x * (1 - newScale / oldScale);
-      let newY =
-        initialTouchData.initialPosition.y +
-        pinchCenter.y * (1 - newScale / oldScale);
+      let newX = initialTouchData.initialPosition.x + pinchCenter.x * (1 - newScale / oldScale);
+      let newY = initialTouchData.initialPosition.y + pinchCenter.y * (1 - newScale / oldScale);
       const clamped = clampPosition(newX, newY, newScale);
       setScale(newScale);
       setPosition(clamped);
@@ -211,9 +217,7 @@ export default function Home() {
     const touchStartHandler = (e) => handleTouchStart(e);
     const touchMoveHandler = (e) => handleTouchMove(e);
     const touchEndHandler = () => handleTouchEnd();
-    canvas.addEventListener("touchstart", touchStartHandler, {
-      passive: false,
-    });
+    canvas.addEventListener("touchstart", touchStartHandler, { passive: false });
     canvas.addEventListener("touchmove", touchMoveHandler, { passive: false });
     canvas.addEventListener("touchend", touchEndHandler, { passive: false });
     return () => {
@@ -221,7 +225,7 @@ export default function Home() {
       canvas.removeEventListener("touchmove", touchMoveHandler);
       canvas.removeEventListener("touchend", touchEndHandler);
     };
-  }, [canvasRef, position, scale, initialTouchData]);
+  }, [canvasRef, position, scale, initialTouchData, clampPosition]);
 
   // --- html2canvas 캡처 ---
   const handleDownload = async () => {
@@ -254,23 +258,21 @@ export default function Home() {
           키 재기<span className="subtitle">만든이 진사슴</span>
         </h2>
         <p className="noticeDescription">
-        <br/>
+          <br />
           빛아의 키를 측정할 수 있는 페이지입니다.
           <br />
-          <br/>
+          <br />
           측정을 위해 아래 측정 방법을 정확하게 따라주세요. 가이드를 보시면 편합니다.
           <br />
-          <br/>
-          머리 장식 X, 신발 X, 참새 머리, 기본 자세로
-          헤어-망토 사이의 등불에서 재기
+          <br />
+          머리 장식 X, 신발 X, 참새 머리, 기본 자세로 헤어-망토 사이의 등불에서 재기
           <br />
         </p>
         <div className="instructions-btn-container">
-          <button onClick={() => setShowInstructions(true)}>
-            측정 방법 보기
-          </button>
+          <button onClick={() => setShowInstructions(true)}>측정 방법 보기</button>
         </div>
       </div>
+
       <div className="controls">
         <input type="file" accept="image/*" onChange={handleImageUpload} />
       </div>
@@ -278,7 +280,6 @@ export default function Home() {
       <div
         className="image-canvas"
         ref={canvasRef}
-        onWheel={handleWheel}
         onMouseMove={handleDrag}
         onMouseDown={(e) => e.preventDefault()}
       >
@@ -297,15 +298,10 @@ export default function Home() {
           />
         )}
         {/* 업로드 여부와 상관없이 항상 가이드라인 이미지(오버레이) 표시 */}
-        <img src="/sky-test.png" alt="Overlay" className="overlay-fixed" />
+        <img src="/sky/height/guideline.png" alt="Overlay" className="overlay-fixed" />
 
         {/* 이미지 캔버스 우측 하단 텍스트 */}
         <div className="credit-text">&lt;korea-sky-planner.com&gt;</div>
-      </div>
-
-      {/* 새로운 캡션 텍스트 추가 (이미지 캔버스 바로 아래, 다운로드 버튼 위) */}
-      <div className="caption-text">
-        &lt;네이버 Sky 카페 - 큐큘님&gt; [미세팁] 카페기준 키재기
       </div>
 
       <div className="controls">
@@ -332,16 +328,12 @@ export default function Home() {
           </button>
         </div>
 
-        {/* 방향키 컨트롤 추가 (일렬로 표시) */}
+        {/* 방향키 컨트롤 */}
         <div className="arrow-controls">
-        <button
+          <button
             className="arrow-btn"
             onClick={() => {
-              const newPos = clampPosition(
-                position.x,
-                position.y + arrowStep,
-                scale
-              );
+              const newPos = clampPosition(position.x, position.y + arrowStep, scale);
               setPosition(newPos);
             }}
           >
@@ -350,11 +342,7 @@ export default function Home() {
           <button
             className="arrow-btn"
             onClick={() => {
-              const newPos = clampPosition(
-                position.x,
-                position.y - arrowStep,
-                scale
-              );
+              const newPos = clampPosition(position.x, position.y - arrowStep, scale);
               setPosition(newPos);
             }}
           >
@@ -363,11 +351,7 @@ export default function Home() {
           <button
             className="arrow-btn"
             onClick={() => {
-              const newPos = clampPosition(
-                position.x + arrowStep,
-                position.y,
-                scale
-              );
+              const newPos = clampPosition(position.x + arrowStep, position.y, scale);
               setPosition(newPos);
             }}
           >
@@ -376,11 +360,7 @@ export default function Home() {
           <button
             className="arrow-btn"
             onClick={() => {
-              const newPos = clampPosition(
-                position.x - arrowStep,
-                position.y,
-                scale
-              );
+              const newPos = clampPosition(position.x - arrowStep, position.y, scale);
               setPosition(newPos);
             }}
           >
@@ -397,13 +377,8 @@ export default function Home() {
       {showInstructions && (
         <div className="modal" onClick={() => setShowInstructions(false)}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-            <p className="popup-header">
-              
-            </p>
-            <button
-              className="close-btn"
-              onClick={() => setShowInstructions(false)}
-            >
+            <p className="popup-header"></p>
+            <button className="close-btn" onClick={() => setShowInstructions(false)}>
               &times;
             </button>
             <img src="/guide.png" alt="측정 방법" />
