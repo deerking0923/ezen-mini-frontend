@@ -1,62 +1,22 @@
-'use client';
+/* 페이지 전용 metadata ― OG 대표 이미지 포함 */
+export const metadata = {
+  title: '스카이 플래너',
+  description: 'Sky: Children of the Light 한국 유저를 위한 팬사이트',
+  openGraph: {
+    title: '스카이 플래너',
+    description: 'Sky: Children of the Light 한국 유저를 위한 팬사이트',
+    url: 'https://korea-sky-planner.com',
+    siteName: '스카이 플래너',
+    images: [
+      'https://korea-sky-planner.com/sky/presentation.jpg', // 절대 URL!
+    ],
+    type: 'website',
+  },
+};
 
-import { useRouter } from 'next/navigation';
-import styles from './MainPage.module.css';
+/* 클라이언트 전용 컴포넌트 불러오기 */
+import MainPageClient from './MainPageClient';
 
-export default function MainPage() {
-  const router = useRouter();
-
-  const navigateTo = (path) => router.push(path);
-
-  /** 메뉴 정의 */
-  const menu = [
-    {
-      title: '키재러 가기',
-      img: '/sky/extra/height.png',
-      path: '/sky/height',
-    },
-    {
-      title: '양초 계산기',
-      img: '/sky/extra/calculator.png',
-      path: '/sky/temp',
-    },
-    {
-      title: '유랑 대백과',
-      img: '/sky/extra/dictionary.png',
-      path: '/sky/travelingSprits/generalVisits/list',
-    },
-    {
-      title: '성향 테스트',
-      img: '/sky/extra/mbti.png',
-      path: '/sky/mbti',
-    },
-  ];
-
-  return (
-    <section className={styles.container}>
-      {/* ── 왼쪽 메뉴 리스트 ── */}
-      <div className={styles.menuCol}>
-        {menu.map(({ title, img, path }) => (
-          <button
-            key={title}
-            className={styles.menuBtn}
-            onClick={() => navigateTo(path)}
-          >
-            <img src={img} alt={title} className={styles.icon} />
-            <span className={styles.label}>{title}</span>
-          </button>
-        ))}
-      </div>
-
-      {/* ── 오른쪽 대표 이미지 ── */}
-      <div className={styles.imageWrap}>
-        <img
-          src="/sky/extra/MainImage.png"
-          alt="Sky main scene"
-          className={styles.mainImage}
-          loading="lazy"
-        />
-      </div>
-    </section>
-  );
+export default function Page() {
+  return <MainPageClient />;     /* 서버는 그냥 래핑만 */
 }

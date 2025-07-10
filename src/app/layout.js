@@ -16,7 +16,7 @@ export const metadata = {
     siteName: "스카이 플래너",
     images: [
       {
-        url: "/sky/presentation.jpg", // ✔ public 경로 (상대)
+        url: "https://korea-sky-planner.com/sky/presentation.jpg", // ✔ public 경로 (상대)
         width: 1200, // 권장 사이즈
         height: 630,
         alt: "스카이 플래너 대표 이미지",
