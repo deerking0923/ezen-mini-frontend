@@ -2,6 +2,9 @@ import Link from 'next/link';
 import styles from './layout.module.css';
 import { QuizProvider } from './sky/context/QuizContext';
 
+/* ───── 사이트 도메인 (반드시 https:// 포함, 끝에 슬래시 X) ───── */
+export const metadataBase = new URL('https://korea-sky-planner.com');
+
 /* ───── metadata ───── */
 export const metadata = {
   title: '스카이 플래너',
@@ -13,38 +16,30 @@ export const metadata = {
     siteName: '스카이 플래너',
     images: [
       {
-        url: '/sky/presentaion.jpg', // ✔ 대표 이미지
-        width: 1200,
+        url: '/sky/presentation.jpg',   // ✔ public 경로 (상대)
+        width: 1200,                    // 권장 사이즈
         height: 630,
-        alt: '스카이 플래너 커버',
+        alt: '스카이 플래너 대표 이미지',
       },
     ],
     type: 'website',
   },
 };
 
-/* ───── viewport (분리) ───── */
+/* ───── viewport ───── */
 export const viewport = {
   width: 'device-width',
   initialScale: 1,
 };
 
-/* (선택) 브라우저 탭 아이콘 교체 시
-export const icons = {
-  icon: '/favicon.png',          // public/favicon.png
-};
-*/
-
 export default function RootLayout({ children }) {
   return (
     <html lang="ko">
       <body>
-        {/* 전역 퀴즈 컨텍스트 */}
         <QuizProvider>
-          {/* ───── 배너 영역 ───── */}
+          {/* 배너 영역 */}
           <header className={styles.banner}>
             <div className={styles.overlay}>
-              {/* 타이틀 (메인으로 이동) */}
               <Link href="/" className={styles.titleLink}>
                 <h1 className={styles.title}>스카이 플래너</h1>
               </Link>
@@ -55,7 +50,6 @@ export default function RootLayout({ children }) {
                 Sky: Children of the Light 팬사이트입니다.
               </p>
 
-              {/* CTA 버튼 */}
               <div className={styles.ctaWrapper}>
                 <Link
                   href="https://cafe.naver.com/blacknbiqa/490434"
@@ -86,12 +80,11 @@ export default function RootLayout({ children }) {
                 </Link>
               </div>
 
-              {/* 만든이 */}
               <span className={styles.maker}>만든이 진사슴</span>
             </div>
           </header>
 
-          {/* ───── 페이지 콘텐츠 ───── */}
+          {/* 페이지 콘텐츠 */}
           <main className={styles.content}>{children}</main>
         </QuizProvider>
       </body>
