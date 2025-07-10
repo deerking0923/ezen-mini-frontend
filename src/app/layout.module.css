@@ -97,7 +97,9 @@
 .mobileBreak {
   display: none;
 }
-
+.ogImage {
+  display: none;
+}
 /* ─── 모바일(≤768px) ─── */
 @media (max-width: 768px) {
   .banner {

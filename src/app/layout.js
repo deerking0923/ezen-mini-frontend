@@ -1,34 +1,34 @@
-import Link from 'next/link';
-import styles from './layout.module.css';
-import { QuizProvider } from './sky/context/QuizContext';
+import Link from "next/link";
+import styles from "./layout.module.css";
+import { QuizProvider } from "./sky/context/QuizContext";
 
 /* ───── 사이트 도메인 (반드시 https:// 포함, 끝에 슬래시 X) ───── */
-export const metadataBase = new URL('https://korea-sky-planner.com');
+export const metadataBase = new URL("https://korea-sky-planner.com");
 
 /* ───── metadata ───── */
 export const metadata = {
-  title: '스카이 플래너',
-  description: 'Sky: Children of the Light 한국 유저를 위한 팬사이트',
+  title: "스카이 플래너",
+  description: "Sky: Children of the Light 한국 유저를 위한 팬사이트",
   openGraph: {
-    title: '스카이 플래너',
-    description: 'Sky: Children of the Light 한국 유저를 위한 팬사이트',
-    url: 'https://korea-sky-planner.com',
-    siteName: '스카이 플래너',
+    title: "스카이 플래너",
+    description: "Sky: Children of the Light 한국 유저를 위한 팬사이트",
+    url: "https://korea-sky-planner.com",
+    siteName: "스카이 플래너",
     images: [
       {
-        url: '/sky/presentation.jpg',   // ✔ public 경로 (상대)
-        width: 1200,                    // 권장 사이즈
+        url: "/sky/presentation.jpg", // ✔ public 경로 (상대)
+        width: 1200, // 권장 사이즈
         height: 630,
-        alt: '스카이 플래너 대표 이미지',
+        alt: "스카이 플래너 대표 이미지",
       },
     ],
-    type: 'website',
+    type: "website",
   },
 };
 
 /* ───── viewport ───── */
 export const viewport = {
-  width: 'device-width',
+  width: "device-width",
   initialScale: 1,
 };
 
@@ -49,6 +49,15 @@ export default function RootLayout({ children }) {
                 <br className={styles.mobileBreak} />
                 Sky: Children of the Light 팬사이트입니다.
               </p>
+
+              <img
+                src="/sky/presentation.jpg"
+                alt="스카이 플래너 대표 이미지"
+                width={1200}
+                height={630}
+                className={styles.ogImage}
+                aria-hidden
+              />
 
               <div className={styles.ctaWrapper}>
                 <Link
