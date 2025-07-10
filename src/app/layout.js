@@ -1,10 +1,26 @@
 import Link from 'next/link';
 import styles from './layout.module.css';
-import { QuizProvider } from './sky/context/QuizContext';   // ★ 추가
+import { QuizProvider } from './sky/context/QuizContext';
 
 /* ───── metadata ───── */
 export const metadata = {
   title: '스카이 플래너',
+  description: 'Sky: Children of the Light 한국 유저를 위한 팬사이트',
+  openGraph: {
+    title: '스카이 플래너',
+    description: 'Sky: Children of the Light 한국 유저를 위한 팬사이트',
+    url: 'https://korea-sky-planner.com',
+    siteName: '스카이 플래너',
+    images: [
+      {
+        url: '/sky/presentation.jpg', // ✔ 대표 이미지
+        width: 1200,
+        height: 630,
+        alt: '스카이 플래너 커버',
+      },
+    ],
+    type: 'website',
+  },
 };
 
 /* ───── viewport (분리) ───── */
@@ -13,16 +29,22 @@ export const viewport = {
   initialScale: 1,
 };
 
+/* (선택) 브라우저 탭 아이콘 교체 시
+export const icons = {
+  icon: '/favicon.png',          // public/favicon.png
+};
+*/
+
 export default function RootLayout({ children }) {
   return (
     <html lang="ko">
       <body>
-        {/* ─── 모든 페이지를 퀴즈 컨텍스트로 감싸기 ─── */}
+        {/* 전역 퀴즈 컨텍스트 */}
         <QuizProvider>
           {/* ───── 배너 영역 ───── */}
           <header className={styles.banner}>
             <div className={styles.overlay}>
-              {/* 타이틀 → 클릭하면 루트("/") 로 이동 */}
+              {/* 타이틀 (메인으로 이동) */}
               <Link href="/" className={styles.titleLink}>
                 <h1 className={styles.title}>스카이 플래너</h1>
               </Link>
@@ -64,7 +86,7 @@ export default function RootLayout({ children }) {
                 </Link>
               </div>
 
-              {/* 만든이 문구 */}
+              {/* 만든이 */}
               <span className={styles.maker}>만든이 진사슴</span>
             </div>
           </header>
