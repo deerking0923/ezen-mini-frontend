@@ -1,43 +1,30 @@
-import Link from "next/link";
-import styles from "./layout.module.css";
-import { QuizProvider } from "./sky/context/QuizContext";
+import Link from 'next/link';
+import styles from './layout.module.css';
+import { QuizProvider } from './sky/context/QuizContext';
 
-/* ───── 사이트 도메인 (반드시 https:// 포함, 끝에 슬래시 X) ───── */
-export const metadataBase = new URL("https://korea-sky-planner.com");
-
-/* ───── metadata ───── */
-export const metadata = {
-  title: "스카이 플래너",
-  description: "Sky: Children of the Light 한국 유저를 위한 팬사이트",
-  openGraph: {
-    title: "스카이 플래너",
-    description: "Sky: Children of the Light 한국 유저를 위한 팬사이트",
-    url: "https://korea-sky-planner.com",
-    siteName: "스카이 플래너",
-    images: [
-      {
-        url: "https://korea-sky-planner.com/sky/presentation.jpg", // ✔ public 경로 (상대)
-        width: 1200, // 권장 사이즈
-        height: 630,
-        alt: "스카이 플래너 대표 이미지",
-      },
-    ],
-    type: "website",
-  },
-};
-
-/* ───── viewport ───── */
+/* ───────── 뷰포트 ───────── */
 export const viewport = {
-  width: "device-width",
+  width: 'device-width',
   initialScale: 1,
 };
 
 export default function RootLayout({ children }) {
   return (
     <html lang="ko">
+      {/* ───── <head> : OG 대표 이미지 확정 ───── */}
+      <head>
+        <meta
+          property="og:image"
+          content="https://korea-sky-planner.com/sky/presentation.jpg"
+        />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        {/* 필요하다면 title·description도 직접 지정 가능 */}
+      </head>
+
       <body>
         <QuizProvider>
-          {/* 배너 영역 */}
+          {/* ───── 배너 영역 ───── */}
           <header className={styles.banner}>
             <div className={styles.overlay}>
               <Link href="/" className={styles.titleLink}>
@@ -50,14 +37,7 @@ export default function RootLayout({ children }) {
                 Sky: Children of the Light 팬사이트입니다.
               </p>
 
-              <img
-                src="/sky/presentation.jpg"
-                alt="스카이 플래너 대표 이미지"
-                width={1200}
-                height={630}
-                className={styles.ogImage}
-                aria-hidden
-              />
+              {/* OG 이미지가 이미 head에 있으므로 여기에 숨김 이미지 필요 X */}
 
               <div className={styles.ctaWrapper}>
                 <Link
@@ -93,7 +73,7 @@ export default function RootLayout({ children }) {
             </div>
           </header>
 
-          {/* 페이지 콘텐츠 */}
+          {/* ───── 페이지 콘텐츠 ───── */}
           <main className={styles.content}>{children}</main>
         </QuizProvider>
       </body>
