@@ -13,7 +13,7 @@ export const metadata = {
     siteName: '스카이 플래너',
     images: [
       {
-        url: '/sky/presentation.jpg', // ✔ 대표 이미지
+        url: '/sky/presentaion.jpg', // ✔ 대표 이미지
         width: 1200,
         height: 630,
         alt: '스카이 플래너 커버',
