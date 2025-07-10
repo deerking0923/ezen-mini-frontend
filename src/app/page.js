@@ -1,80 +1,62 @@
-"use client";
-import React from "react";
-import { useRouter } from "next/navigation"; // Next.js 라우터 사용 예시, 필요에 따라 수정하세요.
-import "./Mainpage.css";
+'use client';
+
+import { useRouter } from 'next/navigation';
+import styles from './MainPage.module.css';
 
 export default function MainPage() {
   const router = useRouter();
 
-  const navigateTo = (path) => {
-    router.push(path);
-  };
+  const navigateTo = (path) => router.push(path);
+
+  /** 메뉴 정의 */
+  const menu = [
+    {
+      title: '키재러 가기',
+      img: '/sky/extra/height.png',
+      path: '/sky/height',
+    },
+    {
+      title: '양초 계산기',
+      img: '/sky/extra/calculator.png',
+      path: '/sky/temp',
+    },
+    {
+      title: '유랑 대백과',
+      img: '/sky/extra/dictionary.png',
+      path: '/sky/travelingSprits/generalVisits/list',
+    },
+    {
+      title: '성향 테스트',
+      img: '/sky/extra/mbti.png',
+      path: '/sky/mbti',
+    },
+  ];
 
   return (
-    <div className="main-page-wrapper">
-      <div className="intro-text">
-        본 사이트는 thatgamecompany의 Sky:Children of the light &lt;비공식&gt; 팬사이트입니다.
-        <br/>
-        <br/>
-        만든이 진사슴
+    <section className={styles.container}>
+      {/* ── 왼쪽 메뉴 리스트 ── */}
+      <div className={styles.menuCol}>
+        {menu.map(({ title, img, path }) => (
+          <button
+            key={title}
+            className={styles.menuBtn}
+            onClick={() => navigateTo(path)}
+          >
+            <img src={img} alt={title} className={styles.icon} />
+            <span className={styles.label}>{title}</span>
+          </button>
+        ))}
       </div>
-      <div className="main-page-container">
-        <div
-          className="option-container"
-          onClick={() => navigateTo("https://cafe.naver.com/blacknbiqa/490434")}
-        >
-          <img
-            src="/sky/extra/height_guide.png"
-            alt="유랑 대백과"
-            className="option-image"
-          />
-          <h2 className="option-title">NEW 키재기 가이드</h2>
-        </div>
-      <div
-          className="option-container"
-          onClick={() => navigateTo("/sky/travelingSprits/generalVisits/list")}
-        >
-          <img
-            src="/sky/extra/dictionary.png"
-            alt="유랑 대백과"
-            className="option-image"
-          />
-          <h2 className="option-title">유랑 대백과</h2>
-        </div>
-        <div
-          className="option-container"
-          onClick={() => navigateTo("/sky/height")}
-        >
-          <img
-            src="/sky/extra/height.png"
-            alt="키 재기"
-            className="option-image"
-          />
-          <h2 className="option-title">키 재기</h2>
-        </div>
-        <div
-          className="option-container"
-          onClick={() => navigateTo("/sky/mbti")}
-        >
-          <img
-            src="/sky/extra/mbti.png"
-            alt="성향테스트"
-            className="option-image"
-          />
-          <h2 className="option-title">성향 테스트</h2>
-        </div>
-        <div
-          className="option-container"
-          onClick={() => navigateTo("/sky/temp")}
-        >
-          <img
-            src="/sky/extra/calculator.png"
-            alt="양초계산기"
-            className="option-image"
-          />
-          <h2 className="option-title">양초계산기</h2>
-        </div>
+
+      {/* ── 오른쪽 대표 이미지 ── */}
+      <div className={styles.imageWrap}>
+        <img
+          src="/sky/extra/MainImage.png"
+          alt="Sky main scene"
+          className={styles.mainImage}
+          loading="lazy"
+        />
       </div>
-    </div>
+    </section>
   );
 }

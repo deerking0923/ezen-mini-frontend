@@ -1,93 +1,67 @@
-'use client';
-import './globals.css';
-import { useState, useEffect } from 'react';
-import Link from 'next/link';
-import Head from 'next/head';
-import Footer from './components/Footer';
-import GoogleAnalytics from './GoogleAnalytics';
-import { QuizProvider } from './sky/context/QuizContext';
+import Link from "next/link";
+import styles from "./layout.module.css";
+
+export const metadata = {
+  title: "스카이 플래너",
+  viewport: "width=device-width, initial-scale=1",
+};
+
 export default function RootLayout({ children }) {
-  const [loading, setLoading] = useState(true);
-  const [showHamburger, setShowHamburger] = useState(false);
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-    setLoading(false);
-  }, []);
-
   return (
     <html lang="ko">
-      <Head>
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <title>스카이 플래너</title>
-      </Head>
-      <GoogleAnalytics />
       <body>
-      <QuizProvider>
-        {loading && (
-          <div className="loading-container">
-            <div className="spinner">
-              <div></div>
-              <div></div>
-              <div></div>
-              <div></div>
-            </div>
-          </div>
-        )}
-        <header className="header">
-          {/* 제목: 링크 포함 */}
-          <div className="title-container">
-            <Link href="/">
-              <h1 className="header-title">스카이 아카이브</h1>
+        {/* ───── 배너 영역 ───── */}
+        <header className={styles.banner}>
+          <div className={styles.overlay}>
+            {/* 타이틀 → 클릭하면 루트("/") 로 이동 */}
+            <Link href="/" className={styles.titleLink}>
+              <h1 className={styles.title}>스카이 플래너</h1>
             </Link>
-          </div>
-          {/* PC용 내비게이션: 모바일에서는 숨김 */}
-          <div className="nav-links">
-            {/* <Link href="/sky/height">
-              <button className="nav-button">키 재기</button>
-            </Link>
-            <Link href="/sky/candlecalculator">
-              <button className="nav-button">양초 계산하기</button>
-            </Link> */}
-            <Link href="/sky/credit">
-              <button className="credit-button">크레딧</button>
-            </Link>
-          </div>
-          {/* 모바일 전용: mounted 후 렌더링 */}
-          {mounted && (
-            <>
-              <div
-                className="hamburger"
-                onClick={() => setShowHamburger(!showHamburger)}
+
+            <p className={styles.subtitle}>
+              이 사이트는 thatgamecompany의
+              <br className={styles.mobileBreak} />
+              Sky: Children of the Light 팬사이트입니다.
+            </p>
+
+            {/* CTA 버튼 */}
+            <div className={styles.ctaWrapper}>
+              <Link
+                href="https://cafe.naver.com/blacknbiqa/490434" /* TODO: 실제 URL */
+                target="_blank"
+                rel="noopener noreferrer"
+                className={styles.ctaButton}
               >
-                <span className="bar"></span>
-                <span className="bar"></span>
-                <span className="bar"></span>
-              </div>
-              <div className={`mobile-nav ${showHamburger ? "show" : ""}`}>
-                <Link href="/sky/height">
-                  <button className="nav-button">키 재기</button>
-                </Link>
-                <Link href="/sky/travelingSprits/generalVisits/list">
-                  <button className="nav-button">유랑 대백과</button>
-                </Link>
-                <Link href="/sky/mbti">
-                  <button className="nav-button">성향 테스트</button>
-                </Link>
-                <Link href="/sky/temp">
-                  <button className="nav-button">양초 계산기</button>
-                </Link>
-                <Link href="/sky/credit">
-                  <button className="credit-button">크레딧</button>
-                </Link>
-              </div>
-            </>
-          )}
+                <img
+                  src="/sky/extra/cafe_icon.png"
+                  alt="네이버 카페 아이콘"
+                  className={styles.icon}
+                />
+                네이버 카페로 바로가기
+              </Link>
+
+              <Link
+                href="https://game.naver.com/lounge/thatskylounge/home" /* TODO: 실제 URL */
+                target="_blank"
+                rel="noopener noreferrer"
+                className={styles.ctaButton}
+              >
+                <img
+                  src="/sky/extra/gamelounge_icon.png"
+                  alt="게임 라운지 아이콘"
+                  className={styles.icon}
+                />
+                공식 게임 라운지로 가기
+              </Link>
+            </div>
+
+            {/* 만든이 문구 */}
+            <span className={styles.maker}>만든이 진사슴</span>
+          </div>
         </header>
-        <main>{children}</main>
-        <Footer />
-        </QuizProvider>
+
+        {/* ───── 페이지 콘텐츠 ───── */}
+        <main className={styles.content}>{children}</main>
       </body>
     </html>
   );

@@ -169,6 +169,10 @@ a {
   text-decoration: none;
   color: inherit;
 }
+/* 모든 브라우저 기본 여백 제거 */
+body {
+  margin: 0;
+}
 
 /* 모바일 스타일: 화면 폭 768px 이하에서 적용 */
 @media (max-width: 768px) {
