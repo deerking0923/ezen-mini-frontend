@@ -2,29 +2,25 @@ import { useState, useEffect, useCallback } from 'react';
 import dynamic from 'next/dynamic';
 import { clampPosition, distance } from './heightUtils';
 
-/* html2canvas는 클라이언트에서만 필요 */
 const html2canvas = dynamic(
   () => import('html2canvas').then((m) => m.default),
   { ssr: false }
 );
 
-/* 실제 화면에서 1 클릭당 이동시키고 싶은 픽셀 수 */
-const STEP_DESKTOP_PX = 0.5;   // 데스크톱
-const STEP_MOBILE_PX  = 0.1;   // 모바일
+const STEP_DESKTOP_PX = 0.5;
+const STEP_MOBILE_PX  = 0.1;
+const MIN_SCALE       = 0.05;   // 최저 줌 배율
 
 export default function useHeightMeter(canvasRef) {
-  /* 상태 */
   const [uploaded, setUploaded] = useState(null);
   const [scale, setScale]       = useState(0.3);
   const [pos, setPos]           = useState({ x: 0, y: 0 });
   const [imgSize, setImgSize]   = useState({ width: 0, height: 0 });
   const [touch, setTouch]       = useState(null);
 
-  /* 화살표/확대 스텝 */
   const [arrowStep, setArrowStep] = useState(STEP_DESKTOP_PX);
   const [zoomStep,  setZoomStep]  = useState(0.01);
 
-  /* 모바일/데스크톱 구분 */
   useEffect(() => {
     if (typeof window === 'undefined') return;
     const mobile = window.innerWidth < 768;
@@ -32,12 +28,9 @@ export default function useHeightMeter(canvasRef) {
     setZoomStep (mobile ? 0.0002 : 0.0003);
   }, []);
 
-  /* 위치 제한 */
   const clamp = useCallback(
     (x, y, s = scale) => {
-      const rect = canvasRef.current?.getBoundingClientRect() ?? {
-        width: 0, height: 0,
-      };
+      const rect = canvasRef.current?.getBoundingClientRect() ?? { width: 0, height: 0 };
       return clampPosition({
         posX: x, posY: y, newScale: s,
         containerRect: rect, imageSize: imgSize,
@@ -46,7 +39,6 @@ export default function useHeightMeter(canvasRef) {
     [canvasRef, imgSize, scale]
   );
 
-  /* ─ 업로드 ─ */
   const onUpload = (e) => {
     const file = e.target.files[0];
     if (!file) return;
@@ -55,13 +47,11 @@ export default function useHeightMeter(canvasRef) {
     reader.readAsDataURL(file);
   };
 
-  /* ─ 마우스 드래그 ─ */
   const onDrag = (e) => {
     if (e.buttons !== 1) return;
     setPos((p) => clamp(p.x + e.movementX, p.y + e.movementY));
   };
 
-  /* ─ 휠 줌 ─ */
   const onWheel = useCallback((e) => {
     if (e.cancelable) e.preventDefault();
     const rect = canvasRef.current?.getBoundingClientRect();
@@ -69,7 +59,7 @@ export default function useHeightMeter(canvasRef) {
 
     const offsetX = e.clientX - rect.left;
     const offsetY = e.clientY - rect.top;
-    const newS    = Math.max(0.1, scale + (e.deltaY < 0 ? 0.003 : -0.003));
+    const newS    = Math.max(MIN_SCALE, scale + (e.deltaY < 0 ? 0.003 : -0.003));
 
     const newX = pos.x + offsetX * (1 - newS / scale);
     const newY = pos.y + offsetY * (1 - newS / scale);
@@ -85,7 +75,6 @@ export default function useHeightMeter(canvasRef) {
     return () => cvs.removeEventListener('wheel', onWheel);
   }, [onWheel, canvasRef]);
 
-  /* ─ 터치(핀치/드래그) ─ */
   const onTouchStart = (e) => {
     e.preventDefault();
     if (e.touches.length === 1) {
@@ -116,7 +105,7 @@ export default function useHeightMeter(canvasRef) {
     } else if (touch.type === 'pinch' && e.touches.length === 2) {
       const [t1, t2] = e.touches;
       let newS = touch.is * (1 + (distance(t1, t2) / touch.sd - 1) * 0.5);
-      newS = Math.max(0.2, newS);
+      newS = Math.max(MIN_SCALE, newS);
 
       const newX = touch.ip.x + touch.c.x * (1 - newS / touch.is);
       const newY = touch.ip.y + touch.c.y * (1 - newS / touch.is);
@@ -126,22 +115,21 @@ export default function useHeightMeter(canvasRef) {
     }
   };
 
-  /* ─ 이동 & 줌 ─ */
   const move = (dx, dy) => setPos((p) => clamp(p.x + dx, p.y + dy));
+
   const zoom = (delta) => {
-    const s = Math.max(0.1, scale + delta);
+    const s = Math.max(MIN_SCALE, scale + delta);
     setScale(s);
     setPos(clamp(pos.x, pos.y, s));
   };
 
-  /* ─ 다운로드 ─ */
   const download = async () => {
     const el = canvasRef.current;
     if (!el) return;
     const html2canvasFn = (await import('html2canvas')).default;
-    const canvas = await html2canvasFn(el, { useCORS: true });
-    const link  = document.createElement('a');
-    link.href   = canvas.toDataURL('image/png');
+    const canvas = await html2canvasFn(el, { useCORS:true });
+    const link = document.createElement('a');
+    link.href = canvas.toDataURL('image/png');
     link.download = 'heightmeter.png';
     link.click();
   };
