@@ -12,7 +12,6 @@ export const viewport = {
 export default function RootLayout({ children }) {
   return (
     <html lang="ko">
-      {/* ───── <head> : OG 대표 이미지 확정 ───── */}
       <head>
         <meta
           property="og:image"
@@ -20,13 +19,17 @@ export default function RootLayout({ children }) {
         />
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="630" />
-        {/* 필요하다면 title·description도 직접 지정 가능 */}
       </head>
 
       <body>
         <QuizProvider>
-          {/* ───── 배너 영역 ───── */}
+          {/* ───── 배너 ───── */}
           <header className={styles.banner}>
+            {/* ▲ 좌상단 크레딧 링크 */}
+            <Link href="/sky/credit" className={styles.creditLink}>
+              © credit
+            </Link>
+
             <div className={styles.overlay}>
               <Link href="/" className={styles.titleLink}>
                 <h1 className={styles.title}>스카이 플래너</h1>
@@ -37,8 +40,6 @@ export default function RootLayout({ children }) {
                 <br className={styles.mobileBreak} />
                 Sky: Children of the Light 팬사이트입니다.
               </p>
-
-              {/* OG 이미지가 이미 head에 있으므로 여기에 숨김 이미지 필요 X */}
 
               <div className={styles.ctaWrapper}>
                 <Link
@@ -74,7 +75,6 @@ export default function RootLayout({ children }) {
             </div>
           </header>
 
-          {/* ───── 페이지 콘텐츠 ───── */}
           <main className={styles.content}>{children}</main>
         </QuizProvider>
       </body>

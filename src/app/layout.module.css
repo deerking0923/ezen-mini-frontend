@@ -100,6 +100,29 @@
 .ogImage {
   display: none;
 }
+/* 배너 전체가 이미 position:relative; 여야 합니다.
+   없다면 추가 */
+.banner {
+  position: relative;   /* ← 이미 있으면 생략 */
+}
+
+/* 좌상단 크레딧 링크 */
+.creditLink {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  z-index: 1000;          /* overlay 위에 오도록 */
+  font-size: 0.75rem;
+  color: #fff;
+  text-decoration: underline;   /* 밑줄 */
+  opacity: 0.85;
+  transition: opacity 0.2s;
+}
+.creditLink:hover {
+  opacity: 1;
+}
+
+
 /* ─── 모바일(≤768px) ─── */
 @media (max-width: 768px) {
   .banner {
