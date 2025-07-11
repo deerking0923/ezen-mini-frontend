@@ -1,390 +1,84 @@
-"use client";
+'use client';
 
-import { useState, useRef, useEffect, useCallback } from "react";
-import dynamic from "next/dynamic";
-import Image from "next/image";
-import "./heighmeter.css";
+import { useRef, useState } from 'react';
+import styles from './HeightMeter.module.css';
+import useHeightMeter from '@/app/sky/utils/useHeightMeter';
 
-/** html2canvas는 서버 사이드에서 동작할 수 없으므로 ssr: false 옵션으로 동적 임포트 */
-const html2canvas = dynamic(() => import("html2canvas"), { ssr: false });
-
-export default function Home() {
-  const [uploadedImage, setUploadedImage] = useState(null);
-
-  // 스케일 / 위치 (초기 스케일 0.5 ― 원본의 50% 크기로 시작)
-  const [scale, setScale] = useState(0.3);
-  const [position, setPosition] = useState({ x: 0, y: 0 });
-
-  // 이미지 원본 크기 (naturalWidth, naturalHeight)
-  const [imageSize, setImageSize] = useState({ width: 0, height: 0 });
-
-  // 터치(핀치/드래그) 관련 저장
-  const [initialTouchData, setInitialTouchData] = useState(null);
-  const [showInstructions, setShowInstructions] = useState(false);
-
-  // 캔버스 DOM 참조
+export default function HeightMeterPage() {
   const canvasRef = useRef(null);
 
-  // 방향키 이동 간격 (초기값 5)
-  const [arrowStep, setArrowStep] = useState(5);
+  /* 커스텀 훅 : 이동 · 줌 · 다운로드 */
+  const {
+    uploaded, setImgSize, pos, scale,
+    onUpload, onDrag, onTouchStart, onTouchMove,
+    move, zoom, arrowStep, zoomStep, download,
+  } = useHeightMeter(canvasRef);
 
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      if (window.innerWidth < 768) {
-        setArrowStep(1); // 모바일에서는 더 정밀하게 (예: 1픽셀)
-      } else {
-        setArrowStep(1);
-      }
-    }
-  }, []);
-
-  // PC / 모바일에 따라 확대/축소 버튼의 스텝을 다르게 설정
-  const [zoomStep, setZoomStep] = useState(0.01);
-
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      if (window.innerWidth < 768) {
-        setZoomStep(0.0002); // 모바일에서는 좀 더 정밀하게
-      } else {
-        setZoomStep(0.0003);
-      }
-    }
-  }, []);
-
-  // 이미지 업로드
-  const handleImageUpload = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (event) => setUploadedImage(event.target.result);
-      reader.readAsDataURL(file);
-    }
-  };
-
-  /**
-   * 위치를 제한(clamp)하는 함수
-   */
-  const clampPosition = useCallback((posX, posY, newScale) => {
-    const canvas = canvasRef.current;
-    if (!canvas) return { x: posX, y: posY };
-
-    const { width: imgW, height: imgH } = imageSize;
-    if (imgW === 0 || imgH === 0) {
-      return { x: posX, y: posY };
-    }
-
-    const rect = canvas.getBoundingClientRect();
-    const containerWidth = rect.width;
-    const containerHeight = rect.height;
-
-    const scaledWidth = imgW * newScale;
-    const scaledHeight = imgH * newScale;
-
-    // 이동 범위 조절 (multiple 값이 클수록 더 멀리 이동 가능)
-    const multiple = 1.5;
-    const minX = containerWidth - scaledWidth * multiple;
-    const maxX = scaledWidth * (multiple - 1);
-    const minY = containerHeight - scaledHeight * multiple;
-    const maxY = scaledHeight * (multiple - 1);
-
-    const clampedX = Math.min(Math.max(posX, minX), maxX);
-    const clampedY = Math.min(Math.max(posY, minY), maxY);
-
-    return { x: clampedX, y: clampedY };
-  }, [imageSize]);
-
-  // --- 드래그 (마우스) ---
-  const handleDrag = (e) => {
-    if (e.buttons !== 1) return;
-    const newX = position.x + e.movementX;
-    const newY = position.y + e.movementY;
-    const clamped = clampPosition(newX, newY, scale);
-    setPosition(clamped);
-  };
-
-  // --- 휠 줌 (마우스) ---
-  const handleWheelInternal = useCallback((e) => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const rect = canvas.getBoundingClientRect();
-
-    const offsetX = e.clientX - rect.left;
-    const offsetY = e.clientY - rect.top;
-
-    const oldScale = scale;
-    const zoomIn = e.deltaY < 0;
-    let newScale = oldScale + (zoomIn ? 0.003 : -0.003);
-    if (newScale < 0.1) newScale = 0.1;
-
-    let newX = position.x + offsetX * (1 - newScale / oldScale);
-    let newY = position.y + offsetY * (1 - newScale / oldScale);
-    const clamped = clampPosition(newX, newY, newScale);
-
-    setScale(newScale);
-    setPosition(clamped);
-  }, [scale, position, clampPosition]);
-
-  // --- 캔버스에 수동 wheel 리스너 등록 (passive:false) ---
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-
-    const wheelHandler = (e) => {
-      if (e.cancelable) e.preventDefault(); // 페이지 스크롤 방지
-      handleWheelInternal(e);
-    };
-
-    canvas.addEventListener("wheel", wheelHandler, { passive: false });
-    return () => canvas.removeEventListener("wheel", wheelHandler);
-  }, [handleWheelInternal]);
-
-  // --- 터치 계산용 ---
-  const getDistance = (touch1, touch2) => {
-    const dx = touch2.pageX - touch1.pageX;
-    const dy = touch2.pageY - touch1.pageY;
-    return Math.sqrt(dx * dx + dy * dy);
-  };
-
-  // --- 터치 시작 ---
-  const handleTouchStart = (e) => {
-    e.preventDefault();
-    if (e.touches.length === 1) {
-      const { pageX, pageY } = e.touches[0];
-      setInitialTouchData({
-        type: "drag",
-        startX: pageX,
-        startY: pageY,
-        initialX: position.x,
-        initialY: position.y,
-      });
-    } else if (e.touches.length === 2) {
-      const [t1, t2] = e.touches;
-      const distance = getDistance(t1, t2);
-      const pinchCenter = {
-        x: (t1.pageX + t2.pageX) / 2,
-        y: (t1.pageY + t2.pageY) / 2,
-      };
-      setInitialTouchData({
-        type: "pinch",
-        startDistance: distance,
-        initialScale: scale,
-        initialPosition: { ...position },
-        pinchCenter,
-      });
-    }
-  };
-
-  // --- 터치 이동 ---
-  const handleTouchMove = (e) => {
-    e.preventDefault();
-    if (!initialTouchData) return;
-
-    const dragMultiplier = 1.0;
-
-    if (initialTouchData.type === "drag" && e.touches.length === 1) {
-      const { pageX, pageY } = e.touches[0];
-      const deltaX = pageX - initialTouchData.startX;
-      const deltaY = pageY - initialTouchData.startY;
-      const newX = initialTouchData.initialX + deltaX * dragMultiplier;
-      const newY = initialTouchData.initialY + deltaY * dragMultiplier;
-      const clamped = clampPosition(newX, newY, scale);
-      setPosition(clamped);
-    } else if (initialTouchData.type === "pinch" && e.touches.length === 2) {
-      const [t1, t2] = e.touches;
-      const newDistance = getDistance(t1, t2);
-      const ratio = newDistance / initialTouchData.startDistance;
-      const dampingFactor = 0.5;
-      let newScale = initialTouchData.initialScale * (1 + (ratio - 1) * dampingFactor);
-      if (newScale < 0.2) newScale = 0.2; // 최소 스케일 제한
-      const { pinchCenter } = initialTouchData;
-      const oldScale = initialTouchData.initialScale;
-      let newX = initialTouchData.initialPosition.x + pinchCenter.x * (1 - newScale / oldScale);
-      let newY = initialTouchData.initialPosition.y + pinchCenter.y * (1 - newScale / oldScale);
-      const clamped = clampPosition(newX, newY, newScale);
-      setScale(newScale);
-      setPosition(clamped);
-    }
-  };
-  // --- 터치 종료 ---
-  const handleTouchEnd = () => {
-    setInitialTouchData(null);
-  };
-
-  // --- 리스너 등록 (passive: false) ---
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const touchStartHandler = (e) => handleTouchStart(e);
-    const touchMoveHandler = (e) => handleTouchMove(e);
-    const touchEndHandler = () => handleTouchEnd();
-    canvas.addEventListener("touchstart", touchStartHandler, { passive: false });
-    canvas.addEventListener("touchmove", touchMoveHandler, { passive: false });
-    canvas.addEventListener("touchend", touchEndHandler, { passive: false });
-    return () => {
-      canvas.removeEventListener("touchstart", touchStartHandler);
-      canvas.removeEventListener("touchmove", touchMoveHandler);
-      canvas.removeEventListener("touchend", touchEndHandler);
-    };
-  }, [canvasRef, position, scale, initialTouchData, clampPosition]);
-
-  // --- html2canvas 캡처 ---
-  const handleDownload = async () => {
-    if (!uploadedImage) return;
-    try {
-      const { default: html2canvas } = await import("html2canvas");
-      const element = document.querySelector(".image-canvas");
-      if (!element) {
-        console.error("캔버스 요소를 찾을 수 없습니다.");
-        return;
-      }
-      const canvas = await html2canvas(element, { useCORS: true });
-      const dataURL = canvas.toDataURL("image/png");
-      const link = document.createElement("a");
-      link.href = dataURL;
-      link.download = "result.png";
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-    } catch (err) {
-      console.error("이미지 다운로드 중 오류:", err);
-    }
-  };
+  /* 모바일 가이드 토글 상태 */
+  const [open, setOpen] = useState(false);
 
   return (
-    <main className="container">
-      {/* 공지 영역 */}
-      <div className="noticePanel">
-        <h2 className="noticeTitle">
-          키 재기<span className="subtitle">만든이 진사슴</span>
-        </h2>
-        <p className="noticeDescription">
-          <br />
-          빛아의 키를 측정할 수 있는 페이지입니다.
-          <br />
-          <br />
-          측정을 위해 아래 측정 방법을 정확하게 따라주세요. 가이드를 보시면 편합니다.
-          <br />
-          <br />
-          머리 장식 X, 신발 X, 참새 머리, 기본 자세로 헤어-망토 사이의 등불에서 재기
-          <br />
-        </p>
-        <div className="instructions-btn-container">
-          <button onClick={() => setShowInstructions(true)}>측정 방법 보기</button>
-        </div>
-      </div>
+    <main className={styles.workspace}>
 
-      <div className="controls">
-        <input type="file" accept="image/*" onChange={handleImageUpload} />
-      </div>
-
-      <div
-        className="image-canvas"
-        ref={canvasRef}
-        onMouseMove={handleDrag}
-        onMouseDown={(e) => e.preventDefault()}
-      >
-        {uploadedImage && (
-          <img
-            src={uploadedImage}
-            alt="Uploaded"
-            className="uploaded-image"
-            onLoad={(e) => {
-              const { naturalWidth, naturalHeight } = e.currentTarget;
-              setImageSize({ width: naturalWidth, height: naturalHeight });
-            }}
-            style={{
-              transform: `translate(${position.x}px, ${position.y}px) scale(${scale})`,
-            }}
-          />
+      {/* 모바일 첫 번째 : 토글 가이드 (데스크톱에서는 CSS로 display:none) */}
+      <div className={styles.guideToggle}>
+        <button className={styles.toggleBtn} onClick={()=>setOpen(o=>!o)}>
+          키재기 가이드 {open ? '▲' : '▼'}
+        </button>
+        {open && (
+          <img src="/guide.png" alt="guide" className={styles.guideMobile}/>
         )}
-        {/* 업로드 여부와 상관없이 항상 가이드라인 이미지(오버레이) 표시 */}
-        <img src="/sky/height/guideline.png" alt="Overlay" className="overlay-fixed" />
-
-        {/* 이미지 캔버스 우측 하단 텍스트 */}
-        <div className="credit-text">&lt;korea-sky-planner.com&gt;</div>
       </div>
 
-      <div className="controls">
-        <div className="zoom-controls">
-          <button
-            onClick={() => {
-              const newS = scale + zoomStep;
-              const clampedPos = clampPosition(position.x, position.y, newS);
-              setScale(newS);
-              setPosition(clampedPos);
-            }}
-          >
-            확대
-          </button>
-          <button
-            onClick={() => {
-              const newS = Math.max(0.1, scale - zoomStep);
-              const clampedPos = clampPosition(position.x, position.y, newS);
-              setScale(newS);
-              setPosition(clampedPos);
-            }}
-          >
-            축소
-          </button>
+      {/* 왼쪽 : 캔버스 */}
+      <div className={styles.left}>
+        <div
+          ref={canvasRef}
+          className={styles.canvas}
+          onMouseMove={onDrag}
+          onMouseDown={e=>e.preventDefault()}
+          onTouchStart={onTouchStart}
+          onTouchMove={onTouchMove}
+          onTouchEnd={()=>null}
+        >
+          {uploaded && (
+            <img
+              src={uploaded}
+              alt="uploaded"
+              className={styles.uploaded}
+              onLoad={e=>{
+                const { naturalWidth, naturalHeight } = e.currentTarget;
+                setImgSize({ width:naturalWidth, height:naturalHeight });
+              }}
+              style={{ transform:`translate(${pos.x}px,${pos.y}px) scale(${scale})` }}
+            />
+          )}
+          <img src="/sky/height/guideline.png" alt="guideline" className={styles.overlay}/>
+          <span className={styles.watermark}>&lt;korea-sky-planner.com&gt;</span>
         </div>
 
-        {/* 방향키 컨트롤 */}
-        <div className="arrow-controls">
-          <button
-            className="arrow-btn"
-            onClick={() => {
-              const newPos = clampPosition(position.x, position.y + arrowStep, scale);
-              setPosition(newPos);
-            }}
-          >
-            ↑
-          </button>
-          <button
-            className="arrow-btn"
-            onClick={() => {
-              const newPos = clampPosition(position.x, position.y - arrowStep, scale);
-              setPosition(newPos);
-            }}
-          >
-            ↓
-          </button>
-          <button
-            className="arrow-btn"
-            onClick={() => {
-              const newPos = clampPosition(position.x + arrowStep, position.y, scale);
-              setPosition(newPos);
-            }}
-          >
-            ←
-          </button>
-          <button
-            className="arrow-btn"
-            onClick={() => {
-              const newPos = clampPosition(position.x - arrowStep, position.y, scale);
-              setPosition(newPos);
-            }}
-          >
-            →
-          </button>
-        </div>
+        <input type="file" accept="image/*" onChange={onUpload} className={styles.file}/>
       </div>
 
-      <div className="download-container">
-        <button onClick={handleDownload}>결과 다운로드</button>
+      {/* 가운데 : 컨트롤 패널 */}
+      <div className={styles.center}>
+        <div className={styles.arrows}>
+          <button className={styles.ctrl} onClick={()=>move(0, arrowStep)}>↑</button>
+          <button className={styles.ctrl} onClick={()=>move(arrowStep, 0)}>←</button>
+          <button className={styles.ctrl} onClick={()=>move(-arrowStep, 0)}>→</button>
+          <button className={styles.ctrl} onClick={()=>move(0,  -arrowStep)}>↓</button>
+        </div>
+
+        <div className={styles.zoomRow}>
+          <button className={styles.ctrl} onClick={()=>zoom( zoomStep)}>＋</button>
+          <button className={styles.ctrl} onClick={()=>zoom(-zoomStep)}>－</button>
+        </div>
+
+        <button className={styles.download} onClick={download}>다운로드</button>
       </div>
 
-      {/* 모달 팝업 */}
-      {showInstructions && (
-        <div className="modal" onClick={() => setShowInstructions(false)}>
-          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-            <p className="popup-header"></p>
-            <button className="close-btn" onClick={() => setShowInstructions(false)}>
-              &times;
-            </button>
-            <img src="/guide.png" alt="측정 방법" />
-          </div>
-        </div>
-      )}
+      {/* 데스크톱 가이드 이미지 (모바일에서는 CSS로 숨김) */}
+      <img src="/guide.png" alt="guide" className={styles.guide}/>
     </main>
   );
 }

@@ -41,7 +41,7 @@ export default function RootLayout({ children }) {
 
               <div className={styles.ctaWrapper}>
                 <Link
-                  href="https://cafe.naver.com/blacknbiqa/490434"
+                  href="https://cafe.naver.com/blacknbiqa"
                   target="_blank"
                   rel="noopener noreferrer"
                   className={styles.ctaButton}
