@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import styles from './layout.module.css';
 import { QuizProvider } from './sky/context/QuizContext';
+import '@/app/globals.css';
 
 /* ───────── 뷰포트 ───────── */
 export const viewport = {
