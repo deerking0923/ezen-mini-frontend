@@ -1,9 +1,10 @@
 import Link from 'next/link';
 import styles from './layout.module.css';
 import { QuizProvider } from './sky/context/QuizContext';
+import GoogleAnalytics from './GoogleAnalytics';   // ← GA 컴포넌트
 import '@/app/globals.css';
 
-/* ───────── 뷰포트 ───────── */
+/* ───────── 뷰포트 메타 ───────── */
 export const viewport = {
   width: 'device-width',
   initialScale: 1,
@@ -22,10 +23,13 @@ export default function RootLayout({ children }) {
       </head>
 
       <body>
+        {/* ───── Google Analytics: 한 번만 로드 ───── */}
+        <GoogleAnalytics />
+
         <QuizProvider>
           {/* ───── 배너 ───── */}
           <header className={styles.banner}>
-            {/* ▲ 좌상단 크레딧 링크 */}
+            {/* 좌상단 크레딧 링크 */}
             <Link href="/sky/credit" className={styles.creditLink}>
               © credit
             </Link>
@@ -36,7 +40,7 @@ export default function RootLayout({ children }) {
               </Link>
 
               <p className={styles.subtitle}>
-                이 사이트는 thatgamecompany의
+                이 사이트는 thatgamecompany의&nbsp;
                 <br className={styles.mobileBreak} />
                 Sky: Children of the Light 팬사이트입니다.
               </p>
@@ -75,6 +79,7 @@ export default function RootLayout({ children }) {
             </div>
           </header>
 
+          {/* ───── 페이지 콘텐츠 ───── */}
           <main className={styles.content}>{children}</main>
         </QuizProvider>
       </body>
