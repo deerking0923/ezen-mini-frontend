@@ -55,7 +55,7 @@
 /* 오른쪽 대표 이미지 */
 .imageWrap {
   flex: 1;
-  max-width: 520px;
+  max-width: 600px;
 }
 .mainImage {
   width: 100%;
