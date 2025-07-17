@@ -3,7 +3,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
 import styles from "./detail.module.css";
-import Link from "next/link";
 
 export default function SoulDetailPage() {
   const [showCopied, setShowCopied] = useState(false);
@@ -12,12 +11,10 @@ export default function SoulDetailPage() {
   const [soul, setSoul] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [neighbors, setNeighbors] = useState({ prev: [], next: [] });
   const searchParams = useSearchParams();
   const { id } = useParams();
   const router = useRouter();
 
-  // URL 파라미터에서 페이지, 뷰모드, 검색 쿼리 읽기
   const currentPage = searchParams.get("page") || 1;
   const viewMode = searchParams.get("mode") || "card";
   const query = searchParams.get("query") || "";
@@ -32,12 +29,11 @@ export default function SoulDetailPage() {
   useEffect(() => {
     fetch(`https://korea-sky-planner.com/api/v1/souls/${id}`)
       .then((res) => {
-        if (!res.ok) {
-          throw new Error("영혼 상세 정보를 가져오는데 실패하였습니다.");
-        }
+        if (!res.ok) throw new Error("영혼 상세 정보를 가져오는데 실패하였습니다.");
         return res.json();
       })
       .then((data) => {
+        console.log("🖼️ soul.images:", (data.data || data).images);
         setSoul(data.data || data);
         setLoading(false);
       })
@@ -46,18 +42,24 @@ export default function SoulDetailPage() {
         setLoading(false);
       });
   }, [id]);
-  // 상단에 import 문이 이미 있으므로 useState, useEffect 사용
-
-  useEffect(() => {
-    fetch(`https://korea-sky-planner.com/api/v1/souls/${id}/neighbors`)
-      .then((res) => res.json())
-      .then((data) => setNeighbors(data.data || data)) // ApiResponse 내부에 data가 있으면
-      .catch((err) => console.error(err));
-  }, [id]);
 
   if (loading) return <div className={styles.loading}>Loading...</div>;
   if (error) return <div className={styles.error}>Error: {error}</div>;
   if (!soul) return <div className={styles.error}>영혼 정보가 없습니다.</div>;
+
+  // 이미지 분류
+  const representativeImage = soul.images?.find(
+    (img) => img.imageType === "REPRESENTATIVE"
+  )?.url;
+  const nodeTableImage = soul.images?.find(
+    (img) => img.imageType === "NODE_TABLE"
+  )?.url;
+  const wearingShotImages = soul.images
+    ?.filter((img) => img.imageType === "WEARING_SHOT")
+    .map((img) => img.url);
+  const locationImage = soul.images?.find(
+    (img) => img.imageType === "LOCATION"
+  )?.url;
 
   const handleEdit = () => {
     router.push(`/sky/travelingSprits/generalVisits/edit/${id}`);
@@ -94,25 +96,6 @@ export default function SoulDetailPage() {
       });
   };
 
-  // 노드 렌더링: centerNodes 수에 맞춰 왼쪽, 오른쪽에 dummy 노드를 사용
-  const centerNodesCount = soul.centerNodes ? soul.centerNodes.length : 0;
-  const leftNodesToRender = Array.from(
-    { length: centerNodesCount },
-    (_, i) =>
-      (soul.leftSideNodes &&
-        soul.leftSideNodes.find((node) => node.nodeOrder === i + 1)) || {
-        dummy: true,
-      }
-  );
-  const rightNodesToRender = Array.from(
-    { length: centerNodesCount },
-    (_, i) =>
-      (soul.rightSideNodes &&
-        soul.rightSideNodes.find((node) => node.nodeOrder === i + 1)) || {
-        dummy: true,
-      }
-  );
-
   return (
     <div className={styles.container}>
       <h1 className={styles.title}>{soul.name}</h1>
@@ -136,9 +119,9 @@ export default function SoulDetailPage() {
       {/* 상단 레이아웃 */}
       <div className={styles.topLayout}>
         <div className={styles.representativeImageWrapper}>
-          {soul.representativeImage && (
+          {representativeImage && (
             <img
-              src={soul.representativeImage}
+              src={representativeImage}
               alt="대표 이미지"
               className={styles.representativeImage}
               style={{ cursor: "default" }}
@@ -158,21 +141,31 @@ export default function SoulDetailPage() {
               기간: {soul.startDate} ~ {soul.endDate}
             </div>
           </div>
-          {soul.description && (
-            <div className={styles.detailItem}>
-              <p className={styles.descriptionText}>{soul.description}</p>
-            </div>
-          )}
+          {/* 같은 영혼 더 보기 버튼 (설명 탭 위치) */}
+          <div className={styles.sameSoulContainer}>
+            <button
+              className={styles.sameSoulButton}
+              onClick={() =>
+                router.push(
+                  `/sky/travelingSprits/generalVisits/list?query=${encodeURIComponent(
+                    soul.name
+                  )}`
+                )
+              }
+            >
+              같은 영혼 더 보기
+            </button>
+          </div>
         </div>
       </div>
 
       {/* 노드표 */}
-      {soul.nodeTableImage && (
+      {nodeTableImage && (
         <div className={styles.nodeTableSection}>
           <span className={styles.nodeTableLabel}>노드표</span>
           <div className={styles.nodeTableImageWrapper}>
             <img
-              src={soul.nodeTableImage}
+              src={nodeTableImage}
               alt="노드표 이미지"
               className={styles.nodeTableImage}
             />
@@ -180,16 +173,16 @@ export default function SoulDetailPage() {
         </div>
       )}
 
-      {/* PC용 가로 스크롤 착용샷 */}
-      {soul.wearingShotImages && soul.wearingShotImages.length > 0 && (
+      {/* 착용샷 */}
+      {wearingShotImages && wearingShotImages.length > 0 && (
         <div className={styles.desktopWearingShot}>
           <strong>착용샷</strong>
           <ul className={styles.horizontalList}>
-            {soul.wearingShotImages.map((img, index) => (
-              <li key={index}>
+            {wearingShotImages.map((url, idx) => (
+              <li key={idx}>
                 <img
-                  src={img}
-                  alt={`착용샷 ${index + 1}`}
+                  src={url}
+                  alt={`착용샷 ${idx + 1}`}
                   className={styles.smallImage}
                 />
               </li>
@@ -199,7 +192,7 @@ export default function SoulDetailPage() {
       )}
 
       {/* 모바일용 세로 리스트 + 토글 버튼 착용샷 */}
-      {soul.wearingShotImages && soul.wearingShotImages.length > 0 && (
+      {wearingShotImages && wearingShotImages.length > 0 && (
         <div className={styles.mobileWearingShot}>
           <strong>착용샷</strong>
           <div className={styles.wearingShotWrapper}>
@@ -210,20 +203,20 @@ export default function SoulDetailPage() {
             >
               <ul className={styles.verticalList}>
                 {(showMoreWearingShots
-                  ? soul.wearingShotImages
-                  : [soul.wearingShotImages[0]]
-                ).map((img, index) => (
-                  <li key={index}>
+                  ? wearingShotImages
+                  : [wearingShotImages[0]]
+                ).map((url, idx) => (
+                  <li key={idx}>
                     <img
-                      src={img}
-                      alt={`착용샷 ${index + 1}`}
+                      src={url}
+                      alt={`착용샷 ${idx + 1}`}
                       className={styles.smallImage}
                     />
                   </li>
                 ))}
               </ul>
             </div>
-            {soul.wearingShotImages.length > 1 && (
+            {wearingShotImages.length > 1 && (
               <button
                 onClick={() => setShowMoreWearingShots((prev) => !prev)}
                 className={styles.toggleButton}
@@ -236,12 +229,12 @@ export default function SoulDetailPage() {
       )}
 
       {/* 영혼 위치 이미지 */}
-      {soul.locationImage && (
+      {locationImage && (
         <div className={styles.locationSection}>
           <span className={styles.locationLabel}>영혼 위치</span>
           <div className={styles.locationImageWrapper}>
             <img
-              src={soul.locationImage}
+              src={locationImage}
               alt="위치 이미지"
               className={styles.locationImage}
             />
@@ -267,14 +260,8 @@ export default function SoulDetailPage() {
           자료 출처: {soul.creator}
         </div>
       )}
-      {soul.materialUrl && (
-        <div className={styles.sourceLink}>
-          <a href={soul.materialUrl} target="_blank" rel="noopener noreferrer">
-            자료 출처
-          </a>
-        </div>
-      )}
 
+      {/* URL 복사 & 목록가기 버튼 유지 */}
       <div className={styles.copyUrlContainer}>
         <button
           onClick={() => {
@@ -285,9 +272,8 @@ export default function SoulDetailPage() {
         >
           URL 복사
         </button>
+        {showCopied && <span className={styles.copiedToast}>복사됨!</span>}
       </div>
-
-      {/* 중앙 "목록가기" 버튼 - URL에 page, mode, query 포함 */}
       <div className={styles.centerNavigation}>
         <button
           className={styles.centerListButton}
@@ -302,93 +288,5 @@ export default function SoulDetailPage() {
           목록가기
         </button>
       </div>
-
-      <div className={styles.neighborContainer}>
-        {neighbors.prev.map((post) => (
-          <Link
-            key={post.id}
-            href={`/sky/travelingSprits/generalVisits/${
-              post.id
-            }?page=${currentPage}&mode=${viewMode}&query=${encodeURIComponent(
-              query
-            )}`}
-            className={styles.neighborItem}
-          >
-            <div className={styles.neighborDetails}>
-              <span className={styles.orderNum}>
-                {post.orderNum < 0
-                  ? `${Math.abs(post.orderNum)}번째 유랑단`
-                  : `${post.orderNum}번째 영혼`}
-              </span>
-              <span className={styles.seasonName}>{post.seasonName}</span>
-              <span className={styles.soulName}>{post.name}</span>
-              <span className={styles.period}>
-                {post.startDate} ~ {post.endDate}
-              </span>
-              <span className={styles.rerunCount}>
-                {post.rerunCount}차 복각
-              </span>
-            </div>
-          </Link>
-        ))}
-
-        {/* 현재 글 - 링크 없이 강조하여 표시 */}
-        <div className={styles.currentItem}>
-          <div className={styles.neighborDetails}>
-            <span className={styles.orderNum}>
-              {soul.orderNum < 0
-                ? `${Math.abs(soul.orderNum)}번째 유랑단`
-                : `${soul.orderNum}번째 영혼`}
-            </span>
-            <span className={styles.seasonName}>{soul.seasonName}</span>
-            <span className={styles.soulName}>{soul.name}</span>
-            <span className={styles.period}>
-              {soul.startDate} ~ {soul.endDate}
-            </span>
-            <span className={styles.rerunCount}>{soul.rerunCount}차 복각</span>
-          </div>
-        </div>
-
-        {neighbors.next.map((post) => (
-          <Link
-            key={post.id}
-            href={`/sky/travelingSprits/generalVisits/${
-              post.id
-            }?page=${currentPage}&mode=${viewMode}&query=${encodeURIComponent(
-              query
-            )}`}
-            className={styles.neighborItem}
-          >
-            <div className={styles.neighborDetails}>
-              <span className={styles.orderNum}>
-                {post.orderNum < 0
-                  ? `${Math.abs(post.orderNum)}번째 유랑단`
-                  : `${post.orderNum}번째 영혼`}
-              </span>
-              <span className={styles.seasonName}>{post.seasonName}</span>
-              <span className={styles.soulName}>{post.name}</span>
-              <span className={styles.period}>
-                {post.startDate} ~ {post.endDate}
-              </span>
-              <span className={styles.rerunCount}>
-                {post.rerunCount}차 복각
-              </span>
-            </div>
-          </Link>
-        ))}
-      </div>
-
-      {/* <div className={styles.buttonContainer}>
-        <button className={styles.editButton} onClick={handleAdd}>
-          추가하기
-        </button>
-        <button className={styles.editButton} onClick={handleEdit}>
-          수정하기
-        </button>
-        <button className={styles.deleteButton} onClick={handleDelete}>
-          삭제하기
-        </button>
-      </div> */}
     </div>
-  );
-}
+  );}

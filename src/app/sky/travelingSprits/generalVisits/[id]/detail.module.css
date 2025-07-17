@@ -595,6 +595,38 @@
   text-align: center;
   font-size: 0.75rem;
 }
+/* 같은 영혼 더 보기 버튼 스타일 (기존 버튼과 통일) */
+
+
+/* 같은 영혼 더 보기 버튼 스타일 (detailItem과 동일하게) */
+/* 같은 영혼 더 보기 버튼 스타일 (간격·크기 조정) */
+.sameSoulContainer {
+  margin-top: 0rem;  /* 위쪽 간격 줄임 */
+}
+
+.sameSoulButton {
+  display: block;
+  width: 100%;
+  background-color: #3c3c3c;
+  color: #f0f0f0;
+  border: none;
+  border-radius: 8px;
+
+  /* 세로 패딩을 줄이고, 폰트 크기도 살짝 낮춤 */
+  padding: 0.5rem;
+  font-size: 0.8rem;
+  line-height: 1.4;
+
+  text-align: center;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.sameSoulButton:hover {
+  background-color: rgba(0, 0, 0, 0.7);
+}
+
+
 
 
 /******************************************************

@@ -54,19 +54,21 @@ function SoulListContent() {
     setSubmittedQuery(initialQuery);
   }, [searchParams]);
 
-  
   const fetchSouls = async (pageNumber, query) => {
     setLoading(true);
     let url = "";
     if (query && query.trim() !== "") {
-      url = `https://korea-sky-planner.com/api/v1/souls/search?query=${encodeURIComponent(query)}`;
+      url = `https://korea-sky-planner.com/api/v1/souls/search?query=${encodeURIComponent(
+        query
+      )}`;
     } else {
       if (viewMode === "card") {
         url = `https://korea-sky-planner.com/api/v1/souls?page=${pageNumber}`;
       } else {
-        url = listSort === "oldest"
-          ? `https://korea-sky-planner.com/api/v1/souls/reverse`
-          : `https://korea-sky-planner.com/api/v1/souls/all`;
+        url =
+          listSort === "oldest"
+            ? `https://korea-sky-planner.com/api/v1/souls/reverse`
+            : `https://korea-sky-planner.com/api/v1/souls/all`;
       }
     }
 
@@ -107,14 +109,18 @@ function SoulListContent() {
     setPage(0);
     setSubmittedQuery(searchQuery);
     router.push(
-      `/sky/travelingSprits/generalVisits/list?page=1&mode=${viewMode}&query=${encodeURIComponent(searchQuery)}`
+      `/sky/travelingSprits/generalVisits/list?page=1&mode=${viewMode}&query=${encodeURIComponent(
+        searchQuery
+      )}`
     );
   };
 
   const handlePageChange = (pageNumber) => {
     setPage(pageNumber - 1);
     router.push(
-      `/sky/travelingSprits/generalVisits/list?page=${pageNumber}&mode=${viewMode}&query=${encodeURIComponent(submittedQuery)}`
+      `/sky/travelingSprits/generalVisits/list?page=${pageNumber}&mode=${viewMode}&query=${encodeURIComponent(
+        submittedQuery
+      )}`
     );
   };
 
@@ -123,7 +129,9 @@ function SoulListContent() {
     setSubmittedQuery(seasonName);
     setPage(0);
     router.push(
-      `/sky/travelingSprits/generalVisits/list?page=1&mode=${viewMode}&query=${encodeURIComponent(seasonName)}`
+      `/sky/travelingSprits/generalVisits/list?page=1&mode=${viewMode}&query=${encodeURIComponent(
+        seasonName
+      )}`
     );
   };
 
@@ -131,7 +139,9 @@ function SoulListContent() {
   const handleViewModeChange = (mode) => {
     setViewMode(mode);
     router.push(
-      `/sky/travelingSprits/generalVisits/list?page=${currentPage}&mode=${mode}&query=${encodeURIComponent(submittedQuery)}`
+      `/sky/travelingSprits/generalVisits/list?page=${currentPage}&mode=${mode}&query=${encodeURIComponent(
+        submittedQuery
+      )}`
     );
   };
 
@@ -181,11 +191,13 @@ function SoulListContent() {
       <div className={styles.noticePanel}>
         <h2 className={styles.noticeTitle}>유랑 대백과</h2>
         <p className={styles.noticeDescription}>
-        <br />
-          유랑 대백과의 제작 자료는 스카이 플래너를 출처로 남기시면 사용 가능합니다.
+          <br />
+          유랑 대백과의 제작 자료는 스카이 플래너를 출처로 남기시면 사용
+          가능합니다.
           <br />
           <br />
-          찾고 있는 유랑이 기억나지 않을 때 검색창에 키워드를 입력해 검색해주세요.
+          찾고 있는 유랑이 기억나지 않을 때 검색창에 키워드를 입력해
+          검색해주세요.
           <br />
           <br />
           <span className={styles.noticeExample}>
@@ -276,27 +288,126 @@ function SoulListContent() {
         <p>등록된 영혼이 없습니다.</p>
       ) : viewMode === "card" ? (
         <div className={styles.cardsGrid}>
-          {souls.map((soul) => (
-            <Link
-              href={`/sky/travelingSprits/generalVisits/${soul.id}?page=${currentPage}&mode=${viewMode}&query=${encodeURIComponent(
-                submittedQuery
-              )}`}
-              key={soul.id}
-              className={styles.soulCard}
-            >
-              <div className={styles.imageWrapperSquare}>
-                {soul.representativeImage ? (
-                  <img
-                    src={soul.representativeImage}
-                    alt={soul.name}
-                    className={styles.cardImage}
-                  />
-                ) : (
-                  <div className={styles.noImage}>No Image</div>
-                )}
-              </div>
-              <div className={styles.cardContent}>
-                <p className={styles.firstLine}>
+          {souls.map((soul) => {
+            const representative = soul.images?.find(
+              (img) => img.imageType === "REPRESENTATIVE"
+            );
+
+            return (
+              <Link
+                href={`/sky/travelingSprits/generalVisits/${
+                  soul.id
+                }?page=${currentPage}&mode=${viewMode}&query=${encodeURIComponent(
+                  submittedQuery
+                )}`}
+                key={soul.id}
+                className={styles.soulCard}
+              >
+                <div className={styles.imageWrapperSquare}>
+                  {representative?.url ? (
+                    <img
+                      src={representative.url}
+                      alt={soul.name}
+                      className={styles.cardImage}
+                    />
+                  ) : (
+                    <div className={styles.noImage}>No Image</div>
+                  )}
+                </div>
+                <div className={styles.cardContent}>
+                  <p className={styles.firstLine}>
+                    <span
+                      className={styles.seasonName}
+                      style={{
+                        backgroundColor:
+                          seasonList.find(
+                            (season) => season.name === soul.seasonName
+                          )?.color || "#444",
+                      }}
+                    >
+                      {soul.seasonName}
+                    </span>
+                    <span className={styles.soulName}>{soul.name}</span>
+                  </p>
+                  <p className={styles.secondLine}>
+                    {soul.orderNum < 0 ? (
+                      <strong style={{ color: "blue" }}>
+                        {isMobile
+                          ? `#${Math.abs(soul.orderNum)}`
+                          : `${Math.abs(soul.orderNum)}번째 유랑단`}
+                      </strong>
+                    ) : (
+                      `${soul.orderNum}번째`
+                    )}{" "}
+                    | {soul.rerunCount}차 복각
+                  </p>
+                  <p className={styles.thirdLine}>
+                    {formatDate(soul.startDate)} ~ {formatDate(soul.endDate)}
+                  </p>
+                </div>
+              </Link>
+            );
+          })}
+        </div>
+      ) : (
+        // 기존 코드의 리스트(viewMode === "list") 렌더링 부분 수정
+        <table className={styles.tableView}>
+          <thead>
+            <tr>
+              <th className={styles.thOrder}>순서</th>
+              <th className={styles.thSeason}>시즌</th>
+              <th className={styles.thName}>이름</th>
+              <th className={styles.thPeriod}>기간</th>
+              <th className={styles.thRerun}>n차</th>
+            </tr>
+          </thead>
+          <tbody>
+            {souls.map((soul) => (
+              <tr
+                key={soul.id}
+                className={styles.tableRow}
+                onClick={() =>
+                  router.push(
+                    `/sky/travelingSprits/generalVisits/${
+                      soul.id
+                    }?page=${currentPage}&mode=${viewMode}&query=${encodeURIComponent(
+                      submittedQuery
+                    )}`
+                  )
+                }
+                style={{ cursor: "pointer" }}
+              >
+                <td
+                  className={`${styles.tdOrder} ${
+                    soul.orderNum < 0 ? "negative" : ""
+                  }`}
+                >
+                  {soul.images?.find(
+                    (img) => img.imageType === "REPRESENTATIVE"
+                  )?.url && (
+                    <img
+                      src={
+                        soul.images.find(
+                          (img) => img.imageType === "REPRESENTATIVE"
+                        )?.url
+                      }
+                      alt={soul.name}
+                      className={styles.tableThumbnail}
+                      style={{
+                        width: "30px",
+                        height: "30px",
+                        marginRight: "8px",
+                        verticalAlign: "middle",
+                      }}
+                    />
+                  )}
+                  {soul.orderNum < 0 ? (
+                    <span>{Math.abs(soul.orderNum)}</span>
+                  ) : (
+                    soul.orderNum
+                  )}
+                </td>
+                <td className={styles.tdSeason}>
                   <span
                     className={styles.seasonName}
                     style={{
@@ -308,90 +419,16 @@ function SoulListContent() {
                   >
                     {soul.seasonName}
                   </span>
-                  <span className={styles.soulName}>{soul.name}</span>
-                </p>
-                <p className={styles.secondLine}>
-                  {soul.orderNum < 0 ? (
-                    <strong style={{ color: "blue" }}>
-                      {isMobile
-                        ? `#${Math.abs(soul.orderNum)}`
-                        : `${Math.abs(soul.orderNum)}번째 유랑단`}
-                    </strong>
-                  ) : (
-                    `${soul.orderNum}번째`
-                  )}{" "}
-                  | {soul.rerunCount}차 복각
-                </p>
-                <p className={styles.thirdLine}>
-                  {formatDate(soul.startDate)} ~ {formatDate(soul.endDate)}
-                </p>
-              </div>
-            </Link>
-          ))}
-        </div>
-      ) : (
-        // 기존 코드의 리스트(viewMode === "list") 렌더링 부분 수정
-<table className={styles.tableView}>
-  <thead>
-    <tr>
-      <th className={styles.thOrder}>순서</th>
-      <th className={styles.thSeason}>시즌</th>
-      <th className={styles.thName}>이름</th>
-      <th className={styles.thPeriod}>기간</th>
-      <th className={styles.thRerun}>n차</th>
-    </tr>
-  </thead>
-  <tbody>
-    {souls.map((soul) => (
-      <tr
-        key={soul.id}
-        className={styles.tableRow}
-        onClick={() =>
-          router.push(
-            `/sky/travelingSprits/generalVisits/${soul.id}?page=${currentPage}&mode=${viewMode}&query=${encodeURIComponent(
-              submittedQuery
-            )}`
-          )
-        }
-        style={{ cursor: "pointer" }}
-      >
-        <td className={`${styles.tdOrder} ${soul.orderNum < 0 ? "negative" : ""}`}>
-          {soul.representativeImage && (
-            <img
-              src={soul.representativeImage}
-              alt={soul.name}
-              className={styles.tableThumbnail}
-              style={{ width: "30px", height: "30px", marginRight: "8px", verticalAlign: "middle" }}
-            />
-          )}
-          {soul.orderNum < 0 ? (
-            <span>{Math.abs(soul.orderNum)}</span>
-          ) : (
-            soul.orderNum
-          )}
-        </td>
-        <td className={styles.tdSeason}>
-          <span
-            className={styles.seasonName}
-            style={{
-              backgroundColor:
-                seasonList.find((season) => season.name === soul.seasonName)?.color ||
-                "#444",
-            }}
-          >
-            {soul.seasonName}
-          </span>
-        </td>
-        <td className={styles.tdName}>{soul.name}</td>
-        <td className={styles.tdPeriod}>
-          {soul.startDate} ~ {soul.endDate}
-        </td>
-        <td className={styles.tdRerun}>{soul.rerunCount}</td>
-      </tr>
-    ))}
-  </tbody>
-</table>
-
+                </td>
+                <td className={styles.tdName}>{soul.name}</td>
+                <td className={styles.tdPeriod}>
+                  {soul.startDate} ~ {soul.endDate}
+                </td>
+                <td className={styles.tdRerun}>{soul.rerunCount}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       )}
 
       {/* 페이지네이션 */}
