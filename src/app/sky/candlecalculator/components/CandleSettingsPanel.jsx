@@ -17,7 +17,7 @@ export default function CandleSettingsPanel({
   const [calcResult, setCalcResult] = useState("");
 
   // 시즌 종료일 (예: 4월 7일 16:00, 한국 시간 기준)
-  const seasonEnd = new Date("2025-07-07T16:00:00+09:00");
+  const seasonEnd = new Date("2025-10-06T16:00:00+09:00");
 
   const computeRemainingDays = () => {
     const now = new Date();
@@ -88,7 +88,7 @@ ${finalitem >= 0  && (ownsSeasonPass === "yes" || buySeasonPass) && finalitem <=
           <br />4시 리셋 이후 양초를 얻었다는 가정 하에 계산됩니다.
         </span>
         <span className="season-days-note"> 아직 리셋 전 오늘
-        일퀘를 안하셨다면 일퀘 양초를 포함해서 계산해주세요.</span>
+        일퀘를 안하셨다면 일퀘 양초를 포함해서 계산해주세요. (시패 구입 후 받게 될 양초 1개도 입력)</span>
         <span className="season-days-note">최보 최단 일수 계산은 '원함!' 전체 선택 후 가지고 있는 아이템을 모두 표시하고 계산하시기 바랍니다.</span>
         <span className="season-days-note">(시즌초 2배 이벤트 미포함) 오른쪽 하단의 숫자는 재화!개수입니다.</span>
       </div>

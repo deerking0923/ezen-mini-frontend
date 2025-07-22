@@ -170,3 +170,52 @@
 .global-select-buttons button:last-child:hover {
   background: #e1b355;
 }
+
+
+/* NodeView.css 수정 */
+
+.menu-overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: row;        /* 세로 → 가로 정렬로 변경 */
+  gap: 6px;                   /* 버튼 간 간격 */
+  background-color: rgba(255, 255, 255, 0.95);
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 6px;
+  z-index: 10;
+}
+
+.menu-btn {
+  padding: 4px 12px;         /* 버튼 너비 약간 늘려서 가로 배열에 어울리도록 */
+  font-size: 0.9rem;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.menu-btn-have {
+  background-color: #0062ff;
+  color: #fff;
+}
+
+.menu-btn-want {
+  background-color: #ffda53;
+  color: #333;
+}
+/* 수평 정렬 유지 */
+.menu-overlay {
+  flex-direction: row;   /* 이미 적용되어 있을 텐데,念念念念念念念念念念念念念念念念念念念念念念念*/
+}
+
+/* 버튼 내에서 텍스트가 줄 바뀌지 않도록 */
+.menu-btn {
+  display: inline-flex;      /* 텍스트를 가로 정렬 flex 안에 배치 */
+  align-items: center;       /* 수직 중앙 정렬 */
+  justify-content: center;   /* 수평 중앙 정렬 */
+  white-space: nowrap;       /* 텍스트 줄 바꿈 금지 */
+  padding: 4px 12px;         /* 필요시 조정 */
+}

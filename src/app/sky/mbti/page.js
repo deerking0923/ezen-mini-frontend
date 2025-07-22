@@ -34,6 +34,9 @@ export default function IntroPage() {
         <br />
         <br />        
         공신력은 제로에 가까우니 그저 재미로만 즐겨주세요!
+        <br />
+        <br />
+        아트 - 무륵님
       </p>
       <button className={styles.optionButton} onClick={handleStart}>
         테스트 하러 가기
