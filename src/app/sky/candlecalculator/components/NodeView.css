@@ -119,7 +119,7 @@
 .node-row > .node-image-box:nth-child(2) {
   order: 1;
   margin-right: auto;         /* 시즌 노드를 왼쪽에 위치 */
-  margin-top: -30px;           /* transform 대체: 위로 이동 */
+  margin-top: -45px;           /* transform 대체: 위로 이동 */
   position: relative;         /* stacking context 생성 */
 }
 

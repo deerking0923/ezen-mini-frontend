@@ -72,7 +72,7 @@
 }
 .soul-col { display: flex; flex-direction: column; align-items: center; }
 .soul-selector { width:133px; height:120px; display:flex; flex-direction:column; align-items:center; justify-content:center; cursor:pointer; background:#f8f8f8; border:1px solid #ddd; border-radius:4px; margin-bottom:5px; overflow:hidden; transition:background 0.2s; }
-.soul-selector:hover { background:#a6a6a6; }
+/* .soul-selector:hover { background:#a6a6a6; } */
 .soul-selector-img { width:80px; height:80px; object-fit:contain; border-radius:8px; }
 .soul-selector-text { margin-top:5px; font-size:0.75rem; font-weight:bold; color:#333; white-space:nowrap; text-overflow:ellipsis; overflow:hidden; }
 
@@ -118,4 +118,15 @@
 .total-info-btn:hover { background:#d35400; }
 .total-info-container {
   margin: 20px 0; /* 위아래 간격 추가 */
+}
+
+/* 추가할 CSS */
+.soul-thumb {
+  width: 90px;            /* 사각형 한 변 */
+  height: 90px;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain; /* 비율 유지 */
+  border-radius: 6px;
+  /* background-color: #666;   없으면 투명 */
 }

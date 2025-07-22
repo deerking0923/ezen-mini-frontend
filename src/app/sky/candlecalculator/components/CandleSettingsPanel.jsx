@@ -63,7 +63,7 @@ export default function CandleSettingsPanel({
       : `${current} + ${seasonCandlesFromDays} = ${totalSeasonCandles}`;
     
     const finalitem = buySeasonPass ? Math.ceil((requiredCandles - current - 30) / dailyCandleCount) : Math.ceil((requiredCandles - current) / dailyCandleCount);
-
+const neededCandles = requiredCandles - current;
   const result = `
   필요한 양초: ${requiredCandles} 개
 
@@ -73,8 +73,11 @@ export default function CandleSettingsPanel({
 
 ${difference < 0 ? `부족한 양초: ${-difference} 개` : `남는 양초: ${difference} 개`}
 
-${finalitem >= 0  && (ownsSeasonPass === "yes" || buySeasonPass) && finalitem <= remainingDays ? `최보까지 ${finalitem} 일 남음` : ``}
-  `;
+${neededCandles > 0 ? `선택한 아이템까지 ${neededCandles} 개 필요` : ``}
+${finalitem >= 0 && finalitem <= remainingDays
+  ? `선택한 아이템까지 ${finalitem} 일 남음`
+  : ``}
+    `;
     
     setCalcResult(result);
   };
@@ -88,7 +91,8 @@ ${finalitem >= 0  && (ownsSeasonPass === "yes" || buySeasonPass) && finalitem <=
           <br />4시 리셋 이후 양초를 얻었다는 가정 하에 계산됩니다.
         </span>
         <span className="season-days-note"> 아직 리셋 전 오늘
-        일퀘를 안하셨다면 일퀘 양초를 포함해서 계산해주세요. (시패 구입 후 받게 될 양초 1개도 입력)</span>
+        일퀘를 안하셨다면 일퀘 양초를 포함해서 계산해주세요. </span>
+        <span className="season-days-note">(구매 예정이라면 시패 구입 후 받게 될 양초 1개도 입력)</span>
         <span className="season-days-note">최보 최단 일수 계산은 '원함!' 전체 선택 후 가지고 있는 아이템을 모두 표시하고 계산하시기 바랍니다.</span>
         <span className="season-days-note">(시즌초 2배 이벤트 미포함) 오른쪽 하단의 숫자는 재화!개수입니다.</span>
       </div>
