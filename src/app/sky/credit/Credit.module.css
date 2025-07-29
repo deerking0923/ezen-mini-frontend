@@ -1,6 +1,5 @@
 /* Credit.module.css */
 
-
 /* ———————————————————— */
 /* 페이지 전체 래퍼 */
 /* ———————————————————— */
@@ -18,13 +17,13 @@
 .creditPage {
   width: 100%;
   max-width: 800px;
-  background: var(--bg-glass);
+  background: rgba(0, 0, 0, 0.6);       /* 직접 지정된 배경색 */
   backdrop-filter: blur(8px);
-  border: 1px solid var(--border-glass);
-  border-radius: var(--radius);
-  padding: var(--padding);
-  margin: var(--gap) auto;  /* 상하 여백 확보 */
-  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.3); /* 직접 지정된 테두리 */
+  border-radius: 12px;                   /* 12px 반경 */
+  padding: 24px;                         /* 24px 패딩 */
+  margin: 16px auto;                     /* 위아래 16px, 가운데 정렬 */
+  color: #ffffff;                        /* 흰색 텍스트 */
   font-family: 'Noto Sans KR', sans-serif;
 }
 
@@ -35,9 +34,8 @@
   font-size: 2.6rem;
   font-weight: 700;
   text-align: center;
-  margin-bottom: var(--gap);
+  margin-bottom: 16px;
   letter-spacing: 0.05em;
-  /* text-shadow 제거 */
 }
 
 /* ———————————————————— */
@@ -46,7 +44,7 @@
 .creditContent {
   font-size: 1.15rem;
   line-height: 1.8;
-  margin-bottom: var(--gap);
+  margin-bottom: 16px;
 }
 
 /* ———————————————————— */
@@ -57,22 +55,21 @@
   padding: 0;
   margin: 0;
   display: grid;
-  gap: 0.75rem;
+  gap: 12px;   /* 링크 간격 */
 }
 
 .links li a {
   display: inline-block;
-  padding: 0.6rem 1.2rem;
-  background: rgba(255, 255, 255, 0.1);
+  padding: 8px 16px;
+  background: rgba(255, 255, 255, 0.15);
   border-radius: 8px;
-  color: var(--accent);
+  color: #00bcd4;      /* 강조색 지정 */
   font-weight: 500;
   transition: background 0.2s ease, transform 0.2s ease, color 0.2s ease;
-  /* box-shadow 없음 */
 }
 
 .links li a:hover {
-  background: rgba(255, 255, 255, 0.2);
-  color: #fff;
+  background: rgba(255, 255, 255, 0.3);
+  color: #ffffff;
   transform: translateY(-2px);
 }
