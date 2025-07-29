@@ -1,3 +1,4 @@
+// src/app/sky/travelingSprits/generalVisits/list/page.js
 "use client";
 
 import React, { useEffect, useState, Suspense } from "react";
@@ -5,7 +6,6 @@ import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import styles from "./list.module.css";
 
-// 이 컴포넌트는 useSearchParams를 사용합니다
 function SoulListContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -22,7 +22,7 @@ function SoulListContent() {
   const [isClient, setIsClient] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
 
-  const currentPage = page + 1; // 1-based for display
+  const currentPage = page + 1;
 
   // 모바일 여부 체크
   useEffect(() => {
@@ -32,18 +32,12 @@ function SoulListContent() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  const formatDate = (dateStr) => {
-    const parts = dateStr.split("-");
-    return isMobile && parts.length === 3
-      ? `${parts[0].slice(-2)}.${parts[1]}.${parts[2]}`
-      : dateStr;
-  };
-
+  // 클라이언트 전용 렌더링 표시
   useEffect(() => {
     setIsClient(true);
   }, []);
 
-  // URL 쿼리로부터 초기 state 복원 (page, mode, query)
+  // URL 쿼리로부터 초기 state 복원
   useEffect(() => {
     const initialPage = parseInt(searchParams.get("page") || "1", 10);
     const initialMode = searchParams.get("mode") || "card";
@@ -53,6 +47,13 @@ function SoulListContent() {
     setSearchQuery(initialQuery);
     setSubmittedQuery(initialQuery);
   }, [searchParams]);
+
+  const formatDate = (dateStr) => {
+    const parts = dateStr.split("-");
+    return isMobile && parts.length === 3
+      ? `${parts[0].slice(-2)}.${parts[1]}.${parts[2]}`
+      : dateStr;
+  };
 
   const fetchSouls = async (pageNumber, query) => {
     setLoading(true);
@@ -77,21 +78,19 @@ function SoulListContent() {
       const data = await res.json();
       let results = [];
       if (query && query.trim() !== "") {
-        results = data.data && Array.isArray(data.data) ? data.data : [];
+        results = Array.isArray(data.data) ? data.data : [];
         setTotalPages(1);
+      } else if (viewMode === "card") {
+        results = Array.isArray(data.data?.content) ? data.data.content : [];
+        setTotalPages(data.data?.totalPages || 1);
       } else {
-        if (viewMode === "card") {
-          results = Array.isArray(data.data?.content) ? data.data.content : [];
-          setTotalPages(data.data?.totalPages || 1);
-        } else {
-          results = Array.isArray(data.data) ? data.data : [];
-          setTotalPages(1);
-        }
+        results = Array.isArray(data.data) ? data.data : [];
+        setTotalPages(1);
       }
       setSouls(results);
-      setLoading(false);
     } catch (err) {
       setError(err.message);
+    } finally {
       setLoading(false);
     }
   };
@@ -125,9 +124,9 @@ function SoulListContent() {
   };
 
   const handleSeasonClick = (seasonName) => {
+    setPage(0);
     setSearchQuery(seasonName);
     setSubmittedQuery(seasonName);
-    setPage(0);
     router.push(
       `/sky/travelingSprits/generalVisits/list?page=1&mode=${viewMode}&query=${encodeURIComponent(
         seasonName
@@ -135,7 +134,16 @@ function SoulListContent() {
     );
   };
 
-  // 뷰 모드 탭 변경 시 URL 업데이트
+  // 전체 보기 클릭 시
+  const handleAllView = () => {
+    setPage(0);
+    setSearchQuery("");
+    setSubmittedQuery("");
+    router.push(
+      `/sky/travelingSprits/generalVisits/list?page=1&mode=${viewMode}`
+    );
+  };
+
   const handleViewModeChange = (mode) => {
     setViewMode(mode);
     router.push(
@@ -145,17 +153,14 @@ function SoulListContent() {
     );
   };
 
-  // 페이지네이션 관련 계산 (5개씩 그룹)
   const getCurrentPageGroup = () => Math.floor((currentPage - 1) / 5);
   const getPaginationRange = () => {
-    const pageGroup = getCurrentPageGroup();
-    const start = pageGroup * 5 + 1;
+    const pg = getCurrentPageGroup();
+    const start = pg * 5 + 1;
     const end = Math.min(start + 4, totalPages);
-    const range = [];
-    for (let i = start; i <= end; i++) {
-      range.push(i);
-    }
-    return range;
+    const arr = [];
+    for (let i = start; i <= end; i++) arr.push(i);
+    return arr;
   };
 
   const seasonList = [
@@ -183,15 +188,16 @@ function SoulListContent() {
     { name: "듀엣", color: "#FFEB3B" },
     { name: "무민", color: "#CDDC39" },
     { name: "광채", color: "#FF1493" },
+    { name: "파랑새", color: "#1E90FF" }, // 추가
+    { name: "불씨", color: "#FF4500" }, // 추가
   ];
 
   return (
     <div className={styles.container}>
-      {/* 공지 영역 */}
+      {/* 공지 및 시즌 검색 */}
       <div className={styles.noticePanel}>
         <h2 className={styles.noticeTitle}>유랑 대백과</h2>
         <p className={styles.noticeDescription}>
-          <br />
           유랑 대백과의 제작 자료는 스카이 플래너를 출처로 남기시면 사용
           가능합니다.
           <br />
@@ -204,11 +210,9 @@ function SoulListContent() {
             (ex - 족제비, 유랑단, 수염)
           </span>
         </p>
-        <br />
         <p className={styles.noticeSubDescription}>
           아래 시즌 이름을 클릭하면 자동 검색됩니다:
         </p>
-        <br />
         <div className={styles.seasonChipsContainer}>
           {seasonList.map((season) => (
             <button
@@ -221,9 +225,20 @@ function SoulListContent() {
             </button>
           ))}
         </div>
+        <div className={styles.filterChipsContainer}>
+          <button
+            className={styles.filterChip}
+            onClick={() => handleSeasonClick("유랑단")}
+          >
+            유랑단
+          </button>
+          <button className={styles.filterChip} onClick={handleAllView}>
+            전체 보기
+          </button>
+        </div>
       </div>
 
-      {/* 검색 영역 */}
+      {/* 검색창 */}
       <div className={styles.searchContainer}>
         <form onSubmit={handleSearchSubmit} className={styles.searchForm}>
           <input
@@ -239,7 +254,7 @@ function SoulListContent() {
         </form>
       </div>
 
-      {/* 탭 버튼 */}
+      {/* 뷰 모드 탭 */}
       <div className={styles.viewTabs}>
         <button
           className={`${styles.tabButton} ${
@@ -279,20 +294,19 @@ function SoulListContent() {
         )}
       </div>
 
-      {/* 로딩 및 오류 처리 */}
+      {/* 로딩 / 오류 / 콘텐츠 */}
       {loading ? (
         <div className={styles.loading}>Loading...</div>
       ) : error ? (
         <div className={styles.error}>Error: {error}</div>
       ) : souls.length === 0 ? (
-        <p>등록된 영혼이 없습니다.</p>
+        <p>해당 시즌에는 아직 유랑 영혼이 없습니다.</p>
       ) : viewMode === "card" ? (
         <div className={styles.cardsGrid}>
           {souls.map((soul) => {
-            const representative = soul.images?.find(
+            const repImg = soul.images?.find(
               (img) => img.imageType === "REPRESENTATIVE"
             );
-
             return (
               <Link
                 href={`/sky/travelingSprits/generalVisits/${
@@ -304,9 +318,9 @@ function SoulListContent() {
                 className={styles.soulCard}
               >
                 <div className={styles.imageWrapperSquare}>
-                  {representative?.url ? (
+                  {repImg?.url ? (
                     <img
-                      src={representative.url}
+                      src={repImg.url}
                       alt={soul.name}
                       className={styles.cardImage}
                     />
@@ -320,9 +334,8 @@ function SoulListContent() {
                       className={styles.seasonName}
                       style={{
                         backgroundColor:
-                          seasonList.find(
-                            (season) => season.name === soul.seasonName
-                          )?.color || "#444",
+                          seasonList.find((s) => s.name === soul.seasonName)
+                            ?.color || "#444",
                       }}
                     >
                       {soul.seasonName}
@@ -350,7 +363,6 @@ function SoulListContent() {
           })}
         </div>
       ) : (
-        // 기존 코드의 리스트(viewMode === "list") 렌더링 부분 수정
         <table className={styles.tableView}>
           <thead>
             <tr>
@@ -362,71 +374,67 @@ function SoulListContent() {
             </tr>
           </thead>
           <tbody>
-            {souls.map((soul) => (
-              <tr
-                key={soul.id}
-                className={styles.tableRow}
-                onClick={() =>
-                  router.push(
-                    `/sky/travelingSprits/generalVisits/${
-                      soul.id
-                    }?page=${currentPage}&mode=${viewMode}&query=${encodeURIComponent(
-                      submittedQuery
-                    )}`
-                  )
-                }
-                style={{ cursor: "pointer" }}
-              >
-                <td
-                  className={`${styles.tdOrder} ${
-                    soul.orderNum < 0 ? "negative" : ""
-                  }`}
+            {souls.map((soul) => {
+              const repImg = soul.images?.find(
+                (img) => img.imageType === "REPRESENTATIVE"
+              );
+              return (
+                <tr
+                  key={soul.id}
+                  className={styles.tableRow}
+                  onClick={() =>
+                    router.push(
+                      `/sky/travelingSprits/generalVisits/${
+                        soul.id
+                      }?page=${currentPage}&mode=${viewMode}&query=${encodeURIComponent(
+                        submittedQuery
+                      )}`
+                    )
+                  }
+                  style={{ cursor: "pointer" }}
                 >
-                  {soul.images?.find(
-                    (img) => img.imageType === "REPRESENTATIVE"
-                  )?.url && (
-                    <img
-                      src={
-                        soul.images.find(
-                          (img) => img.imageType === "REPRESENTATIVE"
-                        )?.url
-                      }
-                      alt={soul.name}
-                      className={styles.tableThumbnail}
+                  <td className={styles.tdOrder}>
+                    {repImg?.url && (
+                      <img
+                        src={repImg.url}
+                        alt={soul.name}
+                        className={styles.tableThumbnail}
+                        style={{
+                          width: 30,
+                          height: 30,
+                          marginRight: 8,
+                          verticalAlign: "middle",
+                        }}
+                      />
+                    )}
+                    {soul.orderNum < 0 ? (
+                      <span className={styles.warbandOrder}>
+                        {Math.abs(soul.orderNum)}
+                      </span>
+                    ) : (
+                      soul.orderNum
+                    )}
+                  </td>
+                  <td className={styles.tdSeason}>
+                    <span
+                      className={styles.seasonName}
                       style={{
-                        width: "30px",
-                        height: "30px",
-                        marginRight: "8px",
-                        verticalAlign: "middle",
+                        backgroundColor:
+                          seasonList.find((s) => s.name === soul.seasonName)
+                            ?.color || "#444",
                       }}
-                    />
-                  )}
-                  {soul.orderNum < 0 ? (
-                    <span>{Math.abs(soul.orderNum)}</span>
-                  ) : (
-                    soul.orderNum
-                  )}
-                </td>
-                <td className={styles.tdSeason}>
-                  <span
-                    className={styles.seasonName}
-                    style={{
-                      backgroundColor:
-                        seasonList.find(
-                          (season) => season.name === soul.seasonName
-                        )?.color || "#444",
-                    }}
-                  >
-                    {soul.seasonName}
-                  </span>
-                </td>
-                <td className={styles.tdName}>{soul.name}</td>
-                <td className={styles.tdPeriod}>
-                  {soul.startDate} ~ {soul.endDate}
-                </td>
-                <td className={styles.tdRerun}>{soul.rerunCount}</td>
-              </tr>
-            ))}
+                    >
+                      {soul.seasonName}
+                    </span>
+                  </td>
+                  <td className={styles.tdName}>{soul.name}</td>
+                  <td className={styles.tdPeriod}>
+                    {soul.startDate} ~ {soul.endDate}
+                  </td>
+                  <td className={styles.tdRerun}>{soul.rerunCount}</td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       )}
@@ -434,32 +442,25 @@ function SoulListContent() {
       {/* 페이지네이션 */}
       {viewMode === "card" && totalPages > 1 && (
         <div className={styles.pagination}>
-          {/* 이전 페이지 그룹으로 이동 */}
           {getCurrentPageGroup() > 0 && (
             <button
               className={styles.pageButton}
-              onClick={() =>
-                handlePageChange((getCurrentPageGroup() - 1) * 5 + 1)
-              }
+              onClick={() => handlePageChange(getCurrentPageGroup() * 5)}
             >
               &laquo;
             </button>
           )}
-
-          {/* 페이지 번호 */}
-          {getPaginationRange().map((pageNum) => (
+          {getPaginationRange().map((num) => (
             <button
-              key={pageNum}
+              key={num}
               className={`${styles.pageButton} ${
-                pageNum === currentPage ? styles.activePage : ""
+                num === currentPage ? styles.activePage : ""
               }`}
-              onClick={() => handlePageChange(pageNum)}
+              onClick={() => handlePageChange(num)}
             >
-              {pageNum}
+              {num}
             </button>
           ))}
-
-          {/* 다음 페이지 그룹으로 이동 */}
           {(getCurrentPageGroup() + 1) * 5 < totalPages && (
             <button
               className={styles.pageButton}
@@ -476,7 +477,6 @@ function SoulListContent() {
   );
 }
 
-// 메인 컴포넌트는 SoulListContent를 Suspense로 감쌉니다.
 export default function SoulListPage() {
   return (
     <Suspense fallback={<div>Loading...</div>}>
