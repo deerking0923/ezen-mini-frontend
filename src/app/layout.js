@@ -42,7 +42,7 @@ export default function RootLayout({ children }) {
               <p className={styles.subtitle}>
                 이 사이트는 thatgamecompany의&nbsp;
                 <br className={styles.mobileBreak} />
-                Sky: Children of the Light 팬사이트입니다.
+                Sky: Children of the Light 비공식 팬사이트입니다.
               </p>
 
               <div className={styles.ctaWrapper}>
