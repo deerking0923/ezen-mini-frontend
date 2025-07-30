@@ -25,6 +25,7 @@ export default function Credit() {
                 스카이 위키로 아이콘 보러가기
               </Link>
             </li>
+            <li>관련 문의는 i3295h@naver.com으로 해주세요.</li>
           </ul>
         </div>
       </div>

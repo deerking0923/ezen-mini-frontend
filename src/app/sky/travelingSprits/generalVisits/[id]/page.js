@@ -1,3 +1,4 @@
+// src/app/sky/travelingSprits/generalVisits/[id]/page.js (또는 해당 상세 경로)
 "use client";
 
 import React, { useEffect, useState } from "react";
@@ -11,11 +12,12 @@ export default function SoulDetailPage() {
   const [soul, setSoul] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
   const searchParams = useSearchParams();
   const { id } = useParams();
   const router = useRouter();
 
-  const currentPage = searchParams.get("page") || 1;
+  // ✅ 영혼 뷰: page 제거, mode/query만 유지
   const viewMode = searchParams.get("mode") || "card";
   const query = searchParams.get("query") || "";
 
@@ -33,7 +35,6 @@ export default function SoulDetailPage() {
         return res.json();
       })
       .then((data) => {
-        console.log("🖼️ soul.images:", (data.data || data).images);
         setSoul(data.data || data);
         setLoading(false);
       })
@@ -42,6 +43,68 @@ export default function SoulDetailPage() {
         setLoading(false);
       });
   }, [id]);
+
+  // ✅ 목록 URL 빌더: page 미사용, 필요 시 해시로 영혼 고정
+  const buildListUrl = (opts = { withHash: true }) => {
+    const params = new URLSearchParams();
+    if (viewMode) params.set("mode", viewMode); // 기본 card
+    if (query) params.set("query", query);
+    const base = `/sky/travelingSprits/generalVisits/list${
+      params.toString() ? "?" + params.toString() : ""
+    }`;
+    return opts.withHash ? `${base}#soul-${id}` : base;
+  };
+
+  // ✅ 목록 가기: 가능하면 브라우저 히스토리로(back), 없으면 영혼 해시 fallback
+  const goBackToList = () => {
+    try {
+      const ref = document.referrer ? new URL(document.referrer) : null;
+      const cameFromList =
+        ref && ref.origin === window.location.origin &&
+        ref.pathname.includes("/sky/travelingSprits/generalVisits/list");
+
+      if (cameFromList && window.history.length > 1) {
+        router.back(); // 해시/저장된 상태로 정확히 복귀
+        return;
+      }
+    } catch {}
+    // 히스토리가 없거나 리스트에서 오지 않은 경우: 해시로 직접 이동
+    router.push(buildListUrl({ withHash: true }));
+  };
+
+  const handleEdit = () => {
+    router.push(`/sky/travelingSprits/generalVisits/edit/${id}`);
+  };
+
+  const handleAdd = () => {
+    router.push(`/sky/travelingSprits/generalVisits/add/${id}`);
+  };
+
+  const handleDelete = () => {
+    const confirmation = prompt(
+      '정말 삭제하시겠습니까? 삭제를 진행하려면 "1234"를 입력하세요.'
+    );
+    if (confirmation !== "1234") {
+      alert("입력이 올바르지 않아 삭제가 취소되었습니다.");
+      return;
+    }
+    fetch(`https://korea-sky-planner.com/api/v1/souls/${id}`, {
+      method: "DELETE",
+    })
+      .then((res) => {
+        if (res.ok) {
+          alert("삭제가 완료되었습니다.");
+          // ✅ 삭제 후에는 해당 영혼 앵커가 의미 없으므로 해시 없이 목록으로
+          router.push(buildListUrl({ withHash: false }));
+        } else {
+          alert("삭제에 실패하였습니다.");
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+        alert("삭제 도중 오류가 발생하였습니다.");
+      });
+  };
 
   if (loading) return <div className={styles.loading}>Loading...</div>;
   if (error) return <div className={styles.error}>Error: {error}</div>;
@@ -61,56 +124,13 @@ export default function SoulDetailPage() {
     (img) => img.imageType === "LOCATION"
   )?.url;
 
-  const handleEdit = () => {
-    router.push(`/sky/travelingSprits/generalVisits/edit/${id}`);
-  };
-  const handleAdd = () => {
-    router.push(`/sky/travelingSprits/generalVisits/add/${id}`);
-  };
-  const handleDelete = () => {
-    const confirmation = prompt(
-      '정말 삭제하시겠습니까? 삭제를 진행하려면 "1234"를 입력하세요.'
-    );
-    if (confirmation !== "1234") {
-      alert("입력이 올바르지 않아 삭제가 취소되었습니다.");
-      return;
-    }
-    fetch(`https://korea-sky-planner.com/api/v1/souls/${id}`, {
-      method: "DELETE",
-    })
-      .then((res) => {
-        if (res.ok) {
-          alert("삭제가 완료되었습니다.");
-          router.push(
-            `/sky/travelingSprits/generalVisits/list?page=${currentPage}&mode=${viewMode}&query=${encodeURIComponent(
-              query
-            )}`
-          );
-        } else {
-          alert("삭제에 실패하였습니다.");
-        }
-      })
-      .catch((err) => {
-        console.error(err);
-        alert("삭제 도중 오류가 발생하였습니다.");
-      });
-  };
-
   return (
     <div className={styles.container}>
       <h1 className={styles.title}>{soul.name}</h1>
+
       {!isMobile && (
         <div className={styles.topNavigation}>
-          <button
-            className={styles.listButton}
-            onClick={() =>
-              router.push(
-                `/sky/travelingSprits/generalVisits/list?page=${currentPage}&mode=${viewMode}&query=${encodeURIComponent(
-                  query
-                )}`
-              )
-            }
-          >
+          <button className={styles.listButton} onClick={goBackToList}>
             목록 가기
           </button>
         </div>
@@ -141,15 +161,17 @@ export default function SoulDetailPage() {
               기간: {soul.startDate} ~ {soul.endDate}
             </div>
           </div>
-          {/* 같은 영혼 더 보기 버튼 (설명 탭 위치) */}
+
+          {/* 같은 영혼 더 보기 */}
           <div className={styles.sameSoulContainer}>
             <button
               className={styles.sameSoulButton}
               onClick={() =>
                 router.push(
-                  `/sky/travelingSprits/generalVisits/list?query=${encodeURIComponent(
-                    soul.name
-                  )}`
+                  `/sky/travelingSprits/generalVisits/list?${new URLSearchParams({
+                    query: soul.name,
+                    mode: viewMode || "card",
+                  }).toString()}`
                 )
               }
             >
@@ -202,18 +224,17 @@ export default function SoulDetailPage() {
               }`}
             >
               <ul className={styles.verticalList}>
-                {(showMoreWearingShots
-                  ? wearingShotImages
-                  : [wearingShotImages[0]]
-                ).map((url, idx) => (
-                  <li key={idx}>
-                    <img
-                      src={url}
-                      alt={`착용샷 ${idx + 1}`}
-                      className={styles.smallImage}
-                    />
-                  </li>
-                ))}
+                {(showMoreWearingShots ? wearingShotImages : [wearingShotImages[0]]).map(
+                  (url, idx) => (
+                    <li key={idx}>
+                      <img
+                        src={url}
+                        alt={`착용샷 ${idx + 1}`}
+                        className={styles.smallImage}
+                      />
+                    </li>
+                  )
+                )}
               </ul>
             </div>
             {wearingShotImages.length > 1 && (
@@ -233,11 +254,7 @@ export default function SoulDetailPage() {
         <div className={styles.locationSection}>
           <span className={styles.locationLabel}>영혼 위치</span>
           <div className={styles.locationImageWrapper}>
-            <img
-              src={locationImage}
-              alt="위치 이미지"
-              className={styles.locationImage}
-            />
+            <img src={locationImage} alt="위치 이미지" className={styles.locationImage} />
           </div>
         </div>
       )}
@@ -261,7 +278,7 @@ export default function SoulDetailPage() {
         </div>
       )}
 
-      {/* URL 복사 & 목록가기 버튼 유지 */}
+      {/* URL 복사 & 목록가기 */}
       <div className={styles.copyUrlContainer}>
         <button
           onClick={() => {
@@ -274,19 +291,19 @@ export default function SoulDetailPage() {
         </button>
         {showCopied && <span className={styles.copiedToast}>복사됨!</span>}
       </div>
+
       <div className={styles.centerNavigation}>
-        <button
-          className={styles.centerListButton}
-          onClick={() =>
-            router.push(
-              `/sky/travelingSprits/generalVisits/list?page=${currentPage}&mode=${viewMode}&query=${encodeURIComponent(
-                query
-              )}`
-            )
-          }
-        >
+        <button className={styles.centerListButton} onClick={goBackToList}>
           목록가기
         </button>
       </div>
+
+      {/* 관리 버튼들 예시
+      <div className={styles.adminButtons}>
+        <button onClick={handleEdit}>수정</button>
+        <button onClick={handleAdd}>추가</button>
+        <button onClick={handleDelete}>삭제</button>
+      </div> */}
     </div>
-  );}
+  );
+}
