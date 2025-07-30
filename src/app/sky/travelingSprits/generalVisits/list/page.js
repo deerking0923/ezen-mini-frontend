@@ -32,9 +32,9 @@ function SoulListContent() {
   const didBootstrapRef = useRef(false);
   const minLoadedPageRef = useRef(null); // 현재 로드된 최소/최대 페이지(0-based)
   const maxLoadedPageRef = useRef(null);
-  const pageSizeRef = useRef(null);      // 페이지당 아이템 수
-  const targetSoulIdRef = useRef(null);  // 복귀 시 스크롤 타깃
-  const targetPageRef = useRef(null);    // 복귀 시 우선 페이지(0-based)
+  const pageSizeRef = useRef(null); // 페이지당 아이템 수
+  const targetSoulIdRef = useRef(null); // 복귀 시 스크롤 타깃
+  const targetPageRef = useRef(null); // 복귀 시 우선 페이지(0-based)
   const navTypeRef = useRef("navigate"); // 'navigate' | 'reload' | 'back_forward'
 
   // ===== 유틸: 중복 제거 =====
@@ -86,7 +86,9 @@ function SoulListContent() {
   }, [searchParams]);
 
   // 길이 ref
-  useEffect(() => { soulsLenRef.current = souls.length; }, [souls]);
+  useEffect(() => {
+    soulsLenRef.current = souls.length;
+  }, [souls]);
 
   // 브라우저 자동 스크롤 복원 끔(우리가 제어)
   useEffect(() => {
@@ -129,7 +131,8 @@ function SoulListContent() {
         const rect = el.getBoundingClientRect();
         const top = rect.top + window.scrollY;
         window.scrollTo({ top, behavior: "auto" });
-      } else if (tries < 240) { // 렌더/이미지 지연 대비
+      } else if (tries < 240) {
+        // 렌더/이미지 지연 대비
         tries += 1;
         requestAnimationFrame(seek);
       }
@@ -147,7 +150,10 @@ function SoulListContent() {
 
   // ===== API =====
   const annotate = (arr, pageNumber) =>
-    (Array.isArray(arr) ? arr : []).map((it) => ({ ...it, __page: pageNumber }));
+    (Array.isArray(arr) ? arr : []).map((it) => ({
+      ...it,
+      __page: pageNumber,
+    }));
 
   const fetchPageContent = async (pageNumber) => {
     const url = `https://korea-sky-planner.com/api/v1/souls?page=${pageNumber}`;
@@ -170,7 +176,9 @@ function SoulListContent() {
         const { pages } = await fetchPageContent(0);
         setTotalPages(pages);
       }
-      const resAll = await fetch(`https://korea-sky-planner.com/api/v1/souls/all`);
+      const resAll = await fetch(
+        `https://korea-sky-planner.com/api/v1/souls/all`
+      );
       if (!resAll.ok) throw new Error(`HTTP ${resAll.status}`);
       const dataAll = await resAll.json();
       const allArr = Array.isArray(dataAll.data) ? dataAll.data : [];
@@ -199,8 +207,13 @@ function SoulListContent() {
       const params = new URLSearchParams();
       params.set("mode", viewMode);
       if (submittedQuery) params.set("query", submittedQuery);
-      const newUrl = `/sky/travelingSprits/generalVisits/list${params.toString() ? "?" + params.toString() : ""}${hash}`;
-      const cur = window.location.pathname + window.location.search + (window.location.hash || "");
+      const newUrl = `/sky/travelingSprits/generalVisits/list${
+        params.toString() ? "?" + params.toString() : ""
+      }${hash}`;
+      const cur =
+        window.location.pathname +
+        window.location.search +
+        (window.location.hash || "");
       if (cur !== newUrl) window.history.replaceState(null, "", newUrl);
     } catch (err) {
       setError(err.message || "데이터 초기 로드 중 오류가 발생했습니다.");
@@ -243,7 +256,8 @@ function SoulListContent() {
     if (
       document.getElementById(`soul-${soulId}`) ||
       document.querySelector(`[data-soul-id="${soulId}"]`)
-    ) return;
+    )
+      return;
 
     const resolved = await resolvePageForSoulId(soulId);
     if (typeof resolved !== "number") return;
@@ -296,13 +310,16 @@ function SoulListContent() {
     const trimmed = (query || "").trim();
 
     if (trimmed !== "") {
-      url = `https://korea-sky-planner.com/api/v1/souls/search?query=${encodeURIComponent(trimmed)}`;
+      url = `https://korea-sky-planner.com/api/v1/souls/search?query=${encodeURIComponent(
+        trimmed
+      )}`;
     } else if (isCard) {
       url = `https://korea-sky-planner.com/api/v1/souls?page=${pageNumber}`;
     } else {
-      url = listSort === "oldest"
-        ? `https://korea-sky-planner.com/api/v1/souls/reverse`
-        : `https://korea-sky-planner.com/api/v1/souls/all`;
+      url =
+        listSort === "oldest"
+          ? `https://korea-sky-planner.com/api/v1/souls/reverse`
+          : `https://korea-sky-planner.com/api/v1/souls/all`;
     }
 
     const isInitialAppend = append && soulsLenRef.current === 0;
@@ -335,8 +352,12 @@ function SoulListContent() {
         if (append) {
           setSouls((prev) => mergeUniqueById(prev, content));
           // append 시 페이지 범위 갱신
-          if (minLoadedPageRef.current == null) minLoadedPageRef.current = pageNumber;
-          if (maxLoadedPageRef.current == null || pageNumber > maxLoadedPageRef.current) {
+          if (minLoadedPageRef.current == null)
+            minLoadedPageRef.current = pageNumber;
+          if (
+            maxLoadedPageRef.current == null ||
+            pageNumber > maxLoadedPageRef.current
+          ) {
             maxLoadedPageRef.current = pageNumber;
           }
         } else {
@@ -365,7 +386,10 @@ function SoulListContent() {
   };
 
   // ===== 현재 URL과 같으면 push 대신 강제 재로딩 =====
-  const pushOrRefresh = (targetUrl, { pageNumber = 0, query = submittedQuery } = {}) => {
+  const pushOrRefresh = (
+    targetUrl,
+    { pageNumber = 0, query = submittedQuery } = {}
+  ) => {
     const currentUrl = window.location.pathname + window.location.search;
     if (currentUrl === targetUrl) {
       // 동일 URL → 상태 초기화 후 직접 페치
@@ -391,9 +415,13 @@ function SoulListContent() {
       if (raw) {
         const saved = JSON.parse(raw);
         const currentQuery = searchParams.get("query") || "";
-        if (saved?.viewMode === "card" && (saved?.query || "") === currentQuery) {
+        if (
+          saved?.viewMode === "card" &&
+          (saved?.query || "") === currentQuery
+        ) {
           targetSoulIdRef.current = saved.clickedSoulId || null;
-          if (typeof saved.clickedPage === "number") targetPageRef.current = saved.clickedPage;
+          if (typeof saved.clickedPage === "number")
+            targetPageRef.current = saved.clickedPage;
         }
       }
     } catch {}
@@ -408,7 +436,9 @@ function SoulListContent() {
       // 기본 경로: 카드뷰면 0부터 append/교체 시작, 리스트뷰면 한 번에
       if (viewMode === "card") {
         const base = maxLoadedPageRef.current ?? 0;
-        fetchSoulsAny(base, submittedQuery, { append: soulsLenRef.current > 0 });
+        fetchSoulsAny(base, submittedQuery, {
+          append: soulsLenRef.current > 0,
+        });
       } else {
         fetchSoulsAny(0, submittedQuery, { append: false });
       }
@@ -507,7 +537,10 @@ function SoulListContent() {
               const { content } = await fetchPageContent(nextPage);
               setSouls((prev) => mergeUniqueById(prev, content));
               // append 후 반드시 max 갱신
-              if (maxLoadedPageRef.current == null || nextPage > maxLoadedPageRef.current) {
+              if (
+                maxLoadedPageRef.current == null ||
+                nextPage > maxLoadedPageRef.current
+              ) {
                 maxLoadedPageRef.current = nextPage;
               }
               if (minLoadedPageRef.current == null) {
@@ -526,7 +559,15 @@ function SoulListContent() {
 
     observer.observe(bottomSentinelRef.current);
     return () => observer.disconnect();
-  }, [isClient, viewMode, loading, isFetchingNext, submittedQuery, totalPages, error]);
+  }, [
+    isClient,
+    viewMode,
+    loading,
+    isFetchingNext,
+    submittedQuery,
+    totalPages,
+    error,
+  ]);
 
   // ===== 위쪽 무한 스크롤(prepend, 선택) =====
   useEffect(() => {
@@ -595,6 +636,9 @@ function SoulListContent() {
 
   // ===== 검색/필터/모드 =====
   const handleSearchChange = (e) => setSearchQuery(e.target.value);
+  const handleGoHome = () => {
+    router.push("/"); // 메인 경로가 다르면 "/" 대신 원하는 경로로 바꿔주세요.
+  };
 
   const handleSearchSubmit = (e) => {
     e.preventDefault();
@@ -602,7 +646,9 @@ function SoulListContent() {
     const params = new URLSearchParams();
     params.set("mode", viewMode);
     if (searchQuery) params.set("query", searchQuery);
-    const targetUrl = `/sky/travelingSprits/generalVisits/list${params.toString() ? "?" + params.toString() : ""}`;
+    const targetUrl = `/sky/travelingSprits/generalVisits/list${
+      params.toString() ? "?" + params.toString() : ""
+    }`;
 
     // 상태 초기화
     setSouls([]);
@@ -614,7 +660,11 @@ function SoulListContent() {
 
     // 해시 제거
     if (typeof window !== "undefined" && window.location.hash) {
-      history.replaceState(null, "", window.location.pathname + window.location.search);
+      history.replaceState(
+        null,
+        "",
+        window.location.pathname + window.location.search
+      );
     }
 
     // 동일 URL이면 직접 재로딩, 아니면 push
@@ -637,7 +687,11 @@ function SoulListContent() {
     targetPageRef.current = null;
 
     if (typeof window !== "undefined" && window.location.hash) {
-      history.replaceState(null, "", window.location.pathname + window.location.search);
+      history.replaceState(
+        null,
+        "",
+        window.location.pathname + window.location.search
+      );
     }
 
     pushOrRefresh(targetUrl, { pageNumber: 0, query: seasonName });
@@ -655,7 +709,11 @@ function SoulListContent() {
     targetPageRef.current = null;
 
     if (typeof window !== "undefined" && window.location.hash) {
-      history.replaceState(null, "", window.location.pathname + window.location.search);
+      history.replaceState(
+        null,
+        "",
+        window.location.pathname + window.location.search
+      );
     }
 
     const params = new URLSearchParams();
@@ -681,7 +739,11 @@ function SoulListContent() {
     targetPageRef.current = null;
 
     if (typeof window !== "undefined" && window.location.hash) {
-      history.replaceState(null, "", window.location.pathname + window.location.search);
+      history.replaceState(
+        null,
+        "",
+        window.location.pathname + window.location.search
+      );
     }
 
     pushOrRefresh(targetUrl, { pageNumber: 0, query: submittedQuery });
@@ -758,7 +820,10 @@ function SoulListContent() {
             유랑단
           </button>
           <button className={styles.filterChip} onClick={handleAllView}>
-            전체 보기
+            전체보기
+          </button>
+          <button className={styles.filterChip} onClick={handleGoHome}>
+            메인화면
           </button>
         </div>
       </div>
@@ -782,13 +847,17 @@ function SoulListContent() {
       {/* 뷰 모드 탭 */}
       <div className={styles.viewTabs}>
         <button
-          className={`${styles.tabButton} ${viewMode === "card" ? styles.activeTab : ""}`}
+          className={`${styles.tabButton} ${
+            viewMode === "card" ? styles.activeTab : ""
+          }`}
           onClick={() => handleViewModeChange("card")}
         >
           카드 보기
         </button>
         <button
-          className={`${styles.tabButton} ${viewMode === "list" ? styles.activeTab : ""}`}
+          className={`${styles.tabButton} ${
+            viewMode === "list" ? styles.activeTab : ""
+          }`}
           onClick={() => handleViewModeChange("list")}
         >
           리스트 보기
@@ -796,13 +865,17 @@ function SoulListContent() {
         {viewMode === "list" && (
           <div className={styles.sortButtons}>
             <button
-              className={`${styles.sortButton} ${listSort === "latest" ? styles.activeSort : ""}`}
+              className={`${styles.sortButton} ${
+                listSort === "latest" ? styles.activeSort : ""
+              }`}
               onClick={() => setListSort("latest")}
             >
               최신순
             </button>
             <button
-              className={`${styles.sortButton} ${listSort === "oldest" ? styles.activeSort : ""}`}
+              className={`${styles.sortButton} ${
+                listSort === "oldest" ? styles.activeSort : ""
+              }`}
               onClick={() => setListSort("oldest")}
             >
               오래된 순
@@ -822,7 +895,9 @@ function SoulListContent() {
         <>
           <div className={styles.cardsGrid}>
             {souls.map((soul, idx) => {
-              const repImg = soul.images?.find((img) => img.imageType === "REPRESENTATIVE");
+              const repImg = soul.images?.find(
+                (img) => img.imageType === "REPRESENTATIVE"
+              );
               const isBoundary =
                 typeof soul.__page === "number" &&
                 (idx === 0 || souls[idx - 1].__page !== soul.__page);
@@ -833,8 +908,8 @@ function SoulListContent() {
 
               return (
                 <Link
-                  key={`${soul.id}-${soul.__page ?? "p"}`}  // key 안정화
-                  id={`soul-${soul.id}`}                     // 해시 앵커
+                  key={`${soul.id}-${soul.__page ?? "p"}`} // key 안정화
+                  id={`soul-${soul.id}`} // 해시 앵커
                   data-page-boundary={isBoundary ? soul.__page : undefined}
                   data-soul-id={soul.id}
                   href={`/sky/travelingSprits/generalVisits/${soul.id}${
@@ -845,7 +920,11 @@ function SoulListContent() {
                 >
                   <div className={styles.imageWrapperSquare}>
                     {repImg?.url ? (
-                      <img src={repImg.url} alt={soul.name} className={styles.cardImage} />
+                      <img
+                        src={repImg.url}
+                        alt={soul.name}
+                        className={styles.cardImage}
+                      />
                     ) : (
                       <div className={styles.noImage}>No Image</div>
                     )}
@@ -856,7 +935,8 @@ function SoulListContent() {
                         className={styles.seasonName}
                         style={{
                           backgroundColor:
-                            seasonList.find((s) => s.name === soul.seasonName)?.color || "#444",
+                            seasonList.find((s) => s.name === soul.seasonName)
+                              ?.color || "#444",
                         }}
                       >
                         {soul.seasonName}
@@ -866,7 +946,9 @@ function SoulListContent() {
                     <p className={styles.secondLine}>
                       {soul.orderNum < 0 ? (
                         <strong style={{ color: "blue" }}>
-                          {isMobile ? `#${Math.abs(soul.orderNum)}` : `${Math.abs(soul.orderNum)}번째 유랑단`}
+                          {isMobile
+                            ? `#${Math.abs(soul.orderNum)}`
+                            : `${Math.abs(soul.orderNum)}번째 유랑단`}
                         </strong>
                       ) : (
                         `${soul.orderNum}번째`
@@ -892,7 +974,9 @@ function SoulListContent() {
             maxLoadedPageRef.current != null &&
             maxLoadedPageRef.current + 1 < totalPages && (
               <>
-                {isFetchingNext && <div className={styles.loading}>Loading...</div>}
+                {isFetchingNext && (
+                  <div className={styles.loading}>Loading...</div>
+                )}
                 <div ref={bottomSentinelRef} style={{ height: 1 }} />
               </>
             )}
@@ -917,7 +1001,9 @@ function SoulListContent() {
           </thead>
           <tbody>
             {souls.map((soul) => {
-              const repImg = soul.images?.find((img) => img.imageType === "REPRESENTATIVE");
+              const repImg = soul.images?.find(
+                (img) => img.imageType === "REPRESENTATIVE"
+              );
 
               const params = new URLSearchParams();
               params.set("mode", viewMode);
@@ -943,11 +1029,18 @@ function SoulListContent() {
                         src={repImg.url}
                         alt={soul.name}
                         className={styles.tableThumbnail}
-                        style={{ width: 30, height: 30, marginRight: 8, verticalAlign: "middle" }}
+                        style={{
+                          width: 30,
+                          height: 30,
+                          marginRight: 8,
+                          verticalAlign: "middle",
+                        }}
                       />
                     )}
                     {soul.orderNum < 0 ? (
-                      <span className={styles.warbandOrder}>{Math.abs(soul.orderNum)}</span>
+                      <span className={styles.warbandOrder}>
+                        {Math.abs(soul.orderNum)}
+                      </span>
                     ) : (
                       soul.orderNum
                     )}
@@ -957,7 +1050,8 @@ function SoulListContent() {
                       className={styles.seasonName}
                       style={{
                         backgroundColor:
-                          seasonList.find((s) => s.name === soul.seasonName)?.color || "#444",
+                          seasonList.find((s) => s.name === soul.seasonName)
+                            ?.color || "#444",
                       }}
                     >
                       {soul.seasonName}
