@@ -35,6 +35,7 @@ function SoulListContent() {
   const pageSizeRef = useRef(null);      // 페이지당 아이템 수
   const targetSoulIdRef = useRef(null);  // 복귀 시 스크롤 타깃
   const targetPageRef = useRef(null);    // 복귀 시 우선 페이지(0-based)
+  const navTypeRef = useRef("navigate"); // 'navigate' | 'reload' | 'back_forward'
 
   // ===== 유틸: 중복 제거 =====
   const mergeUniqueById = (prev, next) => {
@@ -66,8 +67,14 @@ function SoulListContent() {
     return () => window.removeEventListener("resize", onResize);
   }, []);
 
-  // ===== 클라이언트 플래그 =====
-  useEffect(() => { setIsClient(true); }, []);
+  // ===== 클라이언트 플래그 & 네비게이션 타입 =====
+  useEffect(() => {
+    setIsClient(true);
+    try {
+      const nav = window.performance?.getEntriesByType?.("navigation")?.[0];
+      if (nav?.type) navTypeRef.current = nav.type; // navigate | reload | back_forward
+    } catch {}
+  }, []);
 
   // ===== URL → state (page는 사용 안 함: 영혼 뷰) =====
   useEffect(() => {
@@ -110,6 +117,7 @@ function SoulListContent() {
     return m ? m[1] : null;
   };
 
+  // 해시 앵커가 DOM에 뜰 때까지 집요하게 스크롤
   const scrollToSoulId = (soulId) => {
     if (!soulId) return;
     let tries = 0;
@@ -121,12 +129,20 @@ function SoulListContent() {
         const rect = el.getBoundingClientRect();
         const top = rect.top + window.scrollY;
         window.scrollTo({ top, behavior: "auto" });
-      } else if (tries < 60) {
+      } else if (tries < 240) { // 렌더/이미지 지연 대비
         tries += 1;
         requestAnimationFrame(seek);
       }
     };
     requestAnimationFrame(seek);
+  };
+
+  const removeHashSilently = () => {
+    if (typeof window === "undefined") return;
+    const noHashUrl = window.location.pathname + window.location.search;
+    if (window.location.hash) {
+      window.history.replaceState(null, "", noHashUrl);
+    }
   };
 
   // ===== API =====
@@ -178,7 +194,7 @@ function SoulListContent() {
       minLoadedPageRef.current = centerPage;
       maxLoadedPageRef.current = centerPage;
 
-      // URL 동기화: page는 기록하지 않음(영혼 뷰), 해시 유지
+      // URL 동기화: page는 기록하지 않음(영혼 뷰), 해시 유지(필요시 외부에서 제거)
       const hash = typeof window !== "undefined" ? window.location.hash : "";
       const params = new URLSearchParams();
       params.set("mode", viewMode);
@@ -191,8 +207,86 @@ function SoulListContent() {
     } finally {
       setLoading(false);
       const hashId = getHashSoulId();
-      if (hashId) scrollToSoulId(hashId);
+      if (hashId) {
+        // 즉시 + 지연 재시도(레이아웃/이미지 로딩 보정)
+        scrollToSoulId(hashId);
+        setTimeout(() => scrollToSoulId(hashId), 50);
+        setTimeout(() => scrollToSoulId(hashId), 250);
+      }
     }
+  };
+
+  // 위쪽 페이지 선로딩: center-1 → 0, prepend + 스크롤 보정
+  const preloadPreviousPages = async (centerPage) => {
+    if (centerPage == null || centerPage <= 0) return;
+    for (let p = centerPage - 1; p >= 0; p--) {
+      try {
+        const before = document.documentElement.scrollHeight;
+        const { content } = await fetchPageContent(p);
+        setSouls((prev) => uniqueById([...content, ...prev]));
+        minLoadedPageRef.current = p;
+        // prepend로 인해 늘어난 만큼 스크롤 유지
+        await new Promise((r) => requestAnimationFrame(r));
+        const after = document.documentElement.scrollHeight;
+        const delta = after - before;
+        window.scrollTo(0, window.scrollY + delta);
+      } catch (e) {
+        console.warn("preloadPreviousPages failed at page", p, e);
+        break;
+      }
+    }
+  };
+
+  // (NEW) 앵커가 안 보이면 해당 페이지를 강제로 fetch 후 붙이고 스크롤
+  const ensureAnchorByLoadingPage = async (soulId) => {
+    if (!soulId) return;
+    if (
+      document.getElementById(`soul-${soulId}`) ||
+      document.querySelector(`[data-soul-id="${soulId}"]`)
+    ) return;
+
+    const resolved = await resolvePageForSoulId(soulId);
+    if (typeof resolved !== "number") return;
+
+    const minP = minLoadedPageRef.current;
+    const maxP = maxLoadedPageRef.current;
+
+    if (minP != null && maxP != null && resolved >= minP && resolved <= maxP) {
+      // 곧 렌더될 수 있으니 한 번 더 시도
+      scrollToSoulId(soulId);
+      return;
+    }
+
+    const { content } = await fetchPageContent(resolved);
+    setSouls((prev) => {
+      if (minP == null || maxP == null) {
+        minLoadedPageRef.current = resolved;
+        maxLoadedPageRef.current = resolved;
+        return uniqueById(content);
+      }
+      if (resolved < minP) {
+        minLoadedPageRef.current = resolved;
+        const before = document.documentElement.scrollHeight;
+        const next = uniqueById([...content, ...prev]);
+        requestAnimationFrame(() => {
+          const after = document.documentElement.scrollHeight;
+          window.scrollTo(0, window.scrollY + (after - before));
+        });
+        return next;
+      }
+      if (resolved > maxP) {
+        maxLoadedPageRef.current = resolved;
+        return mergeUniqueById(prev, content);
+      }
+      return prev;
+    });
+
+    // 붙인 뒤 한 템포 두고 스크롤
+    setTimeout(() => {
+      scrollToSoulId(soulId);
+      setTimeout(() => scrollToSoulId(soulId), 50);
+      setTimeout(() => scrollToSoulId(soulId), 250);
+    }, 0);
   };
 
   // ===== 범용 로더 =====
@@ -321,34 +415,65 @@ function SoulListContent() {
       return;
     }
 
-    // 부트스트랩: 해시/세션 우선
+    // 부트스트랩: 네비게이션 타입에 따라 분기
     didBootstrapRef.current = true;
 
     (async () => {
+      const navType = navTypeRef.current; // 'navigate' | 'reload' | 'back_forward'
       const hashSoulId = getHashSoulId();
 
-      if (
-        hashSoulId &&
-        targetSoulIdRef.current &&
-        String(hashSoulId) === String(targetSoulIdRef.current) &&
-        typeof targetPageRef.current === "number"
-      ) {
-        const center = targetPageRef.current;
-        await bootstrapCentered(center);
+      if (navType === "reload") {
+        // ✅ 새로고침: 해시/세션 무시, 항상 0페이지부터
+        removeHashSilently();
+        targetSoulIdRef.current = null;
+        targetPageRef.current = null;
+        await bootstrapCentered(0);
         return;
       }
 
+      // ✅ 해시가 있으면, navigate/back_forward 구분 없이 해시 우선 처리
       if (hashSoulId) {
+        if (
+          targetSoulIdRef.current &&
+          String(hashSoulId) === String(targetSoulIdRef.current) &&
+          typeof targetPageRef.current === "number"
+        ) {
+          const center = targetPageRef.current;
+          await bootstrapCentered(center);
+          await preloadPreviousPages(center);
+          await ensureAnchorByLoadingPage(hashSoulId);
+          return;
+        }
         const resolved = await resolvePageForSoulId(hashSoulId);
         const center = typeof resolved === "number" ? resolved : 0;
         await bootstrapCentered(center);
+        await preloadPreviousPages(center);
+        await ensureAnchorByLoadingPage(hashSoulId);
         return;
       }
 
+      // 기본(navigate/back_forward 해시 없음): 0부터
       await bootstrapCentered(0);
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [submittedQuery, viewMode, listSort, isClient]);
+
+  // 🔔 해시 변경 이벤트를 잡아서 도착 직후 한 번 더 스크롤
+  useEffect(() => {
+    if (!isClient) return;
+    const onHash = () => {
+      const id = getHashSoulId();
+      if (id) {
+        scrollToSoulId(id);
+        setTimeout(() => scrollToSoulId(id), 50);
+        setTimeout(() => scrollToSoulId(id), 250);
+      }
+    };
+    window.addEventListener("hashchange", onHash);
+    // 초기 진입 시에도 보장
+    onHash();
+    return () => window.removeEventListener("hashchange", onHash);
+  }, [isClient]);
 
   // ===== 아래쪽 무한 스크롤(append) =====
   useEffect(() => {
@@ -458,7 +583,7 @@ function SoulListContent() {
         })
       );
     } catch {}
-    // 리스트 히스토리를 해시로 바꿔 둬서 뒤로가기 시 정확히 복귀
+    // 리스트 히스토리를 해시로 바꿔 둬서 뒤로가기/목록가기 시 정확히 복귀
     const params = new URLSearchParams();
     params.set("mode", viewMode);
     if (submittedQuery) params.set("query", submittedQuery);
