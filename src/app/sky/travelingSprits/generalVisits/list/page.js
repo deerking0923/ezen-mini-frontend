@@ -174,7 +174,7 @@ function SoulListContent() {
       const { content, pages } = await fetchPageContent(centerPage);
       setSouls(uniqueById(content));
       setTotalPages(pages);
-      // ✅ 교체 로드 시 현재 페이지 범위 업데이트
+      // 교체 로드 시 현재 페이지 범위 업데이트
       minLoadedPageRef.current = centerPage;
       maxLoadedPageRef.current = centerPage;
 
@@ -240,14 +240,14 @@ function SoulListContent() {
 
         if (append) {
           setSouls((prev) => mergeUniqueById(prev, content));
-          // ✅ append 시 페이지 범위 갱신
+          // append 시 페이지 범위 갱신
           if (minLoadedPageRef.current == null) minLoadedPageRef.current = pageNumber;
           if (maxLoadedPageRef.current == null || pageNumber > maxLoadedPageRef.current) {
             maxLoadedPageRef.current = pageNumber;
           }
         } else {
           setSouls(uniqueById(content));
-          // ✅ 교체 시 현재 페이지 범위를 명시적으로 1페이지로 설정
+          // 교체 시 현재 페이지 범위를 명시적으로 설정
           minLoadedPageRef.current = pageNumber;
           maxLoadedPageRef.current = pageNumber;
         }
@@ -267,6 +267,23 @@ function SoulListContent() {
       } else {
         setLoading(false);
       }
+    }
+  };
+
+  // ===== 현재 URL과 같으면 push 대신 강제 재로딩 =====
+  const pushOrRefresh = (targetUrl, { pageNumber = 0, query = submittedQuery } = {}) => {
+    const currentUrl = window.location.pathname + window.location.search;
+    if (currentUrl === targetUrl) {
+      // 동일 URL → 상태 초기화 후 직접 페치
+      setSouls([]);
+      minLoadedPageRef.current = null;
+      maxLoadedPageRef.current = null;
+      targetSoulIdRef.current = null;
+      targetPageRef.current = null;
+      setLoading(true);
+      fetchSoulsAny(pageNumber, query, { append: false });
+    } else {
+      router.push(targetUrl);
     }
   };
 
@@ -341,7 +358,7 @@ function SoulListContent() {
 
     const hasMore =
       submittedQuery.trim() === "" &&
-      maxLoadedPageRef.current != null && // ✅ 교체 후 0으로 세팅되어야 true가 됨
+      maxLoadedPageRef.current != null &&
       maxLoadedPageRef.current + 1 < totalPages &&
       !error;
 
@@ -364,7 +381,7 @@ function SoulListContent() {
             try {
               const { content } = await fetchPageContent(nextPage);
               setSouls((prev) => mergeUniqueById(prev, content));
-              // ✅ append 후 반드시 max 갱신
+              // append 후 반드시 max 갱신
               if (maxLoadedPageRef.current == null || nextPage > maxLoadedPageRef.current) {
                 maxLoadedPageRef.current = nextPage;
               }
@@ -405,7 +422,7 @@ function SoulListContent() {
             const before = document.documentElement.scrollHeight;
             const { content } = await fetchPageContent(prevPage);
             setSouls((prev) => uniqueById([...content, ...prev])); // 앞에 붙이되 중복 제거
-            minLoadedPageRef.current = prevPage; // ✅ prepend 후 min 갱신
+            minLoadedPageRef.current = prevPage; // prepend 후 min 갱신
             // prepend 점프 보정
             requestAnimationFrame(() => {
               const after = document.documentElement.scrollHeight;
@@ -456,26 +473,36 @@ function SoulListContent() {
 
   const handleSearchSubmit = (e) => {
     e.preventDefault();
+    // 다음 상태 계산
+    const params = new URLSearchParams();
+    params.set("mode", viewMode);
+    if (searchQuery) params.set("query", searchQuery);
+    const targetUrl = `/sky/travelingSprits/generalVisits/list${params.toString() ? "?" + params.toString() : ""}`;
+
+    // 상태 초기화
     setSouls([]);
     setSubmittedQuery(searchQuery);
-    // 상태 초기화
     minLoadedPageRef.current = null;
     maxLoadedPageRef.current = null;
     targetSoulIdRef.current = null;
     targetPageRef.current = null;
 
+    // 해시 제거
     if (typeof window !== "undefined" && window.location.hash) {
       history.replaceState(null, "", window.location.pathname + window.location.search);
     }
 
-    const params = new URLSearchParams();
-    params.set("mode", viewMode);
-    if (searchQuery) params.set("query", searchQuery);
-    router.push(`/sky/travelingSprits/generalVisits/list${params.toString() ? "?" + params.toString() : ""}`);
+    // 동일 URL이면 직접 재로딩, 아니면 push
+    pushOrRefresh(targetUrl, { pageNumber: 0, query: searchQuery });
     requestAnimationFrame(() => window.scrollTo(0, 0));
   };
 
   const handleSeasonClick = (seasonName) => {
+    const params = new URLSearchParams();
+    params.set("mode", viewMode);
+    params.set("query", seasonName);
+    const targetUrl = `/sky/travelingSprits/generalVisits/list?${params.toString()}`;
+
     setSouls([]);
     setSearchQuery(seasonName);
     setSubmittedQuery(seasonName);
@@ -488,15 +515,12 @@ function SoulListContent() {
       history.replaceState(null, "", window.location.pathname + window.location.search);
     }
 
-    const params = new URLSearchParams();
-    params.set("mode", viewMode);
-    params.set("query", seasonName);
-    router.push(`/sky/travelingSprits/generalVisits/list?${params.toString()}`);
+    pushOrRefresh(targetUrl, { pageNumber: 0, query: seasonName });
     requestAnimationFrame(() => window.scrollTo(0, 0));
   };
 
   const handleAllView = () => {
-    // ✅ 전체 보기: 쿼리 제거 + 상태 초기화
+    // 전체 보기: 쿼리 제거 + 상태 초기화
     setSouls([]);
     setSearchQuery("");
     setSubmittedQuery("");
@@ -511,11 +535,19 @@ function SoulListContent() {
 
     const params = new URLSearchParams();
     params.set("mode", viewMode);
-    router.push(`/sky/travelingSprits/generalVisits/list?${params.toString()}`);
+    const targetUrl = `/sky/travelingSprits/generalVisits/list?${params.toString()}`;
+
+    // 동일 URL(이미 전체 보기 화면)에서도 반드시 재로드
+    pushOrRefresh(targetUrl, { pageNumber: 0, query: "" });
     requestAnimationFrame(() => window.scrollTo(0, 0));
   };
 
   const handleViewModeChange = (mode) => {
+    const params = new URLSearchParams();
+    params.set("mode", mode);
+    if (submittedQuery) params.set("query", submittedQuery);
+    const targetUrl = `/sky/travelingSprits/generalVisits/list?${params.toString()}`;
+
     setSouls([]);
     setViewMode(mode);
     minLoadedPageRef.current = null;
@@ -527,10 +559,7 @@ function SoulListContent() {
       history.replaceState(null, "", window.location.pathname + window.location.search);
     }
 
-    const params = new URLSearchParams();
-    params.set("mode", mode);
-    if (submittedQuery) params.set("query", submittedQuery);
-    router.push(`/sky/travelingSprits/generalVisits/list?${params.toString()}`);
+    pushOrRefresh(targetUrl, { pageNumber: 0, query: submittedQuery });
     requestAnimationFrame(() => window.scrollTo(0, 0));
   };
 
@@ -601,7 +630,7 @@ function SoulListContent() {
             className={styles.filterChip}
             onClick={() => handleSeasonClick("유랑단")}
           >
-          유랑단
+            유랑단
           </button>
           <button className={styles.filterChip} onClick={handleAllView}>
             전체 보기
