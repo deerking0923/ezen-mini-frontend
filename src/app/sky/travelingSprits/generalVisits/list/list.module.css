@@ -607,7 +607,7 @@
 /* 버튼 배경을 회색으로, 텍스트는 흰색으로 */
 .filterChip {
   padding: 10px 20px;
-  font-size: 1rem;
+  font-size: 0.8rem;
   border: none;
   border-radius: 8px;
   background-color: #888888; /* 회색 */
@@ -617,7 +617,7 @@
 
 .filterChipSoul {
   padding: 10px 20px;
-  font-size: 1rem;
+  font-size: 0.8rem;
   border: none;
   border-radius: 8px;
   background-color: #0e35f8; /* 회색 */
