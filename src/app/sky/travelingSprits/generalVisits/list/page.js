@@ -814,7 +814,7 @@ function SoulListContent() {
         </div>
         <div className={styles.filterChipsContainer}>
           <button
-            className={styles.filterChip}
+            className={styles.filterChipSoul}
             onClick={() => handleSeasonClick("유랑단")}
           >
             유랑단
