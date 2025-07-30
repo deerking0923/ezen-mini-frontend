@@ -896,13 +896,13 @@ function SoulListContent() {
                 <div ref={bottomSentinelRef} style={{ height: 1 }} />
               </>
             )}
-          {submittedQuery.trim() === "" &&
+          {/* {submittedQuery.trim() === "" &&
             maxLoadedPageRef.current != null &&
             maxLoadedPageRef.current + 1 >= totalPages && (
               <div style={{ textAlign: "center", padding: "1rem", opacity: 0.6 }}>
                 더 이상 불러올 항목이 없습니다.
               </div>
-            )}
+            )} */}
         </>
       ) : (
         <table className={styles.tableView}>
