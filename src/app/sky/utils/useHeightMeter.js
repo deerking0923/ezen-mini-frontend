@@ -8,7 +8,7 @@ const html2canvas = dynamic(
 );
 
 const STEP_DESKTOP_PX = 0.5;
-const STEP_MOBILE_PX  = 0.1;
+const STEP_MOBILE_PX  = 0.3;
 const MIN_SCALE       = 0.05;   // 최저 줌 배율
 
 export default function useHeightMeter(canvasRef) {
