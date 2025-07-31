@@ -28,14 +28,16 @@ export default function SoulCreatePage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const payload = {
-        ...formData,
-        rerunCount: Number(formData.rerunCount),
-        orderNum: Number(formData.orderNum),
-        keywords: formData.keywords
-          ? formData.keywords.split(",").map((s) => s.trim())
-          : [],
-      };
+const payload = {
+  ...formData,
+  rerunCount: Number(formData.rerunCount),
+  orderNum: Number(formData.orderNum),
+  keywords: formData.keywords
+    ? formData.keywords.split(",").map((s) => s.trim())
+    : [],
+  images: [], // ✅ 백엔드 null 방지를 위한 명시적 추가!
+};
+
 
       console.log("✅ 전송 payload:", payload);
       const res = await fetch("https://korea-sky-planner.com/api/v1/souls", {
