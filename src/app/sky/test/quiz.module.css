@@ -217,4 +217,17 @@
     min-width: 100%; /* 고정 너비를 해제하여 화면에 꽉 차게 만듭니다. */
     padding: 20px;   /* 좌우 여백을 모바일 친화적으로 변경합니다. */
   }
+    /* ▼▼▼▼▼ 이 부분을 추가해주세요! ▼▼▼▼▼ */
+  .mainTitle {
+    font-size: 1rem;    /* PC(2.5rem)보다 작은 모바일용 폰트 크기 */
+    word-break: keep-all; /* 단어가 중간에 잘리는 현상 방지 */
+  }
+
+  .status{
+    font-size: 1.8rem; /* PC(2.2rem)보다 작은 모바일용 폰트 크기 */
+  }
+  .scoreText {
+    font-size: 1rem; /* PC(1.2rem)보다 작은 모바일용 폰트 크기 */
+  }
+
 }

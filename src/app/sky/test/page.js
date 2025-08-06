@@ -80,7 +80,7 @@ function ResultView({ profile, score, onRetry }) {
       <p className={styles.message}>
         {isPass
           ? "이제 스카이 왕국을 자유롭게 비행할 자격이 주어졌습니다. 축하합니다!"
-          : "아쉽지만 다음 기회에 다시 도전해주세요. 응원하겠습니다!"}
+          : "아쉽지만 다음 기회에 다시 도전해주세요."}
       </p>
 
       {/* 2. 합격 시 자격증 표시 추가 */}
