@@ -103,6 +103,7 @@ function ResultView({ profile, score, onRetry }) {
 
 // --- 메인 페이지 컴포넌트 (수정) ---
 export default function SkyQuizPage() {
+  // ... (useState, 핸들러 함수 등 모든 로직은 그대로) ...
   const [profile, setProfile] = useState({ name: '', image: 'https://placehold.co/100x100/EFEFEF/AAAAAA&text=Profile' });
   const [answers, setAnswers] = useState({});
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -144,9 +145,10 @@ export default function SkyQuizPage() {
     setIsSubmitted(false);
   };
 
+
   return (
-    <div className={styles.container}>
-      {/* 1. 제목 수정 */}
+    // ▼▼▼▼▼ 바로 이 부분의 className을 수정합니다! ▼▼▼▼▼
+    <div className={`${styles.container} ${isSubmitted ? styles.resultActive : ''}`}>
       <h1 className={styles.mainTitle}>자유비행 수행능력 1급 필기시험</h1>
       
       {!isSubmitted && <Notice />}
