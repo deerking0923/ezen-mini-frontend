@@ -12,7 +12,7 @@ function Notice() {
   return (
     <div className={styles.noticeBox}>
       <p>본 시험은 비행능력 테스트 필기 시험입니다.</p>
-      <p><strong>80점 이상</strong>이어야 비행자격증을 취득할 수 있습니다.</p>
+      <p><strong>60점 이상</strong>이어야 비행자격증을 취득할 수 있습니다.</p>
       <p>시간 제한은 없으며, 보기 중 옳은 것을 골라 체크해주세요.</p>
       <p>2025년 8월 10일 기준으로 출제되었습니다.</p>
       <p>본 시험은 공식이 아닌 개인 제작 시험지입니다. 재미로만 풀어주세요!</p>
@@ -59,7 +59,7 @@ function QuizView({ profile, onProfileChange, answers, onAnswerChange, onSubmit 
 
 // --- 결과 뷰 컴포넌트 (수정) ---
 function ResultView({ profile, score, onRetry }) {
-  const isPass = score >= 80;
+  const isPass = score >= 60;
   
   return (
     <div className={styles.resultBox}>
