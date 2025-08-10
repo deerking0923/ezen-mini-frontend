@@ -101,3 +101,20 @@
   text-align: center;
   white-space: pre-wrap;
 }
+/* 비활성화 그룹 전체를 흐리게 + 클릭 불가 느낌 */
+.buy-options.is-disabled {
+  opacity: 0.55;
+  filter: grayscale(1);
+}
+
+/* 체크박스 자체도 흐리게, 손모양 제거 */
+.buy-options.is-disabled input[type="checkbox"] {
+  accent-color: #bbb;        /* 지원 브라우저에서 체크 색 연하게 */
+  cursor: not-allowed;
+}
+
+/* 라벨 클릭도 막는 느낌 */
+.buy-options.is-disabled label,
+.buy-options.is-disabled p {
+  cursor: not-allowed;
+}
