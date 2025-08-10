@@ -51,15 +51,13 @@ export default function CandleSettingsPanel({
         ? 6
         : 5;
     const seasonCandlesFromDays = remainingDays * dailyCandleCount;
-    // 미소유이면서 구입 예정인 경우 추가 보너스 +30개
-    const extraCandles =
-      ownsSeasonPass === "no" && buySeasonPass ? 30 : 0;
+    
+    const extraCandles = buySeasonPass ? 30 : 0;
     const totalSeasonCandles = current + seasonCandlesFromDays + extraCandles;
     const difference = totalSeasonCandles - Number(requiredCandles);
 
-    const formula = 
-    ownsSeasonPass === "no" && buySeasonPass
-      ? `${current} + ${seasonCandlesFromDays} + 시패 추가 30개 = ${totalSeasonCandles}`
+    const formula = buySeasonPass
+      ? `${current} + ${seasonCandlesFromDays} + 시패 보너스 양초 30개 = ${totalSeasonCandles}`
       : `${current} + ${seasonCandlesFromDays} = ${totalSeasonCandles}`;
     
     const finalitem = buySeasonPass ? Math.ceil((requiredCandles - current - 30) / dailyCandleCount) : Math.ceil((requiredCandles - current) / dailyCandleCount);
@@ -92,7 +90,7 @@ ${finalitem >= 0 && finalitem <= remainingDays
         </span>
         <span className="season-days-note"> 아직 리셋 전 오늘
         일퀘를 안하셨다면 일퀘 양초를 포함해서 계산해주세요. </span>
-        <span className="season-days-note">(구매 예정이라면 시패 구입 후 받게 될 양초 1개도 입력)</span>
+        <span className="season-days-note">구매 예정이라면 구매예정버튼을 누르고 시패 구입 후 받게 될 양초 1개도 입력</span>
         <span className="season-days-note">최보 최단 일수 계산은 '원함!' 전체 선택 후 가지고 있는 아이템을 모두 표시하고 계산하시기 바랍니다.</span>
         <span className="season-days-note">(시즌초 2배 이벤트 미포함) 오른쪽 하단의 숫자는 재화!개수입니다.</span>
       </div>
@@ -109,7 +107,7 @@ ${finalitem >= 0 && finalitem <= remainingDays
       </div>
 
       <div className="setting-group">
-        <label>시즌 패스 소유 여부:</label>
+        <label>시즌 패스 보유 여부:</label>
         <select
           value={ownsSeasonPass}
           onChange={(e) => setOwnsSeasonPass(e.target.value)}
@@ -119,7 +117,7 @@ ${finalitem >= 0 && finalitem <= remainingDays
         </select>
       </div>
 
-      {ownsSeasonPass === "no" && (
+      
         <div className="setting-group buy-options">
           <p>시패 구입 예정:</p>
           <label>
@@ -131,7 +129,7 @@ ${finalitem >= 0 && finalitem <= remainingDays
             추가 양초 30개
           </label>
         </div>
-      )}
+      
 
       <div className="calculate-btn-container">
         <button className="calc-btn" onClick={handleCalculate}>
