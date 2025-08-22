@@ -2,7 +2,7 @@
 html, body {           /* ✓ 여백·패딩 완전 제거 */
   margin: 0;
   padding: 0;
-  height: 100%;
+  min-height: 100%;
   font-family: -apple-system, BlinkMacSystemFont, 'Pretendard', sans-serif;
   -webkit-font-smoothing: antialiased;
 }

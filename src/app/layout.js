@@ -46,6 +46,19 @@ export default function RootLayout({ children }) {
               </p>
 
               <div className={styles.ctaWrapper}>
+                  <Link
+                  href="/"
+                  //target="_blank"
+                  //rel="noopener noreferrer"
+                  className={styles.ctaButton}
+                >
+                  <img
+                    src="/sky/extra/home.svg"
+                    alt="홈 아이콘"
+                    className={styles.icon}
+                  />
+                  메인 화면으로 돌아가기
+                </Link>
                 <Link
                   href="https://cafe.naver.com/blacknbiqa"
                   target="_blank"

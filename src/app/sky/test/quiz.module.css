@@ -1,233 +1,358 @@
+/* ==============================================
+  SKY QUIZ STYLESHEET (Overall Size Reduced)
+==============================================
+  1. Root & Global Styles (기본 및 전역 스타일)
+  2. Layout (레이아웃)
+  3. Typography (타이포그래피)
+  4. Buttons (버튼)
+  5. Components (컴포넌트)
+==============================================
+*/
+
+
 /* ---------------------------------- */
-/* 1. 기본 레이아웃 (고정 너비) */
+/* 1. Root & Global Styles (기본 및 전역 스타일) */
+/* ---------------------------------- */
+:root {
+  /* 색상 변수 */
+  --primary-color: #007bff;
+  --secondary-color: #6c757d;
+  --success-color: #28a745;
+  --danger-color: #dc3545;
+  --warning-color: #ffc107;
+  --share-color: #7289da;
+  --download-color: #43b581;
+
+  /* 배경 및 텍스트 색상 */
+  --bg-color: #f0f4f8;
+  --box-bg-color: #ffffff;
+  --text-color-dark: #333333;
+  --text-color-light: #555555;
+  --border-color: #dee2e6;
+
+  /* 폰트 */
+  --font-family-main: 'Malgun Gothic', 'Apple SD Gothic Neo', sans-serif;
+}
+
+/* ---------------------------------- */
+/* 2. Layout (레이아웃) */
 /* ---------------------------------- */
 .container {
-  margin-top: 20px;
-  /* 페이지의 최소 너비를 고정하여 레이아웃이 깨지지 않게 합니다. */
-  min-width: 1100px;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 20px 40px;
-  padding-bottom: 60px;
-  font-family: 'Malgun Gothic', 'Apple SD Gothic Neo', sans-serif;
-  background-color: #f0f4f8;
+  /* ✅ 전체 너비를 1100px -> 960px로 축소 */
+  max-width: 960px;
+  min-width: 960px; 
+  margin: 20px auto 50px;
+  padding: 20px 30px; /* 좌우 여백도 축소 */
+  font-family: var(--font-family-main);
+  background-color: var(--bg-color);
+}
+
+/* ---------------------------------- */
+/* 3. Typography (타이포그래피) */
+/* ---------------------------------- */
+.titleContainer {
+  text-align: center;
+  margin-bottom: 20px;
 }
 
 .mainTitle {
-  text-align: center;
-  font-size: 2.5rem;
-  margin-bottom: 40px;
-  color: #333;
-  border-bottom: 2px solid #ccc;
-  padding-bottom: 10px;
+  font-size: 1.6rem; /* ✅ 폰트 크기 축소 */
+  font-weight: bold;
+  color: var(--text-color-dark);
+  margin-bottom: 10px;
+}
+
+.subTitle {
+  font-size: 1rem; /* ✅ 폰트 크기 축소 */
+  font-weight: normal;
+  color: #888;
 }
 
 /* ---------------------------------- */
-/* 2. 공지사항 박스 */
+/* 4. Buttons (버튼) */
 /* ---------------------------------- */
+.submitButton {
+  display: block;
+  width: 220px; /* ✅ 너비 축소 */
+  margin: 30px auto 0;
+  padding: 12px; /* ✅ 패딩 축소 */
+  font-size: 1.1rem; /* ✅ 폰트 크기 축소 */
+  font-weight: bold;
+  color: white;
+  background-color: var(--primary-color);
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+.submitButton:hover {
+  background-color: #0056b3;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+.buttonContainer {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 20px;
+  width: 100%;
+  max-width: 600px; /* ✅ 최대 너비 축소 */
+}
+
+/* 다시풀기, 공유, 다운로드 버튼 공통 스타일 */
+.retryButton, .shareButton, .downloadButton {
+  flex: 1; 
+  padding: 10px 20px; /* ✅ 패딩 축소 */
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  font-size: 0.9rem; /* ✅ 폰트 크기 축소 */
+  font-weight: bold;
+  color: white;
+  transition: all 0.2s ease-in-out;
+  text-align: center;
+}
+
+.retryButton:hover, .shareButton:hover, .downloadButton:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.1);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* 버튼별 색상 정의 */
+.retryButton { background-color: var(--secondary-color); }
+.shareButton { background-color: var(--share-color); }
+.downloadButton { background-color: var(--download-color); }
+
+
+/* ---------------------------------- */
+/* 5. Components (컴포넌트) */
+/* ---------------------------------- */
+
+/* --- Notice Box (공지사항) --- */
 .noticeBox {
   background-color: #e9f5ff;
   border: 1px solid #bce0fd;
   border-radius: 8px;
-  padding: 20px;
-  margin: 30px 0;
-  font-size: 0.95rem;
+  padding: 15px;
+  margin: 25px 0;
+  font-size: 0.9rem; /* ✅ 폰트 크기 축소 */
   color: #31708f;
   line-height: 1.7;
 }
-
-.noticeBox p {
-  margin: 0 0 10px 0;
-}
-
+.noticeBox p { margin: 0 0 8px 0; }
 .noticeSign {
   text-align: right;
   font-weight: bold;
-  margin-top: 15px !important;
+  margin-top: 10px !important;
 }
 
-/* ---------------------------------- */
-/* 3. 시험지 (문제) - 항상 2단 고정 */
-/* ---------------------------------- */
+/* --- Quiz View (시험지) --- */
 .quizContainer {
-  column-count: 2;
-  column-gap: 40px;
+  column-count: 2; 
+  column-gap: 30px; /* ✅ 간격 축소 */
 }
-
 .questionContainer {
-  background-color: #ffffff;
-  border: 1px solid #ddd;
+  background-color: var(--box-bg-color);
+  border: 1px solid var(--border-color);
   border-radius: 8px;
-  padding: 20px;
-  margin-bottom: 20px;
-  break-inside: avoid-column;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.questionText {
-  font-size: 1.1rem;
-  font-weight: bold;
+  padding: 15px; /* ✅ 패딩 축소 */
   margin-bottom: 15px;
+  break-inside: avoid-column;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
-
-.optionsForm {
-  display: flex;
-  flex-direction: column;
+.questionText {
+  font-size: 1rem; /* ✅ 폰트 크기 축소 */
+  font-weight: bold;
+  margin-bottom: 12px;
 }
-
-.option {
-  margin-bottom: 10px;
-}
-
+.optionsForm { display: flex; flex-direction: column; }
+.option { margin-bottom: 8px; }
 .option label {
   margin-left: 8px;
-  font-size: 1rem;
+  font-size: 0.9rem; /* ✅ 폰트 크기 축소 */
   cursor: pointer;
 }
 
+/* quiz.module.css (아래 코드로 해당 부분을 교체하세요) */
+
 /* ---------------------------------- */
-/* 4. 결과 화면 */
+/* 3. Typography (타이포그래피) - 일부 수정 */
 /* ---------------------------------- */
-.resultBox {
-  background-color: white;
-  border-radius: 12px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-  padding: 40px;
+.titleContainer {
   text-align: center;
-  max-width: 600px;
+  margin-bottom: 20px;
+}
+
+.mainTitle {
+  font-family: 'Gowun Batang', Georgia, 'Times New Roman', Times, serif; /* ✅ 고급스러운 명조체로 변경 */
+  font-size: 2.2rem; /* ✅ 타이틀 크기 강조 */
+  font-weight: bold;
+  color: var(--text-color-dark);
+  margin-bottom: 10px;
+  letter-spacing: 2px; /* 자간 추가 */
+}
+
+.subTitle {
+  font-size: 1rem;
+  font-weight: normal;
+  color: #888;
+}
+
+/* ---------------------------------- */
+/* 5. Components (컴포넌트) */
+/* ---------------------------------- */
+
+/* ... (다른 컴포넌트 스타일은 그대로 유지) ... */
+
+
+/* --- Result View (결과창) --- */
+.resultContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   width: 100%;
-  margin: 40px auto;
-  border: 1px solid #ddd;
+  margin-bottom: 30px;
+}
+
+/* ✅ 캡쳐될 자격증 영역 전체를 새롭게 디자인 */
+.certificateBox {
+  background-color: #fdfdfa; /* 따뜻한 흰색 배경 */
+  border: 1px solid #e0d9c6;
+  /* 고급스러운 이중 테두리 효과 */
+  box-shadow: 0 0 0 1px #a89a7a, 0 0 0 2px #e0d9c6, 0 4px 15px rgba(0,0,0,0.1);
+  padding: 40px 50px; /* 좌우 여백을 더 넓게 */
+  text-align: center;
+  max-width: 650px; /* 살짝 넓게 조정 */
+  width: 100%;
+  position: relative; /* 장식 요소(직인)를 위한 기준점 */
+  overflow: hidden; /* 장식 요소가 박스를 벗어나지 않도록 */
+}
+
+/* ✅ 인증 직인(Seal) 만들기 */
+.certificateBox::after {
+  content: 'SKY PLANNER';
+  position: absolute;
+  right: 40px;
+  bottom: 30px;
+  width: 90px;
+  height: 90px;
+  background-color: #c84141;
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 12px;
+  font-weight: bold;
+  letter-spacing: 1px;
+  text-align: center;
+  line-height: 1.2;
+  border: 4px double white;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+  transform: rotate(-10deg);
 }
 
 .resultProfileImage {
-  width: 120px;
-  height: 120px;
+  width: 100px;
+  height: 100px;
   border-radius: 50%;
   object-fit: cover;
   border: 4px solid #eee;
-  margin-bottom: 20px;
+  margin: 25px auto;
 }
 
-.resultName {
-  font-size: 1.8rem;
-  margin-bottom: 20px;
-}
-
-.status {
-  font-size: 2.2rem;
+.resultName { 
+  font-size: 2rem; /* 이름 강조 */
   font-weight: bold;
+  margin-bottom: 25px; 
+  color: var(--text-color-dark); 
+}
+
+/* ✅ 등급과 점수를 구분선으로 분리 */
+.status { 
+  font-size: 1.8rem; 
+  font-weight: 600; 
+  color: var(--success-color); 
+  padding-bottom: 15px;
+  border-bottom: 1px solid #e0d9c6; /* 구분선 추가 */
   margin-bottom: 15px;
 }
 
-.pass {
-  color: #28a745;
+.scoreText { 
+  font-size: 1.1rem; 
+  margin-bottom: 30px; 
+  color: var(--text-color-dark); 
 }
 
-.fail {
-  color: #dc3545;
+.score { 
+  font-size: 1.3rem; 
+  font-weight: bold; 
+  color: var(--primary-color); 
 }
 
-.scoreText {
-  font-size: 1.2rem;
-  margin-bottom: 30px;
+.message { 
+  font-size: 0.95rem; 
+  color: var(--text-color-light); 
+  line-height: 1.6; 
+  margin-top: 50px; /* 위쪽과 공간을 띄워서 마무리 메시지 느낌을 줌 */
 }
-
-.score {
-  font-size: 1.5rem;
-  font-weight: bold;
-  color: #007bff;
+/* 캡쳐될 자격증 영역 */
+.certificateBox {
+  background-color: var(--box-bg-color);
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  padding: 30px; /* ✅ 패딩 축소 */
+  text-align: center;
+  max-width: 600px; /* ✅ 최대 너비 축소 */
+  width: 100%;
+  border: 1px solid var(--border-color);
 }
-
-.message {
-  font-size: 1rem;
-  color: #555;
-  line-height: 1.6;
-  margin-bottom: 30px;
+.resultProfileImage {
+  width: 100px; /* ✅ 크기 축소 */
+  height: 100px; /* ✅ 크기 축소 */
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid #eee;
+  margin: 15px auto;
 }
+.resultName { font-size: 1.6rem; margin-bottom: 15px; color: var(--text-color-dark); }
+.status { font-size: 2rem; font-weight: bold; margin-bottom: 12px; color: var(--success-color); }
+.scoreText { font-size: 1.1rem; margin-bottom: 25px; color: var(--text-color-dark); }
+.score { font-size: 1.3rem; font-weight: bold; color: var(--primary-color); }
+.message { font-size: 0.95rem; color: var(--text-color-light); line-height: 1.6; }
 
-/* ---------------------------------- */
-/* 5. 자격증 (결과 화면) */
-/* ---------------------------------- */
-.licenseBox {
-  margin-top: 40px;
-  padding-top: 30px;
-  border-top: 2px dashed #ccc;
+/* --- Answer Sheet (정답지) --- */
+.answerSheetContainer {
+  margin-top: 1.5rem;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid var(--border-color);
+  width: 100%;
+  max-width: 600px; /* ✅ 최대 너비 축소 */
 }
-
-.licenseBox p {
-  font-size: 1.1rem;
-  font-weight: bold;
-  color: #333;
-  margin-bottom: 20px;
-}
-
-.licenseImage {
-  max-width: 100%;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  border: 1px solid #ddd;
-}
-
-/* ---------------------------------- */
-/* 6. 버튼들 */
-/* ---------------------------------- */
-.submitButton, .retryButton {
-  display: block;
-  width: 200px;
-  margin: 40px auto 0;
-  padding: 15px;
-  font-size: 1.2rem;
-  font-weight: bold;
-  color: white;
+.toggleButton {
+  width: 100%;
+  padding: 0.7rem 1rem;
+  font-size: 1rem; /* ✅ 폰트 크기 축소 */
+  font-weight: 600;
+  text-align: left;
+  background-color: #f7f7f7;
   border: none;
-  border-radius: 8px;
   cursor: pointer;
-  transition: background-color 0.2s;
+  transition: background-color 0.2s ease;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: var(--text-color-dark);
 }
-
-.submitButton {
-  background-color: #007bff;
-}
-
-.submitButton:hover {
-  background-color: #0056b3;
-}
-
-.retryButton {
-  background-color: #6c757d;
-  margin-top: 20px;
-}
-
-.retryButton:hover {
-  background-color: #5a6268;
-}
-
-
-/* quiz.module.css 파일 맨 아래에 이 코드를 추가해주세요. */
-
-/* ---------------------------------- */
-/* 7. 반응형 디자인 (결과 화면 전용) */
-/* ---------------------------------- */
-
-/* 화면 너비가 1199px 이하일 때 (PC보다 작을 때) */
-@media (max-width: 1199px) {
-  /* 결과 화면일 때만(.resultActive) 컨테이너 스타일을 덮어씁니다. */
-  .container.resultActive {
-    min-width: 100%; /* 고정 너비를 해제하여 화면에 꽉 차게 만듭니다. */
-    padding: 20px;   /* 좌우 여백을 모바일 친화적으로 변경합니다. */
-  }
-    /* ▼▼▼▼▼ 이 부분을 추가해주세요! ▼▼▼▼▼ */
-  .mainTitle {
-    font-size: 1rem;    /* PC(2.5rem)보다 작은 모바일용 폰트 크기 */
-    word-break: keep-all; /* 단어가 중간에 잘리는 현상 방지 */
-  }
-
-  .status{
-    font-size: 1.8rem; /* PC(2.2rem)보다 작은 모바일용 폰트 크기 */
-  }
-  .scoreText {
-    font-size: 1rem; /* PC(1.2rem)보다 작은 모바일용 폰트 크기 */
-  }
-
-}
+.toggleButton:hover { background-color: #efefef; }
+.answerSheetContent { padding: 1.2rem; }
+.answerItem { padding: 0.8rem 0; border-bottom: 1px solid #f0f0f0; }
+.answerItem:last-child { border-bottom: none; padding-bottom: 0; }
+.answerItem:first-child { padding-top: 0; }
+.answerQuestion { font-weight: 600; margin-bottom: 0.5rem; color: var(--text-color-dark); }
+.answerItem p { margin: 0.3rem 0; font-size: 0.95rem; line-height: 1.6; }
+.correctAnswer { color: var(--success-color); font-weight: bold; }
+.incorrectAnswer { color: var(--danger-color); font-weight: bold; }
