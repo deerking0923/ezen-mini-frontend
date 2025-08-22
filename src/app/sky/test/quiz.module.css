@@ -213,3 +213,11 @@
 .answerItem p { margin: 0.3rem 0; font-size: 0.95rem; line-height: 1.6; }
 .correctAnswer { color: var(--success-color); font-weight: bold; }
 .incorrectAnswer { color: var(--danger-color); font-weight: bold; }
+
+/* quiz.module.css 파일 맨 아래에 추가 */
+
+/* --- 결과창 하단 여백 조절 --- */
+.container.resultActive {
+  /* 결과창에서는 하단 여백을 60px로 줄입니다. */
+  margin-bottom: 60px;
+}
