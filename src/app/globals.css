@@ -7,6 +7,26 @@ html, body {           /* ✓ 여백·패딩 완전 제거 */
   -webkit-font-smoothing: antialiased;
 }
 
+:root {
+  /* 색상 변수 */
+  --primary-color: #007bff;
+  --secondary-color: #6c757d;
+  --success-color: #28a745;
+  --danger-color: #dc3545;
+  --warning-color: #ffc107;
+  --share-color: #7289da;
+  --download-color: #43b581;
+
+  /* 배경 및 텍스트 색상 */
+  --bg-color: #f0f4f8;
+  --box-bg-color: #ffffff;
+  --text-color-dark: #333333;
+  --text-color-light: #555555;
+  --border-color: #dee2e6;
+
+  /* 폰트 */
+  --font-family-main: 'Malgun Gothic', 'Apple SD Gothic Neo', sans-serif;
+}
 /* ✓ 모든 요소 box-sizing 통일 */
 *, *::before, *::after { box-sizing: border-box; }
 
