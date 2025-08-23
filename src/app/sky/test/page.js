@@ -14,7 +14,7 @@ function Notice() {
       <p>본 시험은 Sky:Children Of Light의 팬 제작 모의고사입니다.</p>
       <p>시간 제한은 없으며, 아는만큼 편하게 풀어주세요.</p>
       <p>25년 8월 22일 기준으로 출제되었습니다.</p>
-      <p>80점 이상 - 고인물 / 60점 이상 - 중비 / 60점 미만 - 참새</p>
+      <p>100점 이상 - ??? / 80점 이상 - 고인물 / 60점 이상 - 중비 / 60점 미만 - 참새</p>
       <p className={styles.noticeSign}>출제자 진사슴</p>
     </div>
   );
@@ -56,7 +56,7 @@ function QuizView({ profile, onProfileChange, answers, onAnswerChange, onSubmit 
 
 // --- 정답지 토글 컴포넌트 ---
 function AnswerSheet({ userAnswers }) {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(true);
 
   return (
     <div className={styles.answerSheetContainer}>
@@ -91,8 +91,10 @@ function ResultView({ profile, score, answers, onRetry }) {
   const certificateRef = useRef(null); // 캡쳐할 영역을 참조
 
   const getGrade = (score) => {
-    if (score >= 80) {
-      return { grade: '고인물', message: '스카이 왕국의 모든 것을 꿰뚫고 있군요! 존경합니다!' };
+    if (score == 100) {
+      return { grade: '증류수', message: '대단해요! 지식의 도서관에서 종사하는건 어때요?' };
+    } else if (score >= 80) {
+      return { grade: '고인물', message: '스카이 왕국의 많은 것을 꿰뚫고 있군요! 존경합니다!' };
     } else if (score >= 60) {
       return { grade: '중비', message: '훌륭해요! 당신은 어느정도 숙련된 빛의 아이입니다.' };
     } else {
@@ -108,7 +110,7 @@ function ResultView({ profile, score, answers, onRetry }) {
       try {
         await navigator.share({
           title: '스카이 모의고사 결과!',
-          text: `${profile.name}님의 25년 8월 스카이 모의고사 점수는 ${score}점, 등급은 '${grade}'입니다!`,
+          text: `${profile.name}님의 25년 8월 스카이 모의고사 점수는 ${score} 점, 등급은 '${grade}'입니다!`,
           url: 'https://korea-sky-planner.com/sky/test',
         });
       } catch (error) { console.error('공유에 실패했습니다.', error); }
@@ -149,9 +151,9 @@ function ResultView({ profile, score, answers, onRetry }) {
         <img src={profile.image} alt="Profile" className={styles.resultProfileImage} />
         <h2 className={styles.resultName}>{profile.name} 님</h2>
         <p className={`${styles.status} ${styles.pass}`}>
-          당신은 <span className={styles.grade}>{grade}</span>입니다!
+          등급 - <span className={styles.grade}>{grade}</span>
         </p>
-        <p className={styles.scoreText}>당신의 점수는 <span className={styles.score}>{score}</span>점 입니다.</p>
+        <p className={styles.scoreText}>당신의 점수는 <span className={styles.score}>{score}</span> 점 입니다.</p>
         <p className={styles.message}>{message}</p>
       </div>
       {/* ▲▲▲ 여기까지 캡쳐될 영역입니다 ▲▲▲ */}
