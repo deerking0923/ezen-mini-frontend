@@ -151,7 +151,7 @@ function ResultView({ profile, score, answers, onRetry }) {
         <img src={profile.image} alt="Profile" className={styles.resultProfileImage} />
         <h2 className={styles.resultName}>{profile.name} 님</h2>
         <p className={`${styles.status} ${styles.pass}`}>
-          등급 - <span className={styles.grade}>{grade}</span>
+          당신은 <span className={styles.grade}>{grade}</span>입니다!
         </p>
         <p className={styles.scoreText}>당신의 점수는 <span className={styles.score}>{score}</span> 점 입니다.</p>
         <p className={styles.message}>{message}</p>
