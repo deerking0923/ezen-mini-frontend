@@ -15,7 +15,7 @@ function Notice() {
       <p>시간 제한은 없으며, 아는만큼 편하게 풀어주세요.</p>
       <p>25년 8월 22일 기준으로 출제되었습니다.</p>
       <p>100점 이상 - ??? / 80점 이상 - 고인물 / 60점 이상 - 중비 / 60점 미만 - 참새</p>
-      <p className={styles.noticeSign}>출제자 진사슴</p>
+      <p className={styles.noticeSign}>출제자 망고</p>
     </div>
   );
 }
