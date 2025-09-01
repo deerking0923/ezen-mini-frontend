@@ -221,3 +221,12 @@
   /* 결과창에서는 하단 여백을 60px로 줄입니다. */
   margin-bottom: 60px;
 }
+
+.mainPageButton {
+  background-color: #ff9800;
+}
+
+.mainPageButton:hover {
+  background-color: #fb8c00;
+  transform: translateY(-2px);
+}

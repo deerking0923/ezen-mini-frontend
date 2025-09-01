@@ -6,6 +6,7 @@ import styles from './quiz.module.css';
 import { quizData } from './quizData.js';
 import Profile from '@/app/components/Profile';
 import html2canvas from 'html2canvas';
+import { useRouter } from 'next/navigation';
 
 // --- 공지사항 컴포넌트 ---
 function Notice() {
@@ -87,7 +88,7 @@ function AnswerSheet({ userAnswers }) {
 }
 
 // --- 결과 뷰 컴포넌트 (수정됨) ---
-function ResultView({ profile, score, answers, onRetry }) {
+function ResultView({ profile, score, answers, onRetry, onGoToMain }) {
   const certificateRef = useRef(null); // 캡쳐할 영역을 참조
 
   const getGrade = (score) => {
@@ -164,7 +165,8 @@ function ResultView({ profile, score, answers, onRetry }) {
       <div className={styles.buttonContainer}>
         <button onClick={onRetry} className={styles.retryButton}>다시 풀기</button>
         <button onClick={handleShare} className={styles.shareButton}>공유하기</button>
-        <button onClick={handleDownload} className={styles.downloadButton}>자격증 다운로드</button>
+        <button onClick={handleDownload} className={styles.downloadButton}>결과 다운로드</button>
+        <button onClick={onGoToMain} className={styles.retryButton}>메인 페이지</button>
       </div>
     </div>
   );
@@ -172,6 +174,7 @@ function ResultView({ profile, score, answers, onRetry }) {
 
 // --- 메인 페이지 컴포넌트 (수정됨) ---
 export default function SkyQuizPage() {
+  const router = useRouter();
   const [profile, setProfile] = useState({ name: '', image: 'https://placehold.co/100x100/EFEFEF/AAAAAA&text=Profile' });
   const [answers, setAnswers] = useState({});
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -184,7 +187,9 @@ export default function SkyQuizPage() {
   const handleAnswerChange = (questionIndex, answer) => {
     setAnswers(prev => ({ ...prev, [questionIndex]: answer }));
   };
-
+  const handleGoToMain = () => {
+    router.push('/'); // 루트 경로('/')로 이동시킵니다.
+  };
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!profile.name) {
@@ -226,6 +231,7 @@ export default function SkyQuizPage() {
           score={score}
           answers={answers}
           onRetry={handleRetry}
+          onGoToMain={handleGoToMain}
         />
         : <QuizView
           profile={profile}
