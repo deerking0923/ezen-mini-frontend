@@ -68,7 +68,7 @@ export default function SkyMusicEditorPage() {
     }
 
     alert(
-      "다운로드를 시작합니다. 시간이 조금 걸릴 수도 있습니다."
+      "다운로드를 시작합니다. 시간이 조금 걸릴 수도 있습니다. ㅠㅔ이지를 벗어나지 마세요."
     );
 
     const zip = new JSZip();
