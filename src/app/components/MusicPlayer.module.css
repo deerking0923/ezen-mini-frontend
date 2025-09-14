@@ -14,6 +14,7 @@
 
 .playerContainer {
   width: 95vw;
+  min-width: 1000px;
   max-width: 1400px;
   height: 85vh;
   max-height: 500px;
@@ -41,7 +42,6 @@
 }
 .closeButton:hover { color: white; }
 
-/* === 수정: 스크롤바 복구 === */
 .scroller {
   flex-grow: 1;
   position: relative;
@@ -49,47 +49,40 @@
   overflow-y: hidden;
   border-radius: 10px;
   padding: 1rem 0;
-  scrollbar-width: thin;
-  scrollbar-color: #4a5568 #2d3748;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  cursor: grab; /* 드래그 가능함을 표시 */
 }
-.scroller::-webkit-scrollbar { height: 8px; }
-.scroller::-webkit-scrollbar-track { background: #2d3748; border-radius: 4px; }
-.scroller::-webkit-scrollbar-thumb { background-color: #4a5568; border-radius: 4px; }
-
-.focusLine {
-  position: absolute;
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 3px;
-  height: 100%;
-  background: linear-gradient(rgba(99,179,237,0), rgba(99,179,237,0.8), rgba(99,179,237,0));
-  z-index: 5;
-  pointer-events: none;
+.scroller:active {
+  cursor: grabbing; /* 드래그 중 커서 변경 */
+}
+.scroller::-webkit-scrollbar {
+  display: none;
 }
 
-/* === 수정: 시트 너비에 맞게 패딩값 수정 === */
+
+
 .sheetTrack {
   display: flex;
   gap: 1.5rem;
   height: 100%;
-  padding: 0 calc(50% - 130px); /* 50% - (시트너비/2) */
+  padding: 0 calc(50% - 130px);
 }
 
-/* === 수정: 시트 비율 조정 (가로로 길게) === */
 .beatColumn {
   flex-shrink: 0;
-  width: 260px; /* 너비 대폭 증가 */
-  height: 100%; /* 부모 높이(약 150-200px)를 따름 */
-  max-height: 180px; /* 최대 높이 제한 */
+  width: 260px;
+  height: 100%;
+  max-height: 180px;
   background-color: #21262d;
   border: 1px solid #30363d;
-  border-radius: 12px; /* 좀 더 부드럽게 */
-  padding: 1rem; /* 내부 여백 증가 */
+  border-radius: 12px;
+  padding: 1rem;
   transition: all 0.3s ease;
   cursor: pointer;
   display: flex;
   align-items: center;
+  user-select: none; /* 드래그 중 텍스트 선택 방지 */
 }
 .beatColumn:hover { background-color: #30363d; }
 .beatColumn.active {
@@ -104,7 +97,7 @@
   height: 100%;
   grid-template-columns: repeat(5, 1fr);
   grid-template-rows: repeat(3, 1fr);
-  gap: 10px; /* 노트 간격 증가 */
+  gap: 10px;
   place-items: center;
 }
 
