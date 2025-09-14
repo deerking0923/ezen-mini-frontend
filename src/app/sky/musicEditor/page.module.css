@@ -1,3 +1,4 @@
+/* 기본 레이아웃 */
 .main {
   max-width: 1200px;
   min-width: 1000px;
@@ -7,34 +8,244 @@
   color: #2d3748;
 }
 
+/* 헤더 */
 .header {
+  position: relative;
   text-align: center;
   margin-bottom: 2rem;
 }
 
 .header h1 {
   font-size: 2.5rem;
-  margin-bottom: 0.5rem;
+  margin: 0 0 0.5rem 0;
 }
 
+.header p {
+  margin: 0;
+  color: #718096;
+}
+
+/* 헤더 타이틀 및 서브 텍스트 정렬 */
+.headerTitle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.madeByText {
+  font-size: 0.9rem;
+  color: #4a5568;
+  margin: 0;
+}
+
+/* Sky Studio 앱 링크 버튼 컨테이너 */
+.skyStudioLinks {
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+/* Sky Studio 앱 링크 버튼 */
+.skyStudioButton {
+  padding: 8px 16px;
+  background-color: #e2e8f0;
+  border: 1px solid #cbd5e0;
+  border-radius: 6px;
+  text-decoration: none;
+  color: #4a5568;
+  font-size: 0.9rem;
+  font-weight: bold;
+  transition: background-color 0.2s, border-color 0.2s, transform 0.2s;
+  cursor: pointer;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.skyStudioButton:hover {
+  background-color: #cbd5e0;
+  transform: translateY(-1px);
+}
+
+/* 상단 액션 버튼 섹션 */
 .topActionSection {
   display: flex;
-  flex-direction: column; /* 세로 방향으로 정렬 */
-  justify-content: space-between;
+  flex-direction: column;
   align-items: center;
   margin-bottom: 1.5rem;
-  padding: 1rem;
+  padding: 1.5rem;
   background-color: #f7fafc;
-  border-radius: 8px;
+  border-radius: 12px;
   border: 1px solid #e2e8f0;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  gap: 15px; /* 그룹 간의 간격 */
 }
 
+/* 버튼 그룹 컨테이너 */
+.buttonGroupWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 20px; /* 그룹 간의 간격 */
+  width: 60%;
+}
+
+.buttonGroup {
+  display: flex;
+  justify-content: center;
+  gap: 10px; /* 개별 버튼 간의 간격 */
+  width: 100%;
+}
+
+/* 버튼 공통 스타일 */
+.actionButton {
+  flex: 1; /* 버튼 가로 길이 균등 분배 */
+  padding: 12px 20px;
+  font-size: 1rem;
+  font-weight: bold;
+  color: #4a5568;
+  background-color: white;
+  border: 1px solid #cbd5e0;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.actionButton:hover {
+  background-color: #f0f4f8;
+  border-color: #a0aec0;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* 다운로드 버튼 (강조) */
+.downloadButton {
+  width: 30%;
+  padding: 14px 28px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: white;
+  background-color: #4299e1;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 4px 10px rgba(66, 153, 225, 0.4);
+}
+
+.downloadButton:hover {
+  background-color: #3182ce;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(66, 153, 225, 0.5);
+}
+
+/* 악보 연주 버튼 */
+.playerOpenButton {
+  padding: 14px 28px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: white;
+  background: linear-gradient(145deg, #4facfe, #00f2fe);
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 150, 255, 0.3);
+  width: 100%;
+}
+
+.playerOpenButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 150, 255, 0.4);
+}
+
+/* 뮤직 플레이어 컨트롤러를 감싸는 컨테이너 */
+.musicControlsContainer {
+  display: flex;
+  flex-direction: row; /* 가로로 정렬 */
+  align-items: center;
+  justify-content: center;
+  gap: 15px; /* 버튼과 컨트롤러 간의 간격 */
+  width: 100%;
+}
+
+.musicControls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+}
+
+.playButton {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  border: none;
+  background-color: #63b3ed;
+  color: white;
+  font-size: 1.5rem;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s;
+}
+
+.playButton:hover {
+  background-color: #4299e1;
+}
+
+.bpmControl {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.bpmControl label {
+  font-weight: 500;
+  width: 80px;
+}
+
+.bpmControl input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 200px;
+  height: 8px;
+  background: #cbd5e0;
+  border-radius: 5px;
+  outline: none;
+}
+
+.bpmControl input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  background: #4299e1;
+  cursor: pointer;
+  border-radius: 50%;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.bpmControl input[type="range"]::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  background: #4299e1;
+  cursor: pointer;
+  border-radius: 50%;
+}
+
+/* 악보 정보 입력 폼 */
 .infoForm {
   background-color: white;
   padding: 2rem 3rem 3rem;
-  border-radius: 8px;
+  border-radius: 12px;
   margin-bottom: 2rem;
   border: 1px solid #e2e8f0;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
 }
 
 .titleInput {
@@ -46,14 +257,21 @@
   margin-bottom: 1.5rem;
   color: #2d3748;
   border: none;
+  border-bottom: 2px solid #e2e8f0;
   outline: none;
   background-color: transparent;
+  transition: border-bottom-color 0.2s;
+}
+
+.titleInput:focus {
+  border-bottom-color: #4299e1;
 }
 
 .titleInput::placeholder {
   color: #cbd5e0;
 }
 
+/* 색상 범례 */
 .colorLegend {
   display: flex;
   justify-content: center;
@@ -77,9 +295,10 @@
   width: 12px;
   height: 12px;
   border-radius: 50%;
-  border: 1px solid rgba(0,0,0,0.1);
+  border: 1px solid rgba(0, 0, 0, 0.1);
 }
 
+/* 메타 정보 입력 */
 .metaInputs {
   display: flex;
   justify-content: space-between;
@@ -101,67 +320,171 @@
   outline: none;
   padding: 0.4rem;
   background-color: transparent;
+  transition: border-bottom-color 0.2s;
 }
 
 .metaInputs input:focus {
   border-bottom-color: #4299e1;
 }
 
-.bottomActionSection {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 1rem;
-  margin-top: 3rem;
+/* 악보 스크롤 컨테이너 */
+.sheetContainer {
+  overflow-x: auto;
+  overflow-y: hidden;
+  white-space: nowrap;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
   padding-bottom: 2rem;
 }
 
-.actionButton {
-  padding: 12px 24px;
-  font-size: 1.1rem;
-  font-weight: bold;
-  color: #2d3748;
-  background-color: #edf2f7;
+.sheetContainer::-webkit-scrollbar {
+  display: none;
+}
+
+/* SheetMusicEditor 컴포넌트의 스타일 */
+.editorWrapper {
+  display: inline-block;
+  vertical-align: top;
+}
+
+.page {
+  background-color: white;
+  padding: 2.5rem;
   border: 1px solid #e2e8f0;
+  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  margin-bottom: 3rem;
+  width: 100%;
+  border-radius: 12px;
+}
+
+.sheetGrid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 24px 16px;
+  min-height: 150px;
+}
+
+.beatWrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  transition: transform 0.2s, box-shadow 0.2s, background-color 0.2s;
+}
+
+.beatWrapper.selected .beatColumn {
+  border-color: #4299e1;
+  box-shadow: 0 0 0 2px #4299e1;
+}
+
+/* 재생 중인 시트 강조 */
+.beatWrapper.playing {
+  background-color: #f0f4f8;
+  border-color: #4299e1;
+  transform: scale(1.02);
   border-radius: 8px;
+  box-shadow: 0 0 15px rgba(66, 153, 225, 0.5);
+}
+
+.beatColumn {
+  background-color: #f7fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  padding: 8px;
   cursor: pointer;
+  transition: box-shadow 0.2s, border-color 0.2s;
+}
+
+.noteGrid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 6px;
+  place-items: center;
+}
+
+.beatControls {
+  position: absolute;
+  bottom: -40px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 8px;
+  background-color: #ffffff;
+  padding: 6px;
+  border-radius: 8px;
+  z-index: 10;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e2e8f0;
+}
+
+.beatControls button {
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  border: none;
+  background-color: #f1f5f9;
+  color: #4a5568;
+  font-size: 1.4rem;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   transition: background-color 0.2s;
 }
 
-.actionButton:hover {
+.beatControls button:hover {
   background-color: #e2e8f0;
 }
 
-.downloadButton {
-  padding: 12px 24px;
-  font-size: 1.1rem;
-  font-weight: bold;
-  color: white;
-  background-color: #3182ce;
+.bottomControls {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-top: 1rem;
+  gap: 12px;
+}
+
+.addButton {
+  padding: 10px 20px;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #2d3748;
+  background-color: #e2e8f0;
   border: none;
   border-radius: 8px;
   cursor: pointer;
   transition: background-color 0.2s;
 }
 
-.downloadButton:hover {
-  background-color: #2b6cb0;
+.addButton:hover {
+  background-color: #cbd5e0;
 }
 
-.playerOpenButton {
-  padding: 12px 24px;
-  font-size: 1.1rem;
-  font-weight: bold;
-  color: white;
-  background: linear-gradient(145deg, #4facfe 0%, #00f2fe 100%);
-  border: none;
-  border-radius: 50px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 15px rgba(0, 150, 255, 0.3);
+.pageFooter {
+  display: flex;
+  justify-content: center;
+  margin-top: 2rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #a0aec0;
 }
 
-.playerOpenButton:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(0, 150, 255, 0.4);
+.sourceLink {
+  display: none;
+  text-align: center;
+  margin-top: 2rem;
+  padding-top: 1rem;
+  border-top: 1px solid #e2e8f0;
+  font-size: 0.85rem;
+  color: #718096;
+  font-family: 'Times New Roman', serif;
+}
+
+/* Palette Container */
+.paletteContainer {
+    position: fixed;
+    right: 2rem;
+    bottom: 2rem;
+    z-index: 50;
 }

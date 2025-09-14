@@ -6,6 +6,7 @@ import MusicPlayer from '@/app/components/MusicPlayer';
 import styles from './page.module.css';
 import { useTxtConverter } from '@/app/hooks/useTxtConverter';
 import { useSheetDownloader } from '@/app/hooks/useSheetDownloader';
+import { useMusicPlayer } from '@/app/hooks/useMusicPlayer';
 
 // 색상 범례 데이터
 const colorLegendData = [
@@ -26,13 +27,16 @@ export default function SkyMusicEditorPage() {
         return Array.from({ length: 18 }, createBeat);
     });
     const [isPlayerVisible, setIsPlayerVisible] = useState(false);
+    
+    const beatElementsRef = useRef([]);
 
     const jsonFileInputRef = useRef(null);
     const txtFileInputRef = useRef(null);
 
-    // 모듈화된 훅 사용
     const { txtToSheet } = useTxtConverter();
     const { handleSave, handleDownloadTxt, handleDownloadZip } = useSheetDownloader(title, composer, arranger, sheetData);
+    
+    const { isPlaying, bpm, currentBeat, setBpm, handlePlayPause, handleBeatClick, scrollerRef } = useMusicPlayer(sheetData, beatElementsRef);
 
     const handleJsonFileChange = (event) => {
         const file = event.target.files[0];
@@ -80,13 +84,27 @@ export default function SkyMusicEditorPage() {
     return (
         <main className={styles.main}>
             <header className={styles.header}>
-                <h1>🎵 Sky Music Editor</h1>
-                <p>자신만의 스카이 악보를 만들어 보세요.</p>
+                <div className={styles.headerTitleContainer}>
+                    <div className={styles.headerTitle}>
+                        <h1 className={styles.title}>🎵 Sky Music Editor</h1>
+                        <span className={styles.madeByText}>made by 진사슴</span>
+                    </div>
+                    <p className={styles.headerSubtitle}>자신만의 스카이 악보를 만들어 보세요.</p>
+                </div>
+                <div className={styles.skyStudioLinks}>
+                    <button className={styles.skyStudioButton} onClick={() => window.open('https://play.google.com/store/apps/details?id=com.Maple.SkyStudio&pli=1', '_blank')}>
+                        Sky Studio Android
+                    </button>
+                    <button className={styles.skyStudioButton} onClick={() => window.open('https://apps.apple.com/us/app/sky-studio/id1522241329', '_blank')}>
+                        Sky Studio iOS
+                    </button>
+                    <span className={styles.madeByText}>made by 단풍잎</span>
+                </div>
             </header>
 
             <div className={styles.topActionSection}>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-                    <div style={{ display: 'flex', gap: '10px' }}>
+                <div className={styles.buttonGroupWrapper}>
+                    <div className={styles.buttonGroup}>
                         <button
                             onClick={() => jsonFileInputRef.current.click()}
                             className={styles.actionButton}
@@ -97,7 +115,7 @@ export default function SkyMusicEditorPage() {
                             플래너 악보로 저장하기 (JSON)
                         </button>
                     </div>
-                    <div style={{ display: 'flex', gap: '10px' }}>
+                    <div className={styles.buttonGroup}>
                         <button
                             onClick={() => txtFileInputRef.current.click()}
                             className={styles.actionButton}
@@ -112,8 +130,8 @@ export default function SkyMusicEditorPage() {
                         </button>
                     </div>
                 </div>
-                <button onClick={() => setIsPlayerVisible(true)} className={styles.playerOpenButton}>
-                    ▶︎ 악보 연주하기
+                <button onClick={handleDownloadZip} className={styles.downloadButton}>
+                    전체 악보 다운로드 (ZIP)
                 </button>
                 <input
                     type="file"
@@ -168,13 +186,42 @@ export default function SkyMusicEditorPage() {
                     </div>
                 </div>
 
-                <SheetMusicEditor sheetData={sheetData} setSheetData={setSheetData} />
-            </div>
-
-            <div className={styles.bottomActionSection}>
-                <button onClick={handleDownloadZip} className={styles.downloadButton}>
-                    전체 악보 다운로드 (ZIP)
-                </button>
+                <div className={styles.sheetContainer} ref={scrollerRef}>
+                    <SheetMusicEditor
+                        sheetData={sheetData}
+                        setSheetData={setSheetData}
+                        isPlaying={isPlaying}
+                        currentBeat={currentBeat}
+                        onBeatClick={handleBeatClick}
+                        beatElementsRef={beatElementsRef}
+                    />
+                </div>
+                
+                <div className={styles.bottomActionSection}>
+                    <div className={styles.musicControlsContainer}>
+                        <div className={styles.musicControls}>
+                            <button onClick={handlePlayPause} className={styles.playButton}>
+                                {isPlaying ? '■' : '▶︎'}
+                            </button>
+                            <div className={styles.bpmControl}>
+                                <label>BPM: {bpm}</label>
+                                <input
+                                    type="range"
+                                    min="40"
+                                    max="240"
+                                    value={bpm}
+                                    onChange={(e) => setBpm(Number(e.target.value))}
+                                    disabled={isPlaying}
+                                />
+                            </div>
+                        </div>
+                        <div className={styles.playerOpenButtonContainer}>
+                            <button onClick={() => setIsPlayerVisible(true)} className={styles.playerOpenButton}>
+                                ▶︎ 악보 연주하기
+                            </button>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             {isPlayerVisible && (
