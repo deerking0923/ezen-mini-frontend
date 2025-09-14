@@ -1,4 +1,5 @@
 // src/app/hooks/useSheetDownloader.js
+
 import html2canvas from 'html2canvas';
 import JSZip from 'jszip';
 
@@ -70,7 +71,7 @@ export const useSheetDownloader = (title, composer, arranger, sheetData) => {
         }
     };
     
-const handleDownloadZip = async (onProgress) => {
+    const handleDownloadZip = async (onProgress) => {
         const infoForm = document.getElementById("info-form");
         const pageElements = Array.from(document.querySelectorAll(".page"));
 
@@ -79,7 +80,7 @@ const handleDownloadZip = async (onProgress) => {
         }
 
         const isConfirmed = window.confirm(
-            "다운로드를 시작하시겠습니까? 시간이 조금 오래 걸릴 수도 있습니다. 완료될때까지 페이지를 벗어나지 마세요."
+            `전체 악보 (${pageElements.length} 페이지) 다운로드를 시작하시겠습니까? 시간이 매우 오래 걸릴 수 있습니다. 완료될 때까지 페이지를 벗어나지 마세요.`
         );
         if (!isConfirmed) return;
 
@@ -93,7 +94,6 @@ const handleDownloadZip = async (onProgress) => {
         document.body.appendChild(captureContainer);
 
         try {
-            // **수정된 부분: Promise 기반의 루프를 사용하여 비동기 처리**
             const processPage = (i) => {
                 return new Promise(async (resolve, reject) => {
                     if (i >= pageElements.length) {
@@ -118,6 +118,7 @@ const handleDownloadZip = async (onProgress) => {
                         if (i === pageElements.length - 1 && sourceLink) {
                             sourceLink.style.display = "block";
                         }
+                        
                         pageWrapper.appendChild(currentPageClone);
                         captureContainer.appendChild(pageWrapper);
 
@@ -134,7 +135,6 @@ const handleDownloadZip = async (onProgress) => {
                         zip.file(`악보_${i + 1}페이지.png`, blob);
                         canvas.remove();
 
-                        // 짧은 지연 시간을 두어 브라우저 메인 스레드를 해제
                         setTimeout(() => resolve(processPage(i + 1)), 50);
 
                     } catch (error) {
@@ -145,7 +145,6 @@ const handleDownloadZip = async (onProgress) => {
 
             await processPage(0);
 
-            // ... 나머지 ZIP 파일 생성 및 다운로드 로직은 동일 ...
             onProgress({ message: "ZIP 파일 생성 중...", progress: 0 });
 
             const zipBlob = await zip.generateAsync({

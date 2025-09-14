@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import SheetMusicEditor, { NOTE_COLORS } from '@/app/components/SheetMusicEditor';
 import MusicPlayer from '@/app/components/MusicPlayer';
 import styles from './page.module.css';
@@ -27,12 +27,11 @@ export default function SkyMusicEditorPage() {
         return Array.from({ length: 18 }, createBeat);
     });
     const [isPlayerVisible, setIsPlayerVisible] = useState(false);
-    const [isDownloading, setIsDownloading] = useState(false); // 다운로드 상태 추가
-    const [downloadProgress, setDownloadProgress] = useState(0); // 다운로드 진행률 추가
-    const [downloadMessage, setDownloadMessage] = useState(''); // 다운로드 메시지 추가
+    const [isDownloading, setIsDownloading] = useState(false);
+    const [downloadProgress, setDownloadProgress] = useState(0);
+    const [downloadMessage, setDownloadMessage] = useState('');
     
     const beatElementsRef = useRef([]);
-
     const jsonFileInputRef = useRef(null);
     const txtFileInputRef = useRef(null);
 
@@ -84,7 +83,6 @@ export default function SkyMusicEditorPage() {
         event.target.value = null;
     };
 
-    // 다운로드 버튼 클릭 핸들러
     const onDownloadZipClick = () => {
         setIsDownloading(true);
         setDownloadProgress(0);
@@ -120,6 +118,18 @@ export default function SkyMusicEditorPage() {
                     <span className={styles.madeByText}>made by 단풍잎</span>
                 </div>
             </header>
+
+            {/* **새롭게 추가된 공지 패널** */}
+            <div className={styles.noticePanel}>
+                <p>
+                    ⚠️ 10페이지 이상 악보 이미지 저장(ZIP) 작업은 PC에서 이용 바랍니다. <br />
+                    (JSON이나 TXT 저장은 모바일에서도 정상 작동합니다.)
+                </p>
+                <p>
+                    20페이지가 넘어가는 캡처는 [화면 응답 버튼]이 뜨면 [대기]를 누르고 잠시만 기다려주세요. <br />
+                    (대략 20분 소요될 수 있습니다. 그 이상은 나누어 작업 바랍니다.)
+                </p>
+            </div>
 
             <div className={styles.topActionSection}>
                 <div className={styles.buttonGroupWrapper}>
@@ -231,30 +241,30 @@ export default function SkyMusicEditorPage() {
                         beatElementsRef={beatElementsRef}
                     />
                 </div>
+            </div>
                 
-                <div className={styles.bottomActionSection}>
-                    <div className={styles.musicControlsContainer}>
-                        <div className={styles.musicControls}>
-                            <button onClick={handlePlayPause} className={styles.playButton}>
-                                {isPlaying ? '■' : '▶︎'}
-                            </button>
-                            <div className={styles.bpmControl}>
-                                <label>BPM: {bpm}</label>
-                                <input
-                                    type="range"
-                                    min="40"
-                                    max="240"
-                                    value={bpm}
-                                    onChange={(e) => setBpm(Number(e.target.value))}
-                                    disabled={isPlaying}
-                                />
-                            </div>
+            <div className={styles.bottomActionSection}>
+                <div className={styles.musicControlsContainer}>
+                    <div className={styles.musicControls}>
+                        <button onClick={handlePlayPause} className={styles.playButton}>
+                            {isPlaying ? '■' : '▶︎'}
+                        </button>
+                        <div className={styles.bpmControl}>
+                            <label>BPM: {bpm}</label>
+                            <input
+                                type="range"
+                                min="40"
+                                max="240"
+                                value={bpm}
+                                onChange={(e) => setBpm(Number(e.target.value))}
+                                disabled={isPlaying}
+                            />
                         </div>
-                        <div className={styles.playerOpenButtonContainer}>
-                            <button onClick={() => setIsPlayerVisible(true)} className={styles.playerOpenButton}>
-                                ▶︎ 악보 연주하기
-                            </button>
-                        </div>
+                    </div>
+                    <div className={styles.playerOpenButtonContainer}>
+                        <button onClick={() => setIsPlayerVisible(true)} className={styles.playerOpenButton}>
+                            ▶︎ 악보 연주하기
+                        </button>
                     </div>
                 </div>
             </div>

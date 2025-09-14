@@ -568,3 +568,44 @@
     box-shadow: none;
     transform: none;
 }
+.noticePanel {
+    /* 기존 스타일 재설정 */
+    width: 100%;
+    max-width: 800px; /* 너무 길어지지 않게 최대 너비 설정 */
+    margin: 0 auto 2rem; /* 중앙 정렬 및 아래 여백 */
+    
+    /* 새로운 디자인 적용 */
+    padding: 1.5rem 2rem;
+    background-color: #ffffff; /* 흰색 배경 */
+    border: 1px solid #e2e8f0; /* 연한 회색 테두리 */
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); /* 부드러운 그림자 */
+    text-align: center; /* **가운데 정렬** */
+    line-height: 1.6;
+}
+
+.noticePanel p {
+    margin: 0;
+    font-size: 1rem;
+    color: #4a5568;
+}
+
+/* 제목 부분 강조 */
+.noticePanel p:first-child {
+    font-weight: bold;
+    color: #2d3748;
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem; /* 제목과 본문 사이 간격 */
+}
+
+/* 첫 문단 이후의 p 태그에 상단 마진 추가 */
+.noticePanel p + p {
+    margin-top: 1rem;
+}
+
+/* 아이콘 색상 및 폰트 크기 조정 */
+.noticePanel span {
+    color: #e53e3e; /* 빨간색 느낌표 */
+    font-size: 1.2rem;
+    margin-right: 0.5rem;
+}
