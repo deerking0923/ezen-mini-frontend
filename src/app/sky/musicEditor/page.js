@@ -67,9 +67,15 @@ export default function SkyMusicEditorPage() {
       return alert("오류: 캡처할 대상을 찾을 수 없습니다.");
     }
 
-    alert(
-      "다운로드를 시작합니다. 시간이 조금 걸릴 수도 있습니다. ㅠㅔ이지를 벗어나지 마세요."
+    // === 수정: alert를 confirm으로 변경 ===
+    const isConfirmed = window.confirm(
+      "다운로드를 시작하시겠습니까? 시간이 조금 걸릴 수도 있습니다. 페이지를 벗어나지 마세요."
     );
+
+    // 사용자가 '취소'를 누르면 함수를 여기서 종료
+    if (!isConfirmed) {
+      return;
+    }
 
     const zip = new JSZip();
     const mainContentWidth = document.getElementById(
@@ -130,6 +136,7 @@ export default function SkyMusicEditorPage() {
       link.download = "전체악보.zip";
       link.click();
       URL.revokeObjectURL(link.href);
+      alert("악보 다운로드가 완료되었습니다!"); 
     }
   };
 
@@ -145,7 +152,7 @@ export default function SkyMusicEditorPage() {
           onClick={() => fileInputRef.current.click()}
           className={styles.actionButton}
         >
-          악보 파일 불러오기
+          악보 파일 불러오기 (JSON)
         </button>
         <input
           type="file"
@@ -201,10 +208,10 @@ export default function SkyMusicEditorPage() {
 
       <div className={styles.bottomActionSection}>
         <button onClick={handleSave} className={styles.actionButton}>
-          악보 저장
+          악보 저장 (JSON)
         </button>
         <button onClick={handleDownload} className={styles.downloadButton}>
-          전체 악보 다운로드 (ZIP)
+          전체 악보 다운로드 (PNG)
         </button>
       </div>
     </main>
