@@ -4,56 +4,57 @@
   align-items: center;
 }
 
-.sheetContainer {
+.page {
+  background-color: white;
+  padding: 2.5rem;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  margin-bottom: 3rem;
+  width: 100%;
+}
+
+.sheetGrid {
   display: grid;
   grid-template-columns: repeat(6, 1fr);
-  gap: 16px;
-  padding: 20px;
-  background-color: white;
-  border-radius: 8px;
-  border: 1px solid #e2e8f0;
-  width: 100%;
-  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  gap: 24px 16px;
+  min-height: 150px;
+}
+
+.beatWrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
 .beatColumn {
-  position: relative; /* 조작 버튼의 기준점 */
   background-color: #f7fafc;
   border: 1px solid #e2e8f0;
   border-radius: 6px;
   padding: 8px;
-  min-width: 0;
-  cursor: pointer; /* 클릭할 수 있음을 표시 */
+  cursor: pointer;
   transition: box-shadow 0.2s, border-color 0.2s;
 }
 
-/* === 새로운 스타일: 선택된 시트의 테두리 강조 === */
-.beatColumn.selected {
-  border-color: #4299e1;
-  box-shadow: 0 0 0 2px #4299e1;
-}
-
-/* === 노트 정렬 문제 해결: Grid 정렬 속성 추가 === */
 .noteGrid {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   gap: 6px;
-  place-items: center; /* 그리드 아이템들을 중앙에 배치 */
-  cursor: default; /* 노트 영역은 기본 커서 사용 */
+  place-items: center;
 }
 
-/* === 조작 버튼 스타일 변경: 툴팁처럼 보이도록 수정 === */
 .beatControls {
   position: absolute;
-  bottom: 8px;
+  bottom: -40px;
   left: 50%;
-  transform: translateX(-50%); /* 중앙 정렬 */
+  transform: translateX(-50%);
   display: flex;
   gap: 8px;
-  background-color: rgba(45, 55, 72, 0.9); /* 어두운 반투명 배경 */
+  background-color: #2d3748;
   padding: 6px;
   border-radius: 8px;
   z-index: 10;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
 }
 
 .beatControls button {
@@ -71,16 +72,19 @@
   justify-content: center;
   transition: background-color 0.2s;
 }
+
 .beatControls button:hover {
   background-color: #718096;
 }
 
-/* ... 하단 .controls, .addButton 스타일은 이전과 동일 ... */
-.controls {
-  margin-top: 24px;
+.bottomControls {
   display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-top: 1rem;
   gap: 12px;
 }
+
 .addButton {
   padding: 10px 20px;
   font-size: 1rem;
@@ -90,7 +94,76 @@
   border: none;
   border-radius: 8px;
   cursor: pointer;
+  transition: background-color 0.2s;
 }
+
 .addButton:hover {
   background-color: #cbd5e0;
+}
+
+.pageFooter {
+  display: flex;
+  justify-content: center;
+  margin-top: 2rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #a0aec0;
+}
+
+.sourceLink {
+  display: none; /* 평소에는 숨겨져 있다가 캡처 시 JS로 제어 */
+  text-align: center;
+  margin-top: 2rem;
+  font-size: 0.85rem;
+  color: #718096;
+  font-family: 'Times New Roman', serif;
+}/* ... editorWrapper, page, sheetGrid, beatWrapper 등은 이전과 동일 ... */
+
+/* === 툴팁 형태의 조작 버튼 스타일 === */
+.beatControls {
+  position: absolute;
+  bottom: -40px; /* 시트 바깥 아래에 위치 */
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 8px;
+  background-color: #ffffff; /* 수정: 배경 흰색 */
+  padding: 6px;
+  border-radius: 8px;
+  z-index: 10;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  border: 1px solid #e2e8f0; /* 추가: 테두리 */
+}
+
+.beatControls button {
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  border: none;
+  background-color: #f1f5f9; /* 수정: 버튼 배경 회색 */
+  color: #4a5568;             /* 수정: 아이콘 색상 */
+  font-size: 1.4rem;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s;
+}
+
+.beatControls button:hover {
+  background-color: #e2e8f0;
+}
+/* ... bottomControls, addButton, pageFooter 등은 이전과 동일 ... */
+
+/* === 출처 스타일 수정 === */
+.sourceLink {
+  display: none; /* 평소에는 숨김. 캡처 시 JS로 block 처리 */
+  text-align: center;
+  margin-top: 2rem;
+  padding-top: 1rem;
+  border-top: 1px solid #e2e8f0;
+  font-size: 0.85rem;
+  color: #718096;
+  font-family: 'Times New Roman', serif;
 }

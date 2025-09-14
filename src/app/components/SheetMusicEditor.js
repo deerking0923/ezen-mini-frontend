@@ -1,51 +1,52 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { Fragment, useState } from 'react';
 import NoteButton from './NoteButton';
 import ColorPalette from './ColorPalette';
 import styles from './SheetMusicEditor.module.css';
 
-// ... (NOTE_COLORS, createNote, createBeat 함수는 이전과 동일)
+// --- 설정 ---
 const BEATS_PER_LINE = 6;
+const LINES_PER_PAGE = 10;
+const BEATS_PER_PAGE = BEATS_PER_LINE * LINES_PER_PAGE;
+const INITIAL_BEATS = 1;
 const TOTAL_NOTES = 15;
-const INITIAL_BEATS = 12;
 
+// --- 색상 정의 ---
 export const NOTE_COLORS = {
   default: { fill: '#63b3ed', stroke: '#4299e1', id: 'default' },
   half: { fill: '#f56565', stroke: '#c53030', id: 'half' },
   two: { fill: '#f6e05e', stroke: '#d69e2e', id: 'two' },
-  three: { fill: '#48bb78', stroke: '#2f855a', id: 'three' },
-  four: { fill: '#4299e1', stroke: '#2b6cb0', id: 'four' },
+  three: { fill: '#f6ad55', stroke: '#dd6b20', id: 'three' },
+  four: { fill: '#48bb78', stroke: '#2f855a', id: 'four' },
 };
 
+// --- 헬퍼 함수 ---
 const createNote = () => ({ isActive: false, colorId: 'default' });
 const createBeat = () => Array.from({ length: TOTAL_NOTES }, createNote);
 
+const chunkArray = (array, size) => {
+  const chunkedArr = [];
+  for (let i = 0; i < array.length; i += size) {
+    chunkedArr.push(array.slice(i, i + size));
+  }
+  return chunkedArr;
+};
 
+// --- 컴포넌트 ---
 export default function SheetMusicEditor() {
   const [sheetData, setSheetData] = useState(
     Array.from({ length: INITIAL_BEATS }, createBeat)
   );
   const [currentColorId, setCurrentColorId] = useState('default');
-  // === 새로운 상태: 현재 선택된 시트의 인덱스를 저장 ===
   const [selectedBeatIndex, setSelectedBeatIndex] = useState(null);
 
-  // 시트의 배경(빈 공간)을 클릭했을 때 호출되는 함수
-  const handleBeatSelect = (e, beatIndex) => {
-    // 이벤트 버블링을 막기 위해, 클릭된 요소가 핸들러가 달린 요소 자신일 때만 실행
-    if (e.target === e.currentTarget) {
-      // 이미 선택된 시트를 다시 클릭하면 선택 해제(토글)
-      setSelectedBeatIndex(prevIndex => prevIndex === beatIndex ? null : beatIndex);
-    }
-  };
-
   const toggleNote = (beatIndex, noteIndex) => {
-    // 노트 클릭 시에는 시트 선택이 해제되도록 함
-    setSelectedBeatIndex(null);
+    setSelectedBeatIndex(beatIndex);
     setSheetData(currentSheetData => {
-      // ... (내부 로직은 이전과 동일)
-      const newSheetData = currentSheetData.map(beat => beat.map(note => ({...note})));
+      const newSheetData = currentSheetData.map(beat => beat.map(note => ({ ...note })));
       const note = newSheetData[beatIndex][noteIndex];
+
       if (note.isActive && note.colorId === currentColorId) {
         note.isActive = false;
       } else {
@@ -62,9 +63,9 @@ export default function SheetMusicEditor() {
       newSheetData.splice(beatIndex, 1);
       return newSheetData;
     });
-    setSelectedBeatIndex(null); // 삭제 후 선택 해제
+    setSelectedBeatIndex(null);
   };
-  
+
   const insertBeatAfter = (beatIndex) => {
     setSheetData(currentSheetData => {
       const newSheetData = [...currentSheetData];
@@ -73,55 +74,140 @@ export default function SheetMusicEditor() {
     });
   };
 
-  // === 새로운 기능: 맨 뒤에 시트 1개 추가 ===
   const addBeat = () => {
     setSheetData(currentSheetData => [...currentSheetData, createBeat()]);
   };
-  
+
   const addLine = () => {
     const newLine = Array.from({ length: BEATS_PER_LINE }, createBeat);
     setSheetData(currentSheetData => [...currentSheetData, ...newLine]);
   };
 
+  const pages = chunkArray(sheetData, BEATS_PER_PAGE);
+  const totalPageCount = Math.max(1, pages.length);
+
   return (
-    <div className={styles.editorWrapper}>
-      <div className={styles.sheetContainer}>
-        {sheetData.map((beat, beatIndex) => (
-          <div 
-            key={beatIndex} 
-            className={`${styles.beatColumn} ${selectedBeatIndex === beatIndex ? styles.selected : ''}`}
-            onClick={(e) => handleBeatSelect(e, beatIndex)}
-          >
-            <div className={styles.noteGrid}>
-              {beat.map((note, noteIndex) => (
-                <NoteButton
-                  key={noteIndex}
-                  noteIndex={noteIndex}
-                  isActive={note.isActive}
-                  color={NOTE_COLORS[note.colorId]}
-                  onClick={() => toggleNote(beatIndex, noteIndex)}
-                />
-              ))}
+    <div className={styles.editorWrapper} onClick={(e) => {
+      if (!e.target.closest(`.${styles.beatWrapper}`)) {
+        setSelectedBeatIndex(null);
+      }
+    }}>
+      {/* 1페이지 렌더링 */}
+      <div className={`${styles.page} page`}>
+        <div className={styles.sheetGrid}>
+          {pages[0] && pages[0].map((beat, beatIndexInPage) => {
+            const globalIndex = beatIndexInPage;
+            return (
+              <div
+                key={globalIndex}
+                className={styles.beatWrapper}
+                onClick={(e) => e.stopPropagation()}
+              >
+                <div
+                  className={styles.beatColumn}
+                  onClick={() => setSelectedBeatIndex(globalIndex)}
+                >
+                  <div className={styles.noteGrid}>
+                    {beat.map((note, noteIndex) => (
+                      <NoteButton
+                        key={noteIndex}
+                        noteIndex={noteIndex}
+                        isActive={note.isActive}
+                        color={NOTE_COLORS[note.colorId] || NOTE_COLORS.default}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          toggleNote(globalIndex, noteIndex);
+                        }}
+                      />
+                    ))}
+                  </div>
+                </div>
+                {selectedBeatIndex === globalIndex && (
+                  <div className={`${styles.beatControls} beatControls`}>
+                    <button onClick={(e) => { e.stopPropagation(); insertBeatAfter(globalIndex); }}>+</button>
+                    <button onClick={(e) => { e.stopPropagation(); deleteBeat(globalIndex); }}>-</button>
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+        <div className={styles.pageFooter}>
+          {/* 수정: totalPages -> totalPageCount */}
+          <span>1 / {totalPageCount}</span>
+        </div>
+        {/* 수정: totalPages -> totalPageCount */}
+        {totalPageCount === 1 && (
+          <div className={`${styles.sourceLink} sourceLink`}>
+            Made with Sky Music Editor at https://korea-sky-planner.com/
+          </div>
+        )}
+      </div>
+
+      {/* 2페이지 이상 렌더링 */}
+      {pages.slice(1).map((pageBeats, pageIndex) => {
+        const actualPageIndex = pageIndex + 1;
+        return (
+          <div key={actualPageIndex} className={`${styles.page} page`}>
+            <div className={styles.sheetGrid}>
+              {pageBeats.map((beat, beatIndexInPage) => {
+                const globalIndex = actualPageIndex * BEATS_PER_PAGE + beatIndexInPage;
+                return (
+                  <div
+                    key={globalIndex}
+                    className={styles.beatWrapper}
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    <div
+                      className={styles.beatColumn}
+                      onClick={() => setSelectedBeatIndex(globalIndex)}
+                    >
+                      <div className={styles.noteGrid}>
+                        {beat.map((note, noteIndex) => (
+                          <NoteButton
+                            key={noteIndex}
+                            noteIndex={noteIndex}
+                            isActive={note.isActive}
+                            color={NOTE_COLORS[note.colorId] || NOTE_COLORS.default}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              toggleNote(globalIndex, noteIndex);
+                            }}
+                          />
+                        ))}
+                      </div>
+                    </div>
+                    {selectedBeatIndex === globalIndex && (
+                      <div className={`${styles.beatControls} beatControls`}>
+                        <button onClick={(e) => { e.stopPropagation(); insertBeatAfter(globalIndex); }}>+</button>
+                        <button onClick={(e) => { e.stopPropagation(); deleteBeat(globalIndex); }}>-</button>
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
             </div>
-            
-            {/* 선택된 시트에만 조작 버튼이 보이도록 조건부 렌더링 */}
-            {selectedBeatIndex === beatIndex && (
-              <div className={styles.beatControls}>
-                <button onClick={() => insertBeatAfter(beatIndex)} title="뒤에 시트 추가">+</button>
-                <button onClick={() => deleteBeat(beatIndex)} title="시트 삭제">×</button>
+            <div className={styles.pageFooter}>
+              {/* 수정: totalPages -> totalPageCount */}
+              <span>{actualPageIndex + 1} / {totalPageCount}</span>
+            </div>
+            {/* 수정: totalPages -> totalPageCount */}
+            {actualPageIndex === totalPageCount - 1 && (
+              <div className={`${styles.sourceLink} sourceLink`}>
+                Made with Sky Music Editor at https://korea-sky-planner.com/
               </div>
             )}
           </div>
-        ))}
-      </div>
-      
-      {/* === '+1 시트 추가' 버튼 복구 === */}
-      <div className={styles.controls}>
+        );
+      })}
+
+      <div className={`${styles.bottomControls} bottomControls`} onClick={(e) => e.stopPropagation()}>
         <button onClick={addBeat} className={styles.addButton}>+1 시트 추가</button>
         <button onClick={addLine} className={styles.addButton}>+1 줄 추가</button>
       </div>
-
-      <ColorPalette selectedColor={currentColorId} onColorSelect={setCurrentColorId} />
+      <div className={`${styles.paletteContainer} paletteContainer`} onClick={(e) => e.stopPropagation()}>
+        <ColorPalette selectedColor={currentColorId} onColorSelect={setCurrentColorId} />
+      </div>
     </div>
   );
 }
