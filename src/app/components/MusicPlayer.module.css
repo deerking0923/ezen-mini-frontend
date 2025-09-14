@@ -41,6 +41,7 @@
 }
 .closeButton:hover { color: white; }
 
+/* === 수정: 스크롤바 복구 === */
 .scroller {
   flex-grow: 1;
   position: relative;
@@ -67,21 +68,24 @@
   pointer-events: none;
 }
 
+/* === 수정: 시트 너비에 맞게 패딩값 수정 === */
 .sheetTrack {
   display: flex;
   gap: 1.5rem;
   height: 100%;
-  padding: 0 calc(50% - 110px);
+  padding: 0 calc(50% - 130px); /* 50% - (시트너비/2) */
 }
 
+/* === 수정: 시트 비율 조정 (가로로 길게) === */
 .beatColumn {
   flex-shrink: 0;
-  width: 220px;
-  height: 100%;
+  width: 260px; /* 너비 대폭 증가 */
+  height: 100%; /* 부모 높이(약 150-200px)를 따름 */
+  max-height: 180px; /* 최대 높이 제한 */
   background-color: #21262d;
   border: 1px solid #30363d;
-  border-radius: 8px;
-  padding: 1rem;
+  border-radius: 12px; /* 좀 더 부드럽게 */
+  padding: 1rem; /* 내부 여백 증가 */
   transition: all 0.3s ease;
   cursor: pointer;
   display: flex;
@@ -100,7 +104,7 @@
   height: 100%;
   grid-template-columns: repeat(5, 1fr);
   grid-template-rows: repeat(3, 1fr);
-  gap: 8px;
+  gap: 10px; /* 노트 간격 증가 */
   place-items: center;
 }
 

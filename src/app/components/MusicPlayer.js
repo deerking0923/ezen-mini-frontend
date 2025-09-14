@@ -7,7 +7,6 @@ import styles from './MusicPlayer.module.css';
 
 export default function MusicPlayer({ sheetData, title, onClose }) {
   const [isPlaying, setIsPlaying] = useState(false);
-  // === 수정: BPM 기본값을 80으로 변경 ===
   const [bpm, setBpm] = useState(80);
   const [currentBeat, setCurrentBeat] = useState(-1);
   const scrollerRef = useRef(null);
@@ -24,16 +23,8 @@ export default function MusicPlayer({ sheetData, title, onClose }) {
 
     if (isPlaying) {
       const startBeat = currentBeat === -1 ? 0 : currentBeat;
-      
-      // 즉시 시작 비트로 이동 및 하이라이트
+      // 재생 시작 시 즉시 첫 비트 하이라이트
       setCurrentBeat(startBeat);
-      const targetNode = beatElementsRef.current[startBeat];
-      if (targetNode && scrollerRef.current) {
-        scrollerRef.current.scrollTo({
-          left: targetNode.offsetLeft - scrollerRef.current.offsetWidth / 2 + targetNode.offsetWidth / 2,
-          behavior: 'smooth',
-        });
-      }
 
       // 일정 간격으로 다음 비트로 이동
       beatHighlightTimerRef.current = setInterval(() => {
@@ -49,10 +40,10 @@ export default function MusicPlayer({ sheetData, title, onClose }) {
     }
     
     return () => clearInterval(beatHighlightTimerRef.current);
-  }, [isPlaying, secondsPerBeat, sheetData.length]);
+  }, [isPlaying, secondsPerBeat, sheetData.length, currentBeat]);
 
 
-  // currentBeat가 변경될 때마다 스크롤
+  // currentBeat가 변경될 때마다 해당 위치로 부드럽게 스크롤
   useEffect(() => {
     if (currentBeat >= 0 && scrollerRef.current && isPlaying) {
       const targetNode = beatElementsRef.current[currentBeat];
@@ -70,6 +61,7 @@ export default function MusicPlayer({ sheetData, title, onClose }) {
   };
   
   const handleBeatClick = (index) => {
+    // 재생 중이 아닐 때만 시작 지점 변경 가능
     if (!isPlaying) {
       setCurrentBeat(index);
       const scroller = scrollerRef.current;
@@ -78,7 +70,7 @@ export default function MusicPlayer({ sheetData, title, onClose }) {
         // 클릭 시에는 즉시 이동
         scroller.scrollTo({
           left: targetNode.offsetLeft - scroller.offsetWidth / 2 + targetNode.offsetWidth / 2,
-          behavior: 'instant',
+          behavior: 'auto', // 'instant' 대신 'auto'가 더 자연스러울 수 있음
         });
       }
     }
@@ -134,11 +126,9 @@ export default function MusicPlayer({ sheetData, title, onClose }) {
               }}
               disabled={isPlaying}
             />
-            
           </div>
         </div>
       </div>
     </div>
   );
 }
-            
