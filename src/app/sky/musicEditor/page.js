@@ -1,11 +1,11 @@
 'use client';
 
 import React, { useState, useRef } from 'react';
-import html2canvas from 'html2canvas';
-import JSZip from 'jszip';
 import SheetMusicEditor, { NOTE_COLORS } from '@/app/components/SheetMusicEditor';
 import MusicPlayer from '@/app/components/MusicPlayer';
 import styles from './page.module.css';
+import { useTxtConverter } from '@/app/hooks/useTxtConverter';
+import { useSheetDownloader } from '@/app/hooks/useSheetDownloader';
 
 // 색상 범례 데이터
 const colorLegendData = [
@@ -15,49 +15,6 @@ const colorLegendData = [
     { id: 'three', name: '3박' },
     { id: 'four', name: '4박' },
 ];
-
-// TXT 파일 파싱 및 악보 데이터 변환 유틸리티 함수
-const parseTxtFileToSheet = (fileContent) => {
-    try {
-        const data = JSON.parse(fileContent)[0]; // TXT 파일 내용이 배열 안의 객체이므로 첫 번째 요소를 가져옵니다.
-        const { bpm, bitsPerPage, songNotes, name, author, transcribedBy } = data;
-
-        const msPerBeat = 60000 / bpm;
-        const numBeatsPerBlock = 16;
-        const numKeys = 15;
-        
-        // 최대 악보 길이를 계산 (모든 노트가 들어갈 만큼 충분히 크게)
-        const maxTime = Math.max(...songNotes.map(note => note.time), 0);
-        const numRows = Math.ceil(maxTime / msPerBeat) + 1;
-
-        // 새 악보 데이터 초기화
-        const newSheetData = Array.from({ length: numRows }, () =>
-            Array.from({ length: numKeys }, () => ({ isActive: false, colorId: "default" }))
-        );
-
-        // 노트 데이터 변환
-        songNotes.forEach(note => {
-            const { time, key } = note;
-            const rowIndex = Math.floor(time / msPerBeat);
-            const keyIndex = parseInt(key.split('Key')[1]);
-
-            if (rowIndex >= 0 && rowIndex < newSheetData.length && keyIndex >= 0 && keyIndex < numKeys) {
-                newSheetData[rowIndex][keyIndex].isActive = true;
-                // colorId는 TXT 파일에 정보가 없으므로 'default'로 설정
-            }
-        });
-
-        return {
-            title: name,
-            composer: author,
-            arranger: transcribedBy,
-            sheetData: newSheetData,
-        };
-    } catch (e) {
-        console.error("파일 파싱 오류:", e);
-        return null;
-    }
-};
 
 export default function SkyMusicEditorPage() {
     const [title, setTitle] = useState('');
@@ -73,18 +30,9 @@ export default function SkyMusicEditorPage() {
     const jsonFileInputRef = useRef(null);
     const txtFileInputRef = useRef(null);
 
-    const handleSave = () => {
-        const saveData = { title, composer, arranger, sheetData };
-        const jsonString = JSON.stringify(saveData, null, 2);
-        const blob = new Blob([jsonString], { type: "application/json" });
-        const url = URL.createObjectURL(blob);
-
-        const link = document.createElement("a");
-        link.href = url;
-        link.download = `${title || "sky-sheet"}.json`;
-        link.click();
-        URL.revokeObjectURL(url);
-    };
+    // 모듈화된 훅 사용
+    const { txtToSheet } = useTxtConverter();
+    const { handleSave, handleDownloadTxt, handleDownloadZip } = useSheetDownloader(title, composer, arranger, sheetData);
 
     const handleJsonFileChange = (event) => {
         const file = event.target.files[0];
@@ -113,95 +61,21 @@ export default function SkyMusicEditorPage() {
 
         const reader = new FileReader();
         reader.onload = (e) => {
-            const result = parseTxtFileToSheet(e.target.result);
-            if (result) {
-                setTitle(result.title);
-                setComposer(result.composer);
-                setArranger(result.arranger);
-                setSheetData(result.sheetData);
+            const result = txtToSheet(e.target.result);
+            // 변환 성공 여부를 확인하여 오류를 방지
+            if (result.success) {
+                const { title, composer, arranger, sheetData } = result.data;
+                setTitle(title);
+                setComposer(composer);
+                setArranger(arranger);
+                setSheetData(sheetData);
                 alert("TXT 파일을 악보로 성공적으로 변환했습니다.");
-                // 변환된 JSON 파일을 자동으로 다운로드
-                handleSave(); 
             } else {
                 alert("오류: 유효하지 않은 TXT 파일입니다.");
             }
         };
         reader.readAsText(file);
         event.target.value = null;
-    };
-
-    const handleDownload = async () => {
-        const infoForm = document.getElementById("info-form");
-        const pageElements = Array.from(document.querySelectorAll(".page"));
-
-        if (!infoForm || pageElements.length === 0) {
-            return alert("오류: 캡처할 대상을 찾을 수 없습니다.");
-        }
-
-        const isConfirmed = window.confirm(
-            "다운로드를 시작하시겠습니까? 시간이 조금 오래 걸릴 수도 있습니다."
-        );
-        if (!isConfirmed) return;
-
-        const zip = new JSZip();
-        const mainContentWidth = document.getElementById("main-content-to-capture").offsetWidth;
-
-        const captureContainer = document.createElement("div");
-        captureContainer.style.position = "absolute";
-        captureContainer.style.left = "-9999px";
-        captureContainer.style.top = "0px";
-        document.body.appendChild(captureContainer);
-
-        try {
-            for (let i = 0; i < pageElements.length; i++) {
-                captureContainer.innerHTML = "";
-
-                const pageWrapper = document.createElement("div");
-                pageWrapper.style.width = `${mainContentWidth}px`;
-                pageWrapper.style.padding = "2rem";
-                pageWrapper.style.background = "#f7fafc";
-
-                if (i === 0) {
-                    pageWrapper.appendChild(infoForm.cloneNode(true));
-                }
-
-                const currentPageClone = pageElements[i].cloneNode(true);
-                const sourceLink = currentPageClone.querySelector(".sourceLink");
-
-                if (i === pageElements.length - 1 && sourceLink) {
-                    sourceLink.style.display = "block";
-                }
-
-                pageWrapper.appendChild(currentPageClone);
-                captureContainer.appendChild(pageWrapper);
-
-                const canvas = await html2canvas(pageWrapper, {
-                    scale: 2,
-                    useCORS: true,
-                    backgroundColor: null,
-                });
-                const blob = await new Promise((resolve) =>
-                    canvas.toBlob(resolve, "image/png")
-                );
-
-                zip.file(`악보_${i + 1}페이지.png`, blob);
-            }
-        } catch (error) {
-            console.error("캡처 중 오류 발생:", error);
-            alert("죄송합니다. 악보 캡처 중 오류가 발생했습니다.");
-        } finally {
-            document.body.removeChild(captureContainer);
-        }
-
-        if (Object.keys(zip.files).length > 0) {
-            const zipBlob = await zip.generateAsync({ type: "blob" });
-            const link = document.createElement("a");
-            link.href = URL.createObjectURL(zipBlob);
-            link.download = "전체악보.zip";
-            link.click();
-            URL.revokeObjectURL(link.href);
-            alert("악보 다운로드가 완료되었습니다!");
-        }
     };
 
     return (
@@ -217,13 +91,19 @@ export default function SkyMusicEditorPage() {
                         onClick={() => jsonFileInputRef.current.click()}
                         className={styles.actionButton}
                     >
-                        악보 파일 불러오기
+                        기존 악보 불러오기 (JSON)
                     </button>
                     <button
                         onClick={() => txtFileInputRef.current.click()}
                         className={styles.actionButton}
                     >
-                        TXT 변환 & 다운로드
+                        Sky Studio 악보 가져오기
+                    </button>
+                    <button
+                        onClick={() => handleDownloadTxt()}
+                        className={styles.actionButton}
+                    >
+                        Sky Studio 악보로 만들기
                     </button>
                     <button onClick={() => setIsPlayerVisible(true)} className={styles.playerOpenButton}>
                         ▶︎ 악보 연주하기
@@ -287,9 +167,9 @@ export default function SkyMusicEditorPage() {
 
             <div className={styles.bottomActionSection}>
                 <button onClick={handleSave} className={styles.actionButton}>
-                    악보 저장
+                    악보 저장(JSON)
                 </button>
-                <button onClick={handleDownload} className={styles.downloadButton}>
+                <button onClick={handleDownloadZip} className={styles.downloadButton}>
                     전체 악보 다운로드 (ZIP)
                 </button>
             </div>
