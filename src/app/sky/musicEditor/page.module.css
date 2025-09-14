@@ -11,7 +11,22 @@
   text-align: center;
   margin-bottom: 2rem;
 }
-.header h1 { font-size: 2.5rem; margin-bottom: 0.5rem; }
+
+.header h1 {
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+}
+
+/* === 추가: 상단 불러오기 섹션 스타일 === */
+.loadSection {
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  background-color: #f7fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  display: flex;
+  justify-content: center;
+}
 
 .infoForm {
   background-color: white;
@@ -22,31 +37,78 @@
 }
 
 .titleInput {
-  font-size: 2.2rem; font-weight: bold; text-align: center;
-  width: 100%; padding-bottom: 0.5rem; margin-bottom: 2rem;
-  color: #2d3748; border: none; outline: none; background-color: transparent;
+  font-size: 2.2rem;
+  font-weight: bold;
+  text-align: center;
+  width: 100%;
+  padding-bottom: 0.5rem;
+  margin-bottom: 2rem;
+  color: #2d3748;
+  border: none;
+  outline: none;
+  background-color: transparent;
 }
 .titleInput::placeholder { color: #cbd5e0; }
 
 .metaInputs {
-  display: flex; justify-content: space-between; gap: 2rem;
+  display: flex;
+  justify-content: space-between;
+  gap: 2rem;
 }
 .metaInputs label {
-  font-size: 0.9rem; color: #4a5568; display: flex;
-  align-items: center; gap: 0.5rem;
+  font-size: 0.9rem;
+  color: #4a5568;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 .metaInputs input {
-  font-size: 0.9rem; border: none; border-bottom: 1px solid #e2e8f0;
-  outline: none; padding: 0.4rem; background-color: transparent;
+  font-size: 0.9rem;
+  border: none;
+  border-bottom: 1px solid #e2e8f0;
+  outline: none;
+  padding: 0.4rem;
+  background-color: transparent;
 }
 .metaInputs input:focus { border-bottom-color: #4299e1; }
 
-.downloadSection {
-  display: flex; justify-content: center; margin-top: 3rem; padding-bottom: 2rem;
+/* === 수정: 하단 액션 버튼 섹션 스타일 === */
+.bottomActionSection {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 3rem;
+  padding-bottom: 2rem;
 }
+
+.actionButton {
+  padding: 12px 24px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #2d3748;
+  background-color: #edf2f7;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+.actionButton:hover {
+  background-color: #e2e8f0;
+}
+
 .downloadButton {
-  padding: 12px 24px; font-size: 1.1rem; font-weight: bold;
-  color: white; background-color: #3182ce; border: none;
-  border-radius: 8px; cursor: pointer; transition: background-color 0.2s;
+  padding: 12px 24px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: white;
+  background-color: #3182ce;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s;
 }
-.downloadButton:hover { background-color: #2b6cb0; }
+.downloadButton:hover {
+  background-color: #2b6cb0;
+}

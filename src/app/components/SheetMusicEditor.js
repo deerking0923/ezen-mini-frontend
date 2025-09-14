@@ -9,7 +9,6 @@ import styles from './SheetMusicEditor.module.css';
 const BEATS_PER_LINE = 6;
 const LINES_PER_PAGE = 10;
 const BEATS_PER_PAGE = BEATS_PER_LINE * LINES_PER_PAGE;
-const INITIAL_BEATS = 1;
 const TOTAL_NOTES = 15;
 
 // --- 색상 정의 ---
@@ -34,10 +33,7 @@ const chunkArray = (array, size) => {
 };
 
 // --- 컴포넌트 ---
-export default function SheetMusicEditor() {
-  const [sheetData, setSheetData] = useState(
-    Array.from({ length: INITIAL_BEATS }, createBeat)
-  );
+export default function SheetMusicEditor({ sheetData, setSheetData }) {
   const [currentColorId, setCurrentColorId] = useState('default');
   const [selectedBeatIndex, setSelectedBeatIndex] = useState(null);
 
@@ -85,6 +81,9 @@ export default function SheetMusicEditor() {
 
   const pages = chunkArray(sheetData, BEATS_PER_PAGE);
   const totalPageCount = Math.max(1, pages.length);
+  
+  // 1페이지에 해당하는 시트들 (항상 존재)
+  const firstPageBeats = pages[0] || [];
 
   return (
     <div className={styles.editorWrapper} onClick={(e) => {
@@ -95,7 +94,7 @@ export default function SheetMusicEditor() {
       {/* 1페이지 렌더링 */}
       <div className={`${styles.page} page`}>
         <div className={styles.sheetGrid}>
-          {pages[0] && pages[0].map((beat, beatIndexInPage) => {
+          {firstPageBeats.map((beat, beatIndexInPage) => {
             const globalIndex = beatIndexInPage;
             return (
               <div
@@ -123,7 +122,7 @@ export default function SheetMusicEditor() {
                   </div>
                 </div>
                 {selectedBeatIndex === globalIndex && (
-                  <div className={`${styles.beatControls} beatControls`}>
+                  <div className={styles.beatControls}>
                     <button onClick={(e) => { e.stopPropagation(); insertBeatAfter(globalIndex); }}>+</button>
                     <button onClick={(e) => { e.stopPropagation(); deleteBeat(globalIndex); }}>-</button>
                   </div>
@@ -133,10 +132,8 @@ export default function SheetMusicEditor() {
           })}
         </div>
         <div className={styles.pageFooter}>
-          {/* 수정: totalPages -> totalPageCount */}
           <span>1 / {totalPageCount}</span>
         </div>
-        {/* 수정: totalPages -> totalPageCount */}
         {totalPageCount === 1 && (
           <div className={`${styles.sourceLink} sourceLink`}>
             Made with Sky Music Editor at https://korea-sky-planner.com/
@@ -178,7 +175,7 @@ export default function SheetMusicEditor() {
                       </div>
                     </div>
                     {selectedBeatIndex === globalIndex && (
-                      <div className={`${styles.beatControls} beatControls`}>
+                      <div className={styles.beatControls}>
                         <button onClick={(e) => { e.stopPropagation(); insertBeatAfter(globalIndex); }}>+</button>
                         <button onClick={(e) => { e.stopPropagation(); deleteBeat(globalIndex); }}>-</button>
                       </div>
@@ -188,10 +185,8 @@ export default function SheetMusicEditor() {
               })}
             </div>
             <div className={styles.pageFooter}>
-              {/* 수정: totalPages -> totalPageCount */}
               <span>{actualPageIndex + 1} / {totalPageCount}</span>
             </div>
-            {/* 수정: totalPages -> totalPageCount */}
             {actualPageIndex === totalPageCount - 1 && (
               <div className={`${styles.sourceLink} sourceLink`}>
                 Made with Sky Music Editor at https://korea-sky-planner.com/
@@ -201,11 +196,11 @@ export default function SheetMusicEditor() {
         );
       })}
 
-      <div className={`${styles.bottomControls} bottomControls`} onClick={(e) => e.stopPropagation()}>
+      <div className={styles.bottomControls} onClick={(e) => e.stopPropagation()}>
         <button onClick={addBeat} className={styles.addButton}>+1 시트 추가</button>
         <button onClick={addLine} className={styles.addButton}>+1 줄 추가</button>
       </div>
-      <div className={`${styles.paletteContainer} paletteContainer`} onClick={(e) => e.stopPropagation()}>
+      <div className={styles.paletteContainer} onClick={(e) => e.stopPropagation()}>
         <ColorPalette selectedColor={currentColorId} onColorSelect={setCurrentColorId} />
       </div>
     </div>
