@@ -62,7 +62,6 @@ export default function SkyMusicEditorPage() {
         const reader = new FileReader();
         reader.onload = (e) => {
             const result = txtToSheet(e.target.result);
-            // 변환 성공 여부를 확인하여 오류를 방지
             if (result.success) {
                 const { title, composer, arranger, sheetData } = result.data;
                 setTitle(title);
@@ -86,29 +85,36 @@ export default function SkyMusicEditorPage() {
             </header>
 
             <div className={styles.topActionSection}>
-                <div style={{ display: 'flex', gap: '10px' }}>
-                    <button
-                        onClick={() => jsonFileInputRef.current.click()}
-                        className={styles.actionButton}
-                    >
-                        기존 악보 불러오기 (JSON)
-                    </button>
-                    <button
-                        onClick={() => txtFileInputRef.current.click()}
-                        className={styles.actionButton}
-                    >
-                        Sky Studio 악보 가져오기
-                    </button>
-                    <button
-                        onClick={() => handleDownloadTxt()}
-                        className={styles.actionButton}
-                    >
-                        Sky Studio 악보로 만들기
-                    </button>
-                    <button onClick={() => setIsPlayerVisible(true)} className={styles.playerOpenButton}>
-                        ▶︎ 악보 연주하기
-                    </button>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                    <div style={{ display: 'flex', gap: '10px' }}>
+                        <button
+                            onClick={() => jsonFileInputRef.current.click()}
+                            className={styles.actionButton}
+                        >
+                            플래너 악보 불러오기 (JSON)
+                        </button>
+                        <button onClick={handleSave} className={styles.actionButton}>
+                            플래너 악보로 저장하기 (JSON)
+                        </button>
+                    </div>
+                    <div style={{ display: 'flex', gap: '10px' }}>
+                        <button
+                            onClick={() => txtFileInputRef.current.click()}
+                            className={styles.actionButton}
+                        >
+                            Sky Studio 악보 가져오기 (TXT)
+                        </button>
+                        <button
+                            onClick={() => handleDownloadTxt()}
+                            className={styles.actionButton}
+                        >
+                            Sky Studio 악보로 만들기 (TXT)
+                        </button>
+                    </div>
                 </div>
+                <button onClick={() => setIsPlayerVisible(true)} className={styles.playerOpenButton}>
+                    ▶︎ 악보 연주하기
+                </button>
                 <input
                     type="file"
                     ref={jsonFileInputRef}
@@ -166,9 +172,6 @@ export default function SkyMusicEditorPage() {
             </div>
 
             <div className={styles.bottomActionSection}>
-                <button onClick={handleSave} className={styles.actionButton}>
-                    악보 저장(JSON)
-                </button>
                 <button onClick={handleDownloadZip} className={styles.downloadButton}>
                     전체 악보 다운로드 (ZIP)
                 </button>
