@@ -27,6 +27,9 @@ export default function SkyMusicEditorPage() {
         return Array.from({ length: 18 }, createBeat);
     });
     const [isPlayerVisible, setIsPlayerVisible] = useState(false);
+    const [isDownloading, setIsDownloading] = useState(false); // 다운로드 상태 추가
+    const [downloadProgress, setDownloadProgress] = useState(0); // 다운로드 진행률 추가
+    const [downloadMessage, setDownloadMessage] = useState(''); // 다운로드 메시지 추가
     
     const beatElementsRef = useRef([]);
 
@@ -81,6 +84,22 @@ export default function SkyMusicEditorPage() {
         event.target.value = null;
     };
 
+    // 다운로드 버튼 클릭 핸들러
+    const onDownloadZipClick = () => {
+        setIsDownloading(true);
+        setDownloadProgress(0);
+        setDownloadMessage('준비 중...');
+
+        handleDownloadZip(({ progress, message }) => {
+            if (message) setDownloadMessage(message);
+            if (progress) setDownloadProgress(progress);
+        }).finally(() => {
+            setIsDownloading(false);
+            setDownloadProgress(0);
+            setDownloadMessage('');
+        });
+    };
+
     return (
         <main className={styles.main}>
             <header className={styles.header}>
@@ -92,10 +111,10 @@ export default function SkyMusicEditorPage() {
                     <p className={styles.headerSubtitle}>자신만의 스카이 악보를 만들어 보세요.</p>
                 </div>
                 <div className={styles.skyStudioLinks}>
-                    <button className={styles.skyStudioButton} onClick={() => window.open('https://play.google.com/store/apps/details?id=com.Maple.SkyStudio&pli=1', '_blank')}>
+                    <button className={styles.skyStudioButton} onClick={() => window.open('https://play.google.com/store/apps/details?id=com.Maple.SkyStudio&pli=1', '_blank')} disabled={isDownloading}>
                         Sky Studio Android
                     </button>
-                    <button className={styles.skyStudioButton} onClick={() => window.open('https://apps.apple.com/us/app/sky-studio/id1522241329', '_blank')}>
+                    <button className={styles.skyStudioButton} onClick={() => window.open('https://apps.apple.com/us/app/sky-studio/id1522241329', '_blank')} disabled={isDownloading}>
                         Sky Studio iOS
                     </button>
                     <span className={styles.madeByText}>made by 단풍잎</span>
@@ -108,10 +127,11 @@ export default function SkyMusicEditorPage() {
                         <button
                             onClick={() => jsonFileInputRef.current.click()}
                             className={styles.actionButton}
+                            disabled={isDownloading}
                         >
                             플래너 악보 불러오기 (JSON)
                         </button>
-                        <button onClick={handleSave} className={styles.actionButton}>
+                        <button onClick={handleSave} className={styles.actionButton} disabled={isDownloading}>
                             플래너 악보로 저장하기 (JSON)
                         </button>
                     </div>
@@ -119,26 +139,37 @@ export default function SkyMusicEditorPage() {
                         <button
                             onClick={() => txtFileInputRef.current.click()}
                             className={styles.actionButton}
+                            disabled={isDownloading}
                         >
                             Sky Studio 악보 가져오기 (TXT)
                         </button>
                         <button
                             onClick={() => handleDownloadTxt()}
                             className={styles.actionButton}
+                            disabled={isDownloading}
                         >
                             Sky Studio 악보로 만들기 (TXT)
                         </button>
                     </div>
                 </div>
-                <button onClick={handleDownloadZip} className={styles.downloadButton}>
-                    전체 악보 다운로드 (ZIP)
+                <button onClick={onDownloadZipClick} className={styles.downloadButton} disabled={isDownloading}>
+                    {isDownloading ? `다운로드 중... ${Math.round(downloadProgress)}%` : '전체 악보 다운로드 (ZIP)'}
                 </button>
+                {isDownloading && (
+                    <div className={styles.downloadProgressContainer}>
+                        <div className={styles.progressBar}>
+                            <div className={styles.progressFill} style={{ width: `${downloadProgress}%` }}></div>
+                        </div>
+                        <span className={styles.progressMessage}>{downloadMessage}</span>
+                    </div>
+                )}
                 <input
                     type="file"
                     ref={jsonFileInputRef}
                     style={{ display: "none" }}
                     accept=".json"
                     onChange={handleJsonFileChange}
+                    disabled={isDownloading}
                 />
                 <input
                     type="file"
@@ -146,6 +177,7 @@ export default function SkyMusicEditorPage() {
                     style={{ display: "none" }}
                     accept=".txt"
                     onChange={handleTxtFileChange}
+                    disabled={isDownloading}
                 />
             </div>
 
@@ -157,6 +189,7 @@ export default function SkyMusicEditorPage() {
                         placeholder="악보 제목"
                         value={title}
                         onChange={(e) => setTitle(e.target.value)}
+                        disabled={isDownloading}
                     />
                     <div className={styles.colorLegend}>
                         {colorLegendData.map(item => (
@@ -173,6 +206,7 @@ export default function SkyMusicEditorPage() {
                                 type="text"
                                 value={composer}
                                 onChange={(e) => setComposer(e.target.value)}
+                                disabled={isDownloading}
                             />
                         </label>
                         <label>
@@ -181,6 +215,7 @@ export default function SkyMusicEditorPage() {
                                 type="text"
                                 value={arranger}
                                 onChange={(e) => setArranger(e.target.value)}
+                                disabled={isDownloading}
                             />
                         </label>
                     </div>

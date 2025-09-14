@@ -4,11 +4,8 @@ import JSZip from 'jszip';
 
 export const useSheetDownloader = (title, composer, arranger, sheetData) => {
 
-    // JSON 데이터를 TXT 파일 형식으로 변환하는 함수
     const convertJsonToTxt = () => {
         try {
-            // 여기서는 BPM과 비트 정보를 알 수 없으므로, 기본값을 사용합니다.
-            // 실제 프로젝트에서는 이 정보도 UI에서 입력받아야 합니다.
             const bpm = 500;
             const bitsPerPage = 16;
             const msPerBeat = 60000 / bpm;
@@ -18,7 +15,7 @@ export const useSheetDownloader = (title, composer, arranger, sheetData) => {
                 beat.forEach((note, keyIndex) => {
                     if (note.isActive) {
                         const time = Math.round(beatIndex * msPerBeat);
-                        const key = `1Key${keyIndex}`; // 레이어 정보가 없으므로 1로 고정
+                        const key = `1Key${keyIndex}`;
                         songNotes.push({ time, key });
                     }
                 });
@@ -73,7 +70,7 @@ export const useSheetDownloader = (title, composer, arranger, sheetData) => {
         }
     };
     
-    const handleDownloadZip = async () => {
+const handleDownloadZip = async (onProgress) => {
         const infoForm = document.getElementById("info-form");
         const pageElements = Array.from(document.querySelectorAll(".page"));
 
@@ -82,7 +79,7 @@ export const useSheetDownloader = (title, composer, arranger, sheetData) => {
         }
 
         const isConfirmed = window.confirm(
-            "다운로드를 시작하시겠습니까? 시간이 조금 오래 걸릴 수도 있습니다."
+            "다운로드를 시작하시겠습니까? 시간이 조금 오래 걸릴 수도 있습니다. 완료될때까지 페이지를 벗어나지 마세요."
         );
         if (!isConfirmed) return;
 
@@ -96,54 +93,89 @@ export const useSheetDownloader = (title, composer, arranger, sheetData) => {
         document.body.appendChild(captureContainer);
 
         try {
-            for (let i = 0; i < pageElements.length; i++) {
-                captureContainer.innerHTML = "";
+            // **수정된 부분: Promise 기반의 루프를 사용하여 비동기 처리**
+            const processPage = (i) => {
+                return new Promise(async (resolve, reject) => {
+                    if (i >= pageElements.length) {
+                        return resolve();
+                    }
 
-                const pageWrapper = document.createElement("div");
-                pageWrapper.style.width = `${mainContentWidth}px`;
-                pageWrapper.style.padding = "2rem";
-                pageWrapper.style.background = "#f7fafc";
+                    try {
+                        onProgress({ message: `악보 ${i + 1}/${pageElements.length} 페이지 캡처 중...` });
 
-                if (i === 0) {
-                    pageWrapper.appendChild(infoForm.cloneNode(true));
-                }
+                        captureContainer.innerHTML = "";
+                        const pageWrapper = document.createElement("div");
+                        pageWrapper.style.width = `${mainContentWidth}px`;
+                        pageWrapper.style.padding = "2rem";
+                        pageWrapper.style.background = "#f7fafc";
 
-                const currentPageClone = pageElements[i].cloneNode(true);
-                const sourceLink = currentPageClone.querySelector(".sourceLink");
+                        if (i === 0) {
+                            pageWrapper.appendChild(infoForm.cloneNode(true));
+                        }
 
-                if (i === pageElements.length - 1 && sourceLink) {
-                    sourceLink.style.display = "block";
-                }
+                        const currentPageClone = pageElements[i].cloneNode(true);
+                        const sourceLink = currentPageClone.querySelector(".sourceLink");
+                        if (i === pageElements.length - 1 && sourceLink) {
+                            sourceLink.style.display = "block";
+                        }
+                        pageWrapper.appendChild(currentPageClone);
+                        captureContainer.appendChild(pageWrapper);
 
-                pageWrapper.appendChild(currentPageClone);
-                captureContainer.appendChild(pageWrapper);
+                        const canvas = await html2canvas(pageWrapper, {
+                            scale: 2,
+                            useCORS: true,
+                            backgroundColor: null,
+                        });
 
-                const canvas = await html2canvas(pageWrapper, {
-                    scale: 2,
-                    useCORS: true,
-                    backgroundColor: null,
+                        const blob = await new Promise((resolveBlob) =>
+                            canvas.toBlob(resolveBlob, "image/png")
+                        );
+
+                        zip.file(`악보_${i + 1}페이지.png`, blob);
+                        canvas.remove();
+
+                        // 짧은 지연 시간을 두어 브라우저 메인 스레드를 해제
+                        setTimeout(() => resolve(processPage(i + 1)), 50);
+
+                    } catch (error) {
+                        reject(error);
+                    }
                 });
-                const blob = await new Promise((resolve) =>
-                    canvas.toBlob(resolve, "image/png")
-                );
+            };
 
-                zip.file(`악보_${i + 1}페이지.png`, blob);
-            }
-        } catch (error) {
-            console.error("캡처 중 오류 발생:", error);
-            alert("죄송합니다. 악보 캡처 중 오류가 발생했습니다.");
-        } finally {
-            document.body.removeChild(captureContainer);
-        }
+            await processPage(0);
 
-        if (Object.keys(zip.files).length > 0) {
-            const zipBlob = await zip.generateAsync({ type: "blob" });
+            // ... 나머지 ZIP 파일 생성 및 다운로드 로직은 동일 ...
+            onProgress({ message: "ZIP 파일 생성 중...", progress: 0 });
+
+            const zipBlob = await zip.generateAsync({
+                type: "blob",
+                compression: "DEFLATE",
+                compressionOptions: { level: 9 }
+            }, (metadata) => {
+                if (metadata.percent) {
+                    onProgress({ message: "ZIP 파일 생성 중...", progress: metadata.percent });
+                }
+            });
+
             const link = document.createElement("a");
-            link.href = URL.createObjectURL(zipBlob);
-            link.download = "전체악보.zip";
+            const url = URL.createObjectURL(zipBlob);
+            link.href = url;
+            link.download = `${title || "전체악보"}.zip`;
             link.click();
-            URL.revokeObjectURL(link.href);
+            URL.revokeObjectURL(url);
+            
             alert("악보 다운로드가 완료되었습니다!");
+            onProgress({ message: "완료!", progress: 100 });
+
+        } catch (error) {
+            console.error("다운로드 중 오류 발생:", error);
+            alert("죄송합니다. 다운로드 중 오류가 발생했습니다.");
+            onProgress({ message: "오류 발생", progress: 0 });
+        } finally {
+            if (captureContainer.parentNode) {
+                document.body.removeChild(captureContainer);
+            }
         }
     };
 

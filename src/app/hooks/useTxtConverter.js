@@ -1,4 +1,4 @@
-// app/hooks/useTxtConverter.js
+// src/app/hooks/useTxtConverter.js
 import { useState } from 'react';
 
 export const useTxtConverter = () => {
@@ -8,6 +8,10 @@ export const useTxtConverter = () => {
     try {
       const data = JSON.parse(fileContent)[0];
       const { bpm, bitsPerPage, songNotes, name, author, transcribedBy } = data;
+
+      if (!songNotes || songNotes.length === 0) {
+        throw new Error("Song notes are empty.");
+      }
 
       const msPerBeat = 60000 / bpm;
       const numKeys = 15;
@@ -29,13 +33,14 @@ export const useTxtConverter = () => {
         }
       });
 
-      setConvertedData({
+      const resultData = {
         title: name,
         composer: author,
         arranger: transcribedBy,
         sheetData: newSheetData,
-      });
-      return { success: true, data: convertedData };
+      };
+      setConvertedData(resultData);
+      return { success: true, data: resultData };
     } catch (e) {
       console.error("파일 파싱 오류:", e);
       setConvertedData(null);
