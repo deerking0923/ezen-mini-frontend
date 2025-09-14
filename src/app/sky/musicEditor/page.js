@@ -211,7 +211,7 @@ export default function SkyMusicEditorPage() {
           악보 저장 (JSON)
         </button>
         <button onClick={handleDownload} className={styles.downloadButton}>
-          전체 악보 다운로드 (PNG)
+          전체 악보 다운로드 (PNG_ZIP)
         </button>
       </div>
     </main>
