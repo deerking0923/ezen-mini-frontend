@@ -13,7 +13,7 @@ export default function Credit() {
           <p>만든이 – 진사슴</p>
           <ul className={styles.links}>
             <li>유랑 대백과 자료 제작 – 무륵, 망고, 엔, 진사슴</li>
-            <li>스카이 성향 테스트 그림 – 무륵</li>
+            <li>성향 테스트 그림, 메인 페이지 그림 – 무륵</li>
             <li>양초계산기 아이콘 – 햇비</li>
             <li>
               <Link href="https://cafe.naver.com/blacknbiqa/483061">
