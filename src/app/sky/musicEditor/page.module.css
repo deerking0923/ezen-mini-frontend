@@ -17,15 +17,15 @@
   margin-bottom: 0.5rem;
 }
 
-/* === 추가: 상단 불러오기 섹션 스타일 === */
-.loadSection {
+.topActionSection {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   margin-bottom: 1.5rem;
   padding: 1rem;
   background-color: #f7fafc;
-  border: 1px solid #e2e8f0;
   border-radius: 8px;
-  display: flex;
-  justify-content: center;
+  border: 1px solid #e2e8f0;
 }
 
 .infoForm {
@@ -37,90 +37,30 @@
 }
 
 .titleInput {
-  font-size: 2rem;
+  font-size: 2.2rem;
   font-weight: bold;
   text-align: center;
   width: 100%;
-  
-  margin-top: 2rem;
+  padding-bottom: 0.5rem;
+  margin-bottom: 1.5rem;
   color: #2d3748;
   border: none;
   outline: none;
   background-color: transparent;
 }
-.titleInput::placeholder { color: #cbd5e0; }
 
-.metaInputs {
-  display: flex;
-  justify-content: space-between;
-  gap: 2rem;
-}
-.metaInputs label {
-  font-size: 0.9rem;
-  color: #4a5568;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-.metaInputs input {
-  font-size: 0.9rem;
-  border: none;
-  border-bottom: 1px solid #e2e8f0;
-  outline: none;
-  padding: 0.4rem;
-  background-color: transparent;
-}
-.metaInputs input:focus { border-bottom-color: #4299e1; }
-
-/* === 수정: 하단 액션 버튼 섹션 스타일 === */
-.bottomActionSection {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 1rem;
-  margin-top: 3rem;
-  padding-bottom: 2rem;
+.titleInput::placeholder {
+  color: #cbd5e0;
 }
 
-.actionButton {
-  padding: 12px 24px;
-  font-size: 1.1rem;
-  font-weight: bold;
-  color: #2d3748;
-  background-color: #edf2f7;
-  border: 1px solid #e2e8f0;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background-color 0.2s;
-}
-.actionButton:hover {
-  background-color: #e2e8f0;
-}
-
-.downloadButton {
-  padding: 12px 24px;
-  font-size: 1.1rem;
-  font-weight: bold;
-  color: white;
-  background-color: #3182ce;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background-color 0.2s;
-}
-.downloadButton:hover {
-  background-color: #2b6cb0;
-}
-/* === 추가: 색상 범례 스타일 === */
 .colorLegend {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 1.5rem; /* 아이템 간 간격 */
+  gap: 1.5rem;
   padding-top: 1.5rem;
   margin-top: 1.5rem;
-  margin-bottom: 2rem; /* 아래쪽 메타 정보와의 간격 */
+  margin-bottom: 2rem;
   border-top: 1px solid #e2e8f0;
 }
 
@@ -137,4 +77,90 @@
   height: 12px;
   border-radius: 50%;
   border: 1px solid rgba(0,0,0,0.1);
+}
+
+.metaInputs {
+  display: flex;
+  justify-content: space-between;
+  gap: 2rem;
+}
+
+.metaInputs label {
+  font-size: 0.9rem;
+  color: #4a5568;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.metaInputs input {
+  font-size: 0.9rem;
+  border: none;
+  border-bottom: 1px solid #e2e8f0;
+  outline: none;
+  padding: 0.4rem;
+  background-color: transparent;
+}
+
+.metaInputs input:focus {
+  border-bottom-color: #4299e1;
+}
+
+.bottomActionSection {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 3rem;
+  padding-bottom: 2rem;
+}
+
+.actionButton {
+  padding: 12px 24px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #2d3748;
+  background-color: #edf2f7;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.actionButton:hover {
+  background-color: #e2e8f0;
+}
+
+.downloadButton {
+  padding: 12px 24px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: white;
+  background-color: #3182ce;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.downloadButton:hover {
+  background-color: #2b6cb0;
+}
+
+.playerOpenButton {
+  padding: 12px 24px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: white;
+  background: linear-gradient(145deg, #4facfe 0%, #00f2fe 100%);
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 150, 255, 0.3);
+}
+
+.playerOpenButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 150, 255, 0.4);
 }

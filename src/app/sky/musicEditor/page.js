@@ -1,27 +1,31 @@
 'use client';
 
-import React, { useState, useRef } from "react";
-import html2canvas from "html2canvas";
-import JSZip from "jszip";
-// === 수정: NOTE_COLORS를 import하여 범례에서 사용 ===
-import SheetMusicEditor, { NOTE_COLORS } from "@/app/components/SheetMusicEditor";
-import styles from "./page.module.css";
+import React, { useState, useRef } from 'react';
+import html2canvas from 'html2canvas';
+import JSZip from 'jszip';
+import SheetMusicEditor, { NOTE_COLORS } from '@/app/components/SheetMusicEditor';
+import MusicPlayer from '@/app/components/MusicPlayer';
+import styles from './page.module.css';
 
-// === 추가: colorLegendData 변수 선언 ===
+// 색상 범례 데이터
 const colorLegendData = [
-  { id: 'half', name: '1/2박' }, { id: 'default', name: '정음표' },
-  { id: 'two', name: '2박' }, { id: 'three', name: '3박' }, { id: 'four', name: '4박' },
+  { id: 'half', name: '1/2박' },
+  { id: 'default', name: '정음표' },
+  { id: 'two', name: '2박' },
+  { id: 'three', name: '3박' },
+  { id: 'four', name: '4박' },
 ];
 
 export default function SkyMusicEditorPage() {
-  const [title, setTitle] = useState("");
-  const [composer, setComposer] = useState("");
-  const [arranger, setArranger] = useState("");
+  const [title, setTitle] = useState('');
+  const [composer, setComposer] = useState('');
+  const [arranger, setArranger] = useState('');
   const [sheetData, setSheetData] = useState(() => {
     const createNote = () => ({ isActive: false, colorId: "default" });
     const createBeat = () => Array.from({ length: 15 }, createNote);
     return Array.from({ length: 18 }, createBeat);
   });
+  const [isPlayerVisible, setIsPlayerVisible] = useState(false);
 
   const fileInputRef = useRef(null);
 
@@ -67,20 +71,13 @@ export default function SkyMusicEditorPage() {
       return alert("오류: 캡처할 대상을 찾을 수 없습니다.");
     }
 
-    // === 수정: alert를 confirm으로 변경 ===
     const isConfirmed = window.confirm(
-      "다운로드를 시작하시겠습니까? 시간이 조금 걸릴 수도 있습니다. 페이지를 벗어나지 마세요."
+      "다운로드를 시작하시겠습니까? 시간이 조금 오래 걸릴 수도 있습니다."
     );
-
-    // 사용자가 '취소'를 누르면 함수를 여기서 종료
-    if (!isConfirmed) {
-      return;
-    }
+    if (!isConfirmed) return;
 
     const zip = new JSZip();
-    const mainContentWidth = document.getElementById(
-      "main-content-to-capture"
-    ).offsetWidth;
+    const mainContentWidth = document.getElementById("main-content-to-capture").offsetWidth;
 
     const captureContainer = document.createElement("div");
     captureContainer.style.position = "absolute";
@@ -136,7 +133,7 @@ export default function SkyMusicEditorPage() {
       link.download = "전체악보.zip";
       link.click();
       URL.revokeObjectURL(link.href);
-      alert("악보 다운로드가 완료되었습니다!"); 
+      alert("악보 다운로드가 완료되었습니다!");
     }
   };
 
@@ -147,12 +144,15 @@ export default function SkyMusicEditorPage() {
         <p>자신만의 스카이 악보를 만들어 보세요.</p>
       </header>
 
-      <div className={styles.loadSection}>
+      <div className={styles.topActionSection}>
         <button
           onClick={() => fileInputRef.current.click()}
           className={styles.actionButton}
         >
-          악보 파일 불러오기 (JSON)
+          악보 파일 불러오기
+        </button>
+        <button onClick={() => setIsPlayerVisible(true)} className={styles.playerOpenButton}>
+          ▶︎ 악보 연주하기
         </button>
         <input
           type="file"
@@ -172,13 +172,10 @@ export default function SkyMusicEditorPage() {
             value={title}
             onChange={(e) => setTitle(e.target.value)}
           />
-          <div className={styles.colorLegend}>
-            {colorLegendData.map((item) => (
+           <div className={styles.colorLegend}>
+            {colorLegendData.map(item => (
               <div key={item.id} className={styles.legendItem}>
-                <span
-                  className={styles.legendColorChip}
-                  style={{ backgroundColor: NOTE_COLORS[item.id].fill }}
-                ></span>
+                <span className={styles.legendColorChip} style={{ backgroundColor: NOTE_COLORS[item.id].fill }}></span>
                 {item.name}
               </div>
             ))}
@@ -208,12 +205,20 @@ export default function SkyMusicEditorPage() {
 
       <div className={styles.bottomActionSection}>
         <button onClick={handleSave} className={styles.actionButton}>
-          악보 저장 (JSON)
+          악보 저장
         </button>
         <button onClick={handleDownload} className={styles.downloadButton}>
-          전체 악보 다운로드 (PNG_ZIP)
+          전체 악보 다운로드 (ZIP)
         </button>
       </div>
+
+      {isPlayerVisible && (
+        <MusicPlayer 
+          sheetData={sheetData} 
+          title={title}
+          onClose={() => setIsPlayerVisible(false)} 
+        />
+      )}
     </main>
   );
 }
