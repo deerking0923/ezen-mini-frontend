@@ -72,17 +72,24 @@ export default function SheetMusicEditor({ sheetData, setSheetData }) {
 
   const addBeat = () => {
     setSheetData(currentSheetData => [...currentSheetData, createBeat()]);
+    setSelectedBeatIndex(null); // <-- 수정된 부분
   };
 
   const addLine = () => {
     const newLine = Array.from({ length: BEATS_PER_LINE }, createBeat);
     setSheetData(currentSheetData => [...currentSheetData, ...newLine]);
+    setSelectedBeatIndex(null); // <-- 수정된 부분
   };
 
+  // --- 추가: 색상 선택 시 시트 선택 해제 핸들러 ---
+  const handleColorSelect = (colorId) => {
+    setCurrentColorId(colorId);
+    setSelectedBeatIndex(null);
+  };
+  
   const pages = chunkArray(sheetData, BEATS_PER_PAGE);
   const totalPageCount = Math.max(1, pages.length);
   
-  // 1페이지에 해당하는 시트들 (항상 존재)
   const firstPageBeats = pages[0] || [];
 
   return (
@@ -201,8 +208,10 @@ export default function SheetMusicEditor({ sheetData, setSheetData }) {
         <button onClick={addLine} className={styles.addButton}>+1 줄 추가</button>
       </div>
       <div className={styles.paletteContainer} onClick={(e) => e.stopPropagation()}>
-        <ColorPalette selectedColor={currentColorId} onColorSelect={setCurrentColorId} />
+        {/* 수정: onColorSelect에 새로 만든 함수를 연결 */}
+        <ColorPalette selectedColor={currentColorId} onColorSelect={handleColorSelect} />
       </div>
     </div>
   );
 }
+

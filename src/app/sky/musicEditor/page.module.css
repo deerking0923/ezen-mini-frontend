@@ -37,12 +37,12 @@
 }
 
 .titleInput {
-  font-size: 2.2rem;
+  font-size: 2rem;
   font-weight: bold;
   text-align: center;
   width: 100%;
-  padding-bottom: 0.5rem;
-  margin-bottom: 2rem;
+  
+  margin-top: 2rem;
   color: #2d3748;
   border: none;
   outline: none;
@@ -111,4 +111,30 @@
 }
 .downloadButton:hover {
   background-color: #2b6cb0;
+}
+/* === 추가: 색상 범례 스타일 === */
+.colorLegend {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1.5rem; /* 아이템 간 간격 */
+  padding-top: 1.5rem;
+  margin-top: 1.5rem;
+  margin-bottom: 2rem; /* 아래쪽 메타 정보와의 간격 */
+  border-top: 1px solid #e2e8f0;
+}
+
+.legendItem {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.8rem;
+  color: #4a5568;
+}
+
+.legendColorChip {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 1px solid rgba(0,0,0,0.1);
 }
