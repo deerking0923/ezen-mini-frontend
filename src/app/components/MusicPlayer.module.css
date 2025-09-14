@@ -14,13 +14,10 @@
 
 .playerContainer {
   width: 95vw;
-  min-width: 1000px; /* 요청하신 대로 min-width 유지 */
+  min-width: 1000px;
   max-width: 1400px;
-  
-  /* 👇 높이를 화면 비율(vh)이 아닌 내용물에 맞게 자동으로 조절하도록 변경 */
   height: auto; 
   max-height: 500px;
-
   background-color: #161b22;
   border-radius: 20px;
   border: 1px solid #30363d;
@@ -32,20 +29,50 @@
   box-sizing: border-box;
 }
 
-/* ... (header, closeButton, scroller 등 다른 스타일은 모두 동일) ... */
+/* 헤더 레이아웃 */
 .header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 1.5rem;
 }
-.header h2 { font-size: 1.5rem; font-weight: 600; }
+.header h2 { 
+  font-size: 1.5rem; 
+  font-weight: 600;
+  flex: 1;
+  text-align: left;
+}
 .closeButton {
   background: none; border: none; color: #a0aec0; font-size: 2rem;
   font-weight: bold; cursor: pointer; padding: 0 0.5rem; line-height: 1;
   transition: color 0.2s;
+  flex: 1;
+  text-align: right;
 }
 .closeButton:hover { color: white; }
+
+/* 범례 스타일 (수정됨) */
+.colorLegend {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 24px; /* 아이템 간격을 좀 더 넓혔습니다 */
+  flex-shrink: 0;
+}
+.legendItem {
+  display: flex;
+  align-items: center;
+  font-size: 0.9rem; /* 폰트 크기를 키워 가독성을 높였습니다 */
+  color: #a0aec0; /* 글자 색상을 좀 더 밝게 조정했습니다 */
+  white-space: nowrap;
+}
+.legendColorChip {
+  width: 10px; /* 색상 원 크기를 약간 줄였습니다 */
+  height: 10px;
+  border-radius: 50%;
+  margin-right: 6px; /* 텍스트와의 간격을 조정했습니다 */
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
 
 .scroller {
   flex-grow: 1;
@@ -61,7 +88,6 @@
 .scroller:active { cursor: grabbing; }
 .scroller::-webkit-scrollbar { display: none; }
 
-
 .sheetTrack {
   display: flex;
   gap: 1.5rem;
@@ -72,11 +98,7 @@
 .beatColumn {
   flex-shrink: 0;
   width: 260px;
-  
-  /* 👇 이 부분이 핵심! 높이를 100%가 아닌 고정 값으로 지정 */
   height: 180px; 
-  /* max-height 속성은 이제 필요 없으므로 삭제 */
-
   background-color: #21262d;
   border: 1px solid #30363d;
   border-radius: 12px;
@@ -104,7 +126,6 @@
   place-items: center;
 }
 
-/* ... (controls, playButton, bpmControl 등 나머지 스타일은 모두 동일) ... */
 .controls {
   display: flex;
   justify-content: center;
@@ -135,3 +156,4 @@
   width: 20px; height: 20px; background: #63b3ed;
   cursor: pointer; border-radius: 50%;
 }
+

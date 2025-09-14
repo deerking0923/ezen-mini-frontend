@@ -1,10 +1,21 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
-import { NOTE_COLORS } from './SheetMusicEditor';
+// NOTE_COLORS를 이 파일에서 직접 import하여 사용합니다.
+import { NOTE_COLORS } from './SheetMusicEditor'; 
 import NoteButton from './NoteButton';
 import styles from './MusicPlayer.module.css';
 
+// ▼▼▼ 1. 범례 데이터를 이 파일 안에 직접 정의합니다. ▼▼▼
+const colorLegendData = [
+  { id: 'half', name: '1/2박' },
+  { id: 'default', name: '정음표' },
+  { id: 'two', name: '2박' },
+  { id: 'three', name: '3박' },
+  { id: 'four', name: '4박' },
+];
+
+// props에서 colorLegendData와 NOTE_COLORS를 제거합니다.
 export default function MusicPlayer({ sheetData, title, onClose }) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [bpm, setBpm] = useState(100);
@@ -14,7 +25,6 @@ export default function MusicPlayer({ sheetData, title, onClose }) {
   const beatElementsRef = useRef([]);
   const beatHighlightTimerRef = useRef(null);
 
-  // --- 드래그 및 모멘텀 스크롤을 위한 Refs ---
   const isDraggingRef = useRef(false);
   const startXRef = useRef(0);
   const scrollLeftRef = useRef(0);
@@ -22,20 +32,17 @@ export default function MusicPlayer({ sheetData, title, onClose }) {
   const animationFrameRef = useRef(null);
   const lastMoveTimeRef = useRef(0);
   const lastMoveXRef = useRef(0);
-  // ---
 
   const secondsPerBeat = 60 / bpm;
 
-  // 하이라이트 및 자동 스크롤 타이머 로직
+  // --- 기존 로직들은 변경 없이 그대로 유지됩니다. ---
   useEffect(() => {
     if (beatHighlightTimerRef.current) {
       clearInterval(beatHighlightTimerRef.current);
     }
-
     if (isPlaying) {
       const startBeat = currentBeat === -1 ? 0 : currentBeat;
       setCurrentBeat(startBeat);
-
       beatHighlightTimerRef.current = setInterval(() => {
         setCurrentBeat(prev => {
           const nextBeat = prev + 1;
@@ -47,11 +54,9 @@ export default function MusicPlayer({ sheetData, title, onClose }) {
         });
       }, secondsPerBeat * 1000);
     }
-    
     return () => clearInterval(beatHighlightTimerRef.current);
   }, [isPlaying, secondsPerBeat, sheetData.length, currentBeat]);
 
-  // currentBeat가 변경될 때마다 해당 위치로 부드럽게 스크롤
   useEffect(() => {
     if (currentBeat >= 0 && scrollerRef.current && isPlaying && !isDraggingRef.current) {
       const targetNode = beatElementsRef.current[currentBeat];
@@ -64,9 +69,7 @@ export default function MusicPlayer({ sheetData, title, onClose }) {
     }
   }, [currentBeat, isPlaying]);
 
-  const handlePlayPause = () => {
-    setIsPlaying(!isPlaying);
-  };
+  const handlePlayPause = () => setIsPlaying(!isPlaying);
   
   const handleBeatClick = (index) => {
     if (!isPlaying) {
@@ -82,8 +85,6 @@ export default function MusicPlayer({ sheetData, title, onClose }) {
     }
   };
 
-  // --- 드래그 및 모멘텀 스크롤 로직 ---
-
   const getClientX = (e) => (e.touches ? e.touches[0].clientX : e.clientX);
 
   const handleDragStart = (e) => {
@@ -93,34 +94,20 @@ export default function MusicPlayer({ sheetData, title, onClose }) {
     velocityRef.current = 0;
     lastMoveTimeRef.current = performance.now();
     lastMoveXRef.current = startXRef.current;
-
-    // 진행 중인 모멘텀 애니메이션 중지
-    if (animationFrameRef.current) {
-      cancelAnimationFrame(animationFrameRef.current);
-    }
-    // 드래그 시작 시 자동 재생 중지
-    if (isPlaying) {
-      setIsPlaying(false);
-    }
+    if (animationFrameRef.current) cancelAnimationFrame(animationFrameRef.current);
+    if (isPlaying) setIsPlaying(false);
   };
 
   const handleDragMove = (e) => {
     if (!isDraggingRef.current) return;
-    e.preventDefault(); // 드래그 중 텍스트 선택 등 기본 동작 방지
-
+    e.preventDefault();
     const x = getClientX(e);
-    const walk = (x - startXRef.current) * 1.5; // 드래그 감도 조절 (1.5배)
+    const walk = (x - startXRef.current) * 1.5;
     scrollerRef.current.scrollLeft = scrollLeftRef.current - walk;
-
-    // 속도 계산
     const now = performance.now();
     const deltaTime = now - lastMoveTimeRef.current;
     const deltaX = x - lastMoveXRef.current;
-    
-    if (deltaTime > 0) {
-      velocityRef.current = (deltaX / deltaTime) * 1.5; // 속도에도 감도 적용
-    }
-    
+    if (deltaTime > 0) velocityRef.current = (deltaX / deltaTime) * 1.5;
     lastMoveTimeRef.current = now;
     lastMoveXRef.current = x;
   };
@@ -130,30 +117,39 @@ export default function MusicPlayer({ sheetData, title, onClose }) {
       velocityRef.current = 0;
       return;
     }
-    
-    scrollerRef.current.scrollLeft -= velocityRef.current * 16; // 16ms(60fps) 간격으로 이동
-    velocityRef.current *= 0.95; // 마찰력 (값이 1에 가까울수록 오래 미끄러짐)
-    
+    scrollerRef.current.scrollLeft -= velocityRef.current * 16;
+    velocityRef.current *= 0.95;
     animationFrameRef.current = requestAnimationFrame(momentumLoop);
   };
 
   const handleDragEnd = () => {
     if (!isDraggingRef.current) return;
     isDraggingRef.current = false;
-    
-    // 모멘텀 애니메이션 시작
     if (Math.abs(velocityRef.current) > 0.5) {
       animationFrameRef.current = requestAnimationFrame(momentumLoop);
     }
   };
-
-  // ---
+  // --- 기존 로직 끝 ---
 
   return (
     <div className={styles.overlay}>
       <div className={styles.playerContainer}>
         <div className={styles.header}>
           <h2>{title || '악보 연주'}</h2>
+
+          {/* ▼▼▼ 2. 범례 UI가 이제 이 파일 내의 데이터를 사용합니다. ▼▼▼ */}
+          <div className={styles.colorLegend}>
+            {colorLegendData.map(item => (
+              <div key={item.id} className={styles.legendItem}>
+                <span 
+                  className={styles.legendColorChip} 
+                  style={{ backgroundColor: NOTE_COLORS[item.id]?.fill || '#888' }}
+                ></span>
+                {item.name}
+              </div>
+            ))}
+          </div>
+          
           <button onClick={onClose} className={styles.closeButton}>×</button>
         </div>
 
@@ -168,7 +164,6 @@ export default function MusicPlayer({ sheetData, title, onClose }) {
           onTouchMove={handleDragMove}
           onTouchEnd={handleDragEnd}
         >
-          <div className={styles.focusLine}></div>
           <div className={styles.sheetTrack}>
             {sheetData.map((beat, index) => (
               <div 
