@@ -1,0 +1,96 @@
+.editorWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.sheetContainer {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 16px;
+  padding: 20px;
+  background-color: white;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+  width: 100%;
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+}
+
+.beatColumn {
+  position: relative; /* 조작 버튼의 기준점 */
+  background-color: #f7fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  padding: 8px;
+  min-width: 0;
+  cursor: pointer; /* 클릭할 수 있음을 표시 */
+  transition: box-shadow 0.2s, border-color 0.2s;
+}
+
+/* === 새로운 스타일: 선택된 시트의 테두리 강조 === */
+.beatColumn.selected {
+  border-color: #4299e1;
+  box-shadow: 0 0 0 2px #4299e1;
+}
+
+/* === 노트 정렬 문제 해결: Grid 정렬 속성 추가 === */
+.noteGrid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 6px;
+  place-items: center; /* 그리드 아이템들을 중앙에 배치 */
+  cursor: default; /* 노트 영역은 기본 커서 사용 */
+}
+
+/* === 조작 버튼 스타일 변경: 툴팁처럼 보이도록 수정 === */
+.beatControls {
+  position: absolute;
+  bottom: 8px;
+  left: 50%;
+  transform: translateX(-50%); /* 중앙 정렬 */
+  display: flex;
+  gap: 8px;
+  background-color: rgba(45, 55, 72, 0.9); /* 어두운 반투명 배경 */
+  padding: 6px;
+  border-radius: 8px;
+  z-index: 10;
+}
+
+.beatControls button {
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  border: none;
+  background-color: #4a5568;
+  color: white;
+  font-size: 1.4rem;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s;
+}
+.beatControls button:hover {
+  background-color: #718096;
+}
+
+/* ... 하단 .controls, .addButton 스타일은 이전과 동일 ... */
+.controls {
+  margin-top: 24px;
+  display: flex;
+  gap: 12px;
+}
+.addButton {
+  padding: 10px 20px;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #2d3748;
+  background-color: #e2e8f0;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.addButton:hover {
+  background-color: #cbd5e0;
+}

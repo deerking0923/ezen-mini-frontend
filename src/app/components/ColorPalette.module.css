@@ -1,0 +1,49 @@
+.paletteContainer {
+  width: 100%;
+  max-width: 800px;
+  margin-top: 2rem;
+  padding: 1.5rem;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  border: 1px solid #e2e8f0;
+}
+
+.paletteTitle {
+  text-align: center;
+  font-weight: 600;
+  margin: 0 0 1rem 0;
+  color: #4a5568;
+}
+
+.colorOptions {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.colorButton {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  border: 2px solid #e2e8f0;
+  border-radius: 20px;
+  background-color: #f7fafc;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-weight: 500;
+}
+
+.colorButton.selected {
+  border-color: #4299e1;
+  background-color: #ebf8ff;
+  color: #2b6cb0;
+}
+
+.colorChip {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 1px solid rgba(0,0,0,0.1);
+}

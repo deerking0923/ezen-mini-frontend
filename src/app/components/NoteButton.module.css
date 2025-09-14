@@ -1,0 +1,24 @@
+.noteButton {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  padding: 0;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.1s ease;
+}
+
+/* ... 이전과 동일한 부분 ... */
+.noteButton:hover {
+  transform: scale(1.1);
+}
+
+/* 기본 비활성화 상태 색상만 남김 */
+.noteButton svg .diamond,
+.noteButton svg .circle {
+  fill: none;
+  stroke: #cbd5e0; 
+  stroke-width: 8;
+  transition: all 0.2s ease;
+}
+
