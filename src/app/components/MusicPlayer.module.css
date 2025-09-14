@@ -14,10 +14,13 @@
 
 .playerContainer {
   width: 95vw;
-  min-width: 1000px;
+  min-width: 1000px; /* 요청하신 대로 min-width 유지 */
   max-width: 1400px;
-  height: 85vh;
+  
+  /* 👇 높이를 화면 비율(vh)이 아닌 내용물에 맞게 자동으로 조절하도록 변경 */
+  height: auto; 
   max-height: 500px;
+
   background-color: #161b22;
   border-radius: 20px;
   border: 1px solid #30363d;
@@ -26,8 +29,10 @@
   flex-direction: column;
   padding: 2rem;
   color: #c9d1d9;
+  box-sizing: border-box;
 }
 
+/* ... (header, closeButton, scroller 등 다른 스타일은 모두 동일) ... */
 .header {
   display: flex;
   justify-content: space-between;
@@ -51,15 +56,10 @@
   padding: 1rem 0;
   -ms-overflow-style: none;
   scrollbar-width: none;
-  cursor: grab; /* 드래그 가능함을 표시 */
+  cursor: grab;
 }
-.scroller:active {
-  cursor: grabbing; /* 드래그 중 커서 변경 */
-}
-.scroller::-webkit-scrollbar {
-  display: none;
-}
-
+.scroller:active { cursor: grabbing; }
+.scroller::-webkit-scrollbar { display: none; }
 
 
 .sheetTrack {
@@ -72,8 +72,11 @@
 .beatColumn {
   flex-shrink: 0;
   width: 260px;
-  height: 100%;
-  max-height: 180px;
+  
+  /* 👇 이 부분이 핵심! 높이를 100%가 아닌 고정 값으로 지정 */
+  height: 180px; 
+  /* max-height 속성은 이제 필요 없으므로 삭제 */
+
   background-color: #21262d;
   border: 1px solid #30363d;
   border-radius: 12px;
@@ -82,7 +85,7 @@
   cursor: pointer;
   display: flex;
   align-items: center;
-  user-select: none; /* 드래그 중 텍스트 선택 방지 */
+  user-select: none;
 }
 .beatColumn:hover { background-color: #30363d; }
 .beatColumn.active {
@@ -101,6 +104,7 @@
   place-items: center;
 }
 
+/* ... (controls, playButton, bpmControl 등 나머지 스타일은 모두 동일) ... */
 .controls {
   display: flex;
   justify-content: center;

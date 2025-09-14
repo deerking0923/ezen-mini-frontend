@@ -7,7 +7,7 @@ import styles from './MusicPlayer.module.css';
 
 export default function MusicPlayer({ sheetData, title, onClose }) {
   const [isPlaying, setIsPlaying] = useState(false);
-  const [bpm, setBpm] = useState(80);
+  const [bpm, setBpm] = useState(100);
   const [currentBeat, setCurrentBeat] = useState(-1);
   
   const scrollerRef = useRef(null);
