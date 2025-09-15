@@ -1,11 +1,11 @@
-// src/app/hooks/useSheetDownloader.js
-
+'use client';
 import html2canvas from 'html2canvas';
 import JSZip from 'jszip';
 
 export const useSheetDownloader = (title, composer, arranger, sheetData) => {
 
     const convertJsonToTxt = () => {
+        // ... (기존 코드와 동일)
         try {
             const bpm = 500;
             const bitsPerPage = 16;
@@ -44,6 +44,7 @@ export const useSheetDownloader = (title, composer, arranger, sheetData) => {
     };
 
     const handleSave = () => {
+        // ... (기존 코드와 동일)
         const saveData = { title, composer, arranger, sheetData };
         const jsonString = JSON.stringify(saveData, null, 2);
         const blob = new Blob([jsonString], { type: "application/json" });
@@ -57,6 +58,7 @@ export const useSheetDownloader = (title, composer, arranger, sheetData) => {
     };
 
     const handleDownloadTxt = () => {
+        // ... (기존 코드와 동일)
         const txtString = convertJsonToTxt();
         if (txtString) {
             const blob = new Blob([txtString], { type: "text/plain" });
@@ -71,7 +73,40 @@ export const useSheetDownloader = (title, composer, arranger, sheetData) => {
         }
     };
     
+    // --- 캡처 모드용: 현재 페이지 다운로드 함수 ---
+    const handleDownloadPage = async (pageNumber) => {
+        const captureElement = document.getElementById("main-content-to-capture");
+        if (!captureElement) {
+            alert("오류: 캡처할 대상을 찾을 수 없습니다.");
+            return;
+        }
+
+        try {
+            const canvas = await html2canvas(captureElement, {
+                scale: 2,
+                useCORS: true,
+                backgroundColor: '#f7fafc', // 배경색 지정하여 투명 문제 방지
+            });
+            
+            const blob = await new Promise((resolve) => canvas.toBlob(resolve, 'image/png'));
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement("a");
+            link.href = url;
+            link.download = `${title || '악보'}_${pageNumber}페이지.png`;
+            link.click();
+            URL.revokeObjectURL(url);
+            
+            // 캡처 후 메모리 정리
+            canvas.remove();
+
+        } catch (error) {
+            console.error("페이지 캡처 중 오류 발생:", error);
+            alert("죄송합니다. 페이지 캡처 중 오류가 발생했습니다.");
+        }
+    };
+
     const handleDownloadZip = async (onProgress) => {
+        // ... (기존 코드와 동일, 변경 없음)
         const infoForm = document.getElementById("info-form");
         const pageElements = Array.from(document.querySelectorAll(".page"));
 
@@ -91,61 +126,52 @@ export const useSheetDownloader = (title, composer, arranger, sheetData) => {
         captureContainer.style.position = "absolute";
         captureContainer.style.left = "-9999px";
         captureContainer.style.top = "0px";
+        captureContainer.style.background = "#f7fafc"; // 배경색 통일
         document.body.appendChild(captureContainer);
 
         try {
-            const processPage = (i) => {
-                return new Promise(async (resolve, reject) => {
-                    if (i >= pageElements.length) {
-                        return resolve();
-                    }
+            for (let i = 0; i < pageElements.length; i++) {
+                onProgress({ message: `악보 ${i + 1}/${pageElements.length} 페이지 캡처 중...` });
 
-                    try {
-                        onProgress({ message: `악보 ${i + 1}/${pageElements.length} 페이지 캡처 중...` });
+                const pageWrapper = document.createElement("div");
+                pageWrapper.style.width = `${mainContentWidth}px`;
+                pageWrapper.style.padding = "2rem"; // 캡처 시 여백
 
-                        captureContainer.innerHTML = "";
-                        const pageWrapper = document.createElement("div");
-                        pageWrapper.style.width = `${mainContentWidth}px`;
-                        pageWrapper.style.padding = "2rem";
-                        pageWrapper.style.background = "#f7fafc";
+                if (i === 0) {
+                    pageWrapper.appendChild(infoForm.cloneNode(true));
+                }
 
-                        if (i === 0) {
-                            pageWrapper.appendChild(infoForm.cloneNode(true));
-                        }
+                const currentPageClone = pageElements[i].cloneNode(true);
+                const sourceLink = currentPageClone.querySelector(".sourceLink");
+                if (i === pageElements.length - 1 && sourceLink) {
+                    sourceLink.style.display = "block";
+                }
+                
+                pageWrapper.appendChild(currentPageClone);
+                captureContainer.innerHTML = '';
+                captureContainer.appendChild(pageWrapper);
 
-                        const currentPageClone = pageElements[i].cloneNode(true);
-                        const sourceLink = currentPageClone.querySelector(".sourceLink");
-                        if (i === pageElements.length - 1 && sourceLink) {
-                            sourceLink.style.display = "block";
-                        }
-                        
-                        pageWrapper.appendChild(currentPageClone);
-                        captureContainer.appendChild(pageWrapper);
-
-                        const canvas = await html2canvas(pageWrapper, {
-                            scale: 2,
-                            useCORS: true,
-                            backgroundColor: null,
-                        });
-
-                        const blob = await new Promise((resolveBlob) =>
-                            canvas.toBlob(resolveBlob, "image/png")
-                        );
-
-                        zip.file(`악보_${i + 1}페이지.png`, blob);
-                        canvas.remove();
-
-                        setTimeout(() => resolve(processPage(i + 1)), 50);
-
-                    } catch (error) {
-                        reject(error);
-                    }
+                const canvas = await html2canvas(pageWrapper, {
+                    scale: 2,
+                    useCORS: true,
+                    backgroundColor: null,
                 });
-            };
 
-            await processPage(0);
+                const blob = await new Promise((resolveBlob) =>
+                    canvas.toBlob(resolveBlob, "image/png")
+                );
 
-            onProgress({ message: "ZIP 파일 생성 중...", progress: 0 });
+                zip.file(`악보_${i + 1}페이지.png`, blob);
+                canvas.remove();
+
+                // 진행률 업데이트
+                const progress = ((i + 1) / pageElements.length) * 50; // 캡처 50%
+                onProgress({ progress });
+
+                await new Promise(resolve => setTimeout(resolve, 50)); // 브라우저 렌더링 시간 확보
+            }
+
+            onProgress({ message: "ZIP 파일 생성 중...", progress: 50 });
 
             const zipBlob = await zip.generateAsync({
                 type: "blob",
@@ -153,7 +179,8 @@ export const useSheetDownloader = (title, composer, arranger, sheetData) => {
                 compressionOptions: { level: 9 }
             }, (metadata) => {
                 if (metadata.percent) {
-                    onProgress({ message: "ZIP 파일 생성 중...", progress: metadata.percent });
+                    const progress = 50 + (metadata.percent * 0.5); // 압축 50%
+                    onProgress({ message: "ZIP 파일 생성 중...", progress });
                 }
             });
 
@@ -178,5 +205,6 @@ export const useSheetDownloader = (title, composer, arranger, sheetData) => {
         }
     };
 
-    return { handleSave, handleDownloadTxt, handleDownloadZip };
+    // --- 새로 추가한 함수를 return 객체에 포함 ---
+    return { handleSave, handleDownloadTxt, handleDownloadZip, handleDownloadPage };
 };

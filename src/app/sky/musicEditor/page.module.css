@@ -609,3 +609,102 @@
     font-size: 1.2rem;
     margin-right: 0.5rem;
 }
+
+
+/* 캡처 모드 전환 버튼 */
+.modeToggleButton {
+    width: 30%;
+    padding: 12px 24px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #4a5568;
+    background-color: #f0f4f8;
+    border: 1px solid #cbd5e0;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    margin-top: 10px;
+}
+
+.modeToggleButton:hover {
+    background-color: #e2e8f0;
+    transform: translateY(-1px);
+}
+
+.modeToggleButton:disabled {
+    background-color: #e2e8f0;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+/* 캡처 모드 컨트롤 전체 컨테이너 */
+.captureControls {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    width: 100%;
+    margin-top: 10px;
+}
+
+/* 페이지네이션 UI */
+.pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.pagination button {
+    padding: 8px 16px;
+    font-size: 1rem;
+    font-weight: 500;
+    color: #2d3748;
+    background-color: #fff;
+    border: 1px solid #cbd5e0;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.pagination button:hover {
+    background-color: #f7fafc;
+}
+
+.pagination button:disabled {
+    background-color: #f7fafc;
+    color: #a0aec0;
+    cursor: not-allowed;
+}
+
+.pageInfo {
+    display: flex;
+    align-items: center;
+    font-size: 1.1rem;
+    color: #4a5568;
+}
+
+.pageInput {
+    width: 50px;
+    margin-right: 5px;
+    padding: 8px;
+    border: 1px solid #cbd5e0;
+    border-radius: 6px;
+    text-align: center;
+    font-size: 1.1rem;
+    font-weight: bold;
+    -moz-appearance: textfield; /* Firefox */
+}
+.pageInput::-webkit-outer-spin-button,
+.pageInput::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+
+/* 다운로드 버튼 (캡처 모드에서 너비 조정) */
+.captureControls .downloadButton {
+    width: 40%;
+}
