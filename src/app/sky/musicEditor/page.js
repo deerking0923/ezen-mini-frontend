@@ -29,15 +29,13 @@ export default function SkyMusicEditorPage() {
     const [sheetData, setSheetData] = useState(() => {
         const createNote = () => ({ isActive: false, colorId: "default" });
         const createBeat = () => Array.from({ length: 15 }, createNote);
-        // 기본 18개 시트로 시작
         return Array.from({ length: 18 }, createBeat);
     });
     const [isPlayerVisible, setIsPlayerVisible] = useState(false);
     const [isDownloading, setIsDownloading] = useState(false);
-    const [downloadProgress, setDownloadProgress] = useState(0);
     const [downloadMessage, setDownloadMessage] = useState('');
 
-    // --- 캡처 모드 관련 상태 추가 ---
+    // --- 캡처 모드 관련 상태 ---
     const [isCaptureMode, setIsCaptureMode] = useState(false);
     const [currentPage, setCurrentPage] = useState(1);
     
@@ -46,8 +44,8 @@ export default function SkyMusicEditorPage() {
     const txtFileInputRef = useRef(null);
 
     const { txtToSheet } = useTxtConverter();
-    // --- 페이지 다운로드 핸들러 추가 ---
-    const { handleSave, handleDownloadTxt, handleDownloadZip, handleDownloadPage } = useSheetDownloader(title, composer, arranger, sheetData);
+    // --- ZIP 다운로드 핸들러 제거 ---
+    const { handleSave, handleDownloadTxt, handleDownloadPage } = useSheetDownloader(title);
     
     const { isPlaying, bpm, currentBeat, setBpm, handlePlayPause, handleBeatClick, scrollerRef } = useMusicPlayer(sheetData, beatElementsRef);
 
@@ -119,23 +117,7 @@ export default function SkyMusicEditorPage() {
         reader.readAsText(file);
         event.target.value = null;
     };
-
-    const onDownloadZipClick = () => {
-        setIsDownloading(true);
-        setDownloadProgress(0);
-        setDownloadMessage('준비 중...');
-
-        handleDownloadZip(({ progress, message }) => {
-            if (message) setDownloadMessage(message);
-            if (progress) setDownloadProgress(progress);
-        }).finally(() => {
-            setIsDownloading(false);
-            setDownloadProgress(0);
-            setDownloadMessage('');
-        });
-    };
     
-    // --- 페이지 다운로드 실행 함수 ---
     const onDownloadPageClick = async () => {
         setIsDownloading(true);
         setDownloadMessage(`악보 ${currentPage}페이지 캡처 중...`);
@@ -167,12 +149,10 @@ export default function SkyMusicEditorPage() {
 
             <div className={styles.noticePanel}>
                 <p>
-                    ⚠️ 10페이지 이상 악보 이미지 저장(ZIP) 작업은 PC에서 이용 바랍니다. <br />
-                    (JSON이나 TXT 저장은 모바일에서도 정상 작동합니다.)
+                    ⚠️ PC에서 [캡처 모드]를 이용해 페이지별로 악보를 저장할 수 있습니다.
                 </p>
                 <p>
-                    20페이지가 넘어가는 캡처는 [화면 응답 버튼]이 뜨면 [대기]를 누르고 잠시만 기다려주세요. <br />
-                    (대략 20분 소요될 수 있습니다. 그 이상은 나누어 작업 바랍니다.)
+                    JSON, TXT 파일 저장은 모바일에서도 정상 작동합니다.
                 </p>
             </div>
 
@@ -196,11 +176,10 @@ export default function SkyMusicEditorPage() {
                     </div>
                 </div>
 
-                {/* --- 캡처 모드 전환 버튼 --- */}
                 <button
                     onClick={() => {
                         setIsCaptureMode(!isCaptureMode);
-                        setCurrentPage(1); // 모드 전환 시 1페이지로 초기화
+                        setCurrentPage(1);
                     }}
                     className={styles.modeToggleButton}
                     disabled={isDownloading}
@@ -208,8 +187,7 @@ export default function SkyMusicEditorPage() {
                     {isCaptureMode ? '✏️ 에디터로 돌아가기' : '📷 캡처 모드로 전환'}
                 </button>
 
-                {/* --- 캡처 모드 UI --- */}
-                {isCaptureMode ? (
+                {isCaptureMode && (
                     <div className={styles.captureControls}>
                         <div className={styles.pagination}>
                             <button onClick={handlePrevPage} disabled={currentPage <= 1 || isDownloading}>이전</button>
@@ -230,20 +208,10 @@ export default function SkyMusicEditorPage() {
                             {isDownloading ? `캡처 중...` : `현재 페이지 다운로드 (PNG)`}
                         </button>
                     </div>
-                ) : (
-                    <button onClick={onDownloadZipClick} className={styles.downloadButton} disabled={isDownloading}>
-                        {isDownloading ? `다운로드 중... ${Math.round(downloadProgress)}%` : '전체 악보 다운로드 (ZIP)'}
-                    </button>
                 )}
-
+                
                 {isDownloading && (
                     <div className={styles.downloadProgressContainer}>
-                         {/* ZIP 다운로드 시에만 프로그레스 바 표시 */}
-                         {!isCaptureMode && (
-                             <div className={styles.progressBar}>
-                                <div className={styles.progressFill} style={{ width: `${downloadProgress}%` }}></div>
-                            </div>
-                         )}
                         <span className={styles.progressMessage}>{downloadMessage}</span>
                     </div>
                 )}
@@ -252,12 +220,14 @@ export default function SkyMusicEditorPage() {
                 <input type="file" ref={txtFileInputRef} style={{ display: "none" }} accept=".txt" onChange={handleTxtFileChange} disabled={isDownloading} />
             </div>
 
-            {/* --- 캡처 대상이 될 컨테이너 --- */}
             <div id="main-content-to-capture">
-                {/* --- 캡처모드일 때는 1페이지만, 에디터 모드일 때는 항상 표시 --- */}
                 {(!isCaptureMode || (isCaptureMode && currentPage === 1)) && (
                     <div id="info-form" className={styles.infoForm}>
+                        {/* --- 악보 상단 고정 텍스트 추가 --- */}
+                        <p className={styles.sheetHeader}>스카이 플래너 악보 에디터</p>
+                        
                         <input type="text" className={styles.titleInput} placeholder="악보 제목" value={title} onChange={(e) => setTitle(e.target.value)} disabled={isDownloading} />
+                        
                         <div className={styles.colorLegend}>
                             {colorLegendData.map(item => (
                                 <div key={item.id} className={styles.legendItem}>
@@ -273,15 +243,10 @@ export default function SkyMusicEditorPage() {
                     </div>
                 )}
                 
-                {/* --- 에디터 모드일 때는 스크롤 컨테이너 사용 --- */}
                 {isCaptureMode ? (
                      <SheetMusicEditor
                         sheetData={sheetData}
                         setSheetData={setSheetData}
-                        isPlaying={isPlaying}
-                        currentBeat={currentBeat}
-                        onBeatClick={handleBeatClick}
-                        beatElementsRef={beatElementsRef}
                         isCaptureMode={isCaptureMode}
                         currentPage={currentPage}
                     />

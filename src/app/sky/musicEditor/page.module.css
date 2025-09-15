@@ -25,7 +25,6 @@
   color: #718096;
 }
 
-/* 헤더 타이틀 및 서브 텍스트 정렬 */
 .headerTitle {
   display: flex;
   align-items: center;
@@ -49,15 +48,15 @@
   gap: 5px;
 }
 
-/* Sky Studio 앱 링크 버튼 */
+/* Sky Studio 앱 링크 버튼 (크기 수정) */
 .skyStudioButton {
-  padding: 8px 16px;
+  padding: 6px 12px;
   background-color: #e2e8f0;
   border: 1px solid #cbd5e0;
   border-radius: 6px;
   text-decoration: none;
   color: #4a5568;
-  font-size: 0.9rem;
+  font-size: 0.8rem;
   font-weight: bold;
   transition: background-color 0.2s, border-color 0.2s, transform 0.2s;
   cursor: pointer;
@@ -80,27 +79,27 @@
   border-radius: 12px;
   border: 1px solid #e2e8f0;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-  gap: 15px; /* 그룹 간의 간격 */
+  gap: 15px;
 }
 
 /* 버튼 그룹 컨테이너 */
 .buttonGroupWrapper {
   display: flex;
   flex-direction: column;
-  gap: 20px; /* 그룹 간의 간격 */
+  gap: 20px;
   width: 60%;
 }
 
 .buttonGroup {
   display: flex;
   justify-content: center;
-  gap: 10px; /* 개별 버튼 간의 간격 */
+  gap: 10px;
   width: 100%;
 }
 
 /* 버튼 공통 스타일 */
 .actionButton {
-  flex: 1; /* 버튼 가로 길이 균등 분배 */
+  flex: 1;
   padding: 12px 20px;
   font-size: 1rem;
   font-weight: bold;
@@ -164,10 +163,10 @@
 /* 뮤직 플레이어 컨트롤러를 감싸는 컨테이너 */
 .musicControlsContainer {
   display: flex;
-  flex-direction: row; /* 가로로 정렬 */
+  flex-direction: row;
   align-items: center;
   justify-content: center;
-  gap: 15px; /* 버튼과 컨트롤러 간의 간격 */
+  gap: 15px;
   width: 100%;
 }
 
@@ -248,23 +247,28 @@
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
 }
 
+.sheetHeader {
+  text-align: center;
+  font-size: 0.9rem;
+  color: #a0aec0;
+  font-weight: 500;
+  margin-bottom: 1rem;
+}
+
 .titleInput {
   font-size: 2.2rem;
   font-weight: bold;
   text-align: center;
   width: 100%;
-  padding-bottom: 0.5rem;
-  margin-bottom: 1.5rem;
+  margin: 0; /* 제목 아래 간격 축소 */
   color: #2d3748;
   border: none;
-  border-bottom: 2px solid #e2e8f0;
   outline: none;
   background-color: transparent;
-  transition: border-bottom-color 0.2s;
 }
 
 .titleInput:focus {
-  border-bottom-color: #4299e1;
+  /* 비워둠 */
 }
 
 .titleInput::placeholder {
@@ -280,7 +284,7 @@
   padding-top: 1.5rem;
   margin-top: 1.5rem;
   margin-bottom: 2rem;
-  border-top: 1px solid #e2e8f0;
+  border-top: 1px solid #e2e8f0; /* 선 다시 추가 */
 }
 
 .legendItem {
@@ -483,220 +487,152 @@
 
 /* Palette Container */
 .paletteContainer {
-    position: fixed;
-    right: 2rem;
-    bottom: 2rem;
-    z-index: 50;
+  position: fixed;
+  right: 2rem;
+  bottom: 2rem;
+  z-index: 50;
 }
 
 /* 다운로드 진행률 컨테이너 */
 .downloadProgressContainer {
-    width: 100%;
-    margin-top: 10px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 8px;
-}
-
-.progressBar {
-    width: 80%;
-    height: 10px;
-    background-color: #e2e8f0;
-    border-radius: 5px;
-    overflow: hidden;
-}
-
-.progressFill {
-    height: 100%;
-    background-color: #4299e1;
-    transition: width 0.3s ease;
+  width: 100%;
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
 }
 
 .progressMessage {
-    font-size: 0.9rem;
-    color: #4a5568;
+  font-size: 0.9rem;
+  color: #4a5568;
 }
 
-/* 다운로드 버튼 비활성화 시 스타일 */
-.downloadButton:disabled {
-    background-color: #a0aec0;
-    cursor: not-allowed;
-    box-shadow: none;
-    transform: none;
-}
-
-/* page.module.css */
-
-/* ... 기존 스타일 유지 ... */
-
-/* 새로 추가된 다운로드 범위 입력 그룹 */
-.downloadRangeGroup {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-top: 15px;
-    width: 60%;
-}
-
-.downloadRangeGroup .downloadButton {
-    flex: 1;
-}
-
-.rangeLabel {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    font-size: 1rem;
-    color: #4a5568;
-    font-weight: 500;
-}
-
-.rangeInput {
-    width: 60px;
-    padding: 8px 12px;
-    border: 1px solid #cbd5e0;
-    border-radius: 6px;
-    font-size: 1rem;
-    text-align: center;
-}
-
-/* 다운로드 버튼 비활성화 시 스타일 (추가) */
-.downloadButton:disabled {
-    background-color: #a0aec0;
-    cursor: not-allowed;
-    box-shadow: none;
-    transform: none;
-}
+/* 공지 패널 (디자인 및 너비 수정) */
 .noticePanel {
-    /* 기존 스타일 재설정 */
-    width: 100%;
-    max-width: 800px; /* 너무 길어지지 않게 최대 너비 설정 */
-    margin: 0 auto 2rem; /* 중앙 정렬 및 아래 여백 */
-    
-    /* 새로운 디자인 적용 */
-    padding: 1.5rem 2rem;
-    background-color: #ffffff; /* 흰색 배경 */
-    border: 1px solid #e2e8f0; /* 연한 회색 테두리 */
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); /* 부드러운 그림자 */
-    text-align: center; /* **가운데 정렬** */
-    line-height: 1.6;
+  /* max-width 제거하여 너비 맞춤 */
+  width: 100%;
+  margin: 0 auto 2rem;
+  padding: 1.5rem 2rem;
+  background-color: #f7fafc; /* 부드러운 회색 배경 */
+  border: 1px solid #e2e8f0; /* 회색 계열 테두리 */
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  text-align: center;
+  line-height: 1.6;
 }
 
 .noticePanel p {
-    margin: 0;
-    font-size: 1rem;
-    color: #4a5568;
+  margin: 0;
+  font-size: 1rem;
+  color: #4a5568; /* 표준 텍스트 색상 */
 }
 
-/* 제목 부분 강조 */
 .noticePanel p:first-child {
-    font-weight: bold;
-    color: #2d3748;
-    font-size: 1.1rem;
-    margin-bottom: 0.5rem; /* 제목과 본문 사이 간격 */
+  font-weight: bold;
+  color: #2d3748; /* 표준 강조 텍스트 색상 */
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
 }
 
-/* 첫 문단 이후의 p 태그에 상단 마진 추가 */
 .noticePanel p + p {
-    margin-top: 1rem;
+  margin-top: 1rem;
 }
 
-/* 아이콘 색상 및 폰트 크기 조정 */
 .noticePanel span {
-    color: #e53e3e; /* 빨간색 느낌표 */
-    font-size: 1.2rem;
-    margin-right: 0.5rem;
+  color: #e53e3e;
+  font-size: 1.2rem;
+  margin-right: 0.5rem;
 }
 
 
 /* 캡처 모드 전환 버튼 */
 .modeToggleButton {
-    width: 30%;
-    padding: 12px 24px;
-    font-size: 1.1rem;
-    font-weight: bold;
-    color: #4a5568;
-    background-color: #f0f4f8;
-    border: 1px solid #cbd5e0;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: all 0.2s;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-    margin-top: 10px;
+  width: 30%;
+  padding: 12px 24px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #4a5568;
+  background-color: #f0f4f8;
+  border: 1px solid #cbd5e0;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  margin-top: 10px;
 }
 
 .modeToggleButton:hover {
-    background-color: #e2e8f0;
-    transform: translateY(-1px);
+  background-color: #e2e8f0;
+  transform: translateY(-1px);
 }
 
 .modeToggleButton:disabled {
-    background-color: #e2e8f0;
-    cursor: not-allowed;
-    transform: none;
-    box-shadow: none;
+  background-color: #e2e8f0;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
 }
 
 /* 캡처 모드 컨트롤 전체 컨테이너 */
 .captureControls {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 15px;
-    width: 100%;
-    margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  width: 100%;
+  margin-top: 10px;
 }
 
 /* 페이지네이션 UI */
 .pagination {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
 }
 
 .pagination button {
-    padding: 8px 16px;
-    font-size: 1rem;
-    font-weight: 500;
-    color: #2d3748;
-    background-color: #fff;
-    border: 1px solid #cbd5e0;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: background-color 0.2s;
+  padding: 8px 16px;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #2d3748;
+  background-color: #fff;
+  border: 1px solid #cbd5e0;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s;
 }
 
 .pagination button:hover {
-    background-color: #f7fafc;
+  background-color: #f7fafc;
 }
 
 .pagination button:disabled {
-    background-color: #f7fafc;
-    color: #a0aec0;
-    cursor: not-allowed;
+  background-color: #f7fafc;
+  color: #a0aec0;
+  cursor: not-allowed;
 }
 
 .pageInfo {
-    display: flex;
-    align-items: center;
-    font-size: 1.1rem;
-    color: #4a5568;
+  display: flex;
+  align-items: center;
+  font-size: 1.1rem;
+  color: #4a5568;
 }
 
 .pageInput {
-    width: 50px;
-    margin-right: 5px;
-    padding: 8px;
-    border: 1px solid #cbd5e0;
-    border-radius: 6px;
-    text-align: center;
-    font-size: 1.1rem;
-    font-weight: bold;
-    -moz-appearance: textfield; /* Firefox */
+  width: 50px;
+  margin-right: 5px;
+  padding: 8px;
+  border: 1px solid #cbd5e0;
+  border-radius: 6px;
+  text-align: center;
+  font-size: 1.1rem;
+  font-weight: bold;
+  -moz-appearance: textfield;
 }
+
 .pageInput::-webkit-outer-spin-button,
 .pageInput::-webkit-inner-spin-button {
   -webkit-appearance: none;
@@ -706,5 +642,5 @@
 
 /* 다운로드 버튼 (캡처 모드에서 너비 조정) */
 .captureControls .downloadButton {
-    width: 40%;
+  width: 40%;
 }
