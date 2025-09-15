@@ -78,7 +78,7 @@ export const useSheetDownloader = (title, composer, arranger, sheetData) => {
         const options = {
             quality: 1.0,
             bgcolor: '#f7fafc',
-            scale: 3,
+            scale: 2,
         };
 
         try {
