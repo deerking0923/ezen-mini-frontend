@@ -8,12 +8,10 @@ import { useTxtConverter } from '@/app/hooks/useTxtConverter';
 import { useSheetDownloader } from '@/app/hooks/useSheetDownloader';
 import { useMusicPlayer } from '@/app/hooks/useMusicPlayer';
 
-// --- 상수 정의 ---
 const BEATS_PER_LINE = 6;
 const LINES_PER_PAGE = 10;
 const BEATS_PER_PAGE = BEATS_PER_LINE * LINES_PER_PAGE;
 
-// 색상 범례 데이터
 const colorLegendData = [
     { id: 'half', name: '1/2박' },
     { id: 'default', name: '정음표' },
@@ -34,30 +32,25 @@ export default function SkyMusicEditorPage() {
     const [isPlayerVisible, setIsPlayerVisible] = useState(false);
     const [isDownloading, setIsDownloading] = useState(false);
     const [downloadMessage, setDownloadMessage] = useState('');
-
-    // --- 캡처 모드 관련 상태 ---
     const [isCaptureMode, setIsCaptureMode] = useState(false);
     const [currentPage, setCurrentPage] = useState(1);
     
+    // --- 비트 선택 상태를 여기서 관리 ---
+    const [selectedBeatIndex, setSelectedBeatIndex] = useState(null);
+
     const beatElementsRef = useRef([]);
     const jsonFileInputRef = useRef(null);
     const txtFileInputRef = useRef(null);
 
     const { txtToSheet } = useTxtConverter();
-    // --- ZIP 다운로드 핸들러 제거 ---
-    const { handleSave, handleDownloadTxt, handleDownloadPage } = useSheetDownloader(title);
-    
+    const { handleSave, handleDownloadTxt, handleDownloadPage } = useSheetDownloader(title, composer, arranger, sheetData);
     const { isPlaying, bpm, currentBeat, setBpm, handlePlayPause, handleBeatClick, scrollerRef } = useMusicPlayer(sheetData, beatElementsRef);
 
     const totalPages = Math.ceil(sheetData.length / BEATS_PER_PAGE) || 1;
 
-    // --- 페이지네이션 핸들러 ---
-    const handleNextPage = () => {
-        setCurrentPage(prev => Math.min(totalPages, prev + 1));
-    };
-    const handlePrevPage = () => {
-        setCurrentPage(prev => Math.max(1, prev - 1));
-    };
+    const handleNextPage = () => setCurrentPage(prev => Math.min(totalPages, prev + 1));
+    const handlePrevPage = () => setCurrentPage(prev => Math.max(1, prev - 1));
+    
     const handlePageInputChange = (e) => {
         const value = e.target.value;
         if (value === '') {
@@ -70,15 +63,12 @@ export default function SkyMusicEditorPage() {
         }
     };
     const handlePageInputBlur = (e) => {
-        if (e.target.value === '') {
-            setCurrentPage(1);
-        }
+        if (e.target.value === '') setCurrentPage(1);
     };
 
     const handleJsonFileChange = (event) => {
         const file = event.target.files[0];
         if (!file) return;
-
         const reader = new FileReader();
         reader.onload = (e) => {
             try {
@@ -99,7 +89,6 @@ export default function SkyMusicEditorPage() {
     const handleTxtFileChange = (event) => {
         const file = event.target.files[0];
         if (!file) return;
-
         const reader = new FileReader();
         reader.onload = (e) => {
             const result = txtToSheet(e.target.result);
@@ -155,31 +144,33 @@ export default function SkyMusicEditorPage() {
                     JSON, TXT 파일 저장은 모바일에서도 정상 작동합니다.
                 </p>
             </div>
-
-            <div className={styles.topActionSection}>
+            
+            <div className={styles.topActionSection} onClick={() => setSelectedBeatIndex(null)}>
                 <div className={styles.buttonGroupWrapper}>
                     <div className={styles.buttonGroup}>
-                        <button onClick={() => jsonFileInputRef.current.click()} className={styles.actionButton} disabled={isDownloading}>
+                        <button onClick={(e) => { e.stopPropagation(); jsonFileInputRef.current.click(); }} className={styles.actionButton} disabled={isDownloading}>
                             플래너 악보 불러오기 (JSON)
                         </button>
-                        <button onClick={handleSave} className={styles.actionButton} disabled={isDownloading}>
+                        <button onClick={(e) => { e.stopPropagation(); handleSave(); }} className={styles.actionButton} disabled={isDownloading}>
                             플래너 악보로 저장하기 (JSON)
                         </button>
                     </div>
                     <div className={styles.buttonGroup}>
-                        <button onClick={() => txtFileInputRef.current.click()} className={styles.actionButton} disabled={isDownloading}>
+                        <button onClick={(e) => { e.stopPropagation(); txtFileInputRef.current.click(); }} className={styles.actionButton} disabled={isDownloading}>
                             Sky Studio 악보 가져오기 (TXT)
                         </button>
-                        <button onClick={() => handleDownloadTxt()} className={styles.actionButton} disabled={isDownloading}>
+                        <button onClick={(e) => { e.stopPropagation(); handleDownloadTxt(); }} className={styles.actionButton} disabled={isDownloading}>
                             Sky Studio 악보로 만들기 (TXT)
                         </button>
                     </div>
                 </div>
 
                 <button
-                    onClick={() => {
+                    onClick={(e) => {
+                        e.stopPropagation();
                         setIsCaptureMode(!isCaptureMode);
                         setCurrentPage(1);
+                        setSelectedBeatIndex(null);
                     }}
                     className={styles.modeToggleButton}
                     disabled={isDownloading}
@@ -190,11 +181,12 @@ export default function SkyMusicEditorPage() {
                 {isCaptureMode && (
                     <div className={styles.captureControls}>
                         <div className={styles.pagination}>
-                            <button onClick={handlePrevPage} disabled={currentPage <= 1 || isDownloading}>이전</button>
+                            <button onClick={(e) => { e.stopPropagation(); handlePrevPage(); }} disabled={currentPage <= 1 || isDownloading}>이전</button>
                             <span className={styles.pageInfo}>
                                 <input
                                     type="text"
                                     value={currentPage}
+                                    onClick={(e) => e.stopPropagation()}
                                     onChange={handlePageInputChange}
                                     onBlur={handlePageInputBlur}
                                     className={styles.pageInput}
@@ -202,9 +194,9 @@ export default function SkyMusicEditorPage() {
                                 />
                                 / {totalPages}
                             </span>
-                            <button onClick={handleNextPage} disabled={currentPage >= totalPages || isDownloading}>다음</button>
+                            <button onClick={(e) => { e.stopPropagation(); handleNextPage(); }} disabled={currentPage >= totalPages || isDownloading}>다음</button>
                         </div>
-                        <button onClick={onDownloadPageClick} className={styles.downloadButton} disabled={isDownloading}>
+                        <button onClick={(e) => { e.stopPropagation(); onDownloadPageClick(); }} className={styles.downloadButton} disabled={isDownloading}>
                             {isDownloading ? `캡처 중...` : `현재 페이지 다운로드 (PNG)`}
                         </button>
                     </div>
@@ -223,11 +215,8 @@ export default function SkyMusicEditorPage() {
             <div id="main-content-to-capture">
                 {(!isCaptureMode || (isCaptureMode && currentPage === 1)) && (
                     <div id="info-form" className={styles.infoForm}>
-                        {/* --- 악보 상단 고정 텍스트 추가 --- */}
                         <p className={styles.sheetHeader}>스카이 플래너 악보 에디터</p>
-                        
                         <input type="text" className={styles.titleInput} placeholder="악보 제목" value={title} onChange={(e) => setTitle(e.target.value)} disabled={isDownloading} />
-                        
                         <div className={styles.colorLegend}>
                             {colorLegendData.map(item => (
                                 <div key={item.id} className={styles.legendItem}>
@@ -243,40 +232,43 @@ export default function SkyMusicEditorPage() {
                     </div>
                 )}
                 
-                {isCaptureMode ? (
-                     <SheetMusicEditor
+                <div className={isCaptureMode ? '' : styles.sheetContainer} ref={scrollerRef}>
+                    <SheetMusicEditor
                         sheetData={sheetData}
                         setSheetData={setSheetData}
+                        isPlaying={isPlaying}
+                        currentBeat={currentBeat}
+                        onBeatClick={handleBeatClick}
+                        beatElementsRef={beatElementsRef}
                         isCaptureMode={isCaptureMode}
                         currentPage={currentPage}
+                        selectedBeatIndex={selectedBeatIndex}
+                        setSelectedBeatIndex={setSelectedBeatIndex}
                     />
-                ) : (
-                    <div className={styles.sheetContainer} ref={scrollerRef}>
-                        <SheetMusicEditor
-                            sheetData={sheetData}
-                            setSheetData={setSheetData}
-                            isPlaying={isPlaying}
-                            currentBeat={currentBeat}
-                            onBeatClick={handleBeatClick}
-                            beatElementsRef={beatElementsRef}
-                        />
-                    </div>
-                )}
+                </div>
             </div>
                   
-            <div className={styles.bottomActionSection}>
+            <div className={styles.bottomActionSection} onClick={() => setSelectedBeatIndex(null)}>
                 <div className={styles.musicControlsContainer}>
                     <div className={styles.musicControls}>
-                        <button onClick={handlePlayPause} className={styles.playButton}>
+                        <button onClick={(e) => { e.stopPropagation(); handlePlayPause(); }} className={styles.playButton}>
                             {isPlaying ? '■' : '▶︎'}
                         </button>
                         <div className={styles.bpmControl}>
                             <label>BPM: {bpm}</label>
-                            <input type="range" min="40" max="240" value={bpm} onChange={(e) => setBpm(Number(e.target.value))} disabled={isPlaying} />
+                            <input
+                                type="range"
+                                min="40"
+                                max="240"
+                                value={bpm}
+                                onClick={(e) => e.stopPropagation()}
+                                onChange={(e) => setBpm(Number(e.target.value))}
+                                disabled={isPlaying}
+                            />
                         </div>
                     </div>
                     <div className={styles.playerOpenButtonContainer}>
-                        <button onClick={() => setIsPlayerVisible(true)} className={styles.playerOpenButton}>
+                        <button onClick={(e) => { e.stopPropagation(); setIsPlayerVisible(true); }} className={styles.playerOpenButton}>
                             ▶︎ 악보 연주하기
                         </button>
                     </div>
