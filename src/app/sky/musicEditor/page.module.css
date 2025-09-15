@@ -579,7 +579,7 @@
 }
 /* 캡처 모드 전환 버튼 */
 .modeToggleButton {
-  width: 30%;
+  width: 70%;
   padding: 12px 24px;
   font-size: 1rem;
   font-weight: bold;
@@ -675,3 +675,30 @@
 .captureControls .downloadButton {
   width: 40%;
 }
+
+.modeButtonsContainer {
+  display: flex;
+  gap: 10px;
+}
+
+.selectWrapper {
+  width: 180px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background-color: #e4e6eb;
+  color: #1c1e21;
+  padding: 0 12px;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+.selectBox {
+  padding: 6px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  background-color: #fff;
+  color: #1c1e21;
+  cursor: pointer;
+}
+

@@ -9,9 +9,7 @@ import { useTxtConverter } from '@/app/hooks/useTxtConverter';
 import { useSheetDownloader } from '@/app/hooks/useSheetDownloader';
 import { useMusicPlayer } from '@/app/hooks/useMusicPlayer';
 
-const BEATS_PER_LINE = 6;
 const LINES_PER_PAGE = 10;
-const BEATS_PER_PAGE = BEATS_PER_LINE * LINES_PER_PAGE;
 
 const colorLegendData = [
     { id: 'half', name: '1/2박' },
@@ -36,9 +34,8 @@ export default function SkyMusicEditorPage() {
     const [isCaptureMode, setIsCaptureMode] = useState(false);
     const [currentPage, setCurrentPage] = useState(1);
     const [selectedBeatIndex, setSelectedBeatIndex] = useState(null);
-
-    // --- 📌 1. 색상 상태를 이곳에서 관리합니다. ---
     const [currentColorId, setCurrentColorId] = useState('default');
+    const [beatsPerLine, setBeatsPerLine] = useState(6);
 
     const beatElementsRef = useRef([]);
     const jsonFileInputRef = useRef(null);
@@ -49,6 +46,7 @@ export default function SkyMusicEditorPage() {
     
     const { isPlaying, bpm, currentBeat, setBpm, handlePlayPause, handleBeatClick, scrollerRef } = useMusicPlayer(sheetData, beatElementsRef);
     
+    const BEATS_PER_PAGE = beatsPerLine * LINES_PER_PAGE;
     const totalPages = Math.ceil(sheetData.length / BEATS_PER_PAGE) || 1;
 
     const handleNextPage = () => setCurrentPage(prev => Math.min(totalPages, prev + 1));
@@ -168,18 +166,35 @@ export default function SkyMusicEditorPage() {
                     </div>
                 </div>
 
-                <button
-                    onClick={(e) => {
-                        e.stopPropagation();
-                        setIsCaptureMode(!isCaptureMode);
-                        setCurrentPage(1);
-                        setSelectedBeatIndex(null);
-                    }}
-                    className={styles.modeToggleButton}
-                    disabled={isDownloading}
-                >
-                    {isCaptureMode ? '✏️ 에디터로 돌아가기' : '📷 캡처 모드로 전환'}
-                </button>
+                <div className={styles.modeButtonsContainer}>
+                    <button
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            setIsCaptureMode(!isCaptureMode);
+                            setCurrentPage(1);
+                            setSelectedBeatIndex(null);
+                        }}
+                        className={styles.modeToggleButton}
+                        disabled={isDownloading}
+                    >
+                        {isCaptureMode ? '✏️ 에디터로 돌아가기' : '📷 캡처 모드로 전환'}
+                    </button>
+
+                    <div className={styles.selectWrapper}>
+                        <label htmlFor="beatsPerLineSelect">줄 당 비트:</label>
+                        <select
+                            id="beatsPerLineSelect"
+                            value={beatsPerLine}
+                            onChange={(e) => setBeatsPerLine(Number(e.target.value))}
+                            className={styles.selectBox}
+                            onClick={(e) => e.stopPropagation()}
+                        >
+                            <option value={4}>4</option>
+                            <option value={5}>5</option>
+                            <option value={6}>6</option>
+                        </select>
+                    </div>
+                </div>
 
                 {isCaptureMode ? (
                     <div className={styles.captureControls}>
@@ -250,10 +265,9 @@ export default function SkyMusicEditorPage() {
                         onBeatClick={handleBeatClick} beatElementsRef={beatElementsRef}
                         isCaptureMode={isCaptureMode} currentPage={currentPage}
                         selectedBeatIndex={selectedBeatIndex} setSelectedBeatIndex={setSelectedBeatIndex}
-                        
-                        // --- 📌 2. 색상 상태와 변경 함수를 props로 전달합니다. ---
                         currentColorId={currentColorId}
                         setCurrentColorId={setCurrentColorId}
+                        beatsPerLine={beatsPerLine}
                     />
                 </div>
             </div>
@@ -265,8 +279,6 @@ export default function SkyMusicEditorPage() {
             <FloatingPalette
                 selectedBeatIndex={selectedBeatIndex}
                 colorLegendData={colorLegendData}
-                
-                // --- 📌 3. 미니 팔레트에도 똑같이 전달합니다. ---
                 currentColorId={currentColorId}
                 setCurrentColorId={setCurrentColorId}
             />

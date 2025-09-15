@@ -1,13 +1,11 @@
 'use client';
 
-import React from 'react'; // useState는 이제 여기서 직접 사용하지 않습니다.
+import React from 'react';
 import NoteButton from './NoteButton';
 import ColorPalette from './ColorPalette';
 import styles from './SheetMusicEditor.module.css';
 
-const BEATS_PER_LINE = 6;
 const LINES_PER_PAGE = 10;
-const BEATS_PER_PAGE = BEATS_PER_LINE * LINES_PER_PAGE;
 const TOTAL_NOTES = 15;
 
 export const NOTE_COLORS = {
@@ -40,12 +38,11 @@ export default function SheetMusicEditor({
     currentPage = 1,
     selectedBeatIndex,
     setSelectedBeatIndex,
-    // --- 📌 1. 부모(page.js)로부터 색상 상태와 함수를 받습니다. ---
     currentColorId,
     setCurrentColorId,
+    beatsPerLine,
 }) {
-    // --- 📌 2. 여기서 직접 관리하던 색상 상태를 제거했습니다. ---
-    // const [currentColorId, setCurrentColorId] = useState('default');
+    const activeNoteColors = NOTE_COLORS;
 
     const toggleNote = (beatIndex, noteIndex) => {
         setSelectedBeatIndex(beatIndex);
@@ -53,7 +50,6 @@ export default function SheetMusicEditor({
             const newSheetData = [...currentSheetData.map(beat => [...beat.map(note => ({...note}))])];
             const note = newSheetData[beatIndex][noteIndex];
 
-            // props로 받은 currentColorId를 사용해 음표를 색칠합니다.
             if (note.isActive && note.colorId === currentColorId) {
                 note.isActive = false;
             } else {
@@ -87,24 +83,24 @@ export default function SheetMusicEditor({
     };
 
     const addLine = () => {
-        const newLine = Array.from({ length: BEATS_PER_LINE }, createBeat);
+        const newLine = Array.from({ length: beatsPerLine }, createBeat);
         setSheetData(currentSheetData => [...currentSheetData, ...newLine]);
         setSelectedBeatIndex(null);
     };
     
     const removeLine = () => {
-        if (sheetData.length > BEATS_PER_LINE) {
-            setSheetData(currentSheetData => currentSheetData.slice(0, currentSheetData.length - BEATS_PER_LINE));
+        if (sheetData.length >= beatsPerLine) {
+            setSheetData(currentSheetData => currentSheetData.slice(0, currentSheetData.length - beatsPerLine));
         }
         setSelectedBeatIndex(null);
     };
 
-    // 이 함수는 이제 props로 받은 setCurrentColorId 함수를 호출합니다.
     const handleColorSelect = (colorId) => {
         setCurrentColorId(colorId);
         setSelectedBeatIndex(null);
     };
 
+    const BEATS_PER_PAGE = beatsPerLine * LINES_PER_PAGE;
     const pages = chunkArray(sheetData, BEATS_PER_PAGE);
     const totalPageCount = Math.max(1, pages.length);
 
@@ -116,7 +112,10 @@ export default function SheetMusicEditor({
         const actualPageIndex = isCaptureMode ? currentPage - 1 : pageIndex;
         return (
             <div key={actualPageIndex} className={`${styles.page} page`}>
-                <div className={styles.sheetGrid}>
+                <div 
+                    className={styles.sheetGrid}
+                    style={{ gridTemplateColumns: `repeat(${beatsPerLine}, 1fr)` }}
+                >
                     {beats.map((beat, beatIndexInPage) => {
                         const globalIndex = actualPageIndex * BEATS_PER_PAGE + beatIndexInPage;
                         const isCurrentlyPlaying = !isCaptureMode && isPlaying && currentBeat === globalIndex;
@@ -145,7 +144,7 @@ export default function SheetMusicEditor({
                                                 key={noteIndex}
                                                 noteIndex={noteIndex}
                                                 isActive={note.isActive}
-                                                color={NOTE_COLORS[note.colorId] || NOTE_COLORS.default}
+                                                color={activeNoteColors[note.colorId] || activeNoteColors.default}
                                                 onClick={(e) => {
                                                     if (isCaptureMode) return;
                                                     e.stopPropagation();
@@ -189,7 +188,7 @@ export default function SheetMusicEditor({
                         <button 
                             onClick={removeLine} 
                             className={styles.addButton} 
-                            disabled={sheetData.length <= BEATS_PER_LINE}
+                            disabled={sheetData.length <= beatsPerLine}
                         >
                             1줄 없애기
                         </button>
