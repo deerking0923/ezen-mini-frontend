@@ -1,6 +1,6 @@
 /* 기본 레이아웃 */
 .main {
-  max-width: 1200px;
+  max-width: 1000px;
   min-width: 1000px;
   margin: 0 auto;
   padding: 2rem;
@@ -33,10 +33,12 @@
 }
 
 .madeByText {
-  font-size: 0.9rem;
+  font-size: 0.75rem;
   color: #4a5568;
   margin: 0;
 }
+
+
 
 /* Sky Studio 앱 링크 버튼 컨테이너 */
 .skyStudioLinks {
@@ -56,7 +58,7 @@
   border-radius: 6px;
   text-decoration: none;
   color: #4a5568;
-  font-size: 0.8rem;
+  font-size: 0.6rem;
   font-weight: bold;
   transition: background-color 0.2s, border-color 0.2s, transform 0.2s;
   cursor: pointer;
@@ -101,7 +103,7 @@
 .actionButton {
   flex: 1;
   padding: 12px 20px;
-  font-size: 1rem;
+  font-size: 0.8rem;
   font-weight: bold;
   color: #4a5568;
   background-color: white;
@@ -143,7 +145,7 @@
 /* 악보 연주 버튼 */
 .playerOpenButton {
   padding: 14px 28px;
-  font-size: 1.1rem;
+  font-size: 1rem;
   font-weight: bold;
   color: white;
   background: linear-gradient(145deg, #4facfe, #00f2fe);
@@ -508,41 +510,59 @@
   color: #4a5568;
 }
 
-/* 공지 패널 (디자인 및 너비 수정) */
+/* 공지 패널 (새로운 디자인) */
 .noticePanel {
-  /* max-width 제거하여 너비 맞춤 */
-  width: 100%;
+  background-color: #f8f9fa; /* 부드러운 배경색 */
+  border: 1px solid #e9ecef; /* 연한 테두리 */
+  border-radius: 16px; /* 둥근 모서리 */
+  padding: 24px 30px; /* 넉넉한 안쪽 여백 */
   margin: 0 auto 2rem;
-  padding: 1.5rem 2rem;
-  background-color: #f7fafc; /* 부드러운 회색 배경 */
-  border: 1px solid #e2e8f0; /* 회색 계열 테두리 */
-  border-radius: 12px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-  text-align: center;
-  line-height: 1.6;
+  width: 100%;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04); /* 은은한 그림자 효과 */
 }
 
-.noticePanel p {
-  margin: 0;
-  font-size: 1rem;
-  color: #4a5568; /* 표준 텍스트 색상 */
-}
-
-.noticePanel p:first-child {
-  font-weight: bold;
-  color: #2d3748; /* 표준 강조 텍스트 색상 */
+/* 공지 패널 헤더 (아이콘 + 제목) */
+.noticeHeader {
+  display: flex;
+  align-items: center;
+  gap: 12px;
   font-size: 1.1rem;
-  margin-bottom: 0.5rem;
+  font-weight: 600;
+  color: #343a40;
+  margin-bottom: 1rem;
 }
 
-.noticePanel p + p {
-  margin-top: 1rem;
+.noticeIcon {
+  font-size: 1.3rem;
 }
 
-.noticePanel span {
-  color: #e53e3e;
-  font-size: 1.2rem;
-  margin-right: 0.5rem;
+/* 공지 패널 목록 */
+.noticeList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  text-align: left;
+}
+
+.noticeList li {
+  display: flex;
+  align-items: flex-start; /* 여러 줄일 경우 아이콘과 줄 시작점 맞춤 */
+  gap: 10px;
+  color: #495057;
+  line-height: 1.6;
+  margin-bottom: 0.75rem;
+}
+
+/* 목록 앞 아이콘(블릿) 스타일 */
+.noticeList li::before {
+  content: '✓'; /* 체크 아이콘 */
+  color: #4C86E7; /* 포인트 색상 */
+  font-weight: bold;
+  padding-top: 2px;
+}
+
+.noticeList li:last-child {
+  margin-bottom: 0;
 }
 
 
@@ -550,7 +570,7 @@
 .modeToggleButton {
   width: 30%;
   padding: 12px 24px;
-  font-size: 1.1rem;
+  font-size: 1rem;
   font-weight: bold;
   color: #4a5568;
   background-color: #f0f4f8;

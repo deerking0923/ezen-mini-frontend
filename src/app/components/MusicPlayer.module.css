@@ -12,22 +12,7 @@
   backdrop-filter: blur(8px);
 }
 
-.playerContainer {
-  width: 95vw;
-  min-width: 1000px;
-  max-width: 1400px;
-  height: auto; 
-  max-height: 500px;
-  background-color: #161b22;
-  border-radius: 20px;
-  border: 1px solid #30363d;
-  box-shadow: 0 15px 40px rgba(0,0,0,0.6);
-  display: flex;
-  flex-direction: column;
-  padding: 2rem;
-  color: #c9d1d9;
-  box-sizing: border-box;
-}
+
 
 /* 헤더 레이아웃 */
 .header {
@@ -95,14 +80,33 @@
   padding: 0 calc(50% - 130px);
 }
 
+/* 수정 예시 1: 플레이어 전체 컨테이너 */
+.playerContainer {
+  width: 95vw;
+  min-width: 900px;   /* 1000px -> 900px */
+  max-width: 1400px;
+  height: auto; 
+  max-height: 420px;  /* 500px -> 420px */
+  background-color: #161b22;
+  border-radius: 20px;
+  border: 1px solid #30363d;
+  box-shadow: 0 15px 40px rgba(0,0,0,0.6);
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem 2rem; /* 위아래 패딩 약간 줄임 */
+  color: #c9d1d9;
+  box-sizing: border-box;
+}
+
+/* 수정 예시 2: 개별 비트(노드) 패널 */
 .beatColumn {
   flex-shrink: 0;
-  width: 260px;
-  height: 180px; 
+  width: 220px;       /* 260px -> 220px */
+  height: 150px;      /* 180px -> 150px */
   background-color: #21262d;
   border: 1px solid #30363d;
   border-radius: 12px;
-  padding: 1rem;
+  padding: 0.8rem;    /* 패딩 약간 줄임 */
   transition: all 0.3s ease;
   cursor: pointer;
   display: flex;
