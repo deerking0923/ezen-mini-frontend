@@ -1,11 +1,9 @@
 'use client';
 
 import React from 'react';
-import NoteButton from './NoteButton';
+import NoteButton from './NoteButton'; // NoteButton을 import 합니다.
 import ColorPalette from './ColorPalette';
 import styles from './SheetMusicEditor.module.css';
-
-const TOTAL_NOTES = 15;
 
 export const NOTE_COLORS = {
     default: { fill: '#63b3ed', stroke: '#4299e1', id: 'default' },
@@ -15,6 +13,7 @@ export const NOTE_COLORS = {
     four: { fill: '#48bb78', stroke: '#2f855a', id: 'four' },
 };
 
+const TOTAL_NOTES = 15;
 const createNote = () => ({ isActive: false, colorId: 'default' });
 const createBeat = () => Array.from({ length: TOTAL_NOTES }, createNote);
 
@@ -40,7 +39,7 @@ export default function SheetMusicEditor({
     currentColorId,
     setCurrentColorId,
     beatsPerLine,
-    linesPerPage, // prop 받기
+    linesPerPage,
 }) {
     const activeNoteColors = NOTE_COLORS;
 
@@ -100,7 +99,6 @@ export default function SheetMusicEditor({
         setSelectedBeatIndex(null);
     };
 
-    // prop을 사용하여 BEATS_PER_PAGE 계산
     const BEATS_PER_PAGE = beatsPerLine * linesPerPage;
     const pages = chunkArray(sheetData, BEATS_PER_PAGE);
     const totalPageCount = Math.max(1, pages.length);
@@ -147,6 +145,7 @@ export default function SheetMusicEditor({
                                                 noteIndex={noteIndex}
                                                 isActive={note.isActive}
                                                 color={activeNoteColors[note.colorId] || activeNoteColors.default}
+                                                colorId={note.colorId} // ✨ 이 부분을 추가했습니다!
                                                 onClick={(e) => {
                                                     if (isCaptureMode) return;
                                                     e.stopPropagation();
@@ -195,9 +194,10 @@ export default function SheetMusicEditor({
                             1줄 없애기
                         </button>
                     </div>
-                    <div className={styles.paletteContainer} onClick={(e) => e.stopPropagation()}>
+                    {/* ColorPalette가 여기에 있었지만, FloatingPalette가 사용되므로 주석 처리하거나 필요시 사용 */}
+                     <div className={styles.paletteContainer} onClick={(e) => e.stopPropagation()}>
                         <ColorPalette selectedColor={currentColorId} onColorSelect={handleColorSelect} />
-                    </div>
+                    </div> *
                 </>
             )}
         </div>
