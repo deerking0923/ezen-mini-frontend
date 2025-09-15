@@ -1,12 +1,10 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
-// NOTE_COLORS를 이 파일에서 직접 import하여 사용합니다.
 import { NOTE_COLORS } from './SheetMusicEditor'; 
 import NoteButton from './NoteButton';
 import styles from './MusicPlayer.module.css';
 
-// ▼▼▼ 1. 범례 데이터를 이 파일 안에 직접 정의합니다. ▼▼▼
 const colorLegendData = [
   { id: 'half', name: '1/2박' },
   { id: 'default', name: '정음표' },
@@ -15,7 +13,6 @@ const colorLegendData = [
   { id: 'four', name: '4박' },
 ];
 
-// props에서 colorLegendData와 NOTE_COLORS를 제거합니다.
 export default function MusicPlayer({ sheetData, title, onClose }) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [bpm, setBpm] = useState(100);
@@ -35,7 +32,6 @@ export default function MusicPlayer({ sheetData, title, onClose }) {
 
   const secondsPerBeat = 60 / bpm;
 
-  // --- 기존 로직들은 변경 없이 그대로 유지됩니다. ---
   useEffect(() => {
     if (beatHighlightTimerRef.current) {
       clearInterval(beatHighlightTimerRef.current);
@@ -129,15 +125,12 @@ export default function MusicPlayer({ sheetData, title, onClose }) {
       animationFrameRef.current = requestAnimationFrame(momentumLoop);
     }
   };
-  // --- 기존 로직 끝 ---
 
   return (
     <div className={styles.overlay}>
       <div className={styles.playerContainer}>
         <div className={styles.header}>
           <h2>{title || '악보 연주'}</h2>
-
-          {/* ▼▼▼ 2. 범례 UI가 이제 이 파일 내의 데이터를 사용합니다. ▼▼▼ */}
           <div className={styles.colorLegend}>
             {colorLegendData.map(item => (
               <div key={item.id} className={styles.legendItem}>
@@ -149,7 +142,6 @@ export default function MusicPlayer({ sheetData, title, onClose }) {
               </div>
             ))}
           </div>
-          
           <button onClick={onClose} className={styles.closeButton}>×</button>
         </div>
 
@@ -179,6 +171,7 @@ export default function MusicPlayer({ sheetData, title, onClose }) {
                       noteIndex={noteIndex}
                       isActive={note.isActive}
                       color={NOTE_COLORS[note.colorId] || NOTE_COLORS.default}
+                      colorId={note.colorId} // ✨ 이 부분이 추가되었습니다.
                       onClick={() => {}}
                     />
                   ))}
