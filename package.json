@@ -12,6 +12,7 @@
     "@dnd-kit/core": "^6.3.1",
     "@dnd-kit/sortable": "^10.0.0",
     "@dnd-kit/utilities": "^3.2.2",
+    "dom-to-image-more": "^3.7.1",
     "html2canvas": "^1.4.1",
     "jszip": "^3.10.1",
     "next": "15.1.2",

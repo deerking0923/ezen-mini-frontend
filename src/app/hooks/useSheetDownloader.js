@@ -1,4 +1,4 @@
-import html2canvas from 'html2canvas';
+import domtoimage from 'dom-to-image-more'; // html2canvas 대신 dom-to-image-more를 import
 
 export const useSheetDownloader = (title, composer, arranger, sheetData) => {
 
@@ -68,6 +68,7 @@ export const useSheetDownloader = (title, composer, arranger, sheetData) => {
         }
     };
     
+    // ▼▼▼ 새 라이브러리를 사용하도록 변경된 함수 ▼▼▼
     const handleDownloadPage = async (pageNumber) => {
         const captureElement = document.getElementById("main-content-to-capture");
         if (!captureElement) {
@@ -75,22 +76,20 @@ export const useSheetDownloader = (title, composer, arranger, sheetData) => {
             return;
         }
 
+        const options = {
+            quality: 1.0,
+            bgcolor: '#f7fafc', // 배경색 지정
+        };
+
         try {
-            const canvas = await html2canvas(captureElement, {
-                scale: 2,
-                useCORS: true,
-                backgroundColor: '#f7fafc',
-            });
+            // dom-to-image-more 라이브러리를 사용하여 PNG 데이터 URL 생성
+            const dataUrl = await domtoimage.toPng(captureElement, options);
             
-            const blob = await new Promise((resolve) => canvas.toBlob(resolve, 'image/png'));
-            const url = URL.createObjectURL(blob);
+            // 데이터 URL을 이용해 파일 다운로드
             const link = document.createElement("a");
-            link.href = url;
+            link.href = dataUrl;
             link.download = `${title || '악보'}_${pageNumber}페이지.png`;
             link.click();
-            URL.revokeObjectURL(url);
-            
-            canvas.remove();
 
         } catch (error) {
             console.error("페이지 캡처 중 오류 발생:", error);

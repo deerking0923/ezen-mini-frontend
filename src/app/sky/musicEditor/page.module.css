@@ -239,15 +239,7 @@
   border-radius: 50%;
 }
 
-/* 악보 정보 입력 폼 */
-.infoForm {
-  background-color: white;
-  padding: 2rem 3rem 3rem;
-  border-radius: 12px;
-  margin-bottom: 2rem;
-  border: 1px solid #e2e8f0;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-}
+
 
 .sheetHeader {
   text-align: center;
@@ -257,20 +249,36 @@
   margin-bottom: 1rem;
 }
 
+/* page.module.css 파일 수정 */
+/* page.module.css 파일 하단에 추가 */
+
+.captureHeader {
+  /* 보이지는 않지만, 높이 30px의 공간을 차지하는 가짜 헤더 */
+  height: 30px;
+}
+/* 악보 정보 입력 폼 */
+.infoForm {
+  
+  background-color: white;
+  padding: 2rem 3rem 3rem;
+  border-radius: 12px;
+  margin-bottom: 2rem;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+
+/* 제목 스타일 */
 .titleInput {
   font-size: 2.2rem;
   font-weight: bold;
   text-align: center;
   width: 100%;
-  margin: 0; /* 제목 아래 간격 축소 */
+  margin: 1rem 0 1.5rem 0;
   color: #2d3748;
   border: none;
   outline: none;
   background-color: transparent;
-}
-
-.titleInput:focus {
-  /* 비워둠 */
 }
 
 .titleInput::placeholder {
@@ -284,7 +292,7 @@
   align-items: center;
   gap: 1.5rem;
   padding-top: 1.5rem;
-  margin-top: 1.5rem;
+  margin-top: 0rem;
   margin-bottom: 2rem;
   border-top: 1px solid #e2e8f0; /* 선 다시 추가 */
 }
@@ -565,7 +573,10 @@
   margin-bottom: 0;
 }
 
-
+.captureWrapper {
+  padding-top: -10px; /* 캡처 시 상단에 안전 여백을 강제로 추가 */
+  background-color: #f7fafc; /* body와 동일한 배경색으로 여백 채우기 */
+}
 /* 캡처 모드 전환 버튼 */
 .modeToggleButton {
   width: 30%;

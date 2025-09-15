@@ -15,7 +15,7 @@ export default function MainPageClient() {
     { title: '9월 모의고사', img: '/sky/extra/test.png', path: '/sky/test' },
     { title: '성향 테스트', img: '/sky/extra/mbti.png', path: '/sky/mbti' },
     { title: '키재기 가이드', img: '/guide.png', path: 'https://cafe.naver.com/blacknbiqa/490434' },
-    { title: '크래딧', img: '/sky/extra/profile.png', path: '/sky/credit' },
+    { title: '크레딧', img: '/sky/extra/profile.png', path: '/sky/credit' },
   ];
 
   return (

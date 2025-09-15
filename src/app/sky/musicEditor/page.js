@@ -116,7 +116,7 @@ export default function SkyMusicEditorPage() {
                 <div className={styles.headerTitleContainer}>
                     <div className={styles.headerTitle}>
                         <h1 className={styles.title}>🎵 Sky Music Editor</h1>
-                        <span className={styles.madeByText}>made by 진사슴</span>
+                        {/* <span className={styles.madeByText}>made by 진사슴</span> */}
                     </div>
                     <p className={styles.headerSubtitle}>자신만의 스카이 악보를 만들어 보세요.</p>
                 </div>
@@ -216,43 +216,42 @@ export default function SkyMusicEditorPage() {
                 <input type="file" ref={jsonFileInputRef} style={{ display: "none" }} accept=".json" onChange={handleJsonFileChange} disabled={isDownloading} />
                 <input type="file" ref={txtFileInputRef} style={{ display: "none" }} accept=".txt" onChange={handleTxtFileChange} disabled={isDownloading} />
             </div>
+<div id="main-content-to-capture">
+  {/* ▼▼▼ 이 부분이 핵심입니다 ▼▼▼ */}
+  {/* 캡처 모드이고 첫 페이지일 때만 렌더링되는 '보이지 않는 헤더' */}
+  {isCaptureMode && currentPage === 1 && (
+    <div className={styles.captureHeader}></div>
+  )}
 
-            <div id="main-content-to-capture">
-                {(!isCaptureMode || (isCaptureMode && currentPage === 1)) && (
-                    <div id="info-form" className={styles.infoForm}>
-                        <p className={styles.sheetHeader}>스카이 플래너 악보 에디터</p>
-                        <input type="text" className={styles.titleInput} placeholder="악보 제목" value={title} onChange={(e) => setTitle(e.target.value)} disabled={isDownloading} />
-                        <div className={styles.colorLegend}>
-                            {colorLegendData.map(item => (
-                                <div key={item.id} className={styles.legendItem}>
-                                    <span className={styles.legendColorChip} style={{ backgroundColor: NOTE_COLORS[item.id].fill }}></span>
-                                    {item.name}
-                                </div>
-                            ))}
-                        </div>
-                        <div className={styles.metaInputs}>
-                            <label><b>원작자</b> <input type="text" value={composer} onChange={(e) => setComposer(e.target.value)} disabled={isDownloading} /></label>
-                            <label><b>제작자</b> <input type="text" value={arranger} onChange={(e) => setArranger(e.target.value)} disabled={isDownloading} /></label>
-                        </div>
-                    </div>
-                )}
-                
-                <div className={isCaptureMode ? '' : styles.sheetContainer} ref={scrollerRef}>
-                    <SheetMusicEditor
-                        sheetData={sheetData}
-                        setSheetData={setSheetData}
-                        // 인라인 플레이어 관련 props 제거
-                        // isPlaying={isPlaying} 
-                        // currentBeat={currentBeat}
-                        // onBeatClick={handleBeatClick}
-                        beatElementsRef={beatElementsRef}
-                        isCaptureMode={isCaptureMode}
-                        currentPage={currentPage}
-                        selectedBeatIndex={selectedBeatIndex}
-                        setSelectedBeatIndex={setSelectedBeatIndex}
-                    />
-                </div>
-            </div>
+  {(!isCaptureMode || (isCaptureMode && currentPage === 1)) && (
+    <div id="info-form" className={styles.infoForm}>
+      <p className={styles.sheetHeader}>스카이 플래너 악보 에디터</p>
+      <input type="text" className={styles.titleInput} placeholder="악보 제목" value={title} onChange={(e) => setTitle(e.target.value)} disabled={isDownloading || isPlaying} />
+      <div className={styles.colorLegend}>
+        {colorLegendData.map(item => (
+          <div key={item.id} className={styles.legendItem}>
+            <span className={styles.legendColorChip} style={{ backgroundColor: NOTE_COLORS[item.id].fill }}></span>
+            {item.name}
+          </div>
+        ))}
+      </div>
+      <div className={styles.metaInputs}>
+        <label><b>원작자</b> <input type="text" value={composer} onChange={(e) => setComposer(e.target.value)} disabled={isDownloading || isPlaying} /></label>
+        <label><b>제작자</b> <input type="text" value={arranger} onChange={(e) => setArranger(e.target.value)} disabled={isDownloading || isPlaying} /></label>
+      </div>
+    </div>
+  )}
+
+  <div className={isCaptureMode ? '' : styles.sheetContainer} ref={scrollerRef}>
+    <SheetMusicEditor
+      sheetData={sheetData} setSheetData={setSheetData}
+      isPlaying={isPlaying} currentBeat={currentBeat}
+      onBeatClick={handleBeatClick} beatElementsRef={beatElementsRef}
+      isCaptureMode={isCaptureMode} currentPage={currentPage}
+      selectedBeatIndex={selectedBeatIndex} setSelectedBeatIndex={setSelectedBeatIndex}
+    />
+  </div>
+</div>
             
             {/* 하단 영역 전체 삭제 */}
 
