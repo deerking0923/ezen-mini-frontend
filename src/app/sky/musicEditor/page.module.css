@@ -702,3 +702,62 @@
   cursor: pointer;
 }
 
+/* page.module.css 파일에서 아래 클래스들을 찾아 수정하거나 교체하세요. */
+
+/* 버튼과 Select 메뉴를 모두 감싸는 부모 컨테이너 */
+.modeButtonsContainer {
+  display: flex;
+  width: 60%; /* 컨테이너 너비를 100%로 설정 */
+  gap: 12px;   /* 아이템 사이의 간격 조정 */
+  align-items: stretch; /* 모든 아이템의 높이를 가장 큰 아이템에 맞춤 */
+}
+
+/* 캡처 모드 전환 버튼 */
+.modeToggleButton {
+  /* width: 70%; <- 이 속성은 반드시 제거해주세요! */
+  margin-top: 0; /* 불필요한 상단 마진 제거 */
+  flex: 2.5; /* 다른 select 메뉴보다 2.5배의 공간을 차지하도록 설정 */
+  padding: 12px 20px;
+  font-size: 0.95rem; /* 폰트 크기 미세 조정 */
+  
+  /* --- 이하 기존 스타일 유지 --- */
+  font-weight: bold;
+  color: #4a5568;
+  background-color: #f0f4f8;
+  border: 1px solid #cbd5e0;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+.modeToggleButton:hover {
+  background-color: #e2e8f0;
+  transform: translateY(-1px);
+}
+.modeToggleButton:disabled {
+  background-color: #e2e8f0;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+
+/* '페이지 당 줄', '줄 당 비트' Select 메뉴를 감싸는 래퍼 */
+.selectWrapper {
+  flex: 1; /* 남은 공간을 1:1 비율로 나누어 가짐 */
+  display: flex;
+  align-items: center;
+  justify-content: center; /* 내부 요소들을 중앙 정렬 */
+  padding: 0 12px;
+  white-space: nowrap; /* 내부 글자가 줄바꿈되지 않도록 */
+
+  /* --- 이하 기존 스타일과 동일 --- */
+  gap: 8px;
+  background-color: #e2e8f0;
+  color: #2d3748;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  font-weight: bold;
+  border: 1px solid #cbd5e0;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}

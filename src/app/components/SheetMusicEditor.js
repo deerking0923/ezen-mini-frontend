@@ -5,7 +5,6 @@ import NoteButton from './NoteButton';
 import ColorPalette from './ColorPalette';
 import styles from './SheetMusicEditor.module.css';
 
-const LINES_PER_PAGE = 10;
 const TOTAL_NOTES = 15;
 
 export const NOTE_COLORS = {
@@ -41,6 +40,7 @@ export default function SheetMusicEditor({
     currentColorId,
     setCurrentColorId,
     beatsPerLine,
+    linesPerPage, // prop 받기
 }) {
     const activeNoteColors = NOTE_COLORS;
 
@@ -100,7 +100,8 @@ export default function SheetMusicEditor({
         setSelectedBeatIndex(null);
     };
 
-    const BEATS_PER_PAGE = beatsPerLine * LINES_PER_PAGE;
+    // prop을 사용하여 BEATS_PER_PAGE 계산
+    const BEATS_PER_PAGE = beatsPerLine * linesPerPage;
     const pages = chunkArray(sheetData, BEATS_PER_PAGE);
     const totalPageCount = Math.max(1, pages.length);
 
@@ -119,7 +120,8 @@ export default function SheetMusicEditor({
                     {beats.map((beat, beatIndexInPage) => {
                         const globalIndex = actualPageIndex * BEATS_PER_PAGE + beatIndexInPage;
                         const isCurrentlyPlaying = !isCaptureMode && isPlaying && currentBeat === globalIndex;
-                        const beatWrapperClass = `${styles.beatWrapper} ${isCurrentlyPlaying ? styles.playing : ''}`;
+                        const isSelected = selectedBeatIndex === globalIndex;
+                        const beatWrapperClass = `${styles.beatWrapper} ${isCurrentlyPlaying ? styles.playing : ''} ${isSelected ? styles.selected : ''}`;
 
                         return (
                             <div
@@ -128,7 +130,7 @@ export default function SheetMusicEditor({
                                 onClick={(e) => {
                                     if (isCaptureMode) return;
                                     e.stopPropagation();
-                                    setSelectedBeatIndex(globalIndex);
+                                    setSelectedBeatIndex(prev => prev === globalIndex ? null : globalIndex);
                                     if (onBeatClick) onBeatClick(globalIndex);
                                 }}
                                 ref={el => {

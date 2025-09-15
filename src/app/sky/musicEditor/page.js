@@ -9,8 +9,6 @@ import { useTxtConverter } from '@/app/hooks/useTxtConverter';
 import { useSheetDownloader } from '@/app/hooks/useSheetDownloader';
 import { useMusicPlayer } from '@/app/hooks/useMusicPlayer';
 
-const LINES_PER_PAGE = 10;
-
 const colorLegendData = [
     { id: 'half', name: '1/2박' },
     { id: 'default', name: '정음표' },
@@ -36,6 +34,7 @@ export default function SkyMusicEditorPage() {
     const [selectedBeatIndex, setSelectedBeatIndex] = useState(null);
     const [currentColorId, setCurrentColorId] = useState('default');
     const [beatsPerLine, setBeatsPerLine] = useState(6);
+    const [linesPerPage, setLinesPerPage] = useState(10); // 페이지당 줄 수 상태 추가
 
     const beatElementsRef = useRef([]);
     const jsonFileInputRef = useRef(null);
@@ -46,8 +45,16 @@ export default function SkyMusicEditorPage() {
     
     const { isPlaying, bpm, currentBeat, setBpm, handlePlayPause, handleBeatClick, scrollerRef } = useMusicPlayer(sheetData, beatElementsRef);
     
-    const BEATS_PER_PAGE = beatsPerLine * LINES_PER_PAGE;
+    // 동적으로 BEATS_PER_PAGE 계산
+    const BEATS_PER_PAGE = beatsPerLine * linesPerPage;
     const totalPages = Math.ceil(sheetData.length / BEATS_PER_PAGE) || 1;
+
+    // 페이지 변경 시 currentPage가 totalPages를 넘지 않도록 보정
+    useEffect(() => {
+        if (currentPage > totalPages) {
+            setCurrentPage(totalPages);
+        }
+    }, [totalPages, currentPage]);
 
     const handleNextPage = () => setCurrentPage(prev => Math.min(totalPages, prev + 1));
     const handlePrevPage = () => setCurrentPage(prev => Math.max(1, prev - 1));
@@ -179,7 +186,22 @@ export default function SkyMusicEditorPage() {
                     >
                         {isCaptureMode ? '✏️ 에디터로 돌아가기' : '📷 캡처 모드로 전환'}
                     </button>
-
+                    
+                    {/* ===== 레이아웃 설정 UI (페이지당 줄, 줄당 비트) ===== */}
+                    <div className={styles.selectWrapper}>
+                        <label htmlFor="linesPerPageSelect">페이지 당 줄:</label>
+                        <select
+                            id="linesPerPageSelect"
+                            value={linesPerPage}
+                            onChange={(e) => setLinesPerPage(Number(e.target.value))}
+                            className={styles.selectBox}
+                            onClick={(e) => e.stopPropagation()}
+                        >
+                            {[...Array(10)].map((_, i) => (
+                                <option key={i + 3} value={i + 3}>{i + 3}</option>
+                            ))}
+                        </select>
+                    </div>
                     <div className={styles.selectWrapper}>
                         <label htmlFor="beatsPerLineSelect">줄 당 비트:</label>
                         <select
@@ -189,6 +211,7 @@ export default function SkyMusicEditorPage() {
                             className={styles.selectBox}
                             onClick={(e) => e.stopPropagation()}
                         >
+                            <option value={3}>3</option>
                             <option value={4}>4</option>
                             <option value={5}>5</option>
                             <option value={6}>6</option>
@@ -268,6 +291,7 @@ export default function SkyMusicEditorPage() {
                         currentColorId={currentColorId}
                         setCurrentColorId={setCurrentColorId}
                         beatsPerLine={beatsPerLine}
+                        linesPerPage={linesPerPage} // prop 전달
                     />
                 </div>
             </div>
