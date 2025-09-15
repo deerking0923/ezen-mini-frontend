@@ -11,7 +11,7 @@ export default function MainPageClient() {
     { title: '키재러 가기', img: '/sky/extra/height.png', path: '/sky/height' },
     { title: '양초 계산기', img: '/sky/extra/calculator.png', path: '/sky/candlecalculator' },
     { title: '유랑 대백과', img: '/sky/extra/dictionary.png', path: '/sky/travelingSprits/generalVisits/list' },
-    { title: '악보 만들기', img: '/sky/extra/musicEditor.png', path: '/sky/musicEditor' },
+    //{ title: '악보 만들기', img: '/sky/extra/musicEditor.png', path: '/sky/musicEditor' },
     { title: '9월 모의고사', img: '/sky/extra/test.png', path: '/sky/test' },
     { title: '성향 테스트', img: '/sky/extra/mbti.png', path: '/sky/mbti' },
     { title: '키재기 가이드', img: '/guide.png', path: 'https://cafe.naver.com/blacknbiqa/490434' },
