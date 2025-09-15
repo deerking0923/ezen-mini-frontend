@@ -3,6 +3,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import SheetMusicEditor, { NOTE_COLORS } from '@/app/components/SheetMusicEditor';
 import MusicPlayer from '@/app/components/MusicPlayer';
+import FloatingPalette from '@/app/components/FloatingPalette'; // 새로 만든 팔레트 import
 import styles from './page.module.css';
 import { useTxtConverter } from '@/app/hooks/useTxtConverter';
 import { useSheetDownloader } from '@/app/hooks/useSheetDownloader';
@@ -43,7 +44,6 @@ export default function SkyMusicEditorPage() {
     const { txtToSheet } = useTxtConverter();
     const { handleSave, handleDownloadTxt, handleDownloadPage } = useSheetDownloader(title, composer, arranger, sheetData);
     
-    // 인라인 플레이어 기능은 이제 사용하지 않으므로 관련 props 제거
     const { isPlaying, bpm, currentBeat, setBpm, handlePlayPause, handleBeatClick, scrollerRef } = useMusicPlayer(sheetData, beatElementsRef);
     
     const totalPages = Math.ceil(sheetData.length / BEATS_PER_PAGE) || 1;
@@ -116,7 +116,6 @@ export default function SkyMusicEditorPage() {
                 <div className={styles.headerTitleContainer}>
                     <div className={styles.headerTitle}>
                         <h1 className={styles.title}>🎵 Sky Music Editor</h1>
-                        {/* <span className={styles.madeByText}>made by 진사슴</span> */}
                     </div>
                     <p className={styles.headerSubtitle}>자신만의 스카이 악보를 만들어 보세요.</p>
                 </div>
@@ -131,20 +130,20 @@ export default function SkyMusicEditorPage() {
                 </div>
             </header>
 
-<div className={styles.noticePanel}>
-  <div className={styles.noticeHeader}>
-    <span className={styles.noticeIcon}>💡</span>
-    사용 안내
-  </div>
-  <ul className={styles.noticeList}>
-    <li>플래너 악보와 Sky Studio 악보 모두 사용 가능합니다. PC 작업 환경에 맞추어져 있습니다.</li>
-    <li>플래너 악보로 저장 시 박자 색깔까지 함께 저장됩니다. 박자 표시가 있다면 플래너 악보로 저장해주세요!</li>
-    <li>Sky Studio 악보는 모두 정음표로 변환됩니다. 단일 악기 악보만 호환이 됩니다.</li>
-    <li>악보 저장 시 기기 내 [최신 파일]이나 [다운로드] 폴더 등에서 파일을 찾을 수 있습니다.</li>
-    <li>캡처 모드에서 악보를 한 페이지씩 이미지로 저장할 수 있습니다.</li>
-    <li>악보를 다 만들기 전까지 새로고침을 피해주세요! 중간에 플래너 악보로 저장하시길 권장드립니다.</li>
-  </ul>
-</div>
+            <div className={styles.noticePanel}>
+                <div className={styles.noticeHeader}>
+                    <span className={styles.noticeIcon}>💡</span>
+                    사용 안내
+                </div>
+                <ul className={styles.noticeList}>
+                    <li>플래너 악보와 Sky Studio 악보 모두 사용 가능합니다. PC 작업 환경에 맞추어져 있습니다.</li>
+                    <li>플래너 악보로 저장 시 박자 색깔까지 함께 저장됩니다. 박자 표시가 있다면 플래너 악보로 저장해주세요!</li>
+                    <li>Sky Studio 악보는 모두 정음표로 변환됩니다. 단일 악기 악보만 호환이 됩니다.</li>
+                    <li>악보 저장 시 기기 내 [최신 파일]이나 [다운로드] 폴더 등에서 파일을 찾을 수 있습니다.</li>
+                    <li>캡처 모드에서 악보를 한 페이지씩 이미지로 저장할 수 있습니다.</li>
+                    <li>악보를 다 만들기 전까지 새로고침을 피해주세요! 중간중간 악보를 저장하시길 권장드립니다.</li>
+                </ul>
+            </div>
             
             <div className={styles.topActionSection} onClick={() => setSelectedBeatIndex(null)}>
                 <div className={styles.buttonGroupWrapper}>
@@ -200,9 +199,8 @@ export default function SkyMusicEditorPage() {
                         </button>
                     </div>
                 ) : (
-                    // 에디터 모드일 때 '악보 연주하기' 버튼 표시
                     <div className={styles.playerOpenButtonContainer}>
-                         <button onClick={(e) => { e.stopPropagation(); setIsPlayerVisible(true); }} className={styles.playerOpenButton}>
+                        <button onClick={(e) => { e.stopPropagation(); setIsPlayerVisible(true); }} className={styles.playerOpenButton}>
                             ▶︎ 악보 연주하기
                         </button>
                     </div>
@@ -217,48 +215,53 @@ export default function SkyMusicEditorPage() {
                 <input type="file" ref={jsonFileInputRef} style={{ display: "none" }} accept=".json" onChange={handleJsonFileChange} disabled={isDownloading} />
                 <input type="file" ref={txtFileInputRef} style={{ display: "none" }} accept=".txt" onChange={handleTxtFileChange} disabled={isDownloading} />
             </div>
-<div id="main-content-to-capture">
-  {/* ▼▼▼ 이 부분이 핵심입니다 ▼▼▼ */}
-  {/* 캡처 모드이고 첫 페이지일 때만 렌더링되는 '보이지 않는 헤더' */}
-  {isCaptureMode && currentPage === 1 && (
-    <div className={styles.captureHeader}></div>
-  )}
 
-  {(!isCaptureMode || (isCaptureMode && currentPage === 1)) && (
-    <div id="info-form" className={styles.infoForm}>
-      <p className={styles.sheetHeader}>스카이 플래너 악보 에디터</p>
-      <input type="text" className={styles.titleInput} placeholder="악보 제목" value={title} onChange={(e) => setTitle(e.target.value)} disabled={isDownloading || isPlaying} />
-      <div className={styles.colorLegend}>
-        {colorLegendData.map(item => (
-          <div key={item.id} className={styles.legendItem}>
-            <span className={styles.legendColorChip} style={{ backgroundColor: NOTE_COLORS[item.id].fill }}></span>
-            {item.name}
-          </div>
-        ))}
-      </div>
-      <div className={styles.metaInputs}>
-        <label><b>원작자</b> <input type="text" value={composer} onChange={(e) => setComposer(e.target.value)} disabled={isDownloading || isPlaying} /></label>
-        <label><b>제작자</b> <input type="text" value={arranger} onChange={(e) => setArranger(e.target.value)} disabled={isDownloading || isPlaying} /></label>
-      </div>
-    </div>
-  )}
+            <div id="main-content-to-capture">
+                {isCaptureMode && currentPage === 1 && (
+                    <div className={styles.captureHeader}></div>
+                )}
 
-  <div className={isCaptureMode ? '' : styles.sheetContainer} ref={scrollerRef}>
-    <SheetMusicEditor
-      sheetData={sheetData} setSheetData={setSheetData}
-      isPlaying={isPlaying} currentBeat={currentBeat}
-      onBeatClick={handleBeatClick} beatElementsRef={beatElementsRef}
-      isCaptureMode={isCaptureMode} currentPage={currentPage}
-      selectedBeatIndex={selectedBeatIndex} setSelectedBeatIndex={setSelectedBeatIndex}
-    />
-  </div>
-</div>
+                {(!isCaptureMode || (isCaptureMode && currentPage === 1)) && (
+                    <div id="info-form" className={styles.infoForm}>
+                        <p className={styles.sheetHeader}>스카이 플래너 악보 에디터</p>
+                        <input type="text" className={styles.titleInput} placeholder="악보 제목" value={title} onChange={(e) => setTitle(e.target.value)} disabled={isDownloading || isPlaying} />
+                        <div className={styles.colorLegend}>
+                            {colorLegendData.map(item => (
+                                <div key={item.id} className={styles.legendItem}>
+                                    <span className={styles.legendColorChip} style={{ backgroundColor: NOTE_COLORS[item.id].fill }}></span>
+                                    {item.name}
+                                </div>
+                            ))}
+                        </div>
+                        <div className={styles.metaInputs}>
+                            <label><b>원작자</b> <input type="text" value={composer} onChange={(e) => setComposer(e.target.value)} disabled={isDownloading || isPlaying} /></label>
+                            <label><b>제작자</b> <input type="text" value={arranger} onChange={(e) => setArranger(e.target.value)} disabled={isDownloading || isPlaying} /></label>
+                        </div>
+                    </div>
+                )}
+
+                <div className={isCaptureMode ? '' : styles.sheetContainer} ref={scrollerRef}>
+                    <SheetMusicEditor
+                        sheetData={sheetData} setSheetData={setSheetData}
+                        isPlaying={isPlaying} currentBeat={currentBeat}
+                        onBeatClick={handleBeatClick} beatElementsRef={beatElementsRef}
+                        isCaptureMode={isCaptureMode} currentPage={currentPage}
+                        selectedBeatIndex={selectedBeatIndex} setSelectedBeatIndex={setSelectedBeatIndex}
+                    />
+                </div>
+            </div>
             
-            {/* 하단 영역 전체 삭제 */}
-
             {isPlayerVisible && (
                 <MusicPlayer sheetData={sheetData} title={title} onClose={() => setIsPlayerVisible(false)} />
             )}
+
+            {/* ▼▼▼ 이 부분이 핵심입니다 ▼▼▼ */}
+            <FloatingPalette
+                selectedBeatIndex={selectedBeatIndex}
+                sheetData={sheetData}
+                setSheetData={setSheetData}
+                colorLegendData={colorLegendData}
+            />
         </main>
     );
 }

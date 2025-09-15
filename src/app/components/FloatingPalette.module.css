@@ -1,0 +1,76 @@
+/* 플로팅 팔레트 전체 컨테이너 */
+.paletteContainer {
+    position: fixed; /* 화면에 고정 */
+    bottom: 20px;
+    right: 20px;
+    width: 150px;
+    background-color: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    z-index: 1000; /* 다른 요소들 위에 보이도록 z-index 설정 */
+    font-size: 14px;
+    transition: all 0.3s ease-in-out;
+}
+
+/* 팔레트 헤더 (제목, 접기/펼치기 버튼) */
+.paletteHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 15px;
+    border-bottom: 1px solid #f0f0f0;
+    font-weight: bold;
+    color: #333;
+}
+
+/* 접기/펼치기 버튼 */
+.toggleButton {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 12px;
+    color: #007bff;
+    padding: 4px;
+}
+
+.toggleButton:hover {
+    text-decoration: underline;
+}
+
+/* 색상 버튼들이 있는 본문 영역 */
+.paletteBody {
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+/* 개별 색상 버튼 */
+.colorButton {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: 8px 10px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    background-color: #f9f9f9;
+    cursor: pointer;
+    text-align: left;
+    font-size: 13px;
+    transition: background-color 0.2s, border-color 0.2s;
+}
+
+.colorButton:hover {
+    background-color: #f0f0f0;
+    border-color: #ccc;
+}
+
+/* 색상 미리보기 동그라미 */
+.colorChip {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    margin-right: 10px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+}
