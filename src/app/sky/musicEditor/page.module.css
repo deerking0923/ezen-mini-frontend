@@ -123,9 +123,9 @@
 
 /* 다운로드 버튼 (강조) */
 .downloadButton {
-  width: 30%;
-  padding: 14px 28px;
-  font-size: 1.1rem;
+  width: 20%;
+  padding: 14px 10px;
+  font-size: 1rem;
   font-weight: bold;
   color: white;
   background-color: #4299e1;

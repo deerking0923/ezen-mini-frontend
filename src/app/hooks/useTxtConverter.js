@@ -25,7 +25,7 @@ export const useTxtConverter = () => {
 
       songNotes.forEach(note => {
         const { time, key } = note;
-        const rowIndex = Math.floor(time / msPerBeat);
+        const rowIndex = Math.round(time / msPerBeat);
         const keyIndex = parseInt(key.split('Key')[1]);
 
         if (rowIndex >= 0 && rowIndex < newSheetData.length && keyIndex >= 0 && keyIndex < numKeys) {

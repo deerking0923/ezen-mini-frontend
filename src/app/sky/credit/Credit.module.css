@@ -1,72 +1,126 @@
-/* Credit.module.css */
+/* Credit.module.css (Light Theme) */
 
+/* 전체 페이지 배경 및 정렬 */
 .wrapper {
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 4rem 1rem;
   min-height: calc(100vh - 80px);
+  /* background 속성 제거 -> 기본 배경색 사용 */
+  overflow: hidden;
 }
 
-/* ———————————————————— */
-/* 카드(크레딧 박스) */
-/* ———————————————————— */
-.creditPage {
+/* 크레딧 카드 */
+.creditCard {
   width: 100%;
-  max-width: 800px;
-  background: rgba(0, 0, 0, 0.6);       /* 직접 지정된 배경색 */
-  backdrop-filter: blur(8px);
-  border: 1px solid rgba(255, 255, 255, 0.3); /* 직접 지정된 테두리 */
-  border-radius: 12px;                   /* 12px 반경 */
-  padding: 24px;                         /* 24px 패딩 */
-  margin: 16px auto;                     /* 위아래 16px, 가운데 정렬 */
-  color: #ffffff;                        /* 흰색 텍스트 */
-  font-family: 'Noto Sans KR', sans-serif;
+  max-width: 700px;
+  background: #ffffff; /* 깨끗한 흰색 배경 */
+  border-radius: 16px; /* 부드러운 모서리 */
+  padding: 40px;
+  font-family: 'Pretendard', 'Noto Sans KR', sans-serif;
+  border: 1px solid #e9ecef; /* 연한 회색 테두리 */
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1); /* 부드러운 그림자 */
 }
 
-/* ———————————————————— */
-/* 타이틀 */
-/* ———————————————————— */
-.creditPage h1 {
-  font-size: 2.6rem;
-  font-weight: 700;
+/* 메인 타이틀 */
+.title {
+  font-size: 3rem;
+  font-weight: 800;
   text-align: center;
+  margin: 0 0 32px 0;
+  color: #212529; /* 어두운 텍스트 색상 */
+  letter-spacing: 1px;
+}
+
+/* 섹션 구분 */
+.section {
+  margin-bottom: 28px;
+  padding-bottom: 28px;
+  border-bottom: 1px solid #f1f3f5; /* 더 연한 구분선 */
+}
+.section:last-of-type {
+  margin-bottom: 0;
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+.sectionTitle {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #868e96; /* 회색 소제목 */
+  text-transform: uppercase;
+  letter-spacing: 1px;
   margin-bottom: 16px;
-  letter-spacing: 0.05em;
 }
 
-/* ———————————————————— */
-/* 본문 텍스트 */
-/* ———————————————————— */
-.creditContent {
-  font-size: 1.15rem;
-  line-height: 1.8;
-  margin-bottom: 16px;
+/* 크레딧 항목 */
+.item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 1.1rem;
+  padding: 8px 0;
 }
 
-/* ———————————————————— */
-/* 링크 리스트 */
-/* ———————————————————— */
-.links {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  display: grid;
-  gap: 12px;   /* 링크 간격 */
+.role {
+  color: #495057; /* 역할 텍스트 색상 */
 }
 
-.links li a {
-  display: inline-block;
-  padding: 8px 16px;
-  background: rgba(255, 255, 255, 0.15);
-  border-radius: 8px;
-  color: #00bcd4;      /* 강조색 지정 */
+.name {
   font-weight: 500;
-  transition: background 0.2s ease, transform 0.2s ease, color 0.2s ease;
+  color: #212529; /* 이름 텍스트 색상 */
+  text-align: right;
 }
 
-.links li a:hover {
-  background: rgba(255, 255, 255, 0.3);
-  color: #ffffff;
+/* 링크 버튼 그리드 */
+.linksGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+/* 링크 버튼 */
+.linkButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 16px;
+  background: #f8f9fa; /* 연한 회색 배경 */
+  border: 1px solid #dee2e6; /* 연한 회색 테두리 */
+  border-radius: 10px;
+  color: #495057; /* 어두운 회색 텍스트 */
+  font-weight: 500;
+  text-decoration: none;
+  transition: all 0.2s ease-in-out;
+}
+
+.linkButton:hover {
+  background: #e9ecef; /* 호버 시 배경색 변경 */
+  border-color: #ced4da;
+  color: #000000;
   transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+/* 링크 아이콘 색상 */
+.linkButton svg {
+  color: #868e96;
+  transition: color 0.2s ease-in-out;
+}
+.linkButton:hover svg {
+  color: #000000;
+}
+
+
+/* 하단 푸터 */
+.footer {
+  text-align: center;
+  margin-top: 32px;
+  font-size: 0.9rem;
+  color: #868e96;
+}
+
+.footer p {
+  margin: 0;
 }
