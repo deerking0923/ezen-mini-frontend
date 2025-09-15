@@ -1,30 +1,23 @@
 'use client';
 
-import React, { useState } from 'react'; // 't,' 부분을 삭제했습니다.
+import React, { useState } from 'react';
 import { NOTE_COLORS } from './SheetMusicEditor';
 import styles from './FloatingPalette.module.css';
 
-// 이 컴포넌트는 선택된 음표의 박자를 바꾸는 역할만 합니다.
 export default function FloatingPalette({ 
     selectedBeatIndex, 
-    sheetData, 
-    setSheetData, 
-    colorLegendData 
+    colorLegendData,
+    currentColorId,      // 부모로부터 현재 색상 ID를 받음
+    setCurrentColorId    // 부모의 색상 변경 함수를 받음
 }) {
-    // 팔레트를 접고 펼치기 위한 상태
     const [isExpanded, setIsExpanded] = useState(true);
 
-    // 색상 변경 로직
+    // 이제 이 팔레트는 부모의 색상 상태를 변경하는 역할만 합니다.
     const handleColorChange = (colorId) => {
-        if (selectedBeatIndex === null) return;
-
-        const { beatIndex, noteIndex } = selectedBeatIndex;
-        const newData = JSON.parse(JSON.stringify(sheetData)); // 데이터 깊은 복사
-        newData[beatIndex][noteIndex].colorId = colorId;
-        setSheetData(newData);
+        setCurrentColorId(colorId);
     };
 
-    // 선택된 음표가 없으면 팔레트를 표시하지 않습니다.
+    // 음표가 아닌 "비트(Beat)"가 선택되었을 때만 팔레트를 표시합니다.
     if (selectedBeatIndex === null) {
         return null;
     }
@@ -38,13 +31,13 @@ export default function FloatingPalette({
                 </button>
             </div>
             
-            {/* isExpanded 상태가 true일 때만 색상 선택 버튼들을 보여줍니다. */}
             {isExpanded && (
                 <div className={styles.paletteBody}>
                     {colorLegendData.map(item => (
+                        // 현재 선택된 색상에 'selected' 스타일을 적용하여 시각적으로 표시
                         <button 
                             key={item.id} 
-                            className={styles.colorButton} 
+                            className={`${styles.colorButton} ${currentColorId === item.id ? styles.selected : ''}`} 
                             onClick={() => handleColorChange(item.id)}
                         >
                             <span 
@@ -59,3 +52,12 @@ export default function FloatingPalette({
         </div>
     );
 }
+
+// FloatingPalette.module.css에 아래 스타일을 추가해주세요.
+/*
+.colorButton.selected {
+    border-color: #3182ce;
+    background-color: #ebf8ff;
+    font-weight: bold;
+}
+*/

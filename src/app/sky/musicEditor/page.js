@@ -3,7 +3,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import SheetMusicEditor, { NOTE_COLORS } from '@/app/components/SheetMusicEditor';
 import MusicPlayer from '@/app/components/MusicPlayer';
-import FloatingPalette from '@/app/components/FloatingPalette'; // 새로 만든 팔레트 import
+import FloatingPalette from '@/app/components/FloatingPalette';
 import styles from './page.module.css';
 import { useTxtConverter } from '@/app/hooks/useTxtConverter';
 import { useSheetDownloader } from '@/app/hooks/useSheetDownloader';
@@ -36,6 +36,9 @@ export default function SkyMusicEditorPage() {
     const [isCaptureMode, setIsCaptureMode] = useState(false);
     const [currentPage, setCurrentPage] = useState(1);
     const [selectedBeatIndex, setSelectedBeatIndex] = useState(null);
+
+    // --- 📌 1. 색상 상태를 이곳에서 관리합니다. ---
+    const [currentColorId, setCurrentColorId] = useState('default');
 
     const beatElementsRef = useRef([]);
     const jsonFileInputRef = useRef(null);
@@ -247,6 +250,10 @@ export default function SkyMusicEditorPage() {
                         onBeatClick={handleBeatClick} beatElementsRef={beatElementsRef}
                         isCaptureMode={isCaptureMode} currentPage={currentPage}
                         selectedBeatIndex={selectedBeatIndex} setSelectedBeatIndex={setSelectedBeatIndex}
+                        
+                        // --- 📌 2. 색상 상태와 변경 함수를 props로 전달합니다. ---
+                        currentColorId={currentColorId}
+                        setCurrentColorId={setCurrentColorId}
                     />
                 </div>
             </div>
@@ -255,12 +262,13 @@ export default function SkyMusicEditorPage() {
                 <MusicPlayer sheetData={sheetData} title={title} onClose={() => setIsPlayerVisible(false)} />
             )}
 
-            {/* ▼▼▼ 이 부분이 핵심입니다 ▼▼▼ */}
             <FloatingPalette
                 selectedBeatIndex={selectedBeatIndex}
-                sheetData={sheetData}
-                setSheetData={setSheetData}
                 colorLegendData={colorLegendData}
+                
+                // --- 📌 3. 미니 팔레트에도 똑같이 전달합니다. ---
+                currentColorId={currentColorId}
+                setCurrentColorId={setCurrentColorId}
             />
         </main>
     );

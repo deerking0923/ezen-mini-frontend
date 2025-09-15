@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React from 'react'; // useState는 이제 여기서 직접 사용하지 않습니다.
 import NoteButton from './NoteButton';
 import ColorPalette from './ColorPalette';
 import styles from './SheetMusicEditor.module.css';
@@ -38,14 +38,14 @@ export default function SheetMusicEditor({
     beatElementsRef,
     isCaptureMode = false,
     currentPage = 1,
-    // --- ◀◀ Props로 상태를 전달받음 ---
     selectedBeatIndex,
     setSelectedBeatIndex,
+    // --- 📌 1. 부모(page.js)로부터 색상 상태와 함수를 받습니다. ---
+    currentColorId,
+    setCurrentColorId,
 }) {
-    const [currentColorId, setCurrentColorId] = useState('default');
-    
-    // --- ◀◀ 자체 상태 관리 제거 ---
-    // const [selectedBeatIndex, setSelectedBeatIndex] = useState(null);
+    // --- 📌 2. 여기서 직접 관리하던 색상 상태를 제거했습니다. ---
+    // const [currentColorId, setCurrentColorId] = useState('default');
 
     const toggleNote = (beatIndex, noteIndex) => {
         setSelectedBeatIndex(beatIndex);
@@ -53,6 +53,7 @@ export default function SheetMusicEditor({
             const newSheetData = [...currentSheetData.map(beat => [...beat.map(note => ({...note}))])];
             const note = newSheetData[beatIndex][noteIndex];
 
+            // props로 받은 currentColorId를 사용해 음표를 색칠합니다.
             if (note.isActive && note.colorId === currentColorId) {
                 note.isActive = false;
             } else {
@@ -91,7 +92,6 @@ export default function SheetMusicEditor({
         setSelectedBeatIndex(null);
     };
     
-    // --- ◀◀ 1줄 없애기 기능 ---
     const removeLine = () => {
         if (sheetData.length > BEATS_PER_LINE) {
             setSheetData(currentSheetData => currentSheetData.slice(0, currentSheetData.length - BEATS_PER_LINE));
@@ -99,6 +99,7 @@ export default function SheetMusicEditor({
         setSelectedBeatIndex(null);
     };
 
+    // 이 함수는 이제 props로 받은 setCurrentColorId 함수를 호출합니다.
     const handleColorSelect = (colorId) => {
         setCurrentColorId(colorId);
         setSelectedBeatIndex(null);
@@ -177,7 +178,6 @@ export default function SheetMusicEditor({
     };
 
     return (
-        // --- ◀◀ 클릭 시 비트 선택 해제 ---
         <div className={styles.editorWrapper} onClick={() => setSelectedBeatIndex(null)}>
             {pagesToRender.map((pageBeats, index) => renderPageContent(pageBeats, index))}
             
@@ -186,7 +186,6 @@ export default function SheetMusicEditor({
                     <div className={styles.bottomControls} onClick={(e) => e.stopPropagation()}>
                         <button onClick={addBeat} className={styles.addButton}>1 시트 추가</button>
                         <button onClick={addLine} className={styles.addButton}>1 줄 추가</button>
-                        {/* --- ◀◀ 1줄 없애기 버튼 추가 --- */}
                         <button 
                             onClick={removeLine} 
                             className={styles.addButton} 

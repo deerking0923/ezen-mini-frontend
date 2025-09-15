@@ -33,7 +33,11 @@
     color: #007bff;
     padding: 4px;
 }
-
+.colorButton.selected {
+    border-color: #3182ce;
+    background-color: #ebf8ff;
+    font-weight: bold;
+}
 .toggleButton:hover {
     text-decoration: underline;
 }
