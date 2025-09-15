@@ -10,8 +10,8 @@ import { useSheetDownloader } from '@/app/hooks/useSheetDownloader';
 import { useMusicPlayer } from '@/app/hooks/useMusicPlayer';
 
 const colorLegendData = [
-    { id: 'half', name: '1/2박' },
-    { id: 'default', name: '정음표' },
+    { id: 'half', name: '½박' },
+    { id: 'default', name: '1박' },
     { id: 'two', name: '2박' },
     { id: 'three', name: '3박' },
     { id: 'four', name: '4박' },

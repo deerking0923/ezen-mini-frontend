@@ -1,4 +1,4 @@
-import domtoimage from 'dom-to-image-more'; // html2canvas 대신 dom-to-image-more를 import
+import domtoimage from 'dom-to-image-more';
 
 export const useSheetDownloader = (title, composer, arranger, sheetData) => {
 
@@ -68,7 +68,6 @@ export const useSheetDownloader = (title, composer, arranger, sheetData) => {
         }
     };
     
-    // ▼▼▼ 새 라이브러리를 사용하도록 변경된 함수 ▼▼▼
     const handleDownloadPage = async (pageNumber) => {
         const captureElement = document.getElementById("main-content-to-capture");
         if (!captureElement) {
@@ -78,14 +77,13 @@ export const useSheetDownloader = (title, composer, arranger, sheetData) => {
 
         const options = {
             quality: 1.0,
-            bgcolor: '#f7fafc', // 배경색 지정
+            bgcolor: '#f7fafc',
+            scale: 3,
         };
 
         try {
-            // dom-to-image-more 라이브러리를 사용하여 PNG 데이터 URL 생성
             const dataUrl = await domtoimage.toPng(captureElement, options);
             
-            // 데이터 URL을 이용해 파일 다운로드
             const link = document.createElement("a");
             link.href = dataUrl;
             link.download = `${title || '악보'}_${pageNumber}페이지.png`;
