@@ -17,9 +17,8 @@ const translations = {
     madeBy: 'made by 단풍잎',
     guideTitle: '사용 안내',
     guideItems: [
-      '플래너 악보와 Sky Studio 악보 모두 사용 가능합니다.',
+      '플래너 악보와 Sky Studio 악보 모두 사용 가능합니다. Sky Studio 악보는 모두 1박으로 변환됩니다.',
       '플래너 악보로 저장 시 박자 색깔까지 함께 저장됩니다. 박자 표시가 있다면 플래너 악보로 저장해주세요!',
-      'Sky Studio 악보는 모두 1박으로 변환됩니다. 단일 악기 악보만 호환이 됩니다.',
       '악보 저장 시 기기 내 [최신 파일]이나 [다운로드] 폴더 등에서 파일을 찾을 수 있습니다.',
       '캡처 모드에서 악보를 한 페이지씩 이미지로 저장할 수 있습니다.',
       '악보를 다 만들기 전까지 새로고침을 피해주세요! 중간중간 악보를 저장하시길 권장드립니다.',
@@ -60,9 +59,8 @@ const translations = {
     madeBy: 'made by 단풍잎',
     guideTitle: 'User Guide',
     guideItems: [
-      'Both Planner and Sky Studio sheets are supported.',
+      'Both Planner and Sky Studio sheets are supported. Sky Studio sheets are converted to 1-beat notes.',
       'When saving as a Planner sheet, beat colors are saved. Please use this format if you use custom beat colors!',
-      'Sky Studio sheets are converted to 1-beat notes. Only single-instrument sheets are compatible.',
       'Saved files can be found in your device\'s "Recent files" or "Downloads" folder.',
       'You can save the sheet music page by page as an image in Capture Mode.',
       'Please avoid refreshing the page before you are done! We recommend saving your work periodically.',
@@ -344,7 +342,7 @@ export default function SkyMusicEditorPage() {
                 <input type="file" ref={txtFileInputRef} style={{ display: "none" }} accept=".txt" onChange={handleTxtFileChange} disabled={isDownloading} />
             </div>
 
-            <div id="main-content-to-capture">
+            <div id="main-content-to-capture" className={`${isDownloading ? styles.isCapturing : ''}`}>
                 {isCaptureMode && currentPage === 1 && (
                     <div className={styles.captureHeader}></div>
                 )}
