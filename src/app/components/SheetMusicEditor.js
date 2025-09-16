@@ -184,14 +184,14 @@ export default function SheetMusicEditor({
             {!isCaptureMode && (
                 <>
                     <div className={styles.bottomControls} onClick={(e) => e.stopPropagation()}>
-                        <button onClick={addBeat} className={styles.addButton}>1 시트 추가</button>
-                        <button onClick={addLine} className={styles.addButton}>1 줄 추가</button>
+                        <button onClick={addBeat} className={styles.addButton}>+1 Sheet</button>
+                        <button onClick={addLine} className={styles.addButton}>+1 line</button>
                         <button 
                             onClick={removeLine} 
                             className={styles.addButton} 
                             disabled={sheetData.length <= beatsPerLine}
                         >
-                            1줄 없애기
+                            -1 line
                         </button>
                     </div>
                     {/* ColorPalette가 여기에 있었지만, FloatingPalette가 사용되므로 주석 처리하거나 필요시 사용 */}
