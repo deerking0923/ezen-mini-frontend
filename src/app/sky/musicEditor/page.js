@@ -13,7 +13,7 @@ import { useMusicPlayer } from '@/app/hooks/useMusicPlayer';
 const translations = {
   ko: {
     mainTitle: '🎵 Sky Music Editor',
-    subtitle: '자신만의 스카이 악보를 만들어 보세요.',
+    subtitle: '자신만의 악보를 만들어보세요! _ 만든이 진사슴',
     madeBy: 'made by 단풍잎',
     guideTitle: '사용 안내',
     guideItems: [
@@ -56,8 +56,8 @@ const translations = {
   },
   en: {
     mainTitle: '🎵 Sky Music Editor',
-    subtitle: 'Create your own Sky music sheet.',
-    madeBy: 'made by MapleLeaf',
+    subtitle: 'Create your own Sky music sheet _ made by RealDeer',
+    madeBy: 'made by 단풍잎',
     guideTitle: 'User Guide',
     guideItems: [
       'Both Planner and Sky Studio sheets are supported.',
