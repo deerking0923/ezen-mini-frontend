@@ -57,7 +57,7 @@ export default function RootLayout({ children }) {
                     alt="홈 아이콘"
                     className={styles.icon}
                   />
-                  메인 화면으로 돌아가기
+                  메인 화면
                 </Link>
                 <Link
                   href="https://cafe.naver.com/blacknbiqa"
@@ -70,7 +70,7 @@ export default function RootLayout({ children }) {
                     alt="네이버 카페 아이콘"
                     className={styles.icon}
                   />
-                  네이버 카페로 바로가기
+                  네이버 카페
                 </Link>
 
                 <Link
@@ -84,7 +84,7 @@ export default function RootLayout({ children }) {
                     alt="게임 라운지 아이콘"
                     className={styles.icon}
                   />
-                  공식 게임 라운지로 가기
+                  게임 라운지
                 </Link>
               </div>
 
