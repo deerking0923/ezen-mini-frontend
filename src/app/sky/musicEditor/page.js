@@ -1,3 +1,5 @@
+// src/app/page.js (SkyMusicEditorPage)
+
 'use client';
 
 import React, { useState, useRef, useEffect } from 'react';
@@ -9,98 +11,97 @@ import { useTxtConverter } from '@/app/hooks/useTxtConverter';
 import { useSheetDownloader } from '@/app/hooks/useSheetDownloader';
 import { useMusicPlayer } from '@/app/hooks/useMusicPlayer';
 
-// 1. 언어별 텍스트 데이터를 모두 이곳에서 관리합니다.
 const translations = {
-  ko: {
-    mainTitle: '🎵 Sky Music Editor',
-    subtitle: '자신만의 악보를 만들어보세요! _ 만든이 진사슴',
-    madeBy: 'made by 단풍잎',
-    guideTitle: '사용 안내',
-    guideItems: [
-      '플래너 악보와 Sky Studio 악보 모두 사용 가능합니다. Sky Studio 악보는 모두 1박으로 변환됩니다.',
-      '플래너 악보로 저장 시 박자 색깔까지 함께 저장됩니다. 박자 표시가 있다면 플래너 악보로 저장해주세요!',
-      '악보 저장 시 기기 내 [최신 파일]이나 [다운로드] 폴더 등에서 파일을 찾을 수 있습니다.',
-      '캡처 모드에서 악보를 한 페이지씩 이미지로 저장할 수 있습니다.',
-      '악보를 다 만들기 전까지 새로고침을 피해주세요! 중간중간 악보를 저장하시길 권장드립니다.',
-    ],
-    loadPlanner: '플래너 악보 불러오기 (JSON)',
-    savePlanner: '플래너 악보로 저장하기 (JSON)',
-    loadSkyStudio: 'Sky Studio 악보 가져오기 (TXT)',
-    saveSkyStudio: 'Sky Studio 악보로 만들기 (TXT)',
-    toEditor: '✏️ 에디터로 돌아가기',
-    toCapture: '📷 캡처 모드로 전환',
-    linesPerPage: '페이지 당 줄:',
-    beatsPerLine: '줄 당 비트:',
-    prevPage: '이전',
-    nextPage: '다음',
-    downloadPage: '현재 페이지 다운로드 (PNG)',
-    capturing: '캡처 중...',
-    downloadProgress: (page) => `악보 ${page}페이지 캡처 중...`,
-    playSheet: '▶︎ 악보 연주하기',
-    sheetHeader: '스카이 플래너 악보 에디터',
-    sheetTitlePlaceholder: '악보 제목',
-    composer: '원작자',
-    arranger: '제작자',
-    alertLoadSuccess: '악보를 성공적으로 불러왔습니다.',
-    alertInvalidFile: '오류: 유효하지 않은 파일입니다.',
-    alertTxtSuccess: 'TXT 파일을 악보로 성공적으로 변환했습니다.',
-    alertInvalidTxt: (error) => `오류: ${error || '유효하지 않은 TXT 파일입니다.'}`,
-    colorLegend: [
-      { id: 'half', name: '½박' },
-      { id: 'default', name: '1박' },
-      { id: 'two', name: '2박' },
-      { id: 'three', name: '3박' },
-      { id: 'four', name: '4박' },
-    ],
-  },
-  en: {
-    mainTitle: '🎵 Sky Music Editor',
-    subtitle: 'Create your own Sky music sheet _ made by RealDeer',
-    madeBy: 'made by 단풍잎',
-    guideTitle: 'User Guide',
-    guideItems: [
-      'Both Planner and Sky Studio sheets are supported. Sky Studio sheets are converted to 1-beat notes.',
-      'When saving as a Planner sheet, beat colors are saved. Please use this format if you use custom beat colors!',
-      'Saved files can be found in your device\'s "Recent files" or "Downloads" folder.',
-      'You can save the sheet music page by page as an image in Capture Mode.',
-      'Please avoid refreshing the page before you are done! We recommend saving your work periodically.',
-    ],
-    loadPlanner: 'Load Planner Sheet (JSON)',
-    savePlanner: 'Save as Planner Sheet (JSON)',
-    loadSkyStudio: 'Import Sky Studio Sheet (TXT)',
-    saveSkyStudio: 'Export as Sky Studio Sheet (TXT)',
-    toEditor: '✏️ Back to Editor',
-    toCapture: '📷 Switch to Capture Mode',
-    linesPerPage: 'Lines/Page:',
-    beatsPerLine: 'Beats/Line:',
-    prevPage: 'Prev',
-    nextPage: 'Next',
-    downloadPage: 'Download Current Page (PNG)',
-    capturing: 'Capturing...',
-    downloadProgress: (page) => `Capturing page ${page} of the sheet...`,
-    playSheet: '▶︎ Play Sheet Music',
-    sheetHeader: 'Sky Planner Sheet Editor',
-    sheetTitlePlaceholder: 'Sheet Title',
-    composer: 'Composer',
-    arranger: 'Arranger',
-    alertLoadSuccess: 'Sheet loaded successfully.',
-    alertInvalidFile: 'Error: Invalid file.',
-    alertTxtSuccess: 'Successfully converted TXT file to sheet.',
-    alertInvalidTxt: (error) => `Error: ${error || 'Invalid TXT file.'}`,
-    colorLegend: [
-        { id: 'half', name: '½ Beat' },
-        { id: 'default', name: '1 Beat' },
-        { id: 'two', name: '2 Beats' },
-        { id: 'three', name: '3 Beats' },
-        { id: 'four', name: '4 Beats' },
-    ],
-  },
+  ko: {
+    mainTitle: '🎵 Sky Music Editor',
+    subtitle: '자신만의 악보를 만들어보세요! _ 만든이 진사슴',
+    madeBy: 'made by 단풍잎',
+    guideTitle: '사용 안내',
+    guideItems: [
+      '플래너 악보와 Sky Studio 악보 모두 사용 가능합니다. Sky Studio 악보는 모두 1박으로 변환됩니다.',
+      '플래너 악보로 저장 시 박자 색깔까지 함께 저장됩니다. 박자 표시가 있다면 플래너 악보로 저장해주세요!',
+      '악보 저장 시 기기 내 [최신 파일]이나 [다운로드] 폴더 등에서 파일을 찾을 수 있습니다.',
+      '캡처 모드에서 악보를 한 페이지씩 이미지로 저장할 수 있습니다.',
+      '악보를 다 만들기 전까지 새로고침을 피해주세요! 중간중간 악보를 저장하시길 권장드립니다.',
+    ],
+    loadPlanner: '플래너 악보 불러오기 (JSON)',
+    savePlanner: '플래너 악보로 저장하기 (JSON)',
+    loadSkyStudio: 'Sky Studio 악보 가져오기 (TXT)',
+    saveSkyStudio: 'Sky Studio 악보로 만들기 (TXT)',
+    toEditor: '✏️ 에디터로 돌아가기',
+    toCapture: '📷 캡처 모드로 전환',
+    linesPerPage: '페이지 당 줄:',
+    beatsPerLine: '줄 당 비트:',
+    prevPage: '이전',
+    nextPage: '다음',
+    downloadPage: '현재 페이지 다운로드 (PNG)',
+    capturing: '캡처 중...',
+    downloadProgress: (page) => `악보 ${page}페이지 캡처 중...`,
+    playSheet: '▶︎ 악보 연주하기',
+    sheetHeader: '스카이 플래너 악보 에디터',
+    sheetTitlePlaceholder: '악보 제목',
+    composer: '원작자',
+    arranger: '제작자',
+    alertLoadSuccess: '악보를 성공적으로 불러왔습니다.',
+    alertInvalidFile: '오류: 유효하지 않은 파일입니다.',
+    alertTxtSuccess: 'TXT 파일을 악보로 성공적으로 변환했습니다.',
+    alertInvalidTxt: (error) => `오류: ${error || '유효하지 않은 TXT 파일입니다.'}`,
+    colorLegend: [
+      { id: 'half', name: '½박' },
+      { id: 'default', name: '1박' },
+      { id: 'two', name: '2박' },
+      { id: 'three', name: '3박' },
+      { id: 'four', name: '4박' },
+    ],
+  },
+  en: {
+    mainTitle: '🎵 Sky Music Editor',
+    subtitle: 'Create your own Sky music sheet _ made by RealDeer',
+    madeBy: 'made by 단풍잎',
+    guideTitle: 'User Guide',
+    guideItems: [
+      'Both Planner and Sky Studio sheets are supported. Sky Studio sheets are converted to 1-beat notes.',
+      'When saving as a Planner sheet, beat colors are saved. Please use this format if you use custom beat colors!',
+      'Saved files can be found in your device\'s "Recent files" or "Downloads" folder.',
+      'You can save the sheet music page by page as an image in Capture Mode.',
+      'Please avoid refreshing the page before you are done! We recommend saving your work periodically.',
+    ],
+    loadPlanner: 'Load Planner Sheet (JSON)',
+    savePlanner: 'Save as Planner Sheet (JSON)',
+    loadSkyStudio: 'Import Sky Studio Sheet (TXT)',
+    saveSkyStudio: 'Export as Sky Studio Sheet (TXT)',
+    toEditor: '✏️ Back to Editor',
+    toCapture: '📷 Switch to Capture Mode',
+    linesPerPage: 'Lines/Page:',
+    beatsPerLine: 'Beats/Line:',
+    prevPage: 'Prev',
+    nextPage: 'Next',
+    downloadPage: 'Download Current Page (PNG)',
+    capturing: 'Capturing...',
+    downloadProgress: (page) => `Capturing page ${page} of the sheet...`,
+    playSheet: '▶︎ Play Sheet Music',
+    sheetHeader: 'Sky Planner Sheet Editor',
+    sheetTitlePlaceholder: 'Sheet Title',
+    composer: 'Composer',
+    arranger: 'Arranger',
+    alertLoadSuccess: 'Sheet loaded successfully.',
+    alertInvalidFile: 'Error: Invalid file.',
+    alertTxtSuccess: 'Successfully converted TXT file to sheet.',
+    alertInvalidTxt: (error) => `Error: ${error || 'Invalid TXT file.'}`,
+    colorLegend: [
+        { id: 'half', name: '½ Beat' },
+        { id: 'default', name: '1 Beat' },
+        { id: 'two', name: '2 Beats' },
+        { id: 'three', name: '3 Beats' },
+        { id: 'four', name: '4 Beats' },
+    ],
+  },
 };
 
 export default function SkyMusicEditorPage() {
-    const [language, setLanguage] = useState('ko'); // 2. 언어 상태 관리
-    const t = translations[language]; // 현재 언어의 텍스트 객체
-    const colorLegendData = t.colorLegend; // 언어에 따라 범례 데이터 변경
+    const [language, setLanguage] = useState('ko');
+    const t = translations[language];
+    const colorLegendData = t.colorLegend;
 
     const [title, setTitle] = useState('');
     const [composer, setComposer] = useState('');
@@ -119,14 +120,13 @@ export default function SkyMusicEditorPage() {
     const [currentColorId, setCurrentColorId] = useState('default');
     const [beatsPerLine, setBeatsPerLine] = useState(6);
     const [linesPerPage, setLinesPerPage] = useState(10);
-
+    
     const beatElementsRef = useRef([]);
     const jsonFileInputRef = useRef(null);
     const txtFileInputRef = useRef(null);
 
-    const { txtToSheet } = useTxtConverter();
-    const { handleSave, handleDownloadTxt, handleDownloadPage } = useSheetDownloader(title, composer, arranger, sheetData);
-    
+    const { txtToSheet, sheetToTxt, isEncrypted, setIsEncrypted, encryptSheet, decryptSheet } = useTxtConverter(); 
+    const { handleSave, handleDownloadPage } = useSheetDownloader(title);
     const { isPlaying, bpm, currentBeat, setBpm, handlePlayPause, handleBeatClick, scrollerRef } = useMusicPlayer(sheetData, beatElementsRef);
     
     const BEATS_PER_PAGE = beatsPerLine * linesPerPage;
@@ -157,13 +157,22 @@ export default function SkyMusicEditorPage() {
         const reader = new FileReader();
         reader.onload = (e) => {
             try {
-                const loadedData = JSON.parse(e.target.result);
+                let loadedData = JSON.parse(e.target.result);
+                
+                if (loadedData.encrypted && loadedData.data) {
+                    loadedData = decryptSheet(loadedData);
+                    setIsEncrypted(true);
+                } else {
+                    setIsEncrypted(false);
+                }
+
                 setTitle(loadedData.title || "");
                 setComposer(loadedData.composer || "");
                 setArranger(loadedData.arranger || "");
                 setSheetData(loadedData.sheetData || []);
                 alert(t.alertLoadSuccess);
             } catch (error) {
+                console.error("JSON file loading error:", error);
                 alert(t.alertInvalidFile);
             }
         };
@@ -178,11 +187,12 @@ export default function SkyMusicEditorPage() {
         reader.onload = (e) => {
             const result = txtToSheet(e.target.result);
             if (result.success) {
-                const { title, composer, arranger, sheetData } = result.data;
+                const { title, composer, arranger, sheetData, bpm: loadedBpm } = result.data;
                 setTitle(title);
                 setComposer(composer);
                 setArranger(arranger);
                 setSheetData(sheetData);
+                if (loadedBpm) { setBpm(loadedBpm); }
                 alert(t.alertTxtSuccess);
             } else {
                 alert(t.alertInvalidTxt(result.error));
@@ -191,7 +201,40 @@ export default function SkyMusicEditorPage() {
         reader.readAsText(file);
         event.target.value = null;
     };
-    
+
+    const handleDownloadTxt = () => {
+        const sheetInfo = { title, composer, arranger, sheetData, bpm };
+        try {
+            const txtString = sheetToTxt(sheetInfo, isEncrypted);
+            const blob = new Blob([txtString], { type: "text/plain" });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement("a");
+            link.href = url;
+            link.download = `${title || "sky-sheet"}.txt`;
+            link.click();
+            URL.revokeObjectURL(url);
+        } catch (error) {
+            console.error("TXT file creation error:", error);
+            alert("TXT 파일 생성에 실패했습니다.");
+        }
+    };
+
+    const onSavePlanner = () => {
+        const sheetObject = { title, composer, arranger, sheetData };
+        try {
+            if (isEncrypted) {
+                const encryptedObject = encryptSheet(sheetObject);
+                encryptedObject.title = sheetObject.title;
+                handleSave(encryptedObject, true);
+            } else {
+                handleSave(sheetObject, false);
+            }
+        } catch(error) {
+            console.error("JSON save error:", error);
+            alert("JSON 파일 저장에 실패했습니다.");
+        }
+    };
+
     const onDownloadPageClick = async () => {
         setIsDownloading(true);
         setDownloadMessage(t.downloadProgress(currentPage));
@@ -202,7 +245,6 @@ export default function SkyMusicEditorPage() {
 
     return (
         <main className={styles.main}>
-            {/* 3. 언어 토글 버튼 UI */}
             <div className={styles.languageToggleContainer}>
                 <button onClick={() => setLanguage('ko')} className={language === 'ko' ? styles.activeLang : ''}>한국어</button>
                 <span>/</span>
@@ -243,7 +285,7 @@ export default function SkyMusicEditorPage() {
                         <button onClick={(e) => { e.stopPropagation(); jsonFileInputRef.current.click(); }} className={styles.actionButton} disabled={isDownloading}>
                             {t.loadPlanner}
                         </button>
-                        <button onClick={(e) => { e.stopPropagation(); handleSave(); }} className={styles.actionButton} disabled={isDownloading}>
+                        <button onClick={(e) => { e.stopPropagation(); onSavePlanner(); }} className={styles.actionButton} disabled={isDownloading}>
                             {t.savePlanner}
                         </button>
                     </div>
@@ -382,7 +424,7 @@ export default function SkyMusicEditorPage() {
             </div>
             
             {isPlayerVisible && (
-                <MusicPlayer sheetData={sheetData} title={title} onClose={() => setIsPlayerVisible(false)} />
+                <MusicPlayer sheetData={sheetData} title={title} bpm={bpm} setBpm={setBpm} onClose={() => setIsPlayerVisible(false)} />
             )}
 
             <FloatingPalette

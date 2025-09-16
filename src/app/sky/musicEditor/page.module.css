@@ -246,7 +246,7 @@
   font-size: 0.9rem;
   color: #a0aec0;
   font-weight: 500;
-  margin-bottom: 1rem;
+  margin-bottom: 0rem;
 }
 
 /* page.module.css 파일 수정 */
@@ -262,7 +262,7 @@
   background-color: white;
   padding: 2rem 3rem 3rem;
   border-radius: 12px;
-  margin-bottom: 2rem;
+  margin-bottom: 0rem;
   border: 1px solid #e2e8f0;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
 }
@@ -612,7 +612,7 @@
   align-items: center;
   gap: 15px;
   width: 100%;
-  margin-top: 10px;
+  margin-top: 0px;
 }
 
 /* 페이지네이션 UI */
