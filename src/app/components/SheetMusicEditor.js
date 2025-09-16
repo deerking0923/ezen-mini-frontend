@@ -184,7 +184,7 @@ export default function SheetMusicEditor({
             {!isCaptureMode && (
                 <>
                     <div className={styles.bottomControls} onClick={(e) => e.stopPropagation()}>
-                        <button onClick={addBeat} className={styles.addButton}>+1 Sheet</button>
+                        <button onClick={addBeat} className={styles.addButton}>+1 Beat</button>
                         <button onClick={addLine} className={styles.addButton}>+1 line</button>
                         <button 
                             onClick={removeLine} 
