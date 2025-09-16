@@ -123,8 +123,8 @@
 
 /* 카드 내부 아이콘 */
 .icon {
-  width: 96px;   /* 변경: 아이콘 너비를 키웁니다 */
-  height: 96px;  /* 변경: 아이콘 높이를 키웁니다 */
+  width: 120px;   /* 변경: 아이콘 너비를 키웁니다 */
+  height: 120px;  /* 변경: 아이콘 높이를 키웁니다 */
   margin-bottom: 20px;
   object-fit: cover;
   border-radius: 12px;

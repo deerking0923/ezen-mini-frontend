@@ -46,6 +46,7 @@ const translations = {
     alertInvalidFile: '오류: 유효하지 않은 파일입니다.',
     alertTxtSuccess: 'TXT 파일을 악보로 성공적으로 변환했습니다.',
     alertInvalidTxt: (error) => `오류: ${error || '유효하지 않은 TXT 파일입니다.'}`,
+    alertSkyStudioFormat: 'Sky Studio 악보(.txt)는 특정 JSON 형식만 지원됩니다.\n\n예시:\n[{"name":"곡 제목", "bpm":120, "songNotes":["time": 0, "key":1Key4 ...]}]\n\n위와 같은 형식의 파일이 맞는지 확인 후 선택해주세요.',
     colorLegend: [
       { id: 'half', name: '½박' },
       { id: 'default', name: '1박' },
@@ -89,6 +90,7 @@ const translations = {
     alertInvalidFile: 'Error: Invalid file.',
     alertTxtSuccess: 'Successfully converted TXT file to sheet.',
     alertInvalidTxt: (error) => `Error: ${error || 'Invalid TXT file.'}`,
+    alertSkyStudioFormat: 'Sky Studio sheets (.txt) must be in a specific JSON format.\n\nExample:\n[{"name":"Song Title", "bpm":120, "songNotes":[time": 0, "key":1Key4 ...]}]\n\nPlease check if your file matches this format before selecting.',
     colorLegend: [
         { id: 'half', name: '½ Beat' },
         { id: 'default', name: '1 Beat' },
@@ -103,7 +105,11 @@ export default function SkyMusicEditorPage() {
     const [language, setLanguage] = useState('ko'); // 2. 언어 상태 관리
     const t = translations[language]; // 현재 언어의 텍스트 객체
     const colorLegendData = t.colorLegend; // 언어에 따라 범례 데이터 변경
-
+  const handleLoadSkyStudioClick = (e) => {
+    e.stopPropagation();
+    alert(t.alertSkyStudioFormat); // 위에서 추가한 안내 문구를 alert 창으로 보여줍니다.
+    txtFileInputRef.current.click(); // 확인 후 파일 선택창을 엽니다.
+  };
     const [title, setTitle] = useState('');
     const [composer, setComposer] = useState('');
     const [arranger, setArranger] = useState('');
@@ -250,9 +256,13 @@ export default function SkyMusicEditorPage() {
                         </button>
                     </div>
                     <div className={styles.buttonGroup}>
-                        <button onClick={(e) => { e.stopPropagation(); txtFileInputRef.current.click(); }} className={styles.actionButton} disabled={isDownloading}>
-                            {t.loadSkyStudio}
-                        </button>
+                                <button 
+          onClick={handleLoadSkyStudioClick}  // 기존 인라인 함수에서 새로 만든 함수로 변경
+          className={styles.actionButton} 
+          disabled={isDownloading}
+        >
+          {t.loadSkyStudio}
+        </button>
                         <button onClick={(e) => { e.stopPropagation(); handleDownloadTxt(); }} className={styles.actionButton} disabled={isDownloading}>
                             {t.saveSkyStudio}
                         </button>
