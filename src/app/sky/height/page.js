@@ -60,7 +60,7 @@ export default function HeightMeterPage() {
         <input type="file" accept="image/*" onChange={onUpload} className={styles.file}/>
       </div>
 
-      {/* 가운데 : 컨트롤 패널 */}
+      {/**/}
       <div className={styles.center}>
         <div className={styles.arrows}>
           <button className={styles.ctrl} onClick={()=>move(0, arrowStep)}>↑</button>
