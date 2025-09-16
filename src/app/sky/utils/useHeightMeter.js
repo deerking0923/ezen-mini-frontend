@@ -127,7 +127,7 @@ export default function useHeightMeter(canvasRef) {
     const el = canvasRef.current;
     if (!el) return;
     const html2canvasFn = (await import('html2canvas')).default;
-    const canvas = await html2canvasFn(el, { useCORS:true });
+    const canvas = await html2canvasFn(el, { useCORS:true, scale:3 });
     const link = document.createElement('a');
     link.href = canvas.toDataURL('image/png');
     link.download = 'heightmeter.png';
