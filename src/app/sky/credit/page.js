@@ -33,7 +33,7 @@ export default function Credit() {
             <span className={styles.name}>무륵, 망고, 엔, 진사슴</span>
           </div>
           <div className={styles.item}>
-            <span className={styles.role}>성향 테스트 및 메인 그림</span>
+            <span className={styles.role}>성향 테스트, 레이아웃 그림</span>
             <span className={styles.name}>무륵</span>
           </div>
           <div className={styles.item}>

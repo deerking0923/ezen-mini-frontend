@@ -1,14 +1,18 @@
 /* 배너 배경 */
 .banner {
   position: relative;
-  width: 100%;
-  height: 260px;
+  /* ▼▼▼ 수정된 부분 ▼▼▼ */
+  max-width: 1200px;      /* 최대 너비를 설정합니다. */
+  width: 100%;            /* 너비를 100%로 채워 반응형으로 만듭니다. */
+  margin: 0 auto;         /* 좌우 여백을 auto로 주어 중앙 정렬합니다. */
+  /* ▲▲▲ 수정된 부분 ▲▲▲ */
+  height: 300px;
   background: url('/sky/extra/layout.png') center / cover no-repeat;
   overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #ffffff;                    /* 기본 글자색 고정 */
+  color: #ffffff;
 }
 
 /* 오버레이 */
@@ -28,7 +32,7 @@
 .titleLink,
 .titleLink:visited,
 .titleLink:hover {
-  color: #ffffff;                   /* 흰색으로 고정 */
+  color: #ffffff;
   text-decoration: none;
 }
 .title {
@@ -59,11 +63,14 @@
 .ctaButton {
   display: flex;
   align-items: center;
-  gap: 8px;
+  /* ▼▼▼ 수정된 부분 ▼▼▼ */
+  gap: 6px;                 /* 아이콘과 텍스트 간격 축소 */
+  font-size: 0.9rem;        /* 폰트 크기 축소 */
+  padding: 8px 14px;        /* 내부 여백 축소 */
+  /* ▲▲▲ 수정된 부분 ▲▲▲ */
   background: rgba(255, 255, 255, 0.9);
   color: #1f2a3a;
   font-weight: 600;
-  padding: 10px 18px;
   border-radius: 8px;
   text-decoration: none;
   transition: background 0.25s ease;
@@ -73,9 +80,10 @@
 
 /* 아이콘 */
 .icon {
-  width: 24px;
-  height: 24px;
-  
+  /* ▼▼▼ 수정된 부분 ▼▼▼ */
+  width: 20px;              /* 아이콘 너비 축소 */
+  height: 20px;             /* 아이콘 높이 축소 */
+  /* ▲▲▲ 수정된 부분 ▲▲▲ */
 }
 
 /* 만든이: 좌측 하단 고정 */
@@ -100,39 +108,74 @@
 .ogImage {
   display: none;
 }
-/* 배너 전체가 이미 position:relative; 여야 합니다.
-   없다면 추가 */
-.banner {
-  position: relative;   /* ← 이미 있으면 생략 */
-}
 
 /* 좌상단 크레딧 링크 */
 .creditLink {
   position: absolute;
   top: 8px;
   left: 8px;
-  z-index: 1000;          /* overlay 위에 오도록 */
+  z-index: 1000;
   font-size: 0.75rem;
   color: #fff;
-  text-decoration: underline;   /* 밑줄 */
+  text-decoration: underline;
   opacity: 0.85;
   transition: opacity 0.2s;
 }
 .creditLink:hover {
   opacity: 1;
 }
+/* ... 다른 CSS 코드는 그대로 ... */
 
+/* CTA 래퍼 : PC 기준(버튼 중간 아래) */
+.ctaWrapper {
+  position: absolute;
+  right: 40px;
+  /* ▼▼▼ 수정 ▼▼▼ */
+  top: 70%;                 /* 기존 65% -> 80%로 내려서 위치 조정 */
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
 
+/* CTA 버튼 */
+.ctaButton {
+  display: flex;
+  align-items: center;
+  /* ▼▼▼ 수정 ▼▼▼ */
+  gap: 8px;                 /* 간격 다시 살짝 넓힘 */
+  font-size: 0.95rem;       /* 폰트 크기 미세 조정 */
+  padding: 10px 16px;       /* 패딩을 다시 늘려 도톰하게 */
+  /* ▲▲▲ 수정 ▲▲▲ */
+  background: rgba(255, 255, 255, 0.9);
+  color: #1f2a3a;
+  font-weight: 600;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: background 0.25s ease;
+  white-space: nowrap;
+}
+.ctaButton:hover { background: #ffffff; }
+
+/* 아이콘 */
+.icon {
+  /* ▼▼▼ 수정 ▼▼▼ */
+  width: 22px;              /* 아이콘 크기 미세 조정 */
+  height: 22px;             /* 아이콘 크기 미세 조정 */
+  /* ▲▲▲ 수정 ▲▲▲ */
+}
+
+/* ... 나머지 코드는 그대로 ... */
 /* ─── 모바일(≤768px) ─── */
 @media (max-width: 768px) {
   .banner {
     height: 220px;
-    margin: 0;            /* 외곽 여백 제거 */
+    margin: 0;
     border: none;
   }
 
   .content {
-    margin: 0;
+    margin: 24px 0; /* 모바일에서 위아래 여백 추가 */
     padding: 0 12px;
   }
 
@@ -143,7 +186,6 @@
     gap: 6px;
   }
 
-  /* ── 정사각형 버튼 + 아이콘 중앙 ── */
   .ctaButton {
     width: 40px;
     height: 40px;
@@ -152,8 +194,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 0;               /* ★ 아이콘 좌우 간격 제거 → 가운데 정렬 */
-    font-size: 0;         /* 텍스트 숨김 */
+    gap: 0;
+    font-size: 0;
     background: rgba(255, 255, 255, 0.88);
     transition: background 0.25s ease;
   }
@@ -162,15 +204,17 @@
   .icon {
     width: 70%;
     height: 70%;
-    display: block;       /* ★ flex item으로 중앙 배치 */
-    margin: auto;         /* ★ 수평‧수직 중앙 정렬 보조 */
+    display: block;
+    margin: auto;
     object-fit: contain;
   }
-    .mobileBreak {
-    display: inline;   /* 모바일에서만 줄바꿈 활성화 */
+  
+  .mobileBreak {
+    display: inline;
   }
-  .title    { font-size: 2rem; }
-    /* 여기에 앞서 적용한 오른쪽-하단 배치 스타일도 그대로 유지 */
+  
+  .title { font-size: 2rem; }
+  
   .subtitle {
     position: absolute;
     right: 12px;
@@ -179,5 +223,6 @@
     font-size: 0.6rem;
     margin: 0;
   }
-  .maker    { font-size: 0.75rem; }
+  
+  .maker { font-size: 0.75rem; }
 }
