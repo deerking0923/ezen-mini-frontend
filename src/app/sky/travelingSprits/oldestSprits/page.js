@@ -178,9 +178,9 @@ export default function OldestSpiritsPage() {
   return (
     <div className={styles.container}>
       <div className={styles.header}>
-        <h1 className={styles.title}>🕰️ 그리운 영혼들</h1>
+        <h1 className={styles.title}>🕰️ 오래된 영혼들</h1>
         <p className={styles.subtitle}>
-          가장 오랫동안 만나지 못한 영혼들을 그리움 순으로 정렬했습니다
+          가장 오랫동안 만나지 못한 영혼들을 순서대로 정리하였습니다.
         </p>
         <div className={styles.navigation}>
           <button 
