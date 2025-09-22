@@ -199,12 +199,6 @@ export default function OldestSpiritsPage() {
         </div>
         <div className={styles.statItem}>
           <span className={styles.statNumber}>
-            {spirits.filter(s => s.isActive).length}
-          </span>
-          <span className={styles.statLabel}>현재 진행중</span>
-        </div>
-        <div className={styles.statItem}>
-          <span className={styles.statNumber}>
             {spirits.filter(s => s.daysSinceLastVisit > 730).length}
           </span>
           <span className={styles.statLabel}>2년 이상</span>

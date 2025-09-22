@@ -277,13 +277,6 @@
   background: linear-gradient(135deg, #10b981, #34d399);
   color: white;
   border: none;
-  animation: pulse 2s infinite;
-}
-
-@keyframes pulse {
-  0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
-  70% { box-shadow: 0 0 0 10px rgba(16, 185, 129, 0); }
-  100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
 }
 
 .statusRecent {
@@ -302,30 +295,12 @@
   background: linear-gradient(135deg, #ef4444, #f87171);
   color: white;
   border: none;
-  animation: glow 3s ease-in-out infinite alternate;
-}
-
-@keyframes glow {
-  from { box-shadow: 0 2px 8px rgba(239, 68, 68, 0.3); }
-  to { box-shadow: 0 4px 16px rgba(239, 68, 68, 0.6); }
 }
 
 .statusVeryOld {
   background: linear-gradient(135deg, #8b5cf6, #a78bfa);
   color: white;
   border: none;
-  animation: urgentGlow 2s ease-in-out infinite alternate;
-}
-
-@keyframes urgentGlow {
-  from { 
-    box-shadow: 0 2px 8px rgba(139, 92, 246, 0.4);
-    transform: scale(1);
-  }
-  to { 
-    box-shadow: 0 6px 20px rgba(139, 92, 246, 0.8);
-    transform: scale(1.05);
-  }
 }
 
 .daysCount {
@@ -454,10 +429,11 @@
   }
   
   .rankBadge {
-    top: 0.5rem;
-    left: 0.5rem;
-    font-size: 0.7rem;
-    padding: 0.2rem 0.4rem;
+    top: 0.75rem;
+    left: 0.75rem;
+    font-size: 0.9rem;
+    font-weight: 800;
+    padding: 0.5rem 0.75rem;
   }
   
   .imageSection {
@@ -552,35 +528,10 @@
     max-width: none;
   }
   
-  /* 모바일에서 특별 효과들 더 강화 */
-  .statusOld {
-    animation: mobilePulse 2s ease-in-out infinite alternate;
-  }
-  
-  @keyframes mobilePulse {
-    from { 
-      box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
-      transform: scale(1);
-    }
-    to { 
-      box-shadow: 0 8px 24px rgba(239, 68, 68, 0.7);
-      transform: scale(1.02);
-    }
-  }
-  
+  /* 모바일에서 특별 효과들도 모두 제거 */
+  .statusOld,
   .statusVeryOld {
-    animation: mobileUrgent 1.5s ease-in-out infinite alternate;
-  }
-  
-  @keyframes mobileUrgent {
-    from { 
-      box-shadow: 0 4px 12px rgba(139, 92, 246, 0.5);
-      transform: scale(1) rotate(0deg);
-    }
-    to { 
-      box-shadow: 0 8px 28px rgba(139, 92, 246, 0.9);
-      transform: scale(1.05) rotate(1deg);
-    }
+    animation: none;
   }
   
   /* 모바일에서 카드 호버 효과 향상 */
