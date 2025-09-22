@@ -356,6 +356,43 @@
   color: #dc2626;
 }
 
+/* 로딩 더 보기 */
+.loadingMore {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 2rem;
+  color: #6b7280;
+  font-size: 1rem;
+}
+
+.spinner {
+  width: 20px;
+  height: 20px;
+  border: 2px solid #f3f4f6;
+  border-top: 2px solid #3b82f6;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* 끝 메시지 */
+.endMessage {
+  text-align: center;
+  padding: 2rem;
+  color: #9ca3af;
+  font-size: 0.95rem;
+  background: #f9fafb;
+  border-radius: 8px;
+  margin-top: 1rem;
+  border: 1px dashed #d1d5db;
+}
+
 /* 빈 상태 */
 .emptyState {
   text-align: center;

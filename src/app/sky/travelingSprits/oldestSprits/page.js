@@ -1,7 +1,7 @@
 // src/app/sky/travelingSprits/oldestSprits/page.js
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import styles from "./page.module.css";
@@ -11,20 +11,42 @@ const BASE_URL = "https://korea-sky-planner.com";
 export default function OldestSpiritsPage() {
   const [spirits, setSpirits] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [loadingMore, setLoadingMore] = useState(false);
   const [error, setError] = useState(null);
+  const [page, setPage] = useState(0);
+  const [hasMore, setHasMore] = useState(true);
+  const [totalElements, setTotalElements] = useState(0);
   const router = useRouter();
+  
+  // 무한 스크롤을 위한 ref
+  const observer = useRef();
+  const lastSpiritElementRef = useCallback(node => {
+    if (loadingMore) return;
+    if (observer.current) observer.current.disconnect();
+    observer.current = new IntersectionObserver(entries => {
+      if (entries[0].isIntersecting && hasMore) {
+        loadMoreSpirits();
+      }
+    });
+    if (node) observer.current.observe(node);
+  }, [loadingMore, hasMore]);
 
-  // 데이터 가져오기
-  const fetchOldestSpirits = async () => {
+  // 초기 데이터 가져오기
+  const fetchInitialSpirits = async () => {
     setLoading(true);
     setError(null);
     try {
-      const response = await fetch(`${BASE_URL}/api/v1/souls/oldest-spirits`);
+      const response = await fetch(`${BASE_URL}/api/v1/souls/oldest-spirits?page=0&size=20`);
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
       const data = await response.json();
-      setSpirits(data.data || []);
+      const pageData = data.data;
+      
+      setSpirits(pageData.content || []);
+      setTotalElements(pageData.totalElements || 0);
+      setHasMore(!pageData.last);
+      setPage(0);
     } catch (err) {
       setError(err.message);
       setSpirits([]);
@@ -33,8 +55,32 @@ export default function OldestSpiritsPage() {
     }
   };
 
+  // 추가 데이터 로드 (무한 스크롤)
+  const loadMoreSpirits = async () => {
+    if (loadingMore || !hasMore) return;
+    
+    setLoadingMore(true);
+    try {
+      const nextPage = page + 1;
+      const response = await fetch(`${BASE_URL}/api/v1/souls/oldest-spirits?page=${nextPage}&size=20`);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const data = await response.json();
+      const pageData = data.data;
+      
+      setSpirits(prev => [...prev, ...(pageData.content || [])]);
+      setHasMore(!pageData.last);
+      setPage(nextPage);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoadingMore(false);
+    }
+  };
+
   useEffect(() => {
-    fetchOldestSpirits();
+    fetchInitialSpirits();
   }, []);
 
   // 날짜 포맷팅
@@ -122,7 +168,7 @@ export default function OldestSpiritsPage() {
     return (
       <div className={styles.container}>
         <div className={styles.error}>오류: {error}</div>
-        <button onClick={fetchOldestSpirits} className={styles.retryButton}>
+        <button onClick={fetchInitialSpirits} className={styles.retryButton}>
           다시 시도
         </button>
       </div>
@@ -132,9 +178,9 @@ export default function OldestSpiritsPage() {
   return (
     <div className={styles.container}>
       <div className={styles.header}>
-        <h1 className={styles.title}>🕰️ 오래된 유랑 영혼</h1>
+        <h1 className={styles.title}>🕰️ 그리운 영혼들</h1>
         <p className={styles.subtitle}>
-          가장 오랫동안 만나지 못한 영혼들을 순서대로 정리하였습니다.
+          가장 오랫동안 만나지 못한 영혼들을 그리움 순으로 정렬했습니다
         </p>
         <div className={styles.navigation}>
           <button 
@@ -148,7 +194,7 @@ export default function OldestSpiritsPage() {
 
       <div className={styles.statsBar}>
         <div className={styles.statItem}>
-          <span className={styles.statNumber}>{spirits.length}</span>
+          <span className={styles.statNumber}>{totalElements}</span>
           <span className={styles.statLabel}>등록된 영혼</span>
         </div>
         <div className={styles.statItem}>
@@ -171,12 +217,15 @@ export default function OldestSpiritsPage() {
           const representativeImage = soul.images?.find(
             img => img.imageType === "REPRESENTATIVE"
           );
+          
+          const isLast = index === spirits.length - 1;
 
           return (
             <Link
               key={`${soul.id}-${soul.name}`}
               href={`/sky/travelingSprits/generalVisits/${soul.id}`}
               className={styles.spiritCard}
+              ref={isLast ? lastSpiritElementRef : null}
             >
               <div className={styles.rankBadge}>#{index + 1}</div>
               
@@ -239,6 +288,21 @@ export default function OldestSpiritsPage() {
           );
         })}
       </div>
+
+      {/* 로딩 더 보기 표시 */}
+      {loadingMore && (
+        <div className={styles.loadingMore}>
+          <div className={styles.spinner}></div>
+          <span>더 많은 영혼들을 불러오는 중...</span>
+        </div>
+      )}
+
+      {/* 더 이상 불러올 데이터가 없을 때 */}
+      {!hasMore && spirits.length > 0 && (
+        <div className={styles.endMessage}>
+          모든 영혼을 다 보았습니다. 총 {spirits.length}개의 영혼이 있습니다.
+        </div>
+      )}
 
       {spirits.length === 0 && !loading && (
         <div className={styles.emptyState}>
