@@ -97,22 +97,22 @@ export default function OldestSpiritsPage() {
   const formatDaysSince = (days) => {
     if (days === 0) return "🔥 현재 진행중";
     if (days === 1) return "어제 떠남";
-    if (days < 7) return `${days}일째 기다림`;
-    if (days < 30) return `${days}일째 그리움`;
-    if (days < 90) return `${Math.floor(days / 7)}주째 그리움`;
+    if (days < 7) return `${days}일째`;
+    if (days < 30) return `${days}일째`;
+    if (days < 90) return `${Math.floor(days / 7)}주째`;
     if (days < 365) {
       const months = Math.floor(days / 30);
       const remainingDays = days % 30;
       return remainingDays > 7 ? 
         `${months}개월 ${Math.floor(remainingDays / 7)}주째` : 
-        `${months}개월째 기다림`;
+        `${months}개월째`;
     } else {
       const years = Math.floor(days / 365);
       const remainingMonths = Math.floor((days % 365) / 30);
       if (remainingMonths > 0) {
         return `${years}년 ${remainingMonths}개월째`;
       } else {
-        return `${years}년째 그리움`;
+        return `${years}년째`;
       }
     }
   };
