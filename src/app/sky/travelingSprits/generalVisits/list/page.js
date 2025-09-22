@@ -637,7 +637,7 @@ function SoulListContent() {
   // ===== 검색/필터/모드 =====
   const handleSearchChange = (e) => setSearchQuery(e.target.value);
   const handleGoHome = () => {
-    router.push("/"); // 메인 경로가 다르면 "/" 대신 원하는 경로로 바꿔주세요.
+    router.push("/sky/travelingSprits/oldestSprits"); // 메인 경로가 다르면 "/" 대신 원하는 경로로 바꿔주세요.
   };
 
   const handleSearchSubmit = (e) => {
@@ -823,7 +823,7 @@ function SoulListContent() {
             전체보기
           </button>
           <button className={styles.filterChip} onClick={handleGoHome}>
-            메인화면
+            오래된유랑
           </button>
         </div>
       </div>

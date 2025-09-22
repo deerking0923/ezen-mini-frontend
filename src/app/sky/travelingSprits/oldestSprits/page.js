@@ -1,0 +1,252 @@
+// src/app/sky/travelingSprits/oldestSprits/page.js
+"use client";
+
+import React, { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
+import styles from "./page.module.css";
+
+const BASE_URL = "https://korea-sky-planner.com";
+
+export default function OldestSpiritsPage() {
+  const [spirits, setSpirits] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const router = useRouter();
+
+  // 데이터 가져오기
+  const fetchOldestSpirits = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const response = await fetch(`${BASE_URL}/api/v1/souls/oldest-spirits`);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const data = await response.json();
+      setSpirits(data.data || []);
+    } catch (err) {
+      setError(err.message);
+      setSpirits([]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchOldestSpirits();
+  }, []);
+
+  // 날짜 포맷팅
+  const formatDate = (dateStr) => {
+    const date = new Date(dateStr);
+    return date.toLocaleDateString("ko-KR", {
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+    });
+  };
+
+  // 기간 포맷팅 (며칠 전) - 더 강조된 버전
+  const formatDaysSince = (days) => {
+    if (days === 0) return "🔥 현재 진행중";
+    if (days === 1) return "어제 떠남";
+    if (days < 7) return `${days}일째 기다림`;
+    if (days < 30) return `${days}일째 그리움`;
+    if (days < 90) return `${Math.floor(days / 7)}주째 그리움`;
+    if (days < 365) {
+      const months = Math.floor(days / 30);
+      const remainingDays = days % 30;
+      return remainingDays > 7 ? 
+        `${months}개월 ${Math.floor(remainingDays / 7)}주째` : 
+        `${months}개월째 기다림`;
+    } else {
+      const years = Math.floor(days / 365);
+      const remainingMonths = Math.floor((days % 365) / 30);
+      if (remainingMonths > 0) {
+        return `${years}년 ${remainingMonths}개월째`;
+      } else {
+        return `${years}년째 그리움`;
+      }
+    }
+  };
+
+  // 상태별 스타일 클래스 결정
+  const getStatusClass = (days, isActive) => {
+    if (isActive) return styles.statusActive;
+    if (days < 30) return styles.statusRecent;
+    if (days < 180) return styles.statusModerate;
+    if (days < 365) return styles.statusOld;
+    return styles.statusVeryOld;
+  };
+
+  // 시즌 색상 매핑
+  const seasonColors = {
+    "감사": "#FFD700",
+    "빛추": "#FF6347", 
+    "친밀": "#4CAF50",
+    "리듬": "#3F51B5",
+    "마법": "#9C27B0",
+    "낙원": "#FF5722",
+    "예언": "#9E9E9E",
+    "꿈": "#00BCD4",
+    "협력": "#8BC34A",
+    "어린왕자": "#FFC107",
+    "비행": "#03A9F4",
+    "심해": "#2196F3",
+    "공연": "#FF4081",
+    "파편": "#607D8B",
+    "오로라": "#673AB7",
+    "기억": "#009688",
+    "성장": "#8BC34A",
+    "순간": "#FF9800",
+    "재생": "#3F51B5",
+    "사슴": "#A1887F",
+    "둥지": "#795548",
+    "듀엣": "#FFEB3B",
+    "무민": "#CDDC39",
+    "광채": "#FF1493",
+    "파랑새": "#1E90FF",
+    "불씨": "#FF4500",
+  };
+
+  if (loading) {
+    return (
+      <div className={styles.container}>
+        <div className={styles.loading}>데이터를 불러오는 중...</div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className={styles.container}>
+        <div className={styles.error}>오류: {error}</div>
+        <button onClick={fetchOldestSpirits} className={styles.retryButton}>
+          다시 시도
+        </button>
+      </div>
+    );
+  }
+
+  return (
+    <div className={styles.container}>
+      <div className={styles.header}>
+        <h1 className={styles.title}>🕰️ 오래된 유랑 영혼</h1>
+        <p className={styles.subtitle}>
+          가장 오랫동안 만나지 못한 영혼들을 순서대로 정리하였습니다.
+        </p>
+        <div className={styles.navigation}>
+          <button 
+            onClick={() => router.push("/sky/travelingSprits/generalVisits/list")}
+            className={styles.navButton}
+          >
+            전체 유랑 목록
+          </button>
+        </div>
+      </div>
+
+      <div className={styles.statsBar}>
+        <div className={styles.statItem}>
+          <span className={styles.statNumber}>{spirits.length}</span>
+          <span className={styles.statLabel}>등록된 영혼</span>
+        </div>
+        <div className={styles.statItem}>
+          <span className={styles.statNumber}>
+            {spirits.filter(s => s.isActive).length}
+          </span>
+          <span className={styles.statLabel}>현재 진행중</span>
+        </div>
+        <div className={styles.statItem}>
+          <span className={styles.statNumber}>
+            {spirits.filter(s => s.daysSinceLastVisit > 730).length}
+          </span>
+          <span className={styles.statLabel}>2년 이상</span>
+        </div>
+      </div>
+
+      <div className={styles.spiritsList}>
+        {spirits.map((item, index) => {
+          const { soul, daysSinceLastVisit, lastVisitDate, isActive } = item;
+          const representativeImage = soul.images?.find(
+            img => img.imageType === "REPRESENTATIVE"
+          );
+
+          return (
+            <Link
+              key={`${soul.id}-${soul.name}`}
+              href={`/sky/travelingSprits/generalVisits/${soul.id}`}
+              className={styles.spiritCard}
+            >
+              <div className={styles.rankBadge}>#{index + 1}</div>
+              
+              <div className={styles.imageSection}>
+                {representativeImage?.url ? (
+                  <img
+                    src={representativeImage.url}
+                    alt={soul.name}
+                    className={styles.spiritImage}
+                  />
+                ) : (
+                  <div className={styles.noImage}>이미지 없음</div>
+                )}
+              </div>
+
+              <div className={styles.infoSection}>
+                <div className={styles.nameRow}>
+                  <h3 className={styles.spiritName}>{soul.name}</h3>
+                  <span 
+                    className={styles.seasonBadge}
+                    style={{ 
+                      backgroundColor: seasonColors[soul.seasonName] || "#888" 
+                    }}
+                  >
+                    {soul.seasonName}
+                  </span>
+                </div>
+
+                <div className={styles.detailsRow}>
+                  <span className={styles.orderNumber}>
+                    {soul.orderNum < 0 ? `#${Math.abs(soul.orderNum)} 유랑단` : `${soul.orderNum}번째`}
+                  </span>
+                  <span className={styles.rerunCount}>
+                    {soul.rerunCount}차 복각
+                  </span>
+                </div>
+
+                <div className={styles.dateInfo}>
+                  <span>마지막 방문: {formatDate(lastVisitDate)}</span>
+                  <span>({formatDate(soul.startDate)} ~ {formatDate(soul.endDate)})</span>
+                </div>
+              </div>
+
+              <div className={styles.statusSection}>
+                <div className={`${styles.statusBadge} ${getStatusClass(daysSinceLastVisit, isActive)}`}>
+                  {formatDaysSince(daysSinceLastVisit)}
+                </div>
+                <div className={styles.daysCount}>
+                  {!isActive && (
+                    <>
+                      <strong>{daysSinceLastVisit.toLocaleString()}</strong>일
+                      {daysSinceLastVisit > 1000 && " 💔"}
+                      {daysSinceLastVisit > 500 && daysSinceLastVisit <= 1000 && " 😢"}
+                      {daysSinceLastVisit > 100 && daysSinceLastVisit <= 500 && " 🥺"}
+                    </>
+                  )}
+                </div>
+              </div>
+            </Link>
+          );
+        })}
+      </div>
+
+      {spirits.length === 0 && !loading && (
+        <div className={styles.emptyState}>
+          <div className={styles.emptyIcon}>🔍</div>
+          <h3>영혼 데이터가 없습니다</h3>
+          <p>아직 등록된 영혼이 없거나 데이터를 불러오지 못했습니다.</p>
+        </div>
+      )}
+    </div>
+  );
+}
