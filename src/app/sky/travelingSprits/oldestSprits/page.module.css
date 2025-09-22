@@ -389,152 +389,226 @@
   color: #6b7280;
 }
 
-/* 반응형 디자인 */
+/* 반응형 디자인 - 컴팩트한 PC 스타일 */
 @media (max-width: 768px) {
   .container {
-    padding: 1rem 0.5rem;
+    padding: 0.5rem;
   }
   
   .title {
-    font-size: 1.75rem;
-    margin-bottom: 0.75rem;
+    font-size: 1.4rem;
+    margin-bottom: 0.5rem;
   }
   
   .subtitle {
-    font-size: 1rem;
-    margin-bottom: 1.5rem;
-    padding: 0 0.5rem;
+    font-size: 0.85rem;
+    margin-bottom: 1rem;
+    padding: 0 0.25rem;
   }
   
   .statsBar {
-    gap: 1rem;
-    padding: 1rem;
+    gap: 0.5rem;
+    padding: 0.75rem;
     flex-wrap: wrap;
   }
   
   .statItem {
     flex: 1;
-    min-width: 80px;
+    min-width: 70px;
   }
   
   .statNumber {
-    font-size: 1.5rem;
+    font-size: 1.2rem;
   }
   
+  .statLabel {
+    font-size: 0.75rem;
+  }
+  
+  /* 매우 컴팩트한 카드 레이아웃 */
   .spiritCard {
-    padding: 1.5rem 1rem;
-    flex-direction: column;
-    text-align: center;
-    gap: 1rem;
+    padding: 0.75rem !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    text-align: left !important;
+    gap: 0.75rem !important;
+    margin-bottom: 0.5rem !important;
   }
   
   .rankBadge {
-    top: 0.75rem;
-    left: 0.75rem;
-    font-size: 0.9rem;
-    font-weight: 800;
-    padding: 0.5rem 0.75rem;
+    top: 0.4rem;
+    left: 0.4rem;
+    font-size: 0.6rem;
+    font-weight: 700;
+    padding: 0.15rem 0.35rem;
   }
   
+  /* 이미지 크기 축소 */
   .imageSection {
-    margin-right: 0;
-    margin-bottom: 0;
-    width: 120px;
-    height: 120px;
-    border-radius: 50%;
+    width: 60px !important;
+    height: 60px !important;
+    margin-right: 0.75rem !important;
+    margin-bottom: 0 !important;
+    border-radius: 6px !important;
     overflow: hidden;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-    border: 4px solid #f1f5f9;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+    border: none !important;
+    flex-shrink: 0 !important;
   }
   
   .spiritImage {
-    border-radius: 50%;
-    transition: transform 0.3s ease;
-  }
-  
-  .spiritCard:hover .spiritImage {
-    transform: scale(1.1);
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: contain !important;
+    border-radius: 6px !important;
+    background: #f9fafb !important;
   }
   
   .noImage {
-    border-radius: 50%;
-    font-size: 0.8rem;
-    font-weight: 600;
+    width: 100% !important;
+    height: 100% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background: #f3f4f6 !important;
+    color: #9ca3af !important;
+    font-size: 0.6rem !important;
+    border-radius: 6px !important;
   }
   
+  /* 텍스트 크기 대폭 축소 */
   .infoSection {
-    width: 100%;
-    gap: 0.75rem;
-  }
-  
-  .spiritName {
-    font-size: 1.4rem;
+    flex: 1 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 0.25rem !important;
+    text-align: left !important;
   }
   
   .nameRow {
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 0.5rem;
+    display: flex !important;
+    align-items: center !important;
+    gap: 0.4rem !important;
+    margin-bottom: 0.15rem !important;
+    justify-content: flex-start !important;
+    flex-wrap: wrap !important;
+  }
+  
+  .spiritName {
+    font-size: 0.85rem !important;
+    font-weight: 700 !important;
+    color: #1f2937 !important;
+    margin: 0 !important;
+  }
+  
+  .seasonBadge {
+    color: white !important;
+    padding: 0.15rem 0.3rem !important;
+    border-radius: 4px !important;
+    font-size: 0.55rem !important;
+    font-weight: 600 !important;
   }
   
   .detailsRow {
-    justify-content: center;
-    gap: 1.5rem;
+    display: flex !important;
+    gap: 0.6rem !important;
+    margin-bottom: 0.15rem !important;
+    justify-content: flex-start !important;
   }
   
   .orderNumber,
   .rerunCount {
-    font-size: 1rem;
-    padding: 0.25rem 0.75rem;
-    background: #f8fafc;
-    border-radius: 15px;
-    border: 1px solid #e2e8f0;
+    font-size: 0.65rem !important;
+    color: #4b5563 !important;
+    font-weight: 500 !important;
+    padding: 0 !important;
+    background: none !important;
+    border: none !important;
+    border-radius: 0 !important;
+  }
+  
+  .rerunCount {
+    color: #dc2626 !important;
+    font-weight: 600 !important;
   }
   
   .dateInfo {
-    text-align: center;
-    font-size: 0.9rem;
-    line-height: 1.5;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 0.1rem !important;
+    font-size: 0.6rem !important;
+    color: #6b7280 !important;
+    text-align: left !important;
+    line-height: 1.2 !important;
   }
   
+  /* 상태 뱃지 크기 축소 */
   .statusSection {
-    align-items: center;
-    margin-left: 0;
-    margin-top: 0;
-    gap: 0.75rem;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-end !important;
+    gap: 0.25rem !important;
+    margin-left: 0.4rem !important;
+    margin-top: 0 !important;
   }
   
   .statusBadge {
-    font-size: 1.2rem;
-    padding: 1rem 1.5rem;
-    min-width: 140px;
-    font-weight: 800;
+    padding: 0.35rem 0.6rem !important;
+    border-radius: 20px !important;
+    font-size: 0.65rem !important;
+    font-weight: 700 !important;
+    text-align: center !important;
+    min-width: 70px !important;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1) !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.2px !important;
   }
   
   .daysCount {
-    font-size: 1rem;
-    padding: 0.4rem 1rem;
-    font-weight: 800;
+    font-size: 0.6rem !important;
+    color: #374151 !important;
+    font-weight: 700 !important;
+    margin-top: 0.15rem !important;
+    padding: 0.15rem 0.4rem !important;
+    background: rgba(255, 255, 255, 0.9) !important;
+    border-radius: 8px !important;
+    text-align: center !important;
   }
   
   .navigation {
-    margin-bottom: 2rem;
+    margin-bottom: 1rem;
   }
   
   .navButton {
     width: 100%;
-    padding: 1rem 1.5rem;
-    font-size: 1rem;
+    padding: 0.75rem 1rem;
+    font-size: 0.85rem;
     max-width: none;
   }
   
-  /* 모바일에서 특별 효과들도 모두 제거 */
-  .statusOld,
-  .statusVeryOld {
-    animation: none;
+  /* 리스트 간격 축소 */
+  .spiritsList {
+    gap: 0.5rem !important;
   }
   
-  /* 모바일에서 카드 호버 효과 향상 */
+  /* 로딩 관련 텍스트 크기 축소 */
+  .loadingMore {
+    padding: 1rem;
+    font-size: 0.85rem;
+  }
+  
+  .endMessage {
+    padding: 1rem;
+    font-size: 0.8rem;
+  }
+  
+  /* 애니메이션 제거 */
+  .statusOld,
+  .statusVeryOld {
+    animation: none !important;
+  }
+  
+  /* 모바일 터치 효과 */
   .spiritCard:active {
     transform: scale(0.98);
     transition: transform 0.1s ease;
