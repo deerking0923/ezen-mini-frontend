@@ -1,117 +1,409 @@
+/* src/app/sky/travelingSprits/generalVisits/images/page.module.css */
+
 .container {
-  max-width: 800px;
+  max-width: 1200px;
   margin: 2rem auto;
-  padding: 1rem;
-  background: #fff;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  padding: 2rem;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
-.heading {
-   text-align: center;
-   margin-bottom: 1rem;
- }
-.filter,
-.upload {
-  display: flex;
-  gap: 0.8rem;
-  align-items: center;
-  margin-bottom: 1rem;
-}
-
-.filter label,
-.upload {
-  display: flex;
-  gap: 0.4rem;
-  align-items: center;
-}
-
-.filter input,
-.filter select,
-.upload input {
-  padding: 0.4rem 0.6rem;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-}
-
-.filter button,
-.upload button {
-  padding: 0.5rem 1rem;
-  background: #0070f3;
-  color: #fff;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.upload button {
-  background: #28a745;
-}
-
-.error {
-  color: #d32f2f;
+.title {
   text-align: center;
+  margin-bottom: 2rem;
+  color: #1f2937;
+  font-size: 2rem;
+  font-weight: 700;
 }
 
-/* 이미지 갤러리 */
+/* 상태 메시지 */
+.error {
+  color: #dc2626;
+  background-color: #fee2e2;
+  padding: 12px 16px;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  border: 1px solid #fecaca;
+  font-weight: 500;
+}
+
+.success {
+  color: #059669;
+  background-color: #d1fae5;
+  padding: 12px 16px;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  border: 1px solid #a7f3d0;
+  font-weight: 500;
+}
+
+.loading {
+  text-align: center;
+  padding: 2rem;
+  font-size: 1.1rem;
+  color: #6b7280;
+}
+
+/* 컨트롤 섹션 */
+.controlSection {
+  background: #f9fafb;
+  padding: 2rem;
+  border-radius: 12px;
+  margin-bottom: 2rem;
+  border: 1px solid #e5e7eb;
+}
+
+.searchSection,
+.uploadSection {
+  margin-bottom: 2rem;
+}
+
+.searchSection:last-child,
+.uploadSection:last-child {
+  margin-bottom: 0;
+}
+
+.searchSection h3,
+.uploadSection h3 {
+  margin-bottom: 1rem;
+  color: #374151;
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.filterRow,
+.uploadRow {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+}
+
+.filterRow:last-child,
+.uploadRow:last-child {
+  margin-bottom: 0;
+}
+
+/* 입력 요소들 */
+.input,
+.select,
+.fileInput {
+  padding: 10px 12px;
+  border: 2px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  transition: all 0.2s ease;
+  background: white;
+}
+
+.input:focus,
+.select:focus,
+.fileInput:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.input {
+  width: 150px;
+}
+
+.select {
+  width: 180px;
+}
+
+.fileInput {
+  width: 200px;
+}
+
+/* 라벨 */
+.label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  font-weight: 500;
+  color: #374151;
+  font-size: 0.9rem;
+}
+
+/* 버튼들 */
+.button,
+.buttonPrimary,
+.buttonSecondary,
+.paginationButton {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  font-weight: 500;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.button {
+  background: #3b82f6;
+  color: white;
+}
+
+.button:hover:not(:disabled) {
+  background: #2563eb;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+.buttonPrimary {
+  background: #059669;
+  color: white;
+}
+
+.buttonPrimary:hover:not(:disabled) {
+  background: #047857;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(5, 150, 105, 0.3);
+}
+
+.buttonPrimary:disabled {
+  background: #9ca3af;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.buttonSecondary {
+  background: #6b7280;
+  color: white;
+}
+
+.buttonSecondary:hover:not(:disabled) {
+  background: #4b5563;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(107, 114, 128, 0.3);
+}
+
+.deleteButton {
+  background: #dc2626;
+  color: white;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.deleteButton:hover {
+  background: #b91c1c;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
+}
+
+/* 갤러리 섹션 */
+.gallerySection {
+  margin-top: 2rem;
+}
+
+.galleryHeader {
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid #e5e7eb;
+}
+
+.galleryHeader h3 {
+  color: #1f2937;
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.noImages {
+  text-align: center;
+  padding: 3rem;
+  color: #6b7280;
+  font-size: 1.1rem;
+  background: #f9fafb;
+  border-radius: 12px;
+  border: 2px dashed #d1d5db;
+}
+
+/* 이미지 갤러리 그리드 */
 .gallery {
   display: grid;
-  grid-template-columns: repeat(auto-fill,minmax(120px,1fr));
-  gap: 1rem;
-  list-style: none;
-  padding: 0;
-  margin: 1rem 0;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 2rem;
+  margin-bottom: 2rem;
 }
 
-.gallery li {
-  position: relative;
-  text-align: center;
+.imageCard {
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+  border: 1px solid #e5e7eb;
 }
 
-.gallery img {
+.imageCard:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.imageWrapper {
   width: 100%;
-  height: auto;
-  border-radius: 4px;
-  object-fit: cover;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+  height: 200px;
+  overflow: hidden;
+  background: #f3f4f6;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.gallery button {
-  position: absolute;
-  top: 4px;
-  right: 4px;
-  padding: 0.2rem 0.5rem;
+.image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+  transition: transform 0.3s ease;
+}
+
+.imageCard:hover .image {
+  transform: scale(1.05);
+}
+
+.noImage {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: #9ca3af;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.imageInfo {
+  padding: 1.5rem;
+  background: white;
+}
+
+.imageId {
+  font-weight: 700;
+  color: #1f2937;
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.imageType {
+  background: #3b82f6;
+  color: white;
+  padding: 4px 8px;
+  border-radius: 6px;
   font-size: 0.75rem;
-  background: rgba(220,53,69,0.9);
-  border: none;
-  color: #fff;
-  border-radius: 3px;
-  cursor: pointer;
+  font-weight: 600;
+  display: inline-block;
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
 }
 
-/* 페이저 */
-.pager {
+.soulId {
+  color: #6b7280;
+  font-size: 0.85rem;
+  margin-bottom: 0.5rem;
+}
+
+.fileName {
+  color: #4b5563;
+  font-size: 0.8rem;
+  word-break: break-all;
+  margin-bottom: 0.5rem;
+}
+
+.fileSize {
+  color: #9ca3af;
+  font-size: 0.75rem;
+}
+
+/* 페이징 */
+.pagination {
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 1rem;
-  margin-top: 1rem;
+  margin-top: 3rem;
+  padding-top: 2rem;
+  border-top: 1px solid #e5e7eb;
 }
 
-.pager button {
-  padding: 0.4rem 0.8rem;
-  background: #0070f3;
-  color: #fff;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
+.paginationButton {
+  background: #f3f4f6;
+  color: #374151;
+  border: 1px solid #d1d5db;
 }
 
-.pager button[disabled] {
-  background: #ccc;
-  cursor: default;
+.paginationButton:hover:not(:disabled) {
+  background: #e5e7eb;
+  color: #1f2937;
 }
 
-.pager span {
-  font-size: 0.9rem;
+.paginationButton:disabled {
+  background: #f9fafb;
+  color: #d1d5db;
+  cursor: not-allowed;
+  border-color: #f3f4f6;
+}
+
+.pageInfo {
+  font-weight: 600;
+  color: #374151;
+  padding: 0 1rem;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+  .container {
+    margin: 1rem;
+    padding: 1rem;
+  }
+  
+  .title {
+    font-size: 1.5rem;
+  }
+  
+  .filterRow,
+  .uploadRow {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1rem;
+  }
+  
+  .input,
+  .select,
+  .fileInput {
+    width: 100%;
+  }
+  
+  .gallery {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  .controlSection {
+    padding: 1rem;
+  }
+  
+  .label {
+    flex-direction: row;
+    align-items: center;
+    gap: 1rem;
+  }
+  
+  .labelInput {
+    flex: 1;
+  }
 }
