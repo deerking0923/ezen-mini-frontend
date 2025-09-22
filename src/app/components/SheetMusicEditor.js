@@ -197,7 +197,7 @@ export default function SheetMusicEditor({
                     {/* ColorPalette가 여기에 있었지만, FloatingPalette가 사용되므로 주석 처리하거나 필요시 사용 */}
                      <div className={styles.paletteContainer} onClick={(e) => e.stopPropagation()}>
                         <ColorPalette selectedColor={currentColorId} onColorSelect={handleColorSelect} />
-                    </div> *
+                    </div>
                 </>
             )}
         </div>
