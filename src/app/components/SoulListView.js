@@ -1,4 +1,3 @@
-// src/app/components/SoulListView.js
 "use client";
 
 import React from "react";
@@ -6,14 +5,14 @@ import Link from "next/link";
 import styles from "./SoulListView.module.css";
 import { SEASON_LIST } from "../constants/seasons";
 
-export default function SoulListView({ 
-  souls, 
-  viewMode, 
-  submittedQuery, 
+export default function SoulListView({
+  souls,
+  viewMode,
+  submittedQuery,
   onCardClick,
   lastSoulElementRef,
   isFetchingNext,
-  hasMore 
+  hasMore
 }) {
   // 날짜 포맷팅
   const formatDate = (dateStr) => {
@@ -67,11 +66,12 @@ export default function SoulListView({
 
               <div className={styles.infoSection}>
                 <div className={styles.nameRow}>
-                  <span 
+                  <span
                     className={styles.seasonBadge}
-                    style={{ 
-                      backgroundColor: isWarband ? "#FF8C00" : 
-                        (SEASON_LIST.find((s) => s.name === soul.seasonName)?.color || "#888")
+                    style={{
+                      // ✅ 수정된 부분: 유랑단 여부와 관계없이 항상 시즌 색상을 찾도록 변경
+                      backgroundColor:
+                        SEASON_LIST.find((s) => s.name === soul.seasonName)?.color || "#888",
                     }}
                   >
                     {soul.seasonName}
@@ -109,8 +109,8 @@ export default function SoulListView({
       
       {/* 무한 스크롤을 위한 별도 센티넬 */}
       {hasMore && !isFetchingNext && (
-        <div 
-          ref={lastSoulElementRef} 
+        <div
+          ref={lastSoulElementRef}
           style={{ height: 1, width: '100%' }}
         />
       )}
