@@ -1,91 +1,71 @@
-/* components/ViewModeTabs/ViewModeTabs.module.css */
+/* src/app/components/ViewModeTabs.module.css */
 .headerRow {
   display: flex;
-  align-items: center;
-  gap: 1rem;
-  margin-bottom: 1rem;
+  justify-content: center;
+  margin-bottom: 2rem;
 }
 
 .viewTabs {
   display: flex;
-  align-items: center;
-  gap: 0;
+  background: #f1f5f9;
+  border-radius: 12px;
+  padding: 4px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e2e8f0;
+  width: 300px;
 }
 
 .tabButton {
-  padding: 0.5rem 1rem;
-  background-color: #f5f5f5;
-  border: 1px solid #ccc;
+  flex: 1; /* 균등 분할 */
+  padding: 0.75rem 1rem;
+  background: transparent;
+  border: none;
   font-size: 1rem;
+  font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.2s;
-  border-right: none;
-}
-
-.tabButton:first-child {
-  border-top-left-radius: 4px;
-  border-bottom-left-radius: 4px;
-}
-
-.tabButton:last-child {
-  border-right: 1px solid #ccc;
-  border-top-right-radius: 4px;
-  border-bottom-right-radius: 4px;
+  transition: all 0.3s ease;
+  border-radius: 8px;
+  color: #64748b;
+  position: relative;
+  text-align: center;
 }
 
 .tabButton:hover {
-  background-color: #8f8f8f;
+  color: #334155;
+  background: rgba(255, 255, 255, 0.5);
 }
 
 .activeTab {
-  background-color: #545454;
-  color: #fff;
-  border-color: #aaa;
+  background: white !important;
+  color: #1e293b !important;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transform: translateY(-1px);
 }
 
-.sortButtons {
-  display: inline-flex;
-  gap: 0.5rem;
-  margin-left: 0.5rem;
-}
-
-.sortButton {
-  padding: 0.4rem 0.8rem;
-  background-color: #f5f5f5;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  font-size: 0.9rem;
-  cursor: pointer;
-  transition: background-color 0.2s;
-}
-
-.sortButton:hover {
-  background-color: #e0e0e0;
-}
-
-.activeSort {
-  background-color: #545454;
-  color: #fff;
-  border-color: #aaa;
+.activeTab::before {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 30px;
+  height: 3px;
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  border-radius: 2px;
 }
 
 @media screen and (max-width: 768px) {
+  .headerRow {
+    margin-bottom: 1rem;
+  }
+
   .viewTabs {
-    display: flex;
-    justify-content: space-between;
-    gap: 0;
+    width: 100%;
+    max-width: 280px;
   }
 
-  .tabButton, .activeTab {
-    padding: 0.4rem 0.8rem;
-    font-size: 0.7rem;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-  }
-
-  .activeTab {
-    background-color: #545454;
-    color: #fff;
-    border-color: #aaa;
+  .tabButton {
+    padding: 0.6rem 0.5rem;
+    font-size: 0.9rem;
   }
 }

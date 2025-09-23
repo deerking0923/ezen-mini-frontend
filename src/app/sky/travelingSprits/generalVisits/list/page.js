@@ -22,12 +22,11 @@ function SoulListContent() {
   const [totalPages, setTotalPages] = useState(1);
   const [searchQuery, setSearchQuery] = useState("");
   const [submittedQuery, setSubmittedQuery] = useState("");
-  const [viewMode, setViewMode] = useState("card");
+  const [viewMode, setViewMode] = useState("list"); // 기본값을 리스트로 변경
   const [loading, setLoading] = useState(true);
   const [isFetchingNext, setIsFetchingNext] = useState(false);
   const [isFetchingPrev, setIsFetchingPrev] = useState(false);
   const [error, setError] = useState(null);
-  const [listSort, setListSort] = useState("latest");
   const [isClient, setIsClient] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
 
@@ -130,20 +129,15 @@ function SoulListContent() {
   // 범용 로더
   const fetchSoulsAny = async (pageNumber, query, { append = false } = {}) => {
     let url = "";
-    const isCard = viewMode === "card";
     const trimmed = (query || "").trim();
 
     if (trimmed !== "") {
       url = `https://korea-sky-planner.com/api/v1/souls/search?query=${encodeURIComponent(
         trimmed
       )}`;
-    } else if (isCard) {
-      url = `https://korea-sky-planner.com/api/v1/souls?page=${pageNumber}`;
     } else {
-      url =
-        listSort === "oldest"
-          ? `https://korea-sky-planner.com/api/v1/souls/reverse`
-          : `https://korea-sky-planner.com/api/v1/souls/all`;
+      // 카드 뷰와 리스트 뷰 모두 동일한 페이징 API 사용
+      url = `https://korea-sky-planner.com/api/v1/souls?page=${pageNumber}`;
     }
 
     const isInitialAppend = append && soulsLenRef.current === 0;
@@ -166,7 +160,7 @@ function SoulListContent() {
         setSouls(uniqueById(results));
         minLoadedPageRef.current = null;
         maxLoadedPageRef.current = null;
-      } else if (isCard) {
+      } else {
         const raw = Array.isArray(data.data?.content) ? data.data.content : [];
         const content = annotate(raw, pageNumber);
         const pages = data.data?.totalPages || 1;
@@ -187,12 +181,6 @@ function SoulListContent() {
           minLoadedPageRef.current = pageNumber;
           maxLoadedPageRef.current = pageNumber;
         }
-      } else {
-        const results = Array.isArray(data.data) ? data.data : [];
-        setTotalPages(1);
-        setSouls(uniqueById(results));
-        minLoadedPageRef.current = null;
-        maxLoadedPageRef.current = null;
       }
     } catch (err) {
       setError(err.message || "데이터를 불러오는 중 오류가 발생했습니다.");
@@ -386,7 +374,7 @@ function SoulListContent() {
 
   // URL → state
   useEffect(() => {
-    const initialMode = searchParams.get("mode") || "card";
+    const initialMode = searchParams.get("mode") || "list"; // 기본값을 list로 변경
     const initialQuery = searchParams.get("query") || "";
     setViewMode(initialMode);
     setSearchQuery(initialQuery);
@@ -437,7 +425,7 @@ function SoulListContent() {
     didBootstrapRef.current = true;
     // 부트스트랩 로직은 복잡하므로 그대로 유지...
     fetchSoulsAny(0, submittedQuery, { append: false });
-  }, [submittedQuery, viewMode, listSort, isClient]);
+  }, [submittedQuery, viewMode, isClient]);
 
   // 해시 변경 이벤트
   useEffect(() => {
@@ -534,9 +522,7 @@ function SoulListContent() {
 
       <ViewModeTabs
         viewMode={viewMode}
-        listSort={listSort}
         onViewModeChange={handleViewModeChange}
-        onSortChange={setListSort}
       />
 
       {loading ? (
@@ -572,12 +558,29 @@ function SoulListContent() {
             )}
         </>
       ) : (
-        <SoulListView
-          souls={souls}
-          viewMode={viewMode}
-          submittedQuery={submittedQuery}
-          onCardClick={saveOnClick}
-        />
+        <>
+          <SoulListView
+            souls={souls}
+            viewMode={viewMode}
+            submittedQuery={submittedQuery}
+            onCardClick={saveOnClick}
+            lastSoulElementRef={bottomSentinelRef}
+          />
+          
+          {/* 리스트 뷰에서도 무한 스크롤 로더 표시 */}
+          {submittedQuery.trim() === "" &&
+            maxLoadedPageRef.current != null &&
+            maxLoadedPageRef.current + 1 < totalPages && (
+              <>
+                {isFetchingNext && (
+                  <div style={{ textAlign: "center", padding: "1rem" }}>
+                    <LoadingSpinner message="더 많은 영혼들을 불러오는 중..." />
+                  </div>
+                )}
+                <div ref={bottomSentinelRef} style={{ height: 1 }} />
+              </>
+            )}
+        </>
       )}
     </div>
   );

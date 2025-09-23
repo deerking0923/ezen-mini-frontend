@@ -31,26 +31,7 @@ export default function ViewModeTabs({
         </button>
       </div>
       
-      {viewMode === "list" && (
-        <div className={styles.sortButtons}>
-          <button
-            className={`${styles.sortButton} ${
-              listSort === "latest" ? styles.activeSort : ""
-            }`}
-            onClick={() => onSortChange("latest")}
-          >
-            최신순
-          </button>
-          <button
-            className={`${styles.sortButton} ${
-              listSort === "oldest" ? styles.activeSort : ""
-            }`}
-            onClick={() => onSortChange("oldest")}
-          >
-            오래된 순
-          </button>
-        </div>
-      )}
+
     </div>
   );
 }

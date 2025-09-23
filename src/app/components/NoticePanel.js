@@ -1,4 +1,4 @@
-// components/NoticePanel/NoticePanel.js
+// src/app/components/NoticePanel.js
 "use client";
 
 import React from "react";
@@ -10,18 +10,21 @@ export default function NoticePanel({ onSeasonClick, onAllView, onGoHome }) {
     <div className={styles.noticePanel}>
       <h2 className={styles.noticeTitle}>유랑 대백과</h2>
       <p className={styles.noticeDescription}>
-        유랑 대백과의 제작 자료는 스카이 플래너를 출처로 남기시면 사용
-        가능합니다.
-        <br />
-        <br />
         찾고 있는 유랑이 기억나지 않을 때 검색창에 키워드를 입력해
         검색해주세요.
-        <br />
         <br />
         <span className={styles.noticeExample}>
           (ex - 족제비, 유랑단, 수염)
         </span>
       </p>
+      <div className={styles.oldestSpiritsContainer}>
+        <button className={styles.oldestSpiritsButton} onClick={onGoHome}>
+          <span className={styles.oldestSpiritsIcon}>🕰️</span>
+          <span className={styles.oldestSpiritsText}>오래된 유랑</span>
+          <span className={styles.oldestSpiritsArrow}>→</span>
+        </button>
+      </div>
+      
       <p className={styles.noticeSubDescription}>
         아래 시즌 이름을 클릭하면 자동 검색됩니다:
       </p>
@@ -47,10 +50,8 @@ export default function NoticePanel({ onSeasonClick, onAllView, onGoHome }) {
         <button className={styles.filterChip} onClick={onAllView}>
           전체보기
         </button>
-        <button className={styles.filterChip} onClick={onGoHome}>
-          오래된유랑
-        </button>
       </div>
+      
     </div>
   );
 }

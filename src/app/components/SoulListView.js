@@ -1,8 +1,8 @@
-// components/SoulListView/SoulListView.js
+// src/app/components/SoulListView.js
 "use client";
 
 import React from "react";
-import { useRouter } from "next/navigation";
+import Link from "next/link";
 import styles from "./SoulListView.module.css";
 import { SEASON_LIST } from "../constants/seasons";
 
@@ -10,82 +10,98 @@ export default function SoulListView({
   souls, 
   viewMode, 
   submittedQuery, 
-  onCardClick 
+  onCardClick,
+  lastSoulElementRef 
 }) {
-  const router = useRouter();
+  // 날짜 포맷팅
+  const formatDate = (dateStr) => {
+    const date = new Date(dateStr);
+    return date.toLocaleDateString("ko-KR", {
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+    });
+  };
 
   return (
-    <table className={styles.tableView}>
-      <thead>
-        <tr>
-          <th className={styles.thOrder}>순서</th>
-          <th className={styles.thSeason}>시즌</th>
-          <th className={styles.thName}>이름</th>
-          <th className={styles.thPeriod}>기간</th>
-          <th className={styles.thRerun}>n차</th>
-        </tr>
-      </thead>
-      <tbody>
-        {souls.map((soul) => {
-          const repImg = soul.images?.find(
-            (img) => img.imageType === "REPRESENTATIVE"
-          );
+    <div className={styles.spiritsList}>
+      {souls.map((soul, index) => {
+        const repImg = soul.images?.find(
+          (img) => img.imageType === "REPRESENTATIVE"
+        );
+        const isLast = index === souls.length - 1;
+        const isWarband = soul.orderNum < 0;
 
-          const params = new URLSearchParams();
-          params.set("mode", viewMode);
-          if (submittedQuery) params.set("query", submittedQuery);
+        const params = new URLSearchParams();
+        params.set("mode", viewMode);
+        if (submittedQuery) params.set("query", submittedQuery);
 
-          return (
-            <tr
-              key={`${soul.id}-${soul.__page ?? "p"}`}
-              className={styles.tableRow}
-              onClick={() => {
-                onCardClick(soul);
-                router.push(
-                  `/sky/travelingSprits/generalVisits/${soul.id}${
-                    params.toString() ? "?" + params.toString() : ""
-                  }`
-                );
-              }}
-              style={{ cursor: "pointer" }}
-            >
-              <td className={styles.tdOrder}>
-                {repImg?.url && (
-                  <img
-                    src={repImg.url}
-                    alt={soul.name}
-                    className={styles.tableThumbnail}
-                  />
-                )}
-                {soul.orderNum < 0 ? (
-                  <span className={styles.warbandOrder}>
-                    {Math.abs(soul.orderNum)}
-                  </span>
-                ) : (
-                  soul.orderNum
-                )}
-              </td>
-              <td className={styles.tdSeason}>
-                <span
-                  className={styles.seasonName}
-                  style={{
-                    backgroundColor:
-                      SEASON_LIST.find((s) => s.name === soul.seasonName)
-                        ?.color || "#444",
+        return (
+          <Link
+            key={`${soul.id}-${soul.__page ?? "p"}`}
+            href={`/sky/travelingSprits/generalVisits/${soul.id}${
+              params.toString() ? "?" + params.toString() : ""
+            }`}
+            className={styles.spiritCard}
+            onClick={() => onCardClick(soul)}
+            ref={isLast ? lastSoulElementRef : null}
+          >
+            <div className={`${styles.rankBadge} ${isWarband ? styles.warbandRankBadge : ''}`}>
+              {isWarband ? `#${Math.abs(soul.orderNum)}` : `#${soul.orderNum}`}
+            </div>
+            
+            <div className={styles.imageSection}>
+              {repImg?.url ? (
+                <img
+                  src={repImg.url}
+                  alt={soul.name}
+                  className={styles.spiritImage}
+                />
+              ) : (
+                <div className={styles.noImage}>이미지 없음</div>
+              )}
+            </div>
+
+            <div className={styles.infoSection}>
+              <div className={styles.nameRow}>
+                <span 
+                  className={styles.seasonBadge}
+                  style={{ 
+                    backgroundColor: isWarband ? "#FF8C00" : 
+                      (SEASON_LIST.find((s) => s.name === soul.seasonName)?.color || "#888")
                   }}
                 >
                   {soul.seasonName}
                 </span>
-              </td>
-              <td className={styles.tdName}>{soul.name}</td>
-              <td className={styles.tdPeriod}>
-                {soul.startDate} ~ {soul.endDate}
-              </td>
-              <td className={styles.tdRerun}>{soul.rerunCount}</td>
-            </tr>
-          );
-        })}
-      </tbody>
-    </table>
+                <h3 className={styles.spiritName}>{soul.name}</h3>
+              </div>
+
+              <div className={styles.detailsRow}>
+                <span className={styles.orderNumber}>
+                  {isWarband ? (
+                    <span style={{ color: "#FF8C00", fontWeight: "bold" }}>
+                      {Math.abs(soul.orderNum)}번째 유랑단
+                    </span>
+                  ) : (
+                    `${soul.orderNum}번째`
+                  )}
+                </span>
+                <span className={styles.rerunCount}>
+                  {soul.rerunCount}차 복각
+                </span>
+              </div>
+
+              <div className={styles.dateInfo}>
+                <span>기간: {formatDate(soul.startDate)} ~ {formatDate(soul.endDate)}</span>
+              </div>
+            </div>
+
+            <div className={styles.statusSection}>
+              {/* 유랑단 뱃지 제거 */}
+            </div>
+          </Link>
+        );
+      })}
+    </div>
   );
 }
