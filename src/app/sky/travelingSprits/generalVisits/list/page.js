@@ -403,7 +403,7 @@ function SoulListContent() {
   // 초기 로드 (복잡한 로직은 그대로 유지)
   useEffect(() => {
     if (!isClient) return;
-    
+
     const needBootstrap =
       viewMode === "card" &&
       submittedQuery.trim() === "" &&
@@ -411,14 +411,11 @@ function SoulListContent() {
       !didBootstrapRef.current;
 
     if (!needBootstrap) {
-      if (viewMode === "card") {
-        const base = maxLoadedPageRef.current ?? 0;
-        fetchSoulsAny(base, submittedQuery, {
-          append: soulsLenRef.current > 0,
-        });
-      } else {
-        fetchSoulsAny(0, submittedQuery, { append: false });
-      }
+      // 기본 경로: 모든 뷰 모드에서 0페이지부터 시작
+      setSouls([]);
+      minLoadedPageRef.current = null;
+      maxLoadedPageRef.current = null;
+      fetchSoulsAny(0, submittedQuery, { append: false });
       return;
     }
 
@@ -443,10 +440,9 @@ function SoulListContent() {
     return () => window.removeEventListener("hashchange", onHash);
   }, [isClient]);
 
-  // 무한 스크롤 (기존 로직 유지)
+  // ===== 아래쪽 무한 스크롤(append) - 카드/리스트 뷰 공통 =====
   useEffect(() => {
     if (!isClient) return;
-    if (viewMode !== "card") return;
     if (!bottomSentinelRef.current) return;
 
     const hasMore =
@@ -455,11 +451,27 @@ function SoulListContent() {
       maxLoadedPageRef.current + 1 < totalPages &&
       !error;
 
+    console.log('무한 스크롤 상태:', {
+      hasMore,
+      maxLoadedPage: maxLoadedPageRef.current,
+      totalPages,
+      submittedQuery: submittedQuery.trim(),
+      error,
+      viewMode
+    });
+
     if (!hasMore) return;
 
     const observer = new IntersectionObserver(
       (entries) => {
         const first = entries[0];
+        console.log('센티넬 교차:', first.isIntersecting, {
+          loading,
+          isFetchingNext,
+          maxLoadedPage: maxLoadedPageRef.current,
+          totalPages
+        });
+        
         if (
           first.isIntersecting &&
           !loading &&
@@ -469,6 +481,7 @@ function SoulListContent() {
           maxLoadedPageRef.current + 1 < totalPages
         ) {
           const nextPage = maxLoadedPageRef.current + 1;
+          console.log('다음 페이지 로드 시작:', nextPage);
           setIsFetchingNext(true);
           (async () => {
             try {
@@ -483,7 +496,9 @@ function SoulListContent() {
               if (minLoadedPageRef.current == null) {
                 minLoadedPageRef.current = nextPage;
               }
+              console.log('페이지 로드 완료:', nextPage, 'maxLoadedPage:', maxLoadedPageRef.current);
             } catch (err) {
+              console.error('페이지 로드 실패:', err);
               setError(err.message || "다음 페이지 로드 실패");
             } finally {
               setIsFetchingNext(false);
@@ -491,19 +506,19 @@ function SoulListContent() {
           })();
         }
       },
-      { root: null, rootMargin: "200px", threshold: 0 }
+      { root: null, rootMargin: "100px", threshold: 0 }
     );
 
     observer.observe(bottomSentinelRef.current);
     return () => observer.disconnect();
   }, [
     isClient,
-    viewMode,
     loading,
     isFetchingNext,
     submittedQuery,
     totalPages,
     error,
+    viewMode
   ]);
 
   return (
@@ -565,21 +580,16 @@ function SoulListContent() {
             submittedQuery={submittedQuery}
             onCardClick={saveOnClick}
             lastSoulElementRef={bottomSentinelRef}
+            isFetchingNext={isFetchingNext}
+            hasMore={submittedQuery.trim() === "" && maxLoadedPageRef.current != null && maxLoadedPageRef.current + 1 < totalPages && !error}
           />
           
           {/* 리스트 뷰에서도 무한 스크롤 로더 표시 */}
-          {submittedQuery.trim() === "" &&
-            maxLoadedPageRef.current != null &&
-            maxLoadedPageRef.current + 1 < totalPages && (
-              <>
-                {isFetchingNext && (
-                  <div style={{ textAlign: "center", padding: "1rem" }}>
-                    <LoadingSpinner message="더 많은 영혼들을 불러오는 중..." />
-                  </div>
-                )}
-                <div ref={bottomSentinelRef} style={{ height: 1 }} />
-              </>
-            )}
+          {isFetchingNext && (
+            <div style={{ textAlign: "center", padding: "1rem" }}>
+              <LoadingSpinner message="더 많은 영혼들을 불러오는 중..." />
+            </div>
+          )}
         </>
       )}
     </div>
