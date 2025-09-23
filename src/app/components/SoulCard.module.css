@@ -1,0 +1,157 @@
+/* components/SoulCard/SoulCard.module.css */
+.soulCard {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background-color: #fff;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.soulCard:hover {
+  transform: translateY(-2px);
+}
+
+.imageWrapperSquare {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  border-radius: 4px;
+  background-color: #eee;
+  margin: 0 auto;
+}
+
+.cardImage {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+}
+
+.noImage {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  color: #aaa;
+  font-size: 0.8rem;
+}
+
+.cardContent {
+  padding: 0.3rem 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.firstLine {
+  font-size: 0.9rem;
+  margin: 0;
+  display: flex;
+  align-items: center;
+}
+
+.seasonName {
+  display: inline-block;
+  padding: 2px 6px;
+  border-radius: 20px;
+  font-size: 0.7rem;
+  font-weight: bold;
+  color: #fff;
+  margin-right: 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.soulName {
+  font-size: 0.8rem;
+  font-weight: bold;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.secondLine {
+  font-size: 0.8rem;
+  margin: 0;
+}
+
+.thirdLine {
+  font-size: 0.7rem;
+  margin: 0;
+  color: #777;
+}
+
+@media screen and (max-width: 768px) {
+  .soulCard {
+    max-width: 100%;
+    margin: 0;
+    height: auto;
+  }
+  
+  .imageWrapperSquare {
+    width: 100%;
+    height: 60%;
+    overflow: hidden;
+    background-color: #eee;
+  }
+  
+  .cardImage {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: center;
+  }
+  
+  .noImage {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    color: #aaa;
+    font-size: 0.8rem;
+  }
+
+  .cardContent {
+    padding: 0.3rem 0.5rem;
+    font-size: 0.7rem;
+  }
+
+  .firstLine {
+    font-size: 0.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+  }
+
+  .seasonName {
+    font-size: 0.6rem;
+    display: block;
+    margin-bottom: 0;
+    white-space: normal;
+    overflow: visible;
+  }
+
+  .soulName {
+    font-size: 0.62rem;
+    display: block;
+    white-space: normal;
+    overflow: visible;
+  }
+
+  .secondLine {
+    font-size: 0.55rem;
+    text-align: center;
+  }
+
+  .thirdLine {
+    font-size: 0.55rem;
+    text-align: center;
+  }
+}

@@ -1,0 +1,9 @@
+/* components/LoadingSpinner/LoadingSpinner.module.css */
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+  font-size: 1rem;
+  color: #666;
+}
