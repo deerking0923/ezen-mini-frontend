@@ -25,7 +25,7 @@ export const quizData = [
     answer: "나무집"
   },
   {
-    question: "6. 토끼 슬리퍼를 구매 할 수 있는 이벤트는?",
+    question: "6. 모노클을 구매 할 수 있는 이벤트는?",
     options: ["달빛의 날", "햇빛의 날", "장난꾸러기의 날", "멋쟁이의 날", "연회의 날"],
     answer: "멋쟁이의 날"
   },
