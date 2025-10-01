@@ -142,11 +142,12 @@ function ResultView({ profile, score, answers, onRetry, onGoToMain }) {
       html2canvas(certificateRef.current, {
         backgroundColor: '#ffffff',
         useCORS: true,
+        scale: 2
       }).then(canvas => {
         const image = canvas.toDataURL('image/png');
         const link = document.createElement('a');
         link.href = image;
-        link.download = '25년_9월_스카이_모의고사_결과.png';
+        link.download = '25년_10월_스카이_모의고사_결과.png';
         link.click();
       });
     }
