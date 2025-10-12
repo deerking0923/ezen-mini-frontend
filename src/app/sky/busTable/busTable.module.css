@@ -153,7 +153,7 @@
 .routeMap::before {
   content: '';
   position: absolute;
-  top: 80px;
+  top: 70px;
   left: 5%;
   right: 5%;
   height: 4px;
