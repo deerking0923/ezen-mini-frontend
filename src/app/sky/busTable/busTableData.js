@@ -154,7 +154,7 @@ export const guideCategories = {
         id: 'rest',
         icon: '🏠',
         title: '안식처를 갈 때는',
-        options: ['삥 연타', '앉으면'],
+        options: ['삥 연타', '앉으면', '채팅할게요!'],
         multiple: true
       },
       {
