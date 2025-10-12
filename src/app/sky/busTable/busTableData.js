@@ -120,7 +120,7 @@ export const guideCategories = {
       {
         id: 'quest',
         icon: '📝',
-        title: '일퀘',
+        title: '일일퀘스트',
         options: ['포함', '미포함'],
         multiple: true
       },
