@@ -48,6 +48,7 @@ export const mainRoute = {
         { id: 'race-land', name: '땅레이스' },
         { id: 'race-sky', name: '하늘레이스' },
         { id: 'dream', name: '꿈의 마을' },
+        { id: 'hermit', name: '은둔자의 언덕' },
         { id: 'theater', name: '마을 극장' },
       ]
     },
@@ -125,6 +126,7 @@ export const mainRoute = {
         { id: 'race-land', name: 'Sliding Race' },
         { id: 'race-sky', name: 'Flying Race' },
         { id: 'dream', name: 'Village of\nDreams' },
+        { id: 'hermit', name: 'Yeti House' },
         { id: 'theater', name: 'Village\nTheater' },
       ]
     },
@@ -161,12 +163,14 @@ export const seasonMaps = {
   ko: [
     { id: 'starlight', name: '별빛사막', icon: '⭐' },
     { id: 'oasis', name: '초승달 오아시스', icon: '🌙' },
-    { id: 'moomin', name: '무민 밸리', icon: '🏔️' }
+    { id: 'moomin', name: '무민 밸리', icon: '🏔️' },
+    { id: 'alice', name: '앨리스 카페', icon: '☕' }
   ],
   en: [
     { id: 'starlight', name: 'Starlight Desert', icon: '⭐' },
     { id: 'oasis', name: 'Crescent Oasis', icon: '🌙' },
-    { id: 'moomin', name: 'Moomin Valley', icon: '🏔️' }
+    { id: 'moomin', name: 'Moomin Valley', icon: '🏔️' },
+    { id: 'alice', name: 'Alice Cafe', icon: '☕' }
   ]
 };
 
@@ -179,7 +183,7 @@ export const guideCategories = {
           id: 'type',
           icon: '🚌',
           title: '운행 유형',
-          options: ['양작', '날작', '염작', '환생'],
+          options: ['양작', '날작', '염작', '에덴'],
           multiple: true
         },
         {
