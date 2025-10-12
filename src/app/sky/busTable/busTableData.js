@@ -213,6 +213,13 @@ export const guideCategories = {
           multiple: true
         },
         {
+          id: 'fragment',
+          icon: '✨',
+          title: '파편',
+          options: ['포함', '미포함'],
+          multiple: true
+        },
+        {
           id: 'friend',
           icon: '💫',
           title: '친구 유무',
@@ -250,6 +257,13 @@ export const guideCategories = {
           icon: '🕯️',
           title: '촛불',
           options: ['상관 없어요', '같이 들어주세요'],
+          multiple: true
+        },
+        {
+          id: 'instrument',
+          icon: '🎵',
+          title: '악기연주',
+          options: ['가능해요', '조용히 갈래요'],
           multiple: true
         },
         {
@@ -309,6 +323,13 @@ export const guideCategories = {
           multiple: true
         },
         {
+          id: 'fragment',
+          icon: '✨',
+          title: 'Shards',
+          options: ['Included', 'Not Included'],
+          multiple: true
+        },
+        {
           id: 'friend',
           icon: '💫',
           title: 'Friend Status',
@@ -346,6 +367,13 @@ export const guideCategories = {
           icon: '🕯️',
           title: 'Candles',
           options: ['No preference', 'Light together'],
+          multiple: true
+        },
+        {
+          id: 'instrument',
+          icon: '🎵',
+          title: 'Instruments',
+          options: ['Play anytime!', 'Prefer quiet'],
           multiple: true
         },
         {
