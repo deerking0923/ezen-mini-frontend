@@ -236,8 +236,8 @@ export const guideCategories = {
         {
           id: 'hand',
           icon: '🤝',
-          title: '손발이 척척!',
-          options: ['손은 먼저 잡아주세요!', '제가 내밀게요!'],
+          title: '손발이 척척! 손잡기는',
+          options: ['먼저 잡아주세요!', '제가 내밀게요!'],
           multiple: true
         },
         {
