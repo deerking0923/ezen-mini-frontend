@@ -12,7 +12,6 @@
   text-align: center;
   color: #fff;
   
-  /* ❗ 중요: 이 경로를 실제 이미지 경로로 꼭 수정해주세요! */
   background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('/sky/extra/layout.png');
   background-size: cover;
   background-position: center 60%;
@@ -40,15 +39,15 @@
 /* 메인 컨테이너 레이아웃 */
 .container {
   width: 100%;
-  max-width: 960px;
+  max-width: 1100px;
   margin: 0 auto;
-  padding: 60px 24px;
+  padding: 50px 24px;
 }
 
 /* 메뉴 그리드 레이아웃 */
 .menuGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-template-columns: repeat(3, 1fr);
   gap: 28px;
 }
 
@@ -58,13 +57,12 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 220px;
-  padding: 24px;
+  padding: 36px 24px;
   cursor: pointer;
   background: #ffffff;
   border: 1px solid #eee;
   border-radius: 20px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.08);
   color: #333;
   text-decoration: none;
   transition: all 0.25s ease-in-out;
@@ -72,95 +70,71 @@
 
 .menuCard:hover {
   transform: translateY(-8px);
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
   border-color: #ddd;
 }
 
 /* 카드 내부 아이콘 */
 .icon {
-  width: 72px;
-  height: 72px;
+  width: 140px;
+  height: 140px;
   margin-bottom: 20px;
   object-fit: cover;
-  border-radius: 12px;
+  border-radius: 10px;
   flex-shrink: 0;
 }
 
 /* 카드 내부 라벨 */
 .label {
-  font-size: 1.25rem;
+  font-size: 1.35rem;
   font-weight: 600;
+  text-align: center;
 }
-
-/* ... 다른 CSS 코드는 그대로 ... */
-
-/* 메뉴 그리드 레이아웃 */
-.menuGrid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 32px; /* 변경: 카드 사이 간격을 조금 더 넓혔습니다 */
-}
-
-/* 메뉴 카드 스타일 */
-.menuCard {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  /* height: 220px; <- 이 줄을 삭제해주세요! */
-  padding: 32px 24px; /* 변경: 상하 여백을 늘려 균형을 맞춥니다 */
-  cursor: pointer;
-  background: #ffffff;
-  border: 1px solid #eee;
-  border-radius: 20px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-  color: #333;
-  text-decoration: none;
-  transition: all 0.25s ease-in-out;
-}
-
-/* ... .menuCard:hover는 그대로 ... */
-
-/* 카드 내부 아이콘 */
-.icon {
-  width: 120px;   /* 변경: 아이콘 너비를 키웁니다 */
-  height: 120px;  /* 변경: 아이콘 높이를 키웁니다 */
-  margin-bottom: 20px;
-  object-fit: cover;
-  border-radius: 12px;
-  flex-shrink: 0;
-}
-
-/* 카드 내부 라벨 */
-.label {
-  font-size: 1.3rem; /* 변경: 아이콘에 맞춰 글자도 살짝 키웁니다 */
-  font-weight: 600;
-}
-
-/* ... 나머지 코드는 그대로 ... */
 
 /* ─── 반응형 ─── */
 @media (max-width: 640px) {
   .heroTitle {
-    font-size: 2.5rem;
+    font-size: 2.2rem;
+  }
+  .heroSubtitle {
+    font-size: 1rem;
   }
   .container {
-    padding: 40px 16px;
+    padding: 24px 12px;
   }
   .menuGrid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 16px;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
   }
   .menuCard {
-    height: auto;
-    min-height: 180px;
-    padding: 20px 12px;
+    padding: 16px 8px;
+    border-radius: 12px;
   }
   .icon {
-    width: 100px;
-    height: 100px;
+    width: 60px;
+    height: 60px;
+    margin-bottom: 10px;
   }
   .label {
-    font-size: 1.1rem;
+    font-size: 0.85rem;
+    line-height: 1.3;
+  }
+}
+
+/* 아주 작은 화면 */
+@media (max-width: 400px) {
+  .menuGrid {
+    gap: 8px;
+  }
+  .menuCard {
+    padding: 12px 6px;
+  }
+  .icon {
+    width: 60px;
+    height: 60px;
+    margin-bottom: 8px;
+  }
+  .label {
+    font-size: 0.8rem;
   }
 }
