@@ -12,11 +12,13 @@
 
 .captureArea {
   width: 1200px;
-  background: white;
+  background: linear-gradient(180deg, #e0f2fe 0%, #bae6fd 30%, #7dd3fc 60%, #38bdf8 100%);
   border-radius: 20px;
   padding: 2.5rem;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-  border: 3px solid #3b82f6;
+  box-shadow: 0 8px 32px rgba(59, 130, 246, 0.4);
+  border: 3px solid #0ea5e9;
+  position: relative;
+  overflow: hidden;
 }
 
 .header {
@@ -29,7 +31,7 @@
 }
 
 .title {
-  color: #1e40af;
+  color: #1643d8;
   font-size: 3rem;
   font-weight: 800;
   margin: 0;
