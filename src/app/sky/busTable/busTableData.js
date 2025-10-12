@@ -109,6 +109,13 @@ export const guideCategories = {
         options: ['30분', '1시간', '1시간 이상'],
         multiple: true
       },
+    {
+        id: 'home',
+        icon: '🛖',
+        title: '안식처',
+        options: ['구식처', '신식처'],
+        multiple: true
+      },
       {
         id: 'quest',
         icon: '📝',
@@ -131,14 +138,21 @@ export const guideCategories = {
       {
         id: 'hand',
         icon: '🤝',
-        title: '손은 먼저 잡아주세요!',
-        options: ['먼저 잡아주세요!'],
+        title: '손발이 척척!',
+        options: ['손은 먼저 잡아주세요!'],
+        multiple: true
+      },
+            {
+        id: 'calling',
+        icon: '💫',
+        title: '삥삥은 당신을 부르는 소리!',
+        options: ['삥하면 화면을 봐주세요!'],
         multiple: true
       },
       {
         id: 'rest',
         icon: '🏠',
-        title: '안식처',
+        title: '안식처를 갈 때는',
         options: ['삥 연타', '앉으면'],
         multiple: true
       },
