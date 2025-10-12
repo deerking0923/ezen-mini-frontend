@@ -81,7 +81,7 @@ export const mainRoute = {
   en: [
     {
       id: 'isle',
-      name: 'Isle of Dawn',
+      name: 'Isle of\nDawn',
       color: '#FFB6C1',
       icon: '⭐',
       subLocations: [
