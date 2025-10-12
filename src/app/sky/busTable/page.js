@@ -8,7 +8,7 @@ const backgroundColors = {
   blue: 'linear-gradient(180deg, #e0f2fe 0%, #bae6fd 30%, #7dd3fc 60%, #38bdf8 100%)',
   red: 'linear-gradient(180deg, #fee2e2 0%, #fecaca 30%, #fca5a5 60%, #f87171 100%)',
   yellow: 'linear-gradient(180deg, #fef9c3 0%, #fef08a 30%, #fde047 60%, #facc15 100%)',
-  green: 'linear-gradient(180deg, #d9f99d 0%, #bef264 30%, #a3e635 60%, #84cc16 100%)',
+  green: 'linear-gradient(180deg, #d1f5d3 0%, #b5ebb7 30%, #8fe08f 60%, #6dd66f 100%)',
   purple: 'linear-gradient(180deg, #e9d5ff 0%, #d8b4fe 30%, #c084fc 60%, #a855f7 100%)'
 };
 
@@ -35,10 +35,10 @@ const themeColors = {
     selectedText: '#854d0e'
   },
   green: {
-    border: '#22c55e',
+    border: '#4ade80',
     title: '#166534',
-    mainBorder: '#16a34a',
-    selected: '#16a34a',
+    mainBorder: '#22c55e',
+    selected: '#22c55e',
     selectedText: '#166534'
   },
   purple: {

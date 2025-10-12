@@ -111,7 +111,7 @@ export const mainRoute = {
       icon: '🌲',
       subLocations: [
         { id: 'wind', name: 'Wind Paths' },
-        { id: 'dduk', name: 'Boneyard' },
+        { id: 'dduk', name: 'Granny' },
         { id: 'green', name: 'Forest\nGarden' },
         { id: 'wood', name: 'Treehouse' }
       ]
@@ -122,8 +122,8 @@ export const mainRoute = {
       color: '#FFA500',
       icon: '⛰️',
       subLocations: [
-        { id: 'race-land', name: 'Earth Race' },
-        { id: 'race-sky', name: 'Sky Race' },
+        { id: 'race-land', name: 'Sliding Race' },
+        { id: 'race-sky', name: 'Flying Race' },
         { id: 'dream', name: 'Village of\nDreams' },
         { id: 'theater', name: 'Village\nTheater' },
       ]
@@ -168,7 +168,7 @@ export const seasonMaps = {
     { id: 'starlight', name: 'Starlight Desert', icon: '⭐' },
     { id: 'oasis', name: 'Crescent Oasis', icon: '🌙' },
     { id: 'moomin', name: 'Moomin Valley', icon: '🏔️' },
-    { id: 'city', name: 'Aurora Concert', icon: '🏙️' }
+    { id: 'city', name: 'The Last City', icon: '🏙️' }
   ]
 };
 
@@ -277,7 +277,7 @@ export const guideCategories = {
           id: 'type',
           icon: '🚌',
           title: 'Run Type',
-          options: ['Candle Run', 'Wing Buff', 'Dye Run', 'Eden Run'],
+          options: ['CandleRun', 'Wing Buff', 'Dye Run', 'Eden'],
           multiple: true
         },
         {
@@ -298,13 +298,13 @@ export const guideCategories = {
           id: 'home',
           icon: '🛖',
           title: 'Home Space',
-          options: ['Old Home', 'New Home'],
+          options: ['Home', 'Aviary Village'],
           multiple: true
         },
         {
           id: 'quest',
           icon: '📝',
-          title: 'Daily Quests',
+          title: 'Dailies',
           options: ['Included', 'Not Included'],
           multiple: true
         },
@@ -358,8 +358,8 @@ export const guideCategories = {
         {
           id: 'server',
           icon: '⛵',
-          title: 'Server Change',
-          options: ['I will change', 'Please join me'],
+          title: 'Server Split',
+          options: ['I will join', 'Please join me'],
           multiple: true
         }
       ]
