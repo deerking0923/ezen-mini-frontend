@@ -161,14 +161,12 @@ export const seasonMaps = {
   ko: [
     { id: 'starlight', name: '별빛사막', icon: '⭐' },
     { id: 'oasis', name: '초승달 오아시스', icon: '🌙' },
-    { id: 'moomin', name: '무민 밸리', icon: '🏔️' },
-    { id: 'city', name: '마지막 도시', icon: '🏙️' }
+    { id: 'moomin', name: '무민 밸리', icon: '🏔️' }
   ],
   en: [
     { id: 'starlight', name: 'Starlight Desert', icon: '⭐' },
     { id: 'oasis', name: 'Crescent Oasis', icon: '🌙' },
-    { id: 'moomin', name: 'Moomin Valley', icon: '🏔️' },
-    { id: 'city', name: 'The Last City', icon: '🏙️' }
+    { id: 'moomin', name: 'Moomin Valley', icon: '🏔️' }
   ]
 };
 
