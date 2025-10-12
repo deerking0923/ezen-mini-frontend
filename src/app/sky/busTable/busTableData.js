@@ -23,7 +23,7 @@ export const mainRoute = [
       { id: 'prairie-peak', name: '초원 봉우리' },
       { id: 'paradise', name: '낙원의 섬' },
       { id: 'turtle', name: '거북이' },
-      { id: 'shell', name: '조개' }
+      { id: 'shell', name: '간헐천' }
     ]
   },
   {
@@ -34,7 +34,8 @@ export const mainRoute = [
     subLocations: [
       { id: 'wind', name: '바람길' },
       { id: 'dduk', name: '떡집' },
-      { id: 'green', name: '녹즙맵' }
+      { id: 'green', name: '녹즙맵' },
+      { id: 'wood', name: '나무집' }
     ]
   },
   {
