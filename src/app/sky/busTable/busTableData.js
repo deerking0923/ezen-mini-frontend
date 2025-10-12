@@ -92,7 +92,7 @@ export const guideCategories = {
         id: 'type',
         icon: '🚌',
         title: '운행 유형',
-        options: ['양작', '날작', '환생'],
+        options: ['양작', '날작', '염작', '환생'],
         multiple: true
       },
       {

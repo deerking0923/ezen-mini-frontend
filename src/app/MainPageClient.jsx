@@ -19,7 +19,7 @@ export default function MainPageClient() {
     { title: '양초 계산기', img: '/sky/extra/calculator.png', path: '/sky/temp' },
     { title: '유랑 대백과', img: '/sky/extra/dictionary.png', path: '/sky/travelingSprits/generalVisits/list' },
     { title: '오래된 유랑', img: '/sky/extra/oldestSprits.png', path: '/sky/travelingSprits/oldestSprits' },
-    //{ title: '버스 노선표', img: '/sky/extra/busTable.png', path: '/sky/busTable' },
+    { title: '버스 노선표', img: '/sky/extra/busTable.png', path: '/sky/busTable' },
     { title: '악보 만들기', img: '/sky/extra/musicEditor.png', path: '/sky/musicEditor' },
     { title: '10월 모의고사', img: '/sky/extra/test.png', path: '/sky/test' },
     { title: '성향 테스트', img: '/sky/extra/mbti.png', path: '/sky/mbti' },
