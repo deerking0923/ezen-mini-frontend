@@ -377,8 +377,8 @@ export const translations = {
     downloadButton: '📥다운로드'
   },
   en: {
-    title: '🚌 Sky Bus Route',
-    driverLabel: 'Bus Driver',
+    title: '🚌 Sky Uber Table',
+    driverLabel: 'Uber Driver',
     driverPlaceholder: 'Enter name',
     introPlaceholder: 'Introduction',
     seasonMapTitle: '✨ Season Maps',
