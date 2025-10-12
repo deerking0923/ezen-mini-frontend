@@ -7,10 +7,12 @@
   font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: stretch;
 }
 
 .captureArea {
+      overflow-x: auto; /* 핵심! 자식 요소가 넘치면 가로 스크롤바 생성 */
+  -webkit-overflow-scrolling: touch; /* 모바일에서 부드러운 스크롤 */
   width: 100%; 
   min-width: 1200px;
   background: linear-gradient(180deg, #e0f2fe 0%, #bae6fd 30%, #7dd3fc 60%, #38bdf8 100%);
@@ -19,7 +21,7 @@
   box-shadow: 0 8px 32px rgba(59, 130, 246, 0.4);
   border: 3px solid #0ea5e9;
   position: relative;
-  overflow: hidden;
+  /* overflow: hidden; */
 }
 
 .header {
