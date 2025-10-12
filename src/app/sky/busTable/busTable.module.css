@@ -8,29 +8,109 @@
   display: flex;
   flex-direction: column;
   align-items: stretch;
-        overflow-x: auto; /* 핵심! 자식 요소가 넘치면 가로 스크롤바 생성 */
-  -webkit-overflow-scrolling: touch; /* 모바일에서 부드러운 스크롤 */
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
   width: 100%; 
   min-width: 1200px;
 }
 
-.captureArea {
+/* 상단 컨트롤 영역 */
+.topControls {
+  display: flex;
+  gap: 2rem;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 2rem;
+}
 
-  background: linear-gradient(180deg, #e0f2fe 0%, #bae6fd 30%, #7dd3fc 60%, #38bdf8 100%);
+/* 언어 전환 버튼 */
+.languageToggleContainer {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  background-color: rgba(249, 250, 251, 0.95);
+  padding: 14px 24px;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+  backdrop-filter: blur(5px);
+  box-shadow: 0 2px 5px rgba(0,0,0,0.07);
+}
+
+.languageToggleContainer button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 1.15rem;
+  color: #6b7280;
+  padding: 0;
+  transition: color 0.2s;
+}
+
+.languageToggleContainer button.activeLang {
+  color: #1e3a8a;
+}
+
+.languageToggleContainer span {
+  color: #d1d5db;
+  font-size: 1.15rem;
+}
+
+/* 배경색 선택기 */
+.colorSelector {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  background-color: rgba(249, 250, 251, 0.95);
+  padding: 12px 20px;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+  backdrop-filter: blur(5px);
+  box-shadow: 0 2px 5px rgba(0,0,0,0.07);
+}
+
+.colorLabel {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #4a5568;
+  margin-right: 5px;
+}
+
+.colorButton {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 3px solid transparent;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.colorButton:hover {
+  transform: scale(1.1);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+.colorButton.activeColor {
+  border-color: #1e3a8a;
+  transform: scale(1.15);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+.captureArea {
   border-radius: 20px;
-  padding: 2.5rem;
+  padding: 2rem;
   box-shadow: 0 8px 32px rgba(59, 130, 246, 0.4);
   border: 3px solid #0ea5e9;
   position: relative;
-  /* overflow: hidden; */
 }
 
 .header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 2rem;
-  padding-bottom: 1.5rem;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1.2rem;
   border-bottom: 3px solid #e0f2fe;
 }
 
@@ -132,9 +212,9 @@
 
 /* 노선도 */
 .routeSection {
-  margin-bottom: 2rem;
-  padding: 2rem;
-  padding-bottom: 8rem;
+  margin-bottom: 1.5rem;
+  padding: 1.5rem;
+  padding-bottom: 9rem;
   background: #f0f9ff;
   border-radius: 16px;
   border: 3px solid #3b82f6;
@@ -145,9 +225,9 @@
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  gap: 0.7rem;
+  gap: 0.5rem;
   position: relative;
-  padding: 2rem 0;
+  padding: 1.5rem 0;
 }
 
 .routeMap::before {
@@ -184,8 +264,8 @@
   box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
   min-width: 130px;
   position: relative;
-  white-space: nowrap;
-  
+  white-space: pre-line;
+  word-break: keep-all;
 }
 
 .mainLocation:hover {
@@ -218,21 +298,21 @@
 }
 
 .subLocations {
-  margin-top: 1rem;
+  margin-top: 0.8rem;
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0.4rem;
   align-items: center;
   width: 100%;
 }
 
 .subLocation {
-  padding: 0.4rem 0.8rem;
+  padding: 0.3rem 0.6rem;
   background: white;
   border: 2px solid #cbd5e1;
   border-radius: 8px;
   color: #64748b;
-  font-size: 0.9rem;
+  font-size: 0.8rem;
   font-weight: 600;
   text-align: center;
   cursor: pointer;
@@ -263,6 +343,13 @@
   border: 3px solid #f59e0b;
   box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
 }
+
+/* 에덴을 오른쪽 중간-하단에 배치 */
+.edenSectionEn {
+  display: none;
+}
+
+/* 기존 bottomMapsSection과 edenSection 스타일 제거 */
 
 .seasonMapTitle {
   color: #92400e;
@@ -312,12 +399,12 @@
 .optionsWrapper {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 1.5rem;
+  gap: 1.2rem;
 }
 
 .categorySection {
   background: #f8fafc;
-  padding: 1.5rem;
+  padding: 1.2rem;
   border-radius: 12px;
   border: 2px solid #cbd5e1;
   min-height: 500px;
@@ -325,10 +412,10 @@
 
 .categoryTitle {
   color: #1e40af;
-  font-size: 1.6rem;
+  font-size: 1.5rem;
   font-weight: 700;
-  margin-bottom: 1.2rem;
-  padding-bottom: 0.8rem;
+  margin-bottom: 1rem;
+  padding-bottom: 0.6rem;
   border-bottom: 3px solid #e0f2fe;
 }
 
@@ -391,23 +478,6 @@
   border-color: #1e40af;
   color: white;
   font-weight: 700;
-}
-
-.noteArea {
-  width: 100%;
-  min-height: 220px;
-  padding: 0.6rem;
-  border: 2px solid #cbd5e1;
-  border-radius: 8px;
-  font-size: 0.7rem;
-  line-height: 1.5;
-  resize: vertical;
-  font-family: inherit;
-}
-
-.noteArea:focus {
-  outline: none;
-  border-color: #3b82f6;
 }
 
 .noteArea {

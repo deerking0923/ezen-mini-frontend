@@ -2,9 +2,58 @@
 import React, { useState, useRef } from 'react';
 import html2canvas from 'html2canvas';
 import styles from './busTable.module.css';
-import { mainRoute, seasonMaps, guideCategories } from './busTableData';
+import { mainRoute, seasonMaps, guideCategories, translations } from './busTableData';
+
+const backgroundColors = {
+  blue: 'linear-gradient(180deg, #e0f2fe 0%, #bae6fd 30%, #7dd3fc 60%, #38bdf8 100%)',
+  red: 'linear-gradient(180deg, #fee2e2 0%, #fecaca 30%, #fca5a5 60%, #f87171 100%)',
+  yellow: 'linear-gradient(180deg, #fef9c3 0%, #fef08a 30%, #fde047 60%, #facc15 100%)',
+  green: 'linear-gradient(180deg, #d9f99d 0%, #bef264 30%, #a3e635 60%, #84cc16 100%)',
+  purple: 'linear-gradient(180deg, #e9d5ff 0%, #d8b4fe 30%, #c084fc 60%, #a855f7 100%)'
+};
+
+const themeColors = {
+  blue: {
+    border: '#0ea5e9',
+    title: '#1e40af',
+    mainBorder: '#3b82f6',
+    selected: '#3b82f6',
+    selectedText: '#1e40af'
+  },
+  red: {
+    border: '#ef4444',
+    title: '#991b1b',
+    mainBorder: '#dc2626',
+    selected: '#dc2626',
+    selectedText: '#991b1b'
+  },
+  yellow: {
+    border: '#eab308',
+    title: '#854d0e',
+    mainBorder: '#ca8a04',
+    selected: '#ca8a04',
+    selectedText: '#854d0e'
+  },
+  green: {
+    border: '#22c55e',
+    title: '#166534',
+    mainBorder: '#16a34a',
+    selected: '#16a34a',
+    selectedText: '#166534'
+  },
+  purple: {
+    border: '#a855f7',
+    title: '#6b21a8',
+    mainBorder: '#9333ea',
+    selected: '#9333ea',
+    selectedText: '#6b21a8'
+  }
+};
 
 export default function BusTable() {
+  const [language, setLanguage] = useState('ko');
+  const [backgroundColor, setBackgroundColor] = useState('blue');
+  const [themeColor, setThemeColor] = useState('blue');
   const [selectedLocations, setSelectedLocations] = useState([]);
   const [selectedOptions, setSelectedOptions] = useState({});
   const [profileImage, setProfileImage] = useState(null);
@@ -13,6 +62,11 @@ export default function BusTable() {
   
   const captureRef = useRef(null);
   const fileInputRef = useRef(null);
+
+  const t = translations[language];
+  const currentRoute = mainRoute[language];
+  const currentSeasonMaps = seasonMaps[language];
+  const currentCategories = guideCategories[language];
 
   const toggleLocation = (id) => {
     setSelectedLocations(prev => 
@@ -83,7 +137,7 @@ export default function BusTable() {
       
       const link = document.createElement('a');
       const timestamp = new Date().toISOString().slice(0,10);
-      link.download = `스카이_양작노선표_${timestamp}.png`;
+      link.download = `Sky_Bus_Route_${timestamp}.png`;
       link.href = canvas.toDataURL('image/png');
       link.click();
     } catch (error) {
@@ -94,15 +148,100 @@ export default function BusTable() {
 
   return (
     <div className={styles.container}>
-      <div ref={captureRef} className={styles.captureArea}>
+      {/* 언어 전환 & 배경색 선택 버튼 */}
+      <div className={styles.topControls}>
+        <div className={styles.languageToggleContainer}>
+          <button 
+            onClick={() => setLanguage('ko')} 
+            className={language === 'ko' ? styles.activeLang : ''}
+          >
+            한국어
+          </button>
+          <span>/</span>
+          <button 
+            onClick={() => setLanguage('en')} 
+            className={language === 'en' ? styles.activeLang : ''}
+          >
+            English
+          </button>
+        </div>
+
+        <div className={styles.colorSelector}>
+          <span className={styles.colorLabel}>배경색:</span>
+          <button 
+            className={`${styles.colorButton} ${backgroundColor === 'blue' ? styles.activeColor : ''}`}
+            onClick={() => setBackgroundColor('blue')}
+            style={{ background: 'linear-gradient(135deg, #bae6fd, #38bdf8)' }}
+          />
+          <button 
+            className={`${styles.colorButton} ${backgroundColor === 'red' ? styles.activeColor : ''}`}
+            onClick={() => setBackgroundColor('red')}
+            style={{ background: 'linear-gradient(135deg, #fecaca, #f87171)' }}
+          />
+          <button 
+            className={`${styles.colorButton} ${backgroundColor === 'yellow' ? styles.activeColor : ''}`}
+            onClick={() => setBackgroundColor('yellow')}
+            style={{ background: 'linear-gradient(135deg, #fef08a, #facc15)' }}
+          />
+          <button 
+            className={`${styles.colorButton} ${backgroundColor === 'green' ? styles.activeColor : ''}`}
+            onClick={() => setBackgroundColor('green')}
+            style={{ background: 'linear-gradient(135deg, #bef264, #84cc16)' }}
+          />
+          <button 
+            className={`${styles.colorButton} ${backgroundColor === 'purple' ? styles.activeColor : ''}`}
+            onClick={() => setBackgroundColor('purple')}
+            style={{ background: 'linear-gradient(135deg, #d8b4fe, #a855f7)' }}
+          />
+        </div>
+
+        <div className={styles.colorSelector}>
+          <span className={styles.colorLabel}>테마색:</span>
+          <button 
+            className={`${styles.colorButton} ${themeColor === 'blue' ? styles.activeColor : ''}`}
+            onClick={() => setThemeColor('blue')}
+            style={{ background: 'linear-gradient(135deg, #60a5fa, #3b82f6)' }}
+          />
+          <button 
+            className={`${styles.colorButton} ${themeColor === 'red' ? styles.activeColor : ''}`}
+            onClick={() => setThemeColor('red')}
+            style={{ background: 'linear-gradient(135deg, #f87171, #dc2626)' }}
+          />
+          <button 
+            className={`${styles.colorButton} ${themeColor === 'yellow' ? styles.activeColor : ''}`}
+            onClick={() => setThemeColor('yellow')}
+            style={{ background: 'linear-gradient(135deg, #facc15, #ca8a04)' }}
+          />
+          <button 
+            className={`${styles.colorButton} ${themeColor === 'green' ? styles.activeColor : ''}`}
+            onClick={() => setThemeColor('green')}
+            style={{ background: 'linear-gradient(135deg, #4ade80, #16a34a)' }}
+          />
+          <button 
+            className={`${styles.colorButton} ${themeColor === 'purple' ? styles.activeColor : ''}`}
+            onClick={() => setThemeColor('purple')}
+            style={{ background: 'linear-gradient(135deg, #c084fc, #9333ea)' }}
+          />
+        </div>
+      </div>
+
+      <div 
+        ref={captureRef} 
+        className={styles.captureArea} 
+        style={{ 
+          background: backgroundColors[backgroundColor],
+          borderColor: themeColors[themeColor].border
+        }}
+      >
         {/* 헤더 */}
         <div className={styles.header}>
-          <h1 className={styles.title}>🚌 Sky 버스 노선표</h1>
+          <h1 className={styles.title} style={{ color: themeColors[themeColor].title }}>{t.title}</h1>
           
           <div className={styles.profileSection}>
             <div 
               className={styles.profileImageWrapper}
               onClick={() => fileInputRef.current?.click()}
+              style={{ borderColor: themeColors[themeColor].mainBorder }}
             >
               {profileImage ? (
                 <img src={profileImage} alt="프로필" className={styles.profileImage} />
@@ -111,18 +250,19 @@ export default function BusTable() {
               )}
             </div>
             <div className={styles.profileInfo}>
-              <label className={styles.profileLabel}>버스 기사</label>
+              <label className={styles.profileLabel}>{t.driverLabel}</label>
               <input
                 type="text"
                 className={styles.profileInput}
-                placeholder="이름 입력"
+                placeholder={t.driverPlaceholder}
                 value={driverName}
                 onChange={(e) => setDriverName(e.target.value)}
+                style={{ color: themeColors[themeColor].title }}
               />
               <input
                 type="text"
                 className={styles.profileIntro}
-                placeholder="소개 문구"
+                placeholder={t.introPlaceholder}
                 value={introduction}
                 onChange={(e) => setIntroduction(e.target.value)}
               />
@@ -138,9 +278,9 @@ export default function BusTable() {
         </div>
 
         {/* 메인 노선도 */}
-        <div className={styles.routeSection}>
+        <div className={styles.routeSection} style={{ borderColor: themeColors[themeColor].mainBorder }}>
           <div className={styles.routeMap}>
-            {mainRoute.map((location) => {
+            {currentRoute.map((location) => {
               const isMainSelected = selectedLocations.includes(location.id);
               
               return (
@@ -150,6 +290,11 @@ export default function BusTable() {
                       isMainSelected ? styles.mainLocationSelected : ''
                     }`}
                     onClick={() => toggleLocation(location.id)}
+                    style={{
+                      borderColor: isMainSelected ? themeColors[themeColor].selected : themeColors[themeColor].mainBorder,
+                      backgroundColor: isMainSelected ? themeColors[themeColor].selected : 'white',
+                      color: isMainSelected ? 'white' : themeColors[themeColor].title
+                    }}
                   >
                     {isMainSelected && (
                       <span className={styles.checkmark}>✓</span>
@@ -170,6 +315,11 @@ export default function BusTable() {
                               isSubSelected ? styles.subLocationSelected : ''
                             }`}
                             onClick={() => toggleLocation(sub.id)}
+                            style={{
+                              borderColor: isSubSelected ? themeColors[themeColor].selected : '#cbd5e1',
+                              backgroundColor: isSubSelected ? themeColors[themeColor].selected : 'white',
+                              color: isSubSelected ? 'white' : '#64748b'
+                            }}
                           >
                             {sub.name}
                           </div>
@@ -185,10 +335,10 @@ export default function BusTable() {
           {/* 시즌맵 */}
           <div className={styles.seasonMapSection}>
             <div className={styles.seasonMapTitle}>
-              ✨ 시즌맵
+              {t.seasonMapTitle}
             </div>
             <div className={styles.seasonMapList}>
-              {seasonMaps.map((map) => {
+              {currentSeasonMaps.map((map) => {
                 const isSelected = selectedLocations.includes(map.id);
                 
                 return (
@@ -211,13 +361,13 @@ export default function BusTable() {
         <div className={styles.optionsWrapper}>
           {/* 안내 사항 */}
           <div className={styles.categorySection}>
-            <h2 className={styles.categoryTitle}>
-              {guideCategories.info.title}
+            <h2 className={styles.categoryTitle} style={{ color: themeColors[themeColor].title }}>
+              {currentCategories.info.title}
             </h2>
             <div className={styles.optionsGrid}>
-              {guideCategories.info.items.map((item) => (
+              {currentCategories.info.items.map((item) => (
                 <div key={item.id} className={styles.optionGroup}>
-                  <div className={styles.optionHeader}>
+                  <div className={styles.optionHeader} style={{ color: themeColors[themeColor].title }}>
                     <span>{item.icon}</span>
                     <span>{item.title}</span>
                   </div>
@@ -233,6 +383,11 @@ export default function BusTable() {
                             isSelected ? styles.optionButtonSelected : ''
                           }`}
                           onClick={() => toggleOption('info', item.id, opt, item.multiple)}
+                          style={{
+                            backgroundColor: isSelected ? themeColors[themeColor].selected : '#f1f5f9',
+                            borderColor: isSelected ? themeColors[themeColor].selectedText : '#cbd5e1',
+                            color: isSelected ? 'white' : '#64748b'
+                          }}
                         >
                           {opt}
                         </button>
@@ -246,13 +401,13 @@ export default function BusTable() {
 
           {/* 모두의 에티켓 */}
           <div className={styles.categorySection}>
-            <h2 className={styles.categoryTitle}>
-              {guideCategories.etiquette.title}
+            <h2 className={styles.categoryTitle} style={{ color: themeColors[themeColor].title }}>
+              {currentCategories.etiquette.title}
             </h2>
             <div className={styles.optionsGrid}>
-              {guideCategories.etiquette.items.map((item) => (
+              {currentCategories.etiquette.items.map((item) => (
                 <div key={item.id} className={styles.optionGroup}>
-                  <div className={styles.optionHeader}>
+                  <div className={styles.optionHeader} style={{ color: themeColors[themeColor].title }}>
                     <span>{item.icon}</span>
                     <span>{item.title}</span>
                   </div>
@@ -271,6 +426,11 @@ export default function BusTable() {
                               isSelected ? styles.optionButtonSelected : ''
                             }`}
                             onClick={() => toggleOption('etiquette', item.id, opt, true)}
+                            style={{
+                              backgroundColor: isSelected ? themeColors[themeColor].selected : '#f1f5f9',
+                              borderColor: isSelected ? themeColors[themeColor].selectedText : '#cbd5e1',
+                              color: isSelected ? 'white' : '#64748b'
+                            }}
                           >
                             {opt}
                           </button>
@@ -288,7 +448,7 @@ export default function BusTable() {
       {/* 다운로드 버튼 */}
       <div className={styles.downloadSection}>
         <button className={styles.downloadBtn} onClick={handleDownload}>
-          📥다운로드
+          {t.downloadButton}
         </button>
       </div>
     </div>
