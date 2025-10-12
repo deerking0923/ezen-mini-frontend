@@ -97,7 +97,7 @@ export default function BusTable() {
       <div ref={captureRef} className={styles.captureArea}>
         {/* 헤더 */}
         <div className={styles.header}>
-          <h1 className={styles.title}>🚌 스카이 양작 노선표</h1>
+          <h1 className={styles.title}>🚌 Sky 버스 노선표</h1>
           
           <div className={styles.profileSection}>
             <div 
