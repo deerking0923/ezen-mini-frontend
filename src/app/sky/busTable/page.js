@@ -122,7 +122,7 @@ export default function BusTable() {
               <input
                 type="text"
                 className={styles.profileIntro}
-                placeholder="자기소개 한마디"
+                placeholder="소개 문구"
                 value={introduction}
                 onChange={(e) => setIntroduction(e.target.value)}
               />

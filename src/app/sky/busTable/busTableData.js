@@ -132,7 +132,8 @@ export const guideCategories = {
         id: 'hand',
         icon: '🤝',
         title: '손은 먼저 잡아주세요!',
-        fixed: true
+        options: ['먼저 잡아주세요!'],
+        multiple: true
       },
       {
         id: 'rest',
