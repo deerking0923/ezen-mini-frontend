@@ -89,13 +89,15 @@
 }
 
 .profileInput {
-  padding: 0.6rem 1rem;
-  border: 2px solid #cbd5e1;
-  border-radius: 8px;
+  padding: 0.5rem 0.2rem;
+  border: none;
+  border-bottom: 2px solid #cbd5e1;
+  border-radius: 0;
   font-size: 1.2rem;
   font-weight: 600;
   color: #1e40af;
   min-width: 160px;
+  background: transparent;
 }
 
 .profileInput:focus {
@@ -108,7 +110,7 @@
   border: none;
   border-bottom: 2px solid #cbd5e1;
   border-radius: 0;
-  font-size: 0.9rem;
+  font-size: 1.2rem;
   font-weight: 500;
   color: #64748b;
   min-width: 160px;
@@ -225,7 +227,7 @@
   border: 2px solid #cbd5e1;
   border-radius: 8px;
   color: #64748b;
-  font-size: 0.8rem;
+  font-size: 0.9rem;
   font-weight: 600;
   text-align: center;
   cursor: pointer;
@@ -259,7 +261,7 @@
 
 .seasonMapTitle {
   color: #92400e;
-  font-size: 1rem;
+  font-size: 1.2rem;
   font-weight: 700;
   margin-bottom: 0.8rem;
   text-align: center;
@@ -281,7 +283,7 @@
   border: 2px solid #fbbf24;
   border-radius: 8px;
   color: #92400e;
-  font-size: 0.8rem;
+  font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease;
