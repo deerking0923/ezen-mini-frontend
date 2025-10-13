@@ -177,7 +177,7 @@ export const seasonMaps = {
 export const guideCategories = {
   ko: {
     info: {
-      title: '📋 안내 사항',
+      title: '📋 운행 정보',
       items: [
         {
           id: 'type',
