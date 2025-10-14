@@ -237,7 +237,6 @@ export default function OldestSpiritsPage() {
 
               <div className={styles.infoSection}>
                 <div className={styles.nameRow}>
-                  <h3 className={styles.spiritName}>{soul.name}</h3>
                   <span 
                     className={styles.seasonBadge}
                     style={{ 
@@ -246,6 +245,7 @@ export default function OldestSpiritsPage() {
                   >
                     {soul.seasonName}
                   </span>
+                  <h3 className={styles.spiritName}>{soul.name}</h3>
                 </div>
 
                 <div className={styles.detailsRow}>
