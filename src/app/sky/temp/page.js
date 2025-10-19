@@ -29,7 +29,7 @@ export default function NoticePage() {
         양초 계산기는 비시즌에 쉬어갑니다.
         <br />
         <br />
-        다음 시즌에 다시 만나요!
+        다음 시즌에 다시 만나요! (목요일 오픈 예정!)
       </p>
       <button className={styles.optionButton} onClick={handleBack}>
         뒤로가기
