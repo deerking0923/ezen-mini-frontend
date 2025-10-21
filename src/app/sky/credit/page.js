@@ -38,7 +38,7 @@ export default function Credit() {
           </div>
           <div className={styles.item}>
             <span className={styles.role}>양초 계산기 아이콘</span>
-            <span className={styles.name}>햇비</span>
+            <span className={styles.name}>Sky Wiki, 햇비</span>
           </div>
         </div>
 

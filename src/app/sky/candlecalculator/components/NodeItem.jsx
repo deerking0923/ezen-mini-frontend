@@ -58,23 +58,26 @@ export function NodeItem({ node, isSelected, onToggle, spiritId }) {
           {isSeason ? '⭐' : '📦'}
         </div>
         
-        {/* 시즌 아이콘 배지 */}
+        {/* 시즌 아이콘 배지 - season.webp 사용 */}
         {isSeason && (
           <div style={{
             position: 'absolute',
-            top: '4px',
-            left: '4px',
-            width: '18px',
-            height: '18px',
-            background: theme.colors.season,
-            borderRadius: '50%',
-            fontSize: '11px',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            boxShadow: '0 1px 3px rgba(0,0,0,0.2)'
+            top: '2px',
+            right: '2px',
+            width: '20px',
+            height: '20px',
+            zIndex: 10
           }}>
-            🌟
+            <img 
+              src="/sky/calculator/season.webp"
+              alt="season"
+              style={{
+                width: '100%',
+                height: '100%',
+                objectFit: 'contain',
+                filter: 'drop-shadow(0 1px 2px rgba(0,0,0,0.3))'
+              }}
+            />
           </div>
         )}
         

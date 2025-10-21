@@ -1,6 +1,6 @@
 "use client";
 import React from 'react';
-import { theme } from '../styles/theme';
+import { theme, translations } from '../styles/theme';
 
 export function SettingsPanel({ 
   currentCandles, 
@@ -10,9 +10,11 @@ export function SettingsPanel({
   buySeasonPass,
   setBuySeasonPass,
   remainingDays,
-  totalRequired
+  totalRequired,
+  language
 }) {
   const BONUS_CANDLES = 31;
+  const t = translations[language];
 
   return (
     <div style={{
@@ -20,18 +22,63 @@ export function SettingsPanel({
       padding: '20px',
       borderRadius: '12px',
       marginBottom: '24px',
+      marginLeft: 'auto',
+      marginRight: 'auto',
       border: `2px solid ${theme.colors.border}`,
       boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
-      maxWidth: '800px',
-      margin: '0 auto 24px'
+      maxWidth: '800px'
     }}>
+      {/* 설명 문구 */}
+      <div style={{
+        marginBottom: '16px',
+        padding: '12px',
+        background: theme.colors.background,
+        borderRadius: '6px',
+        fontSize: '12px',
+        lineHeight: '1.6',
+        color: theme.colors.textLight
+      }}>
+        {t.notices.map((notice, index) => {
+          const noticeText = notice.replace('{BONUS_CANDLES}', BONUS_CANDLES);
+          
+          // 첫 번째 공지의 Sky Wiki에 링크 삽입
+          if (index === 0) {
+            const parts = noticeText.split('Sky Wiki');
+            return (
+              <div key={index} style={{ marginBottom: index < t.notices.length - 1 ? '4px' : '0' }}>
+                {parts[0]}
+                <a 
+                  href="https://sky-children-of-the-light.fandom.com/wiki/Season_of_Migration"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    color: theme.colors.primary,
+                    textDecoration: 'underline',
+                    fontWeight: 'bold'
+                  }}
+                >
+                  Sky Wiki
+                </a>
+                {parts[1]}
+              </div>
+            );
+          }
+          
+          return (
+            <div key={index} style={{ marginBottom: index < t.notices.length - 1 ? '4px' : '0' }}>
+              {noticeText}
+            </div>
+          );
+        })}
+      </div>
+
       <div style={{ 
         marginBottom: '14px', 
         fontWeight: 'bold',
         fontSize: '15px',
         color: theme.colors.primary
       }}>
-        남은 시즌 일수: {remainingDays}일
+        {t.remainingDays}: {remainingDays}{t.days}
       </div>
       
       <div style={{ 
@@ -49,7 +96,7 @@ export function SettingsPanel({
             color: theme.colors.text,
             fontWeight: '500'
           }}>
-            현재 보유 양초
+            {t.currentCandles}
           </label>
           <input
             type="number"
@@ -75,7 +122,7 @@ export function SettingsPanel({
             color: theme.colors.text,
             fontWeight: '500'
           }}>
-            시즌 패스 소유
+            {t.ownsSeasonPass}
           </label>
           <select
             value={ownsSeasonPass}
@@ -90,8 +137,8 @@ export function SettingsPanel({
               cursor: 'pointer'
             }}
           >
-            <option value="yes">예</option>
-            <option value="no">아니오</option>
+            <option value="yes">{t.yes}</option>
+            <option value="no">{t.no}</option>
           </select>
         </div>
 
@@ -118,7 +165,7 @@ export function SettingsPanel({
                 cursor: ownsSeasonPass === "yes" ? 'not-allowed' : 'pointer'
               }}
             />
-            시패 구입 예정 (+{BONUS_CANDLES}개)
+            {t.buySeasonPass} (+{BONUS_CANDLES}{t.bonusCandles})
           </label>
         </div>
       </div>
@@ -134,7 +181,7 @@ export function SettingsPanel({
         border: `2px solid ${theme.colors.border}`,
         textAlign: 'center'
       }}>
-        필요한 양초: {totalRequired}개
+        {t.requiredCandles}: {totalRequired}{t.bonusCandles}
       </div>
     </div>
   );

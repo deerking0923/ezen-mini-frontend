@@ -1,9 +1,11 @@
 "use client";
 import React from 'react';
-import { theme } from '../styles/theme';
+import { theme, translations } from '../styles/theme';
 import { LevelRow } from './LevelRow';
 
-export function SpiritCard({ spirit, selectedNodes, onToggleNode, onSelectAll, onClearAll }) {
+export function SpiritCard({ spirit, selectedNodes, onToggleNode, onSelectAll, onClearAll, language }) {
+  const t = translations[language];
+  
   const selectedCandles = spirit.levels.reduce((sum, level) => {
     const leftSum = level.leftNodes.reduce((nodeSum, node) => {
       return nodeSum + (selectedNodes.has(node.id) ? node.cost : 0);
@@ -14,7 +16,6 @@ export function SpiritCard({ spirit, selectedNodes, onToggleNode, onSelectAll, o
     return sum + leftSum + rightSum;
   }, 0);
 
-  // 영혼 이미지 경로
   const spiritImagePath = `/sky/calculator/s${spirit.id}.webp`;
 
   return (
@@ -40,7 +41,7 @@ export function SpiritCard({ spirit, selectedNodes, onToggleNode, onSelectAll, o
       }}>
         <img 
           src={spiritImagePath}
-          alt={spirit.name}
+          alt={typeof spirit.name === 'object' ? spirit.name[language] : spirit.name}
           style={{
             width: '100%',
             height: '100%',
@@ -64,7 +65,7 @@ export function SpiritCard({ spirit, selectedNodes, onToggleNode, onSelectAll, o
         color: theme.colors.text,
         lineHeight: '1.3'
       }}>
-        {spirit.name}
+        {typeof spirit.name === 'object' ? spirit.name[language] : spirit.name}
       </div>
 
       <div style={{
@@ -89,7 +90,7 @@ export function SpiritCard({ spirit, selectedNodes, onToggleNode, onSelectAll, o
           onMouseEnter={(e) => e.target.style.background = theme.colors.primaryDark}
           onMouseLeave={(e) => e.target.style.background = theme.colors.primary}
         >
-          전체선택
+          {t.selectAll}
         </button>
         <button
           onClick={() => onClearAll(spirit)}
@@ -114,7 +115,7 @@ export function SpiritCard({ spirit, selectedNodes, onToggleNode, onSelectAll, o
             e.target.style.color = theme.colors.primary;
           }}
         >
-          해제
+          {t.clear}
         </button>
       </div>
 
@@ -133,20 +134,21 @@ export function SpiritCard({ spirit, selectedNodes, onToggleNode, onSelectAll, o
       <div style={{
         borderTop: `2px solid ${theme.colors.border}`,
         paddingTop: '12px',
-        fontSize: '13px'
+        fontSize: '13px',
+        textAlign: 'center'
       }}>
         <div style={{ 
           color: theme.colors.textLight,
           marginBottom: '6px'
         }}>
-          전체: {spirit.totalCandles}개
+          {t.total}: {spirit.totalCandles}{t.bonusCandles}
         </div>
         <div style={{ 
           color: theme.colors.primary, 
           fontWeight: 'bold',
           fontSize: '15px'
         }}>
-          선택: {selectedCandles}개
+          {t.selected}: {selectedCandles}{t.bonusCandles}
         </div>
       </div>
     </div>

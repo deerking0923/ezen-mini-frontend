@@ -9,6 +9,84 @@ export const theme = {
     textLight: '#666666',
     border: '#E3F2FD',
     selected: '#2196F3',
-    hover: '#BBDEFB'
+    hover: '#BBDEFB',
+    season: '#FFD700'
+  }
+};
+
+export const translations = {
+  ko: {
+    title: '스카이 양초 계산기',
+    subtitle: '이주의 시즌',
+    remainingDays: '남은 시즌 일수',
+    currentCandles: '현재 보유 양초',
+    ownsSeasonPass: '시즌 패스 소유',
+    yes: '예',
+    no: '아니오',
+    buySeasonPass: '시패 구입 예정',
+    bonusCandles: '개',
+    requiredCandles: '필요한 양초',
+    selectAll: '전체선택',
+    clear: '해제',
+    total: '전체',
+    selected: '선택',
+    calculate: '계산하기!',
+    calculationResult: '📊 계산 결과',
+    remainingSeasonDays: '🕐 남은 시즌 일수',
+    days: '일',
+    dailyCandles: '💰 일일 획득 양초',
+    currentCandlesLabel: '현재 보유 양초',
+    remainingPeriodCandles: '남은 기간 획득 양초',
+    seasonPassBonus: '시패 보너스',
+    totalObtainableCandles: '총 획득 가능 양초',
+    neededCandles: '필요한 양초',
+    remainingCandles: '✅ 남는 양초',
+    shortageCandles: '⚠️ 부족한 양초',
+    daysNeeded: '⏱️ 선택한 아이템까지 필요 일수',
+    backToMain: '메인화면으로',
+    notices: [
+      '• 아이콘은 Sky Wiki에서 참고하였으며, 양초와 하트 아이콘은 햇비님 제작 자료입니다.',
+      '• 4시 리셋 이후 양초를 얻었다는 가정 하에 계산됩니다.',
+      '• 아직 리셋 전 오늘 일퀘를 안하셨다면 일퀘 양초를 포함해서 계산해주세요.',
+      '• 구매 예정이라면 시패 보유 여부 아니오 선택 후 구매예정 버튼을 눌러주세요.',
+      '• (시즌초 2배 이벤트 미포함) 오른쪽 하단의 숫자는 재화 개수입니다.'
+    ]
+  },
+  en: {
+    title: 'Sky Candle Calculator',
+    subtitle: 'Season of Migration',
+    remainingDays: 'Remaining Season Days',
+    currentCandles: 'Current Candles',
+    ownsSeasonPass: 'Season Pass',
+    yes: 'Yes',
+    no: 'No',
+    buySeasonPass: 'Plan to Buy Season Pass',
+    bonusCandles: 'candles',
+    requiredCandles: 'Required Candles',
+    selectAll: 'Select All',
+    clear: 'Clear',
+    total: 'Total',
+    selected: 'Selected',
+    calculate: 'Calculate!',
+    calculationResult: '📊 Calculation Result',
+    remainingSeasonDays: '🕐 Days Left',
+    days: 'days',
+    dailyCandles: '💰 Daily Candles',
+    currentCandlesLabel: 'Current Candles',
+    remainingPeriodCandles: 'Obtainable Candles',
+    seasonPassBonus: 'Season Pass Bonus',
+    totalObtainableCandles: 'Total Obtainable',
+    neededCandles: 'Needed Candles',
+    remainingCandles: '✅ Extra Candles',
+    shortageCandles: '⚠️ Short by',
+    daysNeeded: '⏱️ Days Needed',
+    backToMain: 'Back to Main',
+    notices: [
+      '• Icons referenced from Sky Wiki, candle and heart icons by Solar.',
+      '• Calculated assuming candles obtained after 4 AM reset.',
+      '• Include daily quest candles if not completed yet.',
+      '• Select "No" for Season Pass and check purchase plan for bonus calculation.',
+      '• Numbers in bottom right show currency amount (excluding season start 2x event).'
+    ]
   }
 };

@@ -1,13 +1,16 @@
 "use client";
 import React, { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { spiritsData } from './data/spiritsData';
-import { theme } from './styles/theme';
+import { theme, translations } from './styles/theme';
 import { SpiritCard } from './components/SpiritCard';
 import { SettingsPanel } from './components/SettingsPanel';
 import { CalculationResult } from './components/CalculationResult';
 import { SimpleCandleCalculator } from './components/SimpleCandleCalculator';
 
 export default function CandleCalculator() {
+  const router = useRouter();
+  const [language, setLanguage] = useState('ko');
   const [selectedNodes, setSelectedNodes] = useState(new Set());
   const [currentCandles, setCurrentCandles] = useState(0);
   const [ownsSeasonPass, setOwnsSeasonPass] = useState("yes");
@@ -17,6 +20,8 @@ export default function CandleCalculator() {
   const BONUS_CANDLES = 31;
   const seasonEnd = new Date("2026-01-05T17:00:00+09:00");
   
+  const t = translations[language];
+
   const [remainingDays, setRemainingDays] = useState(() => {
     const now = new Date();
     const diffMs = seasonEnd.getTime() - now.getTime();
@@ -90,29 +95,27 @@ const handleCalculate = () => {
   const neededCandles = totalRequired - currentCandles;
   const finalDays = Math.ceil((totalRequired - currentCandles - extraCandles) / dailyCandleCount);
 
-  const bonusText = extraCandles > 0 ? ` + 시패 보너스 ${BONUS_CANDLES}개` : '';
+  const bonusText = extraCandles > 0 
+    ? ` + ${t.seasonPassBonus} ${BONUS_CANDLES}${t.bonusCandles}` 
+    : '';
   
-  const result = `📊 계산 결과
+  // 객체로 전달하도록 변경
+  const resultData = {
+    remainingDays,
+    dailyCandleCount,
+    currentCandles,
+    seasonCandlesFromDays,
+    bonusText,
+    totalSeasonCandles,
+    totalRequired,
+    difference,
+    neededCandles,
+    finalDays
+  };
 
-🕐 남은 시즌 일수: ${remainingDays}일
-💰 일일 획득 양초: ${dailyCandleCount}개
-
-━━━━━━━━━━━━━━━━━━━━
-
-현재 보유 양초: ${currentCandles}개
-남은 기간 획득 양초: ${seasonCandlesFromDays}개 (${dailyCandleCount}개 × ${remainingDays}일)${bonusText}
-─────────────────────
-총 획득 가능 양초: ${totalSeasonCandles}개
-
-필요한 양초: ${totalRequired}개
-
-━━━━━━━━━━━━━━━━━━━━
-
-${difference >= 0 ? `✅ 남는 양초: ${difference}개` : `⚠️ 부족한 양초: ${-difference}개`}
-${neededCandles > 0 && finalDays >= 0 && finalDays <= remainingDays ? `\n⏱️ 선택한 아이템까지 필요 일수: ${finalDays}일` : ''}`;
-
-  setCalcResult(result);
+  setCalcResult(resultData);
 };
+
   return (
     <div style={{
       maxWidth: '1200px',
@@ -122,6 +125,47 @@ ${neededCandles > 0 && finalDays >= 0 && finalDays <= remainingDays ? `\n⏱️ 
       background: theme.colors.background,
       minHeight: '100vh'
     }}>
+      {/* 언어 전환 버튼 */}
+      <div style={{
+        display: 'flex',
+        justifyContent: 'center',
+        marginBottom: '20px',
+        gap: '12px'
+      }}>
+        <button
+          onClick={() => setLanguage('ko')}
+          style={{
+            padding: '8px 16px',
+            background: language === 'ko' ? theme.colors.primary : theme.colors.white,
+            color: language === 'ko' ? theme.colors.white : theme.colors.text,
+            border: `2px solid ${theme.colors.primary}`,
+            borderRadius: '8px',
+            cursor: 'pointer',
+            fontWeight: 'bold',
+            fontSize: '14px',
+            transition: 'all 0.2s'
+          }}
+        >
+          한국어
+        </button>
+        <button
+          onClick={() => setLanguage('en')}
+          style={{
+            padding: '8px 16px',
+            background: language === 'en' ? theme.colors.primary : theme.colors.white,
+            color: language === 'en' ? theme.colors.white : theme.colors.text,
+            border: `2px solid ${theme.colors.primary}`,
+            borderRadius: '8px',
+            cursor: 'pointer',
+            fontWeight: 'bold',
+            fontSize: '14px',
+            transition: 'all 0.2s'
+          }}
+        >
+          English
+        </button>
+      </div>
+
       <div style={{
         textAlign: 'center',
         marginBottom: '30px',
@@ -133,10 +177,10 @@ ${neededCandles > 0 && finalDays >= 0 && finalDays <= remainingDays ? `\n⏱️ 
           color: theme.colors.primary,
           marginBottom: '8px'
         }}>
-          스카이 양초 계산기
+          {t.title}
         </h1>
         <p style={{ color: theme.colors.textLight, fontSize: '14px' }}>
-          이주의 시즌
+          {t.subtitle}
         </p>
       </div>
 
@@ -149,6 +193,7 @@ ${neededCandles > 0 && finalDays >= 0 && finalDays <= remainingDays ? `\n⏱️ 
         setBuySeasonPass={setBuySeasonPass}
         remainingDays={remainingDays}
         totalRequired={totalRequired}
+        language={language}
       />
 
       <div style={{
@@ -171,6 +216,7 @@ ${neededCandles > 0 && finalDays >= 0 && finalDays <= remainingDays ? `\n⏱️ 
               onToggleNode={toggleNode}
               onSelectAll={selectAllForSpirit}
               onClearAll={clearAllForSpirit}
+              language={language}
             />
           ))}
         </div>
@@ -189,6 +235,7 @@ ${neededCandles > 0 && finalDays >= 0 && finalDays <= remainingDays ? `\n⏱️ 
               onToggleNode={toggleNode}
               onSelectAll={selectAllForSpirit}
               onClearAll={clearAllForSpirit}
+              language={language}
             />
           ))}
         </div>
@@ -202,9 +249,42 @@ ${neededCandles > 0 && finalDays >= 0 && finalDays <= remainingDays ? `\n⏱️ 
         remainingDays={remainingDays}
         onCalculate={handleCalculate}
         calcResult={calcResult}
+        language={language}
       />
 
-      <SimpleCandleCalculator />
+      {language === 'ko' && <SimpleCandleCalculator />}
+
+      {/* 메인화면 버튼 */}
+      <div style={{
+        textAlign: 'center',
+        marginTop: '40px',
+        marginBottom: '20px'
+      }}>
+        <button
+          onClick={() => router.push('/')}
+          style={{
+            padding: '12px 32px',
+            background: theme.colors.white,
+            color: theme.colors.primary,
+            border: `2px solid ${theme.colors.primary}`,
+            borderRadius: '8px',
+            cursor: 'pointer',
+            fontSize: '16px',
+            fontWeight: 'bold',
+            transition: 'all 0.2s'
+          }}
+          onMouseEnter={(e) => {
+            e.target.style.background = theme.colors.primary;
+            e.target.style.color = theme.colors.white;
+          }}
+          onMouseLeave={(e) => {
+            e.target.style.background = theme.colors.white;
+            e.target.style.color = theme.colors.primary;
+          }}
+        >
+          {t.backToMain}
+        </button>
+      </div>
     </div>
   );
 }
