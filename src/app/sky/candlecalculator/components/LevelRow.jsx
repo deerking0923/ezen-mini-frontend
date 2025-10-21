@@ -7,10 +7,13 @@ export function LevelRow({ level, selectedNodes, onToggleNode, spiritId }) {
   const hasNodes = level.leftNodes.length > 0 || level.rightNodes.length > 0;
   if (!hasNodes) return null;
   
+  // 시즌 노드가 2개 이상인지 확인
+  const hasMultipleSeasonNodes = level.rightNodes.length > 1;
+  
   return (
     <div style={{
       display: 'flex',
-      alignItems: 'flex-start',
+      alignItems: hasMultipleSeasonNodes ? 'center' : 'flex-start',
       marginBottom: '8px',
       gap: '12px'
     }}>
@@ -21,7 +24,7 @@ export function LevelRow({ level, selectedNodes, onToggleNode, spiritId }) {
         fontWeight: 'bold',
         width: '50px',
         textAlign: 'right',
-        paddingTop: '25px'
+        paddingTop: hasMultipleSeasonNodes ? '0' : '25px'
       }}>
         Level {level.level}
       </div>
