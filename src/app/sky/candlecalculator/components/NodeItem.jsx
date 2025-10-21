@@ -5,7 +5,6 @@ import { theme } from '../styles/theme';
 export function NodeItem({ node, isSelected, onToggle, spiritId }) {
   const isSeason = node.type === "season";
   
-  // 이미지 경로: /sky/calculator/s1_l5_s1.webp
   const imagePath = `/sky/calculator/${node.id}.webp`;
   
   return (
@@ -39,7 +38,6 @@ export function NodeItem({ node, isSelected, onToggle, spiritId }) {
           e.currentTarget.style.background = theme.colors.white;
         }}
       >
-        {/* 노드 이미지 */}
         <img 
           src={imagePath}
           alt={node.id}
@@ -49,7 +47,6 @@ export function NodeItem({ node, isSelected, onToggle, spiritId }) {
             objectFit: 'cover'
           }}
           onError={(e) => {
-            // 이미지 로드 실패시 기본 아이콘 표시
             e.target.style.display = 'none';
             e.target.nextSibling.style.display = 'block';
           }}
@@ -58,7 +55,6 @@ export function NodeItem({ node, isSelected, onToggle, spiritId }) {
           {isSeason ? '⭐' : '📦'}
         </div>
         
-        {/* 시즌 아이콘 배지 - season.webp 사용 */}
         {isSeason && (
           <div style={{
             position: 'absolute',
@@ -81,18 +77,18 @@ export function NodeItem({ node, isSelected, onToggle, spiritId }) {
           </div>
         )}
         
-        {/* 비용 배지 */}
         {node.cost > 0 && (
           <div style={{
             position: 'absolute',
-            bottom: '4px',
-            right: '4px',
+            bottom: '3px',
+            right: '3px',
             background: theme.colors.primary,
             color: theme.colors.white,
-            padding: '2px 7px',
-            borderRadius: '4px',
-            fontSize: '12px',
-            fontWeight: 'bold'
+            padding: '1px 4px',
+            borderRadius: '3px',
+            fontSize: '10px',
+            fontWeight: 'bold',
+            lineHeight: '1.2'
           }}>
             {node.cost}
           </div>
