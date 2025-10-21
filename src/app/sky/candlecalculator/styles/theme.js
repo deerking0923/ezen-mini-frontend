@@ -40,8 +40,8 @@ export const translations = {
     seasonPassBonus: '시패 보너스',
     totalObtainableCandles: '총 획득 가능 양초',
     neededCandles: '필요한 양초',
-    remainingCandles: '✅ 남는 양초',
-    shortageCandles: '⚠️ 부족한 양초',
+    remainingCandles: '남는 양초',
+    shortageCandles: '부족한 양초',
     daysNeeded: '⏱️ 선택한 아이템까지 필요 일수',
     backToMain: '메인화면으로',
     notices: [
@@ -77,8 +77,8 @@ export const translations = {
     seasonPassBonus: 'Season Pass Bonus',
     totalObtainableCandles: 'Total Obtainable',
     neededCandles: 'Needed Candles',
-    remainingCandles: '✅ Extra Candles',
-    shortageCandles: '⚠️ Short by',
+    remainingCandles: 'Extra Candles',
+    shortageCandles: 'Short by',
     daysNeeded: '⏱️ Days Needed',
     backToMain: 'Back to Main',
     notices: [
