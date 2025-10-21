@@ -85,7 +85,7 @@ export const translations = {
     alreadyEnough: 'You already have {amount} extra!',
     afterPurchase: 'You will have {amount} extra after purchase!',
     notices: [
-      '• Icons referenced from Sky Wiki, candle and heart icons by Solar.',
+      '• Icons referenced from Sky Wiki, candle and heart icons by 햇비 Sky Solar.',
       "• Calculated assuming candles obtained after 4 PM(KST) reset. (Calculate including today's dailies candles if not completed yet)",
       "• Select 'No' for Season Pass and If you have a plan to get a Season Pass, check 'Plan to Buy a Season Pass'.",
       '• Numbers in bottom right show item price (excluding season start 2x event).'
