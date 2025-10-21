@@ -87,7 +87,7 @@ export const translations = {
     afterPurchase: 'You will have {amount} extra after purchase!',
     notices: [
       '• Icons referenced from Sky Wiki, candle and heart icons by Solar.',
-      '• Calculated assuming candles obtained after 4 AM reset.',
+      '• Calculated assuming candles obtained after 4 PM reset.',
       '• Include daily quest candles if not completed yet.',
       '• Select "No" for Season Pass and check purchase plan for bonus calculation.',
       '• Numbers in bottom right show currency amount (excluding season start 2x event).'
