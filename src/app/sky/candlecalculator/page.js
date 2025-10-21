@@ -90,16 +90,16 @@ const handleCalculate = () => {
   const BONUS_CANDLES = 31;
   const seasonCandlesFromDays = remainingDays * dailyCandleCount;
   const extraCandles = ownsSeasonPass === "no" && buySeasonPass ? BONUS_CANDLES : 0;
+  
   const totalSeasonCandles = currentCandles + seasonCandlesFromDays + extraCandles;
   const difference = totalSeasonCandles - totalRequired;
-  const neededCandles = totalRequired - currentCandles;
+  const neededCandles = totalRequired - currentCandles - extraCandles;
   const finalDays = Math.ceil((totalRequired - currentCandles - extraCandles) / dailyCandleCount);
 
   const bonusText = extraCandles > 0 
     ? ` + ${t.seasonPassBonus} ${BONUS_CANDLES}${t.bonusCandles}` 
     : '';
   
-  // 객체로 전달하도록 변경
   const resultData = {
     remainingDays,
     dailyCandleCount,
@@ -110,7 +110,8 @@ const handleCalculate = () => {
     totalRequired,
     difference,
     neededCandles,
-    finalDays
+    finalDays,
+    hasBonus: extraCandles > 0
   };
 
   setCalcResult(resultData);

@@ -180,41 +180,62 @@ export function CalculationResult({
               marginBottom: '12px'
             }}></div>
 
-            {/* 선택한 양초 섹션 */}
-            <div style={{
-              background: '#E3F2FD',
-              padding: '10px',
-              borderRadius: '6px',
-              marginBottom: '12px'
-            }}>
-              <div style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                fontSize: '14px',
-                fontWeight: 'bold',
-                color: theme.colors.text
-              }}>
-                <span>{t.selected}</span>
-                <span>{calcResult.totalRequired}{t.bonusCandles}</span>
-              </div>
-            </div>
+{/* 선택한 양초 섹션 */}
+<div style={{
+  background: '#E3F2FD',
+  padding: '10px',
+  borderRadius: '6px',
+  marginBottom: '12px'
+}}>
+  <div style={{
+    display: 'flex',
+    justifyContent: 'space-between',
+    fontSize: '14px',
+    fontWeight: 'bold',
+    color: theme.colors.text
+  }}>
+    <span>{t.selected}</span>
+    <span>{calcResult.totalRequired}{t.bonusCandles}</span>
+  </div>
+</div>
 
-            {/* 필요한 양초 (선택 - 보유) */}
-            <div style={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              marginBottom: '16px',
-              fontSize: '14px',
-              fontWeight: 'bold'
-            }}>
-              <span>{t.neededCandles}</span>
-              <span>{calcResult.neededCandles}{t.bonusCandles}</span>
-            </div>
-
-            <div style={{
-              borderTop: `2px solid ${theme.colors.border}`,
-              marginBottom: '12px'
-            }}></div>
+{/* 필요한 양초 */}
+<div style={{
+  marginBottom: '16px'
+}}>
+  <div style={{
+    display: 'flex',
+    justifyContent: 'space-between',
+    fontSize: '14px',
+    fontWeight: 'bold',
+    marginBottom: '6px'
+  }}>
+    <span>{t.neededCandles}</span>
+    <span>{calcResult.neededCandles}{t.bonusCandles}</span>
+  </div>
+  <div style={{
+    fontSize: '12px',
+    color: theme.colors.textLight,
+    textAlign: 'right'
+  }}>
+    ({calcResult.totalRequired} - {calcResult.currentCandles}
+    {calcResult.hasBonus && ' - 31'} = {calcResult.neededCandles})
+  </div>
+{calcResult.neededCandles < 0 && (
+  <div style={{
+    marginTop: '8px',
+    padding: '8px',
+    background: '#E8F5E9',
+    borderRadius: '6px',
+    fontSize: '13px',
+    color: '#2E7D32',
+    textAlign: 'center',
+    fontWeight: 'bold'
+  }}>
+    {t.alreadyEnough.replace('{amount}', Math.abs(calcResult.neededCandles))}
+  </div>
+)}
+</div>
 
             {/* 결과 */}
             <div style={{

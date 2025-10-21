@@ -44,6 +44,8 @@ export const translations = {
     shortageCandles: '부족한 양초',
     daysNeeded: '⏱️ 선택한 아이템까지 필요 일수',
     backToMain: '메인화면으로',
+    alreadyEnough: '이미 {amount}개 남습니다!',
+    afterPurchase: '구입하고도 {amount}개 남습니다!',
     notices: [
       '• 아이콘은 Sky Wiki에서 참고하였으며, 양초와 하트 아이콘은 햇비님 제작 자료입니다.',
       '• 4시 리셋 이후 양초를 얻었다는 가정 하에 계산됩니다.',
@@ -81,6 +83,8 @@ export const translations = {
     shortageCandles: 'Short by',
     daysNeeded: '⏱️ Days Needed',
     backToMain: 'Back to Main',
+    alreadyEnough: 'You already have {amount} extra!',
+    afterPurchase: 'You will have {amount} extra after purchase!',
     notices: [
       '• Icons referenced from Sky Wiki, candle and heart icons by Solar.',
       '• Calculated assuming candles obtained after 4 AM reset.',
