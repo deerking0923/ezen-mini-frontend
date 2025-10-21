@@ -48,8 +48,7 @@ export const translations = {
     afterPurchase: '구입하고도 {amount}개 남습니다!',
     notices: [
       '• 아이콘은 Sky Wiki에서 참고하였으며, 양초와 하트 아이콘은 햇비님 제작 자료입니다.',
-      '• 4시 리셋 이후 양초를 얻었다는 가정 하에 계산됩니다.',
-      '• 아직 리셋 전 오늘 일퀘를 안하셨다면 일퀘 양초를 포함해서 계산해주세요.',
+      '• 4시 리셋 이후 양초를 얻었다는 가정 하에 계산됩니다. 아직 리셋 전 오늘 일퀘를 안하셨다면 일퀘 양초를 포함해서 계산해주세요.',
       '• 구매 예정이라면 시패 보유 여부 아니오 선택 후 구매예정 버튼을 눌러주세요.',
       '• (시즌초 2배 이벤트 미포함) 오른쪽 하단의 숫자는 재화 개수입니다.'
     ]
@@ -87,10 +86,9 @@ export const translations = {
     afterPurchase: 'You will have {amount} extra after purchase!',
     notices: [
       '• Icons referenced from Sky Wiki, candle and heart icons by Solar.',
-      '• Calculated assuming candles obtained after 4 PM reset.',
-      '• Include daily quest candles if not completed yet.',
-      '• Select "No" for Season Pass and check purchase plan for bonus calculation.',
-      '• Numbers in bottom right show currency amount (excluding season start 2x event).'
+      "• Calculated assuming candles obtained after 4 PM(KST) reset. (Calculate including today's dailies candles if not completed yet)",
+      "• Select 'No' for Season Pass and If you have a plan to get a Season Pass, check 'Plan to Buy a Season Pass'.",
+      '• Numbers in bottom right show item price (excluding season start 2x event).'
     ]
   }
 };
