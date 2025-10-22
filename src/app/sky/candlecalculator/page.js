@@ -10,7 +10,7 @@ import { SimpleCandleCalculator } from './components/SimpleCandleCalculator';
 
 export default function CandleCalculator() {
   const router = useRouter();
-  const [language, setLanguage] = useState('ko');
+  const [language, setLanguage] = useState('en');
   const [selectedNodes, setSelectedNodes] = useState(new Set());
   const [currentCandles, setCurrentCandles] = useState(0);
   const [ownsSeasonPass, setOwnsSeasonPass] = useState("yes");
