@@ -10,7 +10,23 @@ import { SimpleCandleCalculator } from './components/SimpleCandleCalculator';
 
 export default function CandleCalculator() {
   const router = useRouter();
-  const [language, setLanguage] = useState('en');
+// ----------------------------------------------------
+  const [language, setLanguage] = useState('en'); // 초기 기본값은 'en'으로 설정
+
+  useEffect(() => {
+    // 클라이언트 사이드에서만 navigator 객체에 접근
+    if (typeof window !== 'undefined' && window.navigator) {
+      // 브라우저의 기본 언어 설정을 가져옴 (예: 'ko-KR', 'en-US')
+      const userLocale = window.navigator.language;
+      
+      // 한국어(ko)를 포함하는 경우 'ko'로 설정, 그렇지 않으면 'en' 유지
+      if (userLocale.toLowerCase().includes('ko')) {
+        setLanguage('ko');
+      } else {
+        setLanguage('en');
+      }
+    }
+  }, []);
   const [selectedNodes, setSelectedNodes] = useState(new Set());
   const [currentCandles, setCurrentCandles] = useState(0);
   const [ownsSeasonPass, setOwnsSeasonPass] = useState("yes");
