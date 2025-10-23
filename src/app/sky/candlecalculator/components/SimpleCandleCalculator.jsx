@@ -1,3 +1,4 @@
+"use client";
 import React, { useState } from 'react';
 import { theme } from '../styles/theme';
 
@@ -25,14 +26,33 @@ export function SimpleCandleCalculator() {
       borderRadius: '12px',
       background: theme.colors.white,
       marginTop: '30px',
-      maxWidth: '300px',
+      maxWidth: '350px',
       margin: '30px auto 0',
       boxShadow: '0 2px 8px rgba(0,0,0,0.08)'
     }}>
       <div style={{
-        fontSize: '40px'
+        width: '80px',
+        height: '80px',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center'
       }}>
-        🕯️
+        <img 
+          src="/sky/calculator/candle.webp"
+          alt="candle"
+          style={{
+            width: '100%',
+            height: '100%',
+            objectFit: 'contain'
+          }}
+          onError={(e) => {
+            e.target.style.display = 'none';
+            e.target.nextSibling.style.display = 'block';
+          }}
+        />
+        <div style={{ fontSize: '40px', display: 'none' }}>
+          🕯️
+        </div>
       </div>
       
       <div style={{
