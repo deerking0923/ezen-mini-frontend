@@ -347,7 +347,7 @@ export const guideCategories = {
           id: 'hand',
           icon: '🤝',
           title: 'Hand Holding',
-          options: ['Please hold hands first!'],
+          options: ['Please hold hands first!', 'I\'ll offer first!'],
           multiple: true
         },
         {
