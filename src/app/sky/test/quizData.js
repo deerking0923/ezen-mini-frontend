@@ -39,7 +39,7 @@ export const quizData = [
     question: "8. 승리의 계곡에서 체험 시간이 가장 짧은 영혼은?",
     options: ["1", "2", "3", "4"],
     answer: "1",
-    image: '/sky/test/8.jpg'
+    image: '/sky/test/7.jpg'
   },
   {
     question: "9. 다음 중 별빛사막에 진입하면 나오는 안내글의 빈칸에 들어갈 적절한 단어는? (          ) 세계들이 만나는 공간",
